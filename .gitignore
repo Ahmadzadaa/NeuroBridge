@@ -23,6 +23,9 @@
 # misc
 .DS_Store
 *.pem
+.env
+.env.local
+.env.*.local
 
 # debug
 npm-debug.log*
@@ -30,8 +33,8 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+/prisma/dev.db
+/prisma/dev.db-journal
 
 # vercel
 .vercel
@@ -39,3 +42,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/src/generated/prisma
