@@ -1,0 +1,295 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Tenant {
+  id         String   @id @default(cuid())
+  name       String
+  logoUrl    String?  @map("logo_url")
+  website    String?
+  phone      String?
+  email      String?
+  address    String?
+  status     String   @default("PENDING")
+  seatLimit  Int      @default(0) @map("seat_limit")
+  seatsUsed  Int      @default(0) @map("seats_used")
+  planType   String?  @map("plan_type")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  users        User[]
+  programs     Program[]
+  payments     Payment[]
+  auditLogs    AuditLog[]
+  settings     TenantSettings?
+
+  @@map("tenants")
+}
+
+model TenantSettings {
+  id                         String  @id @default(cuid())
+  tenantId                   String  @unique @map("tenant_id")
+  authorizedContact          String? @map("authorized_contact")
+  signatureUrl               String? @map("signature_url")
+  certificateTemplate        String? @map("certificate_template")
+  participationCertificate   Boolean @default(true) @map("participation_certificate")
+  achievementCertificate     Boolean @default(true) @map("achievement_certificate")
+  completionCertificate      Boolean @default(true) @map("completion_certificate")
+  sendInvitationEmail        Boolean @default(true) @map("send_invitation_email")
+  programStartReminder       Boolean @default(true) @map("program_start_reminder")
+  programEndReminder         Boolean @default(true) @map("program_end_reminder")
+  certificateNotification    Boolean @default(true) @map("certificate_notification")
+  weeklyProgressNotification Boolean @default(true) @map("weekly_progress_notification")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("tenant_settings")
+}
+
+model User {
+  id                  String    @id @default(cuid())
+  tenantId            String?   @map("tenant_id")
+  email               String
+  passwordHash        String    @map("password_hash")
+  firstName           String?   @map("first_name")
+  lastName            String?   @map("last_name")
+  phone               String?
+  role                String    @default("PARTICIPANT")
+  language            String    @default("tr")
+  coinBalance         Int       @default(0) @map("coin_balance")
+  twoFactorEnabled    Boolean   @default(false) @map("two_factor_enabled")
+  twoFactorSecret     String?   @map("two_factor_secret")
+  failedLoginAttempts Int       @default(0) @map("failed_login_attempts")
+  lockedUntil         DateTime? @map("locked_until")
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime  @updatedAt @map("updated_at")
+
+  tenant           Tenant?           @relation(fields: [tenantId], references: [id])
+  participants     Participant[]
+  userBadges       UserBadge[]
+  certificates     Certificate[]
+  coinTransactions CoinTransaction[]
+  auditLogs        AuditLog[]
+  recoveryCodes    UserRecoveryCode[]
+
+  @@unique([tenantId, email])
+  @@index([tenantId])
+  @@index([email])
+  @@map("users")
+}
+
+model UserRecoveryCode {
+  id        String    @id @default(cuid())
+  userId    String    @map("user_id")
+  codeHash  String    @map("code_hash")
+  usedAt    DateTime? @map("used_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("user_recovery_codes")
+}
+
+model Program {
+  id               String    @id @default(cuid())
+  tenantId         String    @map("tenant_id")
+  name             String
+  description      String?
+  type             String
+  applicationStart DateTime  @map("application_start")
+  applicationEnd   DateTime  @map("application_end")
+  simulationStart  DateTime? @map("simulation_start")
+  simulationEnd    DateTime? @map("simulation_end")
+  participantLimit Int       @map("participant_limit")
+  applicationToken String    @unique @default(cuid()) @map("application_token")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  tenant             Tenant              @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  participants       Participant[]
+  programSimulations ProgramSimulation[]
+  programTrainings   ProgramTraining[]
+  programAiTools     ProgramAiTool[]
+
+  @@index([tenantId])
+  @@map("programs")
+}
+
+model ProgramSimulation {
+  id             String @id @default(cuid())
+  programId      String @map("program_id")
+  simulationType String @map("simulation_type")
+
+  program Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+
+  @@unique([programId, simulationType])
+  @@map("program_simulations")
+}
+
+model ProgramTraining {
+  id           String @id @default(cuid())
+  programId    String @map("program_id")
+  trainingType String @map("training_type")
+
+  program Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+
+  @@unique([programId, trainingType])
+  @@map("program_trainings")
+}
+
+model ProgramAiTool {
+  id        String @id @default(cuid())
+  programId String @map("program_id")
+  aiTool    String @map("ai_tool")
+
+  program Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+
+  @@unique([programId, aiTool])
+  @@map("program_ai_tools")
+}
+
+model Participant {
+  id               String    @id @default(cuid())
+  programId        String    @map("program_id")
+  userId           String    @map("user_id")
+  status           String    @default("PENDING")
+  registrationDate DateTime  @default(now()) @map("registration_date")
+  lastLogin        DateTime? @map("last_login")
+
+  program Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([programId, userId])
+  @@index([programId])
+  @@index([userId])
+  @@map("participants")
+}
+
+model Simulation {
+  id       String @id @default(cuid())
+  key      String @unique
+  nameTr   String @map("name_tr")
+  nameEn   String @map("name_en")
+  nameAz   String @map("name_az")
+  category String
+
+  @@map("simulations")
+}
+
+model Badge {
+  id        String @id @default(cuid())
+  key       String @unique
+  nameTr    String @map("name_tr")
+  nameEn    String @map("name_en")
+  nameAz    String @map("name_az")
+  icon      String
+  coinValue Int    @map("coin_value")
+  category  String
+  tier      String @default("regular")
+
+  userBadges UserBadge[]
+
+  @@map("badges")
+}
+
+model UserBadge {
+  id       String   @id @default(cuid())
+  userId   String   @map("user_id")
+  badgeId  String   @map("badge_id")
+  earnedAt DateTime @default(now()) @map("earned_at")
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badge Badge @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, badgeId])
+  @@map("user_badges")
+}
+
+model Certificate {
+  id       String   @id @default(cuid())
+  userId   String   @map("user_id")
+  type     String
+  issuedAt DateTime @default(now()) @map("issued_at")
+  pdfUrl   String?  @map("pdf_url")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("certificates")
+}
+
+model CoinTransaction {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  amount    Int
+  reason    String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("coin_transactions")
+}
+
+model Payment {
+  id             String   @id @default(cuid())
+  tenantId       String   @map("tenant_id")
+  amount         Float
+  currency       String   @default("TRY")
+  seatCount      Int      @map("seat_count")
+  status         String   @default("PENDING")
+  provider       String   @default("STRIPE")
+  providerRef    String?  @map("provider_ref")
+  paymentType    String   @default("UPGRADE") @map("payment_type")
+  idempotencyKey String   @unique @map("idempotency_key")
+  refundedAmount Float    @default(0) @map("refunded_amount")
+  retryCount     Int      @default(0) @map("retry_count")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerRef])
+  @@index([tenantId])
+  @@index([status])
+  @@map("payments")
+}
+
+model WebhookEvent {
+  id              String   @id @default(cuid())
+  provider        String
+  externalEventId String   @map("external_event_id")
+  eventType       String   @map("event_type")
+  status          String   @default("PROCESSED")
+  payload         String?
+  errorMessage    String?  @map("error_message")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@unique([provider, externalEventId])
+  @@index([provider])
+  @@map("webhook_events")
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?  @map("user_id")
+  tenantId  String?  @map("tenant_id")
+  ip        String?
+  action    String
+  details   String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user   User?   @relation(fields: [userId], references: [id])
+  tenant Tenant? @relation(fields: [tenantId], references: [id])
+
+  @@index([tenantId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
