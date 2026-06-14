@@ -28,8 +28,8 @@ export default function LoginPage() {
     setLoading(true);
 
     const result = await signIn("credentials", {
-      email,
-      password,
+      email: email.trim(),
+      password: password.trim(),
       totpCode: totpCode || undefined,
       recoveryCode: recoveryCode || undefined,
       redirect: false,
@@ -38,8 +38,16 @@ export default function LoginPage() {
     setLoading(false);
 
     if (result?.error) {
-      setShow2FA(true);
-      toast.error(t("invalidCredentials"));
+      const errorCode = "code" in result ? String(result.code) : result.error;
+
+      if (errorCode === "two_factor_required") {
+        setShow2FA(true);
+        toast.error(t("twoFactorRequired"));
+      } else if (errorCode === "account_locked") {
+        toast.error(t("accountLocked"));
+      } else {
+        toast.error(t("invalidCredentials"));
+      }
       return;
     }
 
@@ -137,6 +145,15 @@ export default function LoginPage() {
             >
               {loading ? "..." : t("login")}
             </Button>
+            {process.env.NODE_ENV === "development" && (
+              <div className="rounded-xl border border-dashed border-muted-foreground/30 bg-muted/40 p-3 text-xs text-muted-foreground">
+                <p className="font-medium text-foreground">Demo hesablar</p>
+                <p>participant@demo.com</p>
+                <p>tenant@demo-tekno.com</p>
+                <p>admin@bizsim.com</p>
+                <p className="mt-1 font-mono">Şifrə: Admin123!</p>
+              </div>
+            )}
           </form>
         </CardContent>
       </Card>

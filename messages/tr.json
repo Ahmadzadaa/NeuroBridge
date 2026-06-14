@@ -1,0 +1,304 @@
+{
+  "common": {
+    "appName": "BizSim",
+    "appDescription": "Girişimcilik Simülasyon Platformu",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "view": "Görüntüle",
+    "export": "Dışa Aktar",
+    "search": "Ara",
+    "filter": "Filtrele",
+    "loading": "Yükleniyor...",
+    "noData": "Veri bulunamadı",
+    "actions": "İşlemler",
+    "status": "Durum",
+    "active": "Aktif",
+    "inactive": "Pasif",
+    "pending": "Beklemede",
+    "earned": "Kazanıldı",
+    "notEarned": "Kazanılmadı",
+    "passed": "Geçti",
+    "failed": "Kaldı",
+    "needsImprovement": "Geliştirilmeli",
+    "copyLink": "Linki Kopyala",
+    "shareEmail": "E-posta ile Paylaş",
+    "shareSocial": "Sosyal Medyada Paylaş",
+    "generateLink": "Link Oluştur",
+    "upgradeSeats": "Koltuk Yükselt",
+    "buyMoreSeats": "Daha Fazla Koltuk Satın Al",
+    "logout": "Çıkış Yap",
+    "profile": "Profil",
+    "settings": "Ayarlar",
+    "dashboard": "Panel",
+    "back": "Geri",
+    "next": "İleri",
+    "submit": "Gönder",
+    "preview": "Önizleme",
+    "add": "Ekle",
+    "remove": "Kaldır",
+    "total": "Toplam",
+    "coins": "Coin",
+    "badges": "Rozetler",
+    "certificates": "Sertifikalar"
+  },
+  "auth": {
+    "login": "Giriş Yap",
+    "email": "E-posta",
+    "password": "Şifre",
+    "loginTitle": "Hesabınıza Giriş Yapın",
+    "loginSubtitle": "Girişimcilik simülasyon platformuna hoş geldiniz",
+    "invalidCredentials": "Geçersiz e-posta veya şifre",
+    "accountLocked": "Hesabınız geçici olarak kilitlendi. Lütfen daha sonra tekrar deneyin.",
+    "twoFactorRequired": "Doğrulama kodu gerekli. Authenticator uygulamanızdaki 6 haneli kodu girin.",
+    "totpCode": "Doğrulama kodu",
+    "recoveryCode": "Kurtarma kodu (isteğe bağlı)"
+  },
+  "nav": {
+    "superAdmin": {
+      "dashboard": "Panel",
+      "tenants": "Kiracılar",
+      "billing": "Faturalandırma",
+      "content": "İçerik Yönetimi",
+      "support": "Destek",
+      "system": "Sistem Sağlığı",
+      "audit": "Denetim Kaydı"
+    },
+    "tenant": {
+      "dashboard": "Panel",
+      "programs": "Programlar",
+      "participants": "Katılımcılar",
+      "reports": "Raporlar",
+      "settings": "Ayarlar",
+      "billing": "Ödemeler"
+    },
+    "participant": {
+      "dashboard": "Panel",
+      "simulations": "Simülasyonlar",
+      "trainings": "Eğitimler",
+      "aiTools": "AI Araçları",
+      "badges": "Rozetler",
+      "certificates": "Sertifikalar",
+      "leaderboard": "Liderlik Tablosu",
+      "profile": "Profil"
+    }
+  },
+  "superAdmin": {
+    "title": "Süper Admin Paneli",
+    "stats": {
+      "totalTenants": "Toplam Kiracı",
+      "activeUsers": "Aktif Kullanıcılar",
+      "totalRevenue": "Toplam Gelir",
+      "growth": "Büyüme"
+    },
+    "tenants": {
+      "title": "Kiracı Yönetimi",
+      "createTenant": "Yeni Kiracı",
+      "name": "Organizasyon Adı",
+      "status": "Durum",
+      "seats": "Koltuklar",
+      "plan": "Paket",
+      "createdAt": "Oluşturulma"
+    },
+    "billing": {
+      "title": "Lisans ve Faturalandırma",
+      "pricePerSeat": "Koltuk Başına Fiyat",
+      "paymentStatus": "Ödeme Durumu"
+    }
+  },
+  "tenant": {
+    "title": "Organizasyon Paneli",
+    "seats": {
+      "total": "Toplam Koltuk",
+      "used": "Kullanılan",
+      "remaining": "Kalan",
+      "limitReached": "Koltuk limitinize ulaştınız. Yükseltmek ister misiniz?"
+    },
+    "programs": {
+      "title": "Programlar",
+      "create": "Yeni Program",
+      "name": "Program Adı",
+      "description": "Program Açıklaması",
+      "type": "Proje Türü",
+      "applicationStart": "Başvuru Başlangıç",
+      "applicationEnd": "Başvuru Bitiş",
+      "simulationStart": "Simülasyon Başlangıç",
+      "simulationEnd": "Simülasyon Bitiş",
+      "participantLimit": "Katılımcı Limiti",
+      "simulations": "Simülasyon Modülleri",
+      "trainings": "Eğitim Modülleri",
+      "aiTools": "AI Destek Araçları",
+      "applicationLink": "Başvuru Linki",
+      "participants": "Katılımcılar",
+      "start": "Başlangıç",
+      "end": "Bitiş"
+    },
+    "projectTypes": {
+      "entrepreneurship_training": "Girişimcilik Eğitimi",
+      "business_idea_development": "İş Fikri Geliştirme Programı",
+      "startup_challenge": "Startup Yarışması",
+      "hackathon": "Hackathon",
+      "competition": "Yarışma",
+      "innovation_program": "İnovasyon Programı",
+      "other": "Diğer"
+    },
+    "simulationTypes": {
+      "idea_development": "Fikir Geliştirme Simülasyonu",
+      "startup_management": "Startup Yönetimi Simülasyonu",
+      "leadership": "Liderlik Simülasyonu",
+      "investor_readiness": "Yatırımcı Hazırlığı Simülasyonu"
+    },
+    "trainingTypes": {
+      "finance": "Finans Eğitimi",
+      "sales_marketing": "Satış ve Pazarlama Eğitimi",
+      "team_management": "Takım Yönetimi Eğitimi",
+      "pitch_preparation": "Pitch Hazırlık Eğitimi",
+      "leadership": "Liderlik Eğitimi",
+      "innovation_tools": "İnovasyon Araçları Eğitimi",
+      "business_model": "İş Modeli Eğitimi",
+      "customer_validation": "Müşteri Doğrulama Eğitimi",
+      "ai_tools": "AI Araçları Eğitimi"
+    },
+    "aiTools": {
+      "ai_mentor": "AI Mentor",
+      "ai_jury": "AI Jüri",
+      "ai_evaluation": "AI Değerlendirme",
+      "ai_analysis": "AI Analiz",
+      "ai_reporting": "AI Raporlama",
+      "ai_pitch_coach": "AI Pitch Koçu",
+      "ai_finance_advisor": "AI Finans Danışmanı"
+    },
+    "participants": {
+      "title": "Katılımcılar",
+      "fullName": "Ad Soyad",
+      "email": "E-posta",
+      "phone": "Telefon",
+      "registrationDate": "Kayıt Tarihi",
+      "lastLogin": "Son Giriş",
+      "exportExcel": "Excel'e Aktar",
+      "allPrograms": "Tüm programlar"
+    },
+    "reports": {
+      "title": "Raporlar",
+      "selectProgram": "Program Seçin",
+      "general": "Genel Rapor",
+      "training": "Eğitim Raporları",
+      "test": "Test ve Sınav Raporları",
+      "certificate": "Sertifika Raporları",
+      "exportExcel": "Excel'e Aktar",
+      "exportPdf": "PDF'e Aktar",
+      "kpi": {
+        "totalParticipants": "Toplam Katılımcı",
+        "simulationCompletion": "Simülasyon Tamamlama",
+        "trainingCompletion": "Eğitim Tamamlama",
+        "averageTestScore": "Ortalama Test Puanı",
+        "badgesAwarded": "Verilen Rozetler",
+        "certificatesEarned": "Kazanılan Sertifikalar"
+      },
+      "columns": {
+        "simulationCompletion": "Simülasyon Tamamlama (%)",
+        "trainingCompletion": "Eğitim Tamamlama (%)",
+        "badgesEarned": "Kazanılan Rozetler",
+        "certStatus": "Simülasyon Tamamlama Sertifikası",
+        "assignedTrainings": "Atanan Eğitimler",
+        "completedTrainings": "Tamamlanan Eğitimler",
+        "completionRate": "Tamamlama Oranı",
+        "trainingsTaken": "Alınan Eğitimler",
+        "totalCertificates": "Toplam Sertifika",
+        "trainingModule": "Eğitim Modülü",
+        "examCount": "Sınav Sayısı",
+        "completedExams": "Tamamlanan Sınavlar",
+        "averageScore": "Ortalama Puan",
+        "highestScore": "En Yüksek Puan",
+        "result": "Sonuç",
+        "certificatesEarned": "Kazanılan Sertifikalar",
+        "lastCertificateDate": "Son Sertifika Tarihi"
+      }
+    },
+    "settings": {
+      "title": "Ayarlar",
+      "organization": "Organizasyon Bilgileri",
+      "orgName": "Organizasyon Adı",
+      "logo": "Organizasyon Logosu",
+      "website": "Web Sitesi",
+      "contact": "Yetkili Kişi",
+      "phone": "Telefon",
+      "email": "E-posta",
+      "address": "Adres",
+      "users": "Kullanıcı Yönetimi",
+      "addUser": "Kullanıcı Ekle",
+      "permission": "Yetki",
+      "admin": "Yönetici",
+      "viewer": "İzleyici",
+      "certificates": "Sertifika Ayarları",
+      "signature": "Yetkili İmza",
+      "template": "Sertifika Şablonu",
+      "participationCert": "Katılım Sertifikası",
+      "achievementCert": "Başarı Sertifikası",
+      "completionCert": "Program Tamamlama Sertifikası",
+      "notifications": "Bildirim Ayarları",
+      "sendInvitation": "Davet E-postası Gönder",
+      "programStartReminder": "Program Başlangıç Hatırlatması",
+      "programEndReminder": "Program Bitiş Hatırlatması",
+      "certificateNotification": "Sertifika Bildirimi",
+      "weeklyProgress": "Haftalık İlerleme Bildirimi",
+      "security": "Güvenlik Ayarları",
+      "changePassword": "Şifre Değiştir",
+      "twoFactor": "İki Faktörlü Doğrulama",
+      "sessionTimeout": "Oturum Zaman Aşımı"
+    }
+  },
+  "participant": {
+    "title": "Katılımcı Paneli",
+    "welcome": "Hoş Geldiniz",
+    "progress": "İlerlemeniz",
+    "upcomingTasks": "Yaklaşan Görevler",
+    "coinBalance": "Coin Bakiyesi",
+    "earnedBadges": "Kazanılan Rozetler",
+    "myCertificates": "Sertifikalarım",
+    "noCertificates": "Henüz sertifika kazanılmadı. Sertifika kazanmak için simülasyonları ve eğitimleri tamamlayın.",
+    "simulations": {
+      "title": "Simülasyon Modülleri",
+      "start": "Başla",
+      "continue": "Devam Et",
+      "completed": "Tamamlandı"
+    },
+    "trainings": {
+      "title": "Eğitim Modülleri",
+      "assigned": "Atanan Eğitimler",
+      "completed": "Tamamlanan",
+      "takeExam": "Sınava Gir"
+    },
+    "aiTools": {
+      "title": "AI Destek Araçları",
+      "chatPlaceholder": "Sorunuzu yazın...",
+      "send": "Gönder"
+    },
+    "badges": {
+      "title": "Rozetlerim",
+      "earned": "Kazanılan",
+      "available": "Kazanılabilir",
+      "coinValue": "Coin Değeri"
+    },
+    "leaderboard": {
+      "title": "Liderlik Tablosu",
+      "rank": "Sıra",
+      "name": "İsim",
+      "coins": "Coin",
+      "badgeCount": "Rozet Sayısı"
+    },
+    "profile": {
+      "title": "Profil ve Ayarlar",
+      "personalInfo": "Kişisel Bilgiler",
+      "language": "Dil",
+      "notifications": "Bildirim Tercihleri"
+    }
+  },
+  "landing": {
+    "hero": "Girişimcilik Yolculuğunuz Başlasın",
+    "subtitle": "Simülasyon tabanlı öğrenme ve değerlendirme platformu",
+    "getStarted": "Başlayın",
+    "learnMore": "Daha Fazla Bilgi"
+  }
+}

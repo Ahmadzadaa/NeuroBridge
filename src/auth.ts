@@ -10,9 +10,28 @@ import {
   verifyTotpCode,
 } from "@/lib/security/two-factor";
 import { loginSchema } from "@/lib/validation/schemas";
-import { enforceRateLimit, getClientIdentifier } from "@/lib/security/rate-limit";
+import { enforceRateLimit } from "@/lib/security/rate-limit";
+import { RateLimitError } from "@/lib/auth/permissions";
 import { recordAudit, getClientIp } from "@/lib/audit/audit-service";
 import { AUDIT_ACTIONS } from "@/lib/audit/actions";
+import {
+  AccountLockedError,
+  TwoFactorRequiredError,
+} from "@/lib/auth/credentials-errors";
+
+const DEMO_ACCOUNT_EMAILS = new Set([
+  "admin@bizsim.com",
+  "tenant@demo-tekno.com",
+  "participant@demo.com",
+]);
+
+function isDemoDevBypass(email: string): boolean {
+  return (
+    process.env.NODE_ENV === "development" &&
+    process.env.BYPASS_DEMO_2FA !== "false" &&
+    DEMO_ACCOUNT_EMAILS.has(email.toLowerCase())
+  );
+}
 
 declare module "next-auth" {
   interface User {
@@ -48,7 +67,15 @@ declare module "@auth/core/jwt" {
   }
 }
 
-const LOCKOUT_THRESHOLD = 5;
+async function recordLoginAudit(
+  input: Parameters<typeof recordAudit>[0]
+): Promise<void> {
+  try {
+    await recordAudit(input);
+  } catch (error) {
+    console.error("Audit log write failed:", error);
+  }
+}
 const LOCKOUT_DURATION_MS = 15 * 60 * 1000;
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -72,12 +99,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const ip =
           request instanceof Request ? getClientIp(request) : "unknown";
 
-        if (request instanceof Request) {
-          await enforceRateLimit("login", getClientIdentifier(request));
-        }
-
         const { email, password, totpCode } = parsed.data;
         const recoveryCode = (credentials?.recoveryCode as string | undefined)?.trim();
+
+        if (request instanceof Request) {
+          try {
+            await enforceRateLimit("login", email.toLowerCase());
+          } catch (error) {
+            if (error instanceof RateLimitError) {
+              return null;
+            }
+            throw error;
+          }
+        }
 
         const user = await prisma.user.findFirst({
           where: { email: email.toLowerCase() },
@@ -88,7 +122,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         });
 
         if (!user) {
-          await recordAudit({
+          await recordLoginAudit({
             action: AUDIT_ACTIONS.LOGIN_FAILED,
             ip,
             details: { email, reason: "unknown_user" },
@@ -97,19 +131,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
 
         if (user.lockedUntil && user.lockedUntil > new Date()) {
-          await recordAudit({
+          await recordLoginAudit({
             action: AUDIT_ACTIONS.LOGIN_FAILED,
             userId: user.id,
             tenantId: user.tenantId,
             ip,
             details: { reason: "account_locked" },
           });
-          return null;
+          throw new AccountLockedError();
         }
 
         if (user.role !== "SUPER_ADMIN") {
           if (!user.tenant || user.tenant.status !== "ACTIVE") {
-            await recordAudit({
+            await recordLoginAudit({
               action: AUDIT_ACTIONS.LOGIN_FAILED,
               userId: user.id,
               tenantId: user.tenantId,
@@ -132,7 +166,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                   : null,
             },
           });
-          await recordAudit({
+          await recordLoginAudit({
             action: AUDIT_ACTIONS.LOGIN_FAILED,
             userId: user.id,
             tenantId: user.tenantId,
@@ -143,10 +177,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
 
         const role = user.role as UserRole;
-        const needs2FASetup = adminRequires2FA(role) && !user.twoFactorEnabled;
-        let twoFactorVerified = !adminRequires2FA(role);
+        const demoBypass = isDemoDevBypass(email);
+        const needs2FASetup =
+          !demoBypass && adminRequires2FA(role) && !user.twoFactorEnabled;
+        let twoFactorVerified = !adminRequires2FA(role) || demoBypass;
 
-        if (user.twoFactorEnabled && user.twoFactorSecret) {
+        if (user.twoFactorEnabled && user.twoFactorSecret && !demoBypass) {
           twoFactorVerified = false;
           const secret = decryptSecret(user.twoFactorSecret);
 
@@ -167,14 +203,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           }
 
           if (!twoFactorVerified) {
-            await recordAudit({
+            await recordLoginAudit({
               action: AUDIT_ACTIONS.LOGIN_FAILED,
               userId: user.id,
               tenantId: user.tenantId,
               ip,
               details: { reason: "invalid_2fa" },
             });
-            return null;
+            throw new TwoFactorRequiredError();
           }
         }
 
@@ -220,24 +256,33 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   events: {
     async signIn({ user }) {
-      await recordAudit({
-        action: AUDIT_ACTIONS.LOGIN_SUCCESS,
-        userId: user.id,
-        tenantId: user.tenantId ?? null,
-        details: { email: user.email },
-      });
+      try {
+        await recordAudit({
+          action: AUDIT_ACTIONS.LOGIN_SUCCESS,
+          userId: user.id,
+          tenantId: user.tenantId ?? null,
+          details: { email: user.email },
+        });
+      } catch (error) {
+        console.error("Login audit write failed:", error);
+      }
     },
     async signOut(message) {
       const token = "token" in message ? message.token : null;
       if (token?.id) {
-        await recordAudit({
-          action: AUDIT_ACTIONS.LOGOUT,
-          userId: token.id as string,
-          tenantId: (token.tenantId as string | null) ?? null,
-        });
+        try {
+          await recordAudit({
+            action: AUDIT_ACTIONS.LOGOUT,
+            userId: token.id as string,
+            tenantId: (token.tenantId as string | null) ?? null,
+          });
+        } catch (error) {
+          console.error("Logout audit write failed:", error);
+        }
       }
     },
   },
+  trustHost: true,
   pages: {
     signIn: "/login",
   },

@@ -1,0 +1,304 @@
+{
+  "common": {
+    "appName": "BizSim",
+    "appDescription": "Sahibkarlıq Simulyasiya Platforması",
+    "save": "Saxla",
+    "cancel": "Ləğv et",
+    "delete": "Sil",
+    "edit": "Redaktə et",
+    "view": "Bax",
+    "export": "İxrac et",
+    "search": "Axtar",
+    "filter": "Filtr",
+    "loading": "Yüklənir...",
+    "noData": "Məlumat tapılmadı",
+    "actions": "Əməliyyatlar",
+    "status": "Status",
+    "active": "Aktiv",
+    "inactive": "Passiv",
+    "pending": "Gözləyir",
+    "earned": "Qazanıldı",
+    "notEarned": "Qazanılmadı",
+    "passed": "Keçdi",
+    "failed": "Kəsildi",
+    "needsImprovement": "Təkmilləşdirmə lazımdır",
+    "copyLink": "Linki Kopyala",
+    "shareEmail": "E-poçt ilə Paylaş",
+    "shareSocial": "Sosial Mediada Paylaş",
+    "generateLink": "Link Yarat",
+    "upgradeSeats": "Oturacaq Yüksəlt",
+    "buyMoreSeats": "Daha Çox Oturacaq Al",
+    "logout": "Çıxış",
+    "profile": "Profil",
+    "settings": "Parametrlər",
+    "dashboard": "Panel",
+    "back": "Geri",
+    "next": "Növbəti",
+    "submit": "Göndər",
+    "preview": "Önizləmə",
+    "add": "Əlavə et",
+    "remove": "Sil",
+    "total": "Cəmi",
+    "coins": "Coin",
+    "badges": "Nişanlar",
+    "certificates": "Sertifikatlar"
+  },
+  "auth": {
+    "login": "Daxil ol",
+    "email": "E-poçt",
+    "password": "Şifrə",
+    "loginTitle": "Hesabınıza Daxil Olun",
+    "loginSubtitle": "Sahibkarlıq simulyasiya platformasına xoş gəlmisiniz",
+    "invalidCredentials": "Yanlış e-poçt və ya şifrə",
+    "accountLocked": "Hesabınız müvəqqəti olaraq bloklanıb. Zəhmət olmasa sonra yenidən cəhd edin.",
+    "twoFactorRequired": "Doğrulama kodu tələb olunur. Authenticator tətbiqindəki 6 rəqəmli kodu daxil edin.",
+    "totpCode": "Doğrulama kodu",
+    "recoveryCode": "Bərpa kodu (isteğe bağlı)"
+  },
+  "nav": {
+    "superAdmin": {
+      "dashboard": "Panel",
+      "tenants": "Kirayəçilər",
+      "billing": "Faktura",
+      "content": "Məzmun İdarəetməsi",
+      "support": "Dəstək",
+      "system": "Sistem Sağlamlığı",
+      "audit": "Audit Jurnalı"
+    },
+    "tenant": {
+      "dashboard": "Panel",
+      "programs": "Proqramlar",
+      "participants": "İştirakçılar",
+      "reports": "Hesabatlar",
+      "settings": "Parametrlər",
+      "billing": "Ödənişlər"
+    },
+    "participant": {
+      "dashboard": "Panel",
+      "simulations": "Simulyasiyalar",
+      "trainings": "Təlimlər",
+      "aiTools": "AI Alətləri",
+      "badges": "Nişanlar",
+      "certificates": "Sertifikatlar",
+      "leaderboard": "Liderlik Cədvəli",
+      "profile": "Profil"
+    }
+  },
+  "superAdmin": {
+    "title": "Super Admin Paneli",
+    "stats": {
+      "totalTenants": "Cəmi Kirayəçi",
+      "activeUsers": "Aktiv İstifadəçilər",
+      "totalRevenue": "Cəmi Gəlir",
+      "growth": "Böyümə"
+    },
+    "tenants": {
+      "title": "Kirayəçi İdarəetməsi",
+      "createTenant": "Yeni Kirayəçi",
+      "name": "Təşkilat Adı",
+      "status": "Status",
+      "seats": "Oturacaqlar",
+      "plan": "Paket",
+      "createdAt": "Yaradılma"
+    },
+    "billing": {
+      "title": "Lisenziya və Faktura",
+      "pricePerSeat": "Oturacaq Başına Qiymət",
+      "paymentStatus": "Ödəniş Statusu"
+    }
+  },
+  "tenant": {
+    "title": "Təşkilat Paneli",
+    "seats": {
+      "total": "Cəmi Oturacaq",
+      "used": "İstifadə olunan",
+      "remaining": "Qalan",
+      "limitReached": "Oturacaq limitinizə çatdınız. Yüksəltmək istəyirsiniz?"
+    },
+    "programs": {
+      "title": "Proqramlar",
+      "create": "Yeni Proqram",
+      "name": "Proqram Adı",
+      "description": "Proqram Təsviri",
+      "type": "Layihə Növü",
+      "applicationStart": "Müraciət Başlanğıcı",
+      "applicationEnd": "Müraciət Bitişi",
+      "simulationStart": "Simulyasiya Başlanğıcı",
+      "simulationEnd": "Simulyasiya Bitişi",
+      "participantLimit": "İştirakçı Limiti",
+      "simulations": "Simulyasiya Modulları",
+      "trainings": "Təlim Modulları",
+      "aiTools": "AI Dəstək Alətləri",
+      "applicationLink": "Müraciət Linki",
+      "participants": "İştirakçılar",
+      "start": "Başlanğıc",
+      "end": "Bitiş"
+    },
+    "projectTypes": {
+      "entrepreneurship_training": "Sahibkarlıq Təlimi",
+      "business_idea_development": "Biznes Fikri İnkişaf Proqramı",
+      "startup_challenge": "Startup Yarışması",
+      "hackathon": "Hackathon",
+      "competition": "Yarışma",
+      "innovation_program": "İnnovasiya Proqramı",
+      "other": "Digər"
+    },
+    "simulationTypes": {
+      "idea_development": "Fikir İnkişaf Simulyasiyası",
+      "startup_management": "Startup İdarəetmə Simulyasiyası",
+      "leadership": "Liderlik Simulyasiyası",
+      "investor_readiness": "İnvestor Hazırlığı Simulyasiyası"
+    },
+    "trainingTypes": {
+      "finance": "Maliyyə Təlimi",
+      "sales_marketing": "Satış və Marketinq Təlimi",
+      "team_management": "Komanda İdarəetmə Təlimi",
+      "pitch_preparation": "Pitch Hazırlıq Təlimi",
+      "leadership": "Liderlik Təlimi",
+      "innovation_tools": "İnnovasiya Alətləri Təlimi",
+      "business_model": "Biznes Modeli Təlimi",
+      "customer_validation": "Müştəri Doğrulama Təlimi",
+      "ai_tools": "AI Alətləri Təlimi"
+    },
+    "aiTools": {
+      "ai_mentor": "AI Mentor",
+      "ai_jury": "AI Jüri",
+      "ai_evaluation": "AI Qiymətləndirmə",
+      "ai_analysis": "AI Analiz",
+      "ai_reporting": "AI Hesabat",
+      "ai_pitch_coach": "AI Pitch Məşqçisi",
+      "ai_finance_advisor": "AI Maliyyə Məsləhətçisi"
+    },
+    "participants": {
+      "title": "İştirakçılar",
+      "fullName": "Ad Soyad",
+      "email": "E-poçt",
+      "phone": "Telefon",
+      "registrationDate": "Qeydiyyat Tarixi",
+      "lastLogin": "Son Giriş",
+      "exportExcel": "Excel-ə İxrac",
+      "allPrograms": "Bütün proqramlar"
+    },
+    "reports": {
+      "title": "Hesabatlar",
+      "selectProgram": "Proqram Seçin",
+      "general": "Ümumi Hesabat",
+      "training": "Təlim Hesabatları",
+      "test": "Test və İmtahan Hesabatları",
+      "certificate": "Sertifikat Hesabatları",
+      "exportExcel": "Excel-ə İxrac",
+      "exportPdf": "PDF-ə İxrac",
+      "kpi": {
+        "totalParticipants": "Cəmi İştirakçı",
+        "simulationCompletion": "Simulyasiya Tamamlanması",
+        "trainingCompletion": "Təlim Tamamlanması",
+        "averageTestScore": "Orta Test Balı",
+        "badgesAwarded": "Verilən Nişanlar",
+        "certificatesEarned": "Qazanılan Sertifikatlar"
+      },
+      "columns": {
+        "simulationCompletion": "Simulyasiya Tamamlanması (%)",
+        "trainingCompletion": "Təlim Tamamlanması (%)",
+        "badgesEarned": "Qazanılan Nişanlar",
+        "certStatus": "Simulyasiya Tamamlama Sertifikatı",
+        "assignedTrainings": "Təyin Olunan Təlimlər",
+        "completedTrainings": "Tamamlanan Təlimlər",
+        "completionRate": "Tamamlanma Faizi",
+        "trainingsTaken": "Alınan Təlimlər",
+        "totalCertificates": "Cəmi Sertifikat",
+        "trainingModule": "Təlim Modulu",
+        "examCount": "İmtahan Sayı",
+        "completedExams": "Tamamlanan İmtahanlar",
+        "averageScore": "Orta Bal",
+        "highestScore": "Ən Yüksək Bal",
+        "result": "Nəticə",
+        "certificatesEarned": "Qazanılan Sertifikatlar",
+        "lastCertificateDate": "Son Sertifikat Tarixi"
+      }
+    },
+    "settings": {
+      "title": "Parametrlər",
+      "organization": "Təşkilat Məlumatları",
+      "orgName": "Təşkilat Adı",
+      "logo": "Təşkilat Loqosu",
+      "website": "Veb Sayt",
+      "contact": "Səlahiyyətli Şəxs",
+      "phone": "Telefon",
+      "email": "E-poçt",
+      "address": "Ünvan",
+      "users": "İstifadəçi İdarəetməsi",
+      "addUser": "İstifadəçi Əlavə et",
+      "permission": "Səlahiyyət",
+      "admin": "Administrator",
+      "viewer": "İzləyici",
+      "certificates": "Sertifikat Parametrləri",
+      "signature": "Səlahiyyətli İmza",
+      "template": "Sertifikat Şablonu",
+      "participationCert": "İştirak Sertifikatı",
+      "achievementCert": "Uğur Sertifikatı",
+      "completionCert": "Proqram Tamamlama Sertifikatı",
+      "notifications": "Bildiriş Parametrləri",
+      "sendInvitation": "Dəvət E-poçtu Göndər",
+      "programStartReminder": "Proqram Başlanğıc Xatırlatması",
+      "programEndReminder": "Proqram Bitiş Xatırlatması",
+      "certificateNotification": "Sertifikat Bildirişi",
+      "weeklyProgress": "Həftəlik İrəliləyiş Bildirişi",
+      "security": "Təhlükəsizlik Parametrləri",
+      "changePassword": "Şifrə Dəyiş",
+      "twoFactor": "İki Faktorlu Doğrulama",
+      "sessionTimeout": "Sessiya Vaxtı"
+    }
+  },
+  "participant": {
+    "title": "İştirakçı Paneli",
+    "welcome": "Xoş gəlmisiniz",
+    "progress": "İrəliləyişiniz",
+    "upcomingTasks": "Yaxınlaşan Tapşırıqlar",
+    "coinBalance": "Coin Balansı",
+    "earnedBadges": "Qazanılan Nişanlar",
+    "myCertificates": "Sertifikatlarım",
+    "noCertificates": "Hələ sertifikat qazanılmayıb. Sertifikat qazanmaq üçün simulyasiyaları və təlimləri tamamlayın.",
+    "simulations": {
+      "title": "Simulyasiya Modulları",
+      "start": "Başla",
+      "continue": "Davam et",
+      "completed": "Tamamlandı"
+    },
+    "trainings": {
+      "title": "Təlim Modulları",
+      "assigned": "Təyin Olunan Təlimlər",
+      "completed": "Tamamlanan",
+      "takeExam": "İmtahana Gir"
+    },
+    "aiTools": {
+      "title": "AI Dəstək Alətləri",
+      "chatPlaceholder": "Sualınızı yazın...",
+      "send": "Göndər"
+    },
+    "badges": {
+      "title": "Nişanlarım",
+      "earned": "Qazanılan",
+      "available": "Qazanıla bilən",
+      "coinValue": "Coin Dəyəri"
+    },
+    "leaderboard": {
+      "title": "Liderlik Cədvəli",
+      "rank": "Sıra",
+      "name": "Ad",
+      "coins": "Coin",
+      "badgeCount": "Nişan Sayı"
+    },
+    "profile": {
+      "title": "Profil və Parametrlər",
+      "personalInfo": "Şəxsi Məlumatlar",
+      "language": "Dil",
+      "notifications": "Bildiriş Tərcihləri"
+    }
+  },
+  "landing": {
+    "hero": "Sahibkarlıq Səyahətiniz Başlasın",
+    "subtitle": "Simulyasiya əsaslı öyrənmə və qiymətləndirmə platforması",
+    "getStarted": "Başla",
+    "learnMore": "Daha Çox Məlumat"
+  }
+}

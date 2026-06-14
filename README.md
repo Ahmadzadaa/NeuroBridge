@@ -28,7 +28,15 @@ cp .env.example .env
 
 Set `DATABASE_URL` and `AUTH_SECRET` in `.env`.
 
-Local dev uses **SQLite** (`file:./dev.db`) — no PostgreSQL install needed. For production, switch the Prisma provider to `postgresql` and update `DATABASE_URL`.
+Local dev uses **SQLite** (`file:./dev.db`) — no Docker required. First-time setup:
+
+```bash
+npm run db:setup
+```
+
+Then restart the dev server (`npm run dev`).
+
+For production/AWS, switch the Prisma provider to `postgresql` in `prisma/schema.prisma` and set `DATABASE_URL` to your RDS connection string.
 
 ### 3. Set up database
 
@@ -52,6 +60,8 @@ Open [http://localhost:3000/tr](http://localhost:3000/tr)
 | Super Admin | admin@bizsim.com | Admin123! |
 | Tenant Admin | tenant@demo-tekno.com | Admin123! |
 | Participant | participant@demo.com | Admin123! |
+
+> **Local dev:** Demo accounts skip 2FA automatically in development. Re-run `npx prisma db seed` to reset passwords and clear 2FA if you get locked out.
 
 ## Panel Architecture
 

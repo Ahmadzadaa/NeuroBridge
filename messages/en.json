@@ -1,0 +1,304 @@
+{
+  "common": {
+    "appName": "BizSim",
+    "appDescription": "Entrepreneurship Simulation Platform",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "export": "Export",
+    "search": "Search",
+    "filter": "Filter",
+    "loading": "Loading...",
+    "noData": "No data found",
+    "actions": "Actions",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "pending": "Pending",
+    "earned": "Earned",
+    "notEarned": "Not Earned",
+    "passed": "Passed",
+    "failed": "Failed",
+    "needsImprovement": "Needs Improvement",
+    "copyLink": "Copy Link",
+    "shareEmail": "Share via Email",
+    "shareSocial": "Share on Social Media",
+    "generateLink": "Generate Link",
+    "upgradeSeats": "Upgrade Seats",
+    "buyMoreSeats": "Buy More Seats",
+    "logout": "Log Out",
+    "profile": "Profile",
+    "settings": "Settings",
+    "dashboard": "Dashboard",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "preview": "Preview",
+    "add": "Add",
+    "remove": "Remove",
+    "total": "Total",
+    "coins": "Coins",
+    "badges": "Badges",
+    "certificates": "Certificates"
+  },
+  "auth": {
+    "login": "Log In",
+    "email": "Email",
+    "password": "Password",
+    "loginTitle": "Sign In to Your Account",
+    "loginSubtitle": "Welcome to the entrepreneurship simulation platform",
+    "invalidCredentials": "Invalid email or password",
+    "accountLocked": "Your account is temporarily locked. Please try again later.",
+    "twoFactorRequired": "Authenticator code required. Enter the 6-digit code from your app.",
+    "totpCode": "Authenticator code",
+    "recoveryCode": "Recovery code (optional)"
+  },
+  "nav": {
+    "superAdmin": {
+      "dashboard": "Dashboard",
+      "tenants": "Tenants",
+      "billing": "Billing",
+      "content": "Content Management",
+      "support": "Support",
+      "system": "System Health",
+      "audit": "Audit Log"
+    },
+    "tenant": {
+      "dashboard": "Dashboard",
+      "programs": "Programs",
+      "participants": "Participants",
+      "reports": "Reports",
+      "settings": "Settings",
+      "billing": "Billing"
+    },
+    "participant": {
+      "dashboard": "Dashboard",
+      "simulations": "Simulations",
+      "trainings": "Trainings",
+      "aiTools": "AI Tools",
+      "badges": "Badges",
+      "certificates": "Certificates",
+      "leaderboard": "Leaderboard",
+      "profile": "Profile"
+    }
+  },
+  "superAdmin": {
+    "title": "Super Admin Panel",
+    "stats": {
+      "totalTenants": "Total Tenants",
+      "activeUsers": "Active Users",
+      "totalRevenue": "Total Revenue",
+      "growth": "Growth"
+    },
+    "tenants": {
+      "title": "Tenant Management",
+      "createTenant": "New Tenant",
+      "name": "Organization Name",
+      "status": "Status",
+      "seats": "Seats",
+      "plan": "Plan",
+      "createdAt": "Created At"
+    },
+    "billing": {
+      "title": "License & Billing",
+      "pricePerSeat": "Price Per Seat",
+      "paymentStatus": "Payment Status"
+    }
+  },
+  "tenant": {
+    "title": "Organization Panel",
+    "seats": {
+      "total": "Total Seats",
+      "used": "Used",
+      "remaining": "Remaining",
+      "limitReached": "You have reached your seat limit. Would you like to upgrade?"
+    },
+    "programs": {
+      "title": "Programs",
+      "create": "New Program",
+      "name": "Program Name",
+      "description": "Program Description",
+      "type": "Project Type",
+      "applicationStart": "Application Start",
+      "applicationEnd": "Application End",
+      "simulationStart": "Simulation Start",
+      "simulationEnd": "Simulation End",
+      "participantLimit": "Participant Limit",
+      "simulations": "Simulation Modules",
+      "trainings": "Training Modules",
+      "aiTools": "AI Support Tools",
+      "applicationLink": "Application Link",
+      "participants": "Participants",
+      "start": "Start",
+      "end": "End"
+    },
+    "projectTypes": {
+      "entrepreneurship_training": "Entrepreneurship Training",
+      "business_idea_development": "Business Idea Development Program",
+      "startup_challenge": "Startup Challenge",
+      "hackathon": "Hackathon",
+      "competition": "Competition",
+      "innovation_program": "Innovation Program",
+      "other": "Other"
+    },
+    "simulationTypes": {
+      "idea_development": "Idea Development Simulation",
+      "startup_management": "Startup Management Simulation",
+      "leadership": "Leadership Simulation",
+      "investor_readiness": "Investor Readiness Simulation"
+    },
+    "trainingTypes": {
+      "finance": "Finance Training",
+      "sales_marketing": "Sales & Marketing Training",
+      "team_management": "Team Management Training",
+      "pitch_preparation": "Pitch Preparation Training",
+      "leadership": "Leadership Training",
+      "innovation_tools": "Innovation Tools Training",
+      "business_model": "Business Model Training",
+      "customer_validation": "Customer Validation Training",
+      "ai_tools": "AI Tools Training"
+    },
+    "aiTools": {
+      "ai_mentor": "AI Mentor",
+      "ai_jury": "AI Jury",
+      "ai_evaluation": "AI Evaluation",
+      "ai_analysis": "AI Analysis",
+      "ai_reporting": "AI Reporting",
+      "ai_pitch_coach": "AI Pitch Coach",
+      "ai_finance_advisor": "AI Finance Advisor"
+    },
+    "participants": {
+      "title": "Participants",
+      "fullName": "Full Name",
+      "email": "Email",
+      "phone": "Phone",
+      "registrationDate": "Registration Date",
+      "lastLogin": "Last Login",
+      "exportExcel": "Export to Excel",
+      "allPrograms": "All programs"
+    },
+    "reports": {
+      "title": "Reports",
+      "selectProgram": "Select Program",
+      "general": "General Report",
+      "training": "Training Reports",
+      "test": "Test & Exam Reports",
+      "certificate": "Certificate Reports",
+      "exportExcel": "Export to Excel",
+      "exportPdf": "Export to PDF",
+      "kpi": {
+        "totalParticipants": "Total Participants",
+        "simulationCompletion": "Simulation Completion",
+        "trainingCompletion": "Training Completion",
+        "averageTestScore": "Average Test Score",
+        "badgesAwarded": "Badges Awarded",
+        "certificatesEarned": "Certificates Earned"
+      },
+      "columns": {
+        "simulationCompletion": "Simulation Completion (%)",
+        "trainingCompletion": "Training Completion (%)",
+        "badgesEarned": "Badges Earned",
+        "certStatus": "Simulation Completion Certificate",
+        "assignedTrainings": "Assigned Trainings",
+        "completedTrainings": "Completed Trainings",
+        "completionRate": "Completion Rate",
+        "trainingsTaken": "Trainings Taken",
+        "totalCertificates": "Total Certificates",
+        "trainingModule": "Training Module",
+        "examCount": "Number of Exams",
+        "completedExams": "Completed Exams",
+        "averageScore": "Average Score",
+        "highestScore": "Highest Score",
+        "result": "Result",
+        "certificatesEarned": "Certificates Earned",
+        "lastCertificateDate": "Last Certificate Date"
+      }
+    },
+    "settings": {
+      "title": "Settings",
+      "organization": "Organization Information",
+      "orgName": "Organization Name",
+      "logo": "Organization Logo",
+      "website": "Website",
+      "contact": "Authorized Contact",
+      "phone": "Phone",
+      "email": "Email",
+      "address": "Address",
+      "users": "User Management",
+      "addUser": "Add User",
+      "permission": "Permission",
+      "admin": "Admin",
+      "viewer": "Viewer",
+      "certificates": "Certificate Settings",
+      "signature": "Authorized Signature",
+      "template": "Certificate Template",
+      "participationCert": "Participation Certificate",
+      "achievementCert": "Achievement Certificate",
+      "completionCert": "Program Completion Certificate",
+      "notifications": "Notification Settings",
+      "sendInvitation": "Send Invitation Email",
+      "programStartReminder": "Program Start Reminder",
+      "programEndReminder": "Program End Reminder",
+      "certificateNotification": "Certificate Notification",
+      "weeklyProgress": "Weekly Progress Notification",
+      "security": "Security Settings",
+      "changePassword": "Change Password",
+      "twoFactor": "Two-Factor Authentication",
+      "sessionTimeout": "Session Timeout"
+    }
+  },
+  "participant": {
+    "title": "Participant Panel",
+    "welcome": "Welcome",
+    "progress": "Your Progress",
+    "upcomingTasks": "Upcoming Tasks",
+    "coinBalance": "Coin Balance",
+    "earnedBadges": "Earned Badges",
+    "myCertificates": "My Certificates",
+    "noCertificates": "No certificates earned yet. Complete simulations and trainings to earn certificates.",
+    "simulations": {
+      "title": "Simulation Modules",
+      "start": "Start",
+      "continue": "Continue",
+      "completed": "Completed"
+    },
+    "trainings": {
+      "title": "Training Modules",
+      "assigned": "Assigned Trainings",
+      "completed": "Completed",
+      "takeExam": "Take Exam"
+    },
+    "aiTools": {
+      "title": "AI Support Tools",
+      "chatPlaceholder": "Type your question...",
+      "send": "Send"
+    },
+    "badges": {
+      "title": "My Badges",
+      "earned": "Earned",
+      "available": "Available",
+      "coinValue": "Coin Value"
+    },
+    "leaderboard": {
+      "title": "Leaderboard",
+      "rank": "Rank",
+      "name": "Name",
+      "coins": "Coins",
+      "badgeCount": "Badge Count"
+    },
+    "profile": {
+      "title": "Profile & Settings",
+      "personalInfo": "Personal Information",
+      "language": "Language",
+      "notifications": "Notification Preferences"
+    }
+  },
+  "landing": {
+    "hero": "Start Your Entrepreneurship Journey",
+    "subtitle": "Simulation-based learning and assessment platform",
+    "getStarted": "Get Started",
+    "learnMore": "Learn More"
+  }
+}

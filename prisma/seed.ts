@@ -104,10 +104,23 @@ async function main() {
 
   const passwordHash = await bcrypt.hash("Admin123!", 12);
 
-  async function upsertUser(data: {
+  async function resetDemoUser2FA(userId: string) {
+    await prisma.userRecoveryCode.deleteMany({ where: { userId } });
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        passwordHash,
+        twoFactorEnabled: false,
+        twoFactorSecret: null,
+        failedLoginAttempts: 0,
+        lockedUntil: null,
+      },
+    });
+  }
+
+  async function upsertDemoUser(data: {
     email: string;
     tenantId: string | null;
-    passwordHash: string;
     firstName: string;
     lastName: string;
     role: string;
@@ -116,15 +129,34 @@ async function main() {
     const existing = await prisma.user.findFirst({
       where: { email: data.email, tenantId: data.tenantId },
     });
-    if (existing) return existing;
-    return prisma.user.create({ data });
+
+    if (existing) {
+      await resetDemoUser2FA(existing.id);
+      return prisma.user.update({
+        where: { id: existing.id },
+        data: {
+          firstName: data.firstName,
+          lastName: data.lastName,
+          role: data.role,
+          language: data.language,
+        },
+      });
+    }
+
+    return prisma.user.create({
+      data: {
+        ...data,
+        passwordHash,
+        twoFactorEnabled: false,
+        twoFactorSecret: null,
+      },
+    });
   }
 
   console.log("Seeding super admin...");
-  await upsertUser({
+  await upsertDemoUser({
     email: "admin@bizsim.com",
     tenantId: null,
-    passwordHash,
     firstName: "Super",
     lastName: "Admin",
     role: "SUPER_ADMIN",
@@ -152,20 +184,18 @@ async function main() {
     create: { tenantId: tenant.id },
   });
 
-  await upsertUser({
+  await upsertDemoUser({
     email: "tenant@demo-tekno.com",
     tenantId: tenant.id,
-    passwordHash,
     firstName: "Tenant",
     lastName: "Admin",
     role: "TENANT_ADMIN",
     language: "tr",
   });
 
-  await upsertUser({
+  await upsertDemoUser({
     email: "participant@demo.com",
     tenantId: tenant.id,
-    passwordHash,
     firstName: "Demo",
     lastName: "Participant",
     role: "PARTICIPANT",

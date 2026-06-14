@@ -9,6 +9,8 @@
     "lint": "eslint",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
+    "db:setup": "prisma generate && prisma db push --accept-data-loss && prisma db seed",
+    "db:reset-demo": "tsx scripts/reset-demo-passwords.ts",
     "db:seed": "tsx prisma/seed.ts",
     "db:push": "prisma db push",
     "db:rls": "psql %DATABASE_URL% -f prisma/migrations/rls/001_enable_rls.sql",
