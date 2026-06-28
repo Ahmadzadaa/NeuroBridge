@@ -76,6 +76,7 @@ model User {
   coinTransactions CoinTransaction[]
   auditLogs        AuditLog[]
   recoveryCodes    UserRecoveryCode[]
+  examAttempts     ExamAttempt[]
 
   @@unique([tenantId, email])
   @@index([tenantId])
@@ -172,14 +173,123 @@ model Participant {
 }
 
 model Simulation {
-  id       String @id @default(cuid())
-  key      String @unique
-  nameTr   String @map("name_tr")
-  nameEn   String @map("name_en")
-  nameAz   String @map("name_az")
-  category String
+  id          String           @id @default(cuid())
+  key         String           @unique
+  nameTr      String           @map("name_tr")
+  nameEn      String           @map("name_en")
+  nameAz      String           @map("name_az")
+  category    String
+  description String?
+  tasks       SimulationTask[]
 
   @@map("simulations")
+}
+
+model SimulationTask {
+  id              String   @id @default(cuid())
+  simulationId    String   @map("simulation_id")
+  title           String
+  titleTr         String   @map("title_tr")
+  titleEn         String   @map("title_en")
+  titleAz         String   @map("title_az")
+  scenarioText    String   @map("scenario_text")
+  submissionType  String   @map("submission_type")
+  linkedBadgeKey  String   @map("linked_badge_key")
+  coinReward      Int      @map("coin_reward")
+  order           Int
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  simulation Simulation @relation(fields: [simulationId], references: [id], onDelete: Cascade)
+
+  @@index([simulationId])
+  @@map("simulation_tasks")
+}
+
+model Training {
+  id          String    @id @default(cuid())
+  key         String    @unique
+  titleTr     String    @map("title_tr")
+  titleEn     String    @map("title_en")
+  titleAz     String    @map("title_az")
+  description String?
+  descriptionTr String? @map("description_tr")
+  descriptionEn String? @map("description_en")
+  descriptionAz String? @map("description_az")
+  category    String?
+  lessons     Lesson[]
+  exams       Exam[]
+
+  @@map("trainings")
+}
+
+model Lesson {
+  id               String   @id @default(cuid())
+  trainingId       String   @map("training_id")
+  title            String
+  titleTr          String   @map("title_tr")
+  titleEn          String   @map("title_en")
+  titleAz          String   @map("title_az")
+  content          String
+  videoUrl         String?  @map("video_url")
+  estimatedMinutes Int      @map("estimated_minutes")
+  order            Int
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  training Training @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+
+  @@index([trainingId])
+  @@map("lessons")
+}
+
+model Exam {
+  id          String     @id @default(cuid())
+  trainingId  String     @map("training_id")
+  title       String
+  titleTr     String     @map("title_tr")
+  titleEn     String     @map("title_en")
+  titleAz     String     @map("title_az")
+  passingThreshold Int   @map("passing_threshold")
+  questions   Question[]
+  attempts    ExamAttempt[]
+
+  training Training @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+
+  @@index([trainingId])
+  @@map("exams")
+}
+
+model Question {
+  id            String   @id @default(cuid())
+  examId        String   @map("exam_id")
+  questionText  String   @map("question_text")
+  optionA       String   @map("option_a")
+  optionB       String   @map("option_b")
+  optionC       String   @map("option_c")
+  optionD       String   @map("option_d")
+  correctOption String   @map("correct_option")
+  explanation   String
+  order         Int
+
+  exam Exam @relation(fields: [examId], references: [id], onDelete: Cascade)
+
+  @@index([examId])
+  @@map("questions")
+}
+
+model ExamAttempt {
+  id          String   @id @default(cuid())
+  examId      String   @map("exam_id")
+  userId      String   @map("user_id")
+  score       Int
+  passed      Boolean
+  completedAt DateTime @default(now()) @map("completed_at")
+
+  exam Exam @relation(fields: [examId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([examId, userId])
+  @@index([userId])
+  @@map("exam_attempts")
 }
 
 model Badge {

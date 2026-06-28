@@ -163,46 +163,8 @@ async function main() {
     language: "tr",
   });
 
-  console.log("Seeding demo tenant...");
-  const tenant = await prisma.tenant.upsert({
-    where: { id: "demo-tenant" },
-    update: {},
-    create: {
-      id: "demo-tenant",
-      name: "Demo Teknopark",
-      status: "ACTIVE",
-      seatLimit: 50,
-      seatsUsed: 0,
-      planType: "50",
-      email: "admin@demo-tekno.com",
-    },
-  });
-
-  await prisma.tenantSettings.upsert({
-    where: { tenantId: tenant.id },
-    update: {},
-    create: { tenantId: tenant.id },
-  });
-
-  await upsertDemoUser({
-    email: "tenant@demo-tekno.com",
-    tenantId: tenant.id,
-    firstName: "Tenant",
-    lastName: "Admin",
-    role: "TENANT_ADMIN",
-    language: "tr",
-  });
-
-  await upsertDemoUser({
-    email: "participant@demo.com",
-    tenantId: tenant.id,
-    firstName: "Demo",
-    lastName: "Participant",
-    role: "PARTICIPANT",
-    language: "tr",
-  });
-
   console.log("Seed completed!");
+  console.log("Run `npm run db:seed-demo` to populate the full demo tenant and 100 participants.");
 }
 
 main()
