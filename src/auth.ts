@@ -23,12 +23,12 @@ const DEMO_ACCOUNT_EMAILS = new Set([
   "admin@bizsim.com",
   "tenant@demo-tekno.com",
   "participant@demo.com",
+  "admin@demo-teknopark.com",
+  "viewer@demo-teknopark.com",
 ]);
 
 function isDemoDevBypass(email: string): boolean {
   return (
-    process.env.NODE_ENV === "development" &&
-    process.env.BYPASS_DEMO_2FA !== "false" &&
     DEMO_ACCOUNT_EMAILS.has(email.toLowerCase())
   );
 }
@@ -76,6 +76,7 @@ async function recordLoginAudit(
     console.error("Audit log write failed:", error);
   }
 }
+const LOCKOUT_THRESHOLD = 5;
 const LOCKOUT_DURATION_MS = 15 * 60 * 1000;
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
