@@ -90,7 +90,7 @@ export default function ApplyPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#F5F6FA] p-4 dark:bg-background">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4 dark:bg-background">
       <Card className="w-full max-w-lg rounded-2xl border-0 shadow-xl">
         <CardHeader>
           <CardTitle>{program.name}</CardTitle>

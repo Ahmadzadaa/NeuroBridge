@@ -1,6 +1,7 @@
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 import { requireRole } from "@/lib/auth-utils";
-import { PlaceholderPage } from "@/components/layout/placeholder-page";
+import { prisma } from "@/lib/prisma";
+import { LeaderboardClient } from "./leaderboard-client";
 
 export default async function LeaderboardPage({
   params,
@@ -10,14 +11,43 @@ export default async function LeaderboardPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const session = await requireRole(locale, ["PARTICIPANT"]);
-  const t = await getTranslations("nav.participant");
+
+  const [entries, me] = await Promise.all([
+    prisma.user.findMany({
+      where: {
+        tenantId: session.user.tenantId ?? undefined,
+        role: "PARTICIPANT",
+      },
+      orderBy: [{ coinBalance: "desc" }],
+      take: 50,
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        coinBalance: true,
+        _count: { select: { userBadges: true } },
+      },
+    }),
+    prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { coinBalance: true },
+    }),
+  ]);
 
   return (
-    <PlaceholderPage
-      panel="participant"
-      title={t("leaderboard")}
+    <LeaderboardClient
       userName={session.user.name ?? "Participant"}
-      description="Leaderboard — rank participants by coins earned and badges collected."
+      currentUserId={session.user.id}
+      coinBalance={me?.coinBalance ?? 0}
+      entries={entries.map((user, index) => ({
+        id: user.id,
+        rank: index + 1,
+        name:
+          [user.firstName, user.lastName].filter(Boolean).join(" ") ||
+          "Participant",
+        coins: user.coinBalance,
+        badges: user._count.userBadges,
+      }))}
     />
   );
 }

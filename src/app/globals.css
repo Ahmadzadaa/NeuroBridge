@@ -4,6 +4,11 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * SimStart design tokens — mirrored from src/lib/design-tokens.ts.
+ * Every color, shadow, radius and animation value in the app must
+ * reference these variables. No hardcoded hex values in components.
+ */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -39,6 +44,29 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+
+  /* Semantic status colors (chips, trends, progress) */
+  --color-success: var(--success);
+  --color-success-light: var(--success-light);
+  --color-success-dark: var(--success-dark);
+  --color-warning: var(--warning);
+  --color-warning-light: var(--warning-light);
+  --color-warning-dark: var(--warning-dark);
+  --color-danger: var(--danger);
+  --color-danger-light: var(--danger-light);
+  --color-danger-dark: var(--danger-dark);
+
+  /* Coin / achievement — the signature accent */
+  --color-coin: var(--coin);
+  --color-coin-light: var(--coin-light);
+  --color-coin-dark: var(--coin-dark);
+
+  /* Surface + text extras */
+  --color-subtle: var(--subtle);
+  --color-elevated: var(--elevated);
+  --color-tertiary: var(--tertiary);
+
+  /* Radii */
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -46,76 +74,147 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Elevation scale */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.06);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
+  --shadow-brand: 0 8px 24px rgba(79, 70, 229, 0.2);
+  --shadow-coin: 0 8px 24px rgba(245, 158, 11, 0.25);
+  --shadow-glow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+
+  /* Motion */
+  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out-token: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-token: cubic-bezier(0.4, 0, 1, 1);
 }
 
 :root {
-  --background: oklch(0.975 0.002 264);
-  --foreground: oklch(0.205 0.015 264);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.205 0.015 264);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.205 0.015 264);
-  --primary: oklch(0.511 0.231 264.05);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.965 0.005 264);
-  --secondary-foreground: oklch(0.205 0.015 264);
-  --muted: oklch(0.965 0.005 264);
-  --muted-foreground: oklch(0.556 0.015 264);
-  --accent: oklch(0.965 0.005 264);
-  --accent-foreground: oklch(0.205 0.015 264);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0.005 264);
-  --input: oklch(0.922 0.005 264);
-  --ring: oklch(0.511 0.231 264.05);
-  --chart-1: oklch(0.511 0.231 264.05);
-  --chart-2: oklch(0.623 0.188 264.05);
-  --chart-3: oklch(0.769 0.165 70);
-  --chart-4: oklch(0.627 0.194 149);
-  --chart-5: oklch(0.645 0.246 16);
+  /* Backgrounds */
+  --background: #f7f8fc;
+  --foreground: #111827;
+  --card: #ffffff;
+  --card-foreground: #111827;
+  --popover: #ffffff;
+  --popover-foreground: #111827;
+  --subtle: #f0f2f8;
+  --elevated: #ffffff;
+
+  /* Brand */
+  --primary: #4f46e5;
+  --primary-foreground: #ffffff;
+  --secondary: #f0f2f8;
+  --secondary-foreground: #111827;
+  --muted: #f0f2f8;
+  --muted-foreground: #4b5563;
+  --tertiary: #9ca3af;
+  --accent: #eef2ff;
+  --accent-foreground: #3730a3;
+
+  /* Semantic */
+  --destructive: #ef4444;
+  --success: #10b981;
+  --success-light: #d1fae5;
+  --success-dark: #065f46;
+  --warning: #f59e0b;
+  --warning-light: #fef3c7;
+  --warning-dark: #92400e;
+  --danger: #ef4444;
+  --danger-light: #fee2e2;
+  --danger-dark: #991b1b;
+
+  /* Coin */
+  --coin: #f59e0b;
+  --coin-light: #fef3c7;
+  --coin-dark: #92400e;
+
+  /* Chrome */
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+  --ring: #4f46e5;
   --radius: 0.75rem;
-  --sidebar: oklch(0.995 0.002 264);
-  --sidebar-foreground: oklch(0.205 0.015 264);
-  --sidebar-primary: oklch(0.511 0.231 264.05);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.965 0.005 264);
-  --sidebar-accent-foreground: oklch(0.205 0.015 264);
-  --sidebar-border: oklch(0.922 0.005 264);
-  --sidebar-ring: oklch(0.511 0.231 264.05);
-  --coin: oklch(0.769 0.165 70);
+
+  /* Charts */
+  --chart-1: #4f46e5;
+  --chart-2: #6366f1;
+  --chart-3: #f59e0b;
+  --chart-4: #10b981;
+  --chart-5: #ef4444;
+
+  /* Sidebar */
+  --sidebar: #ffffff;
+  --sidebar-foreground: #111827;
+  --sidebar-primary: #4f46e5;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #eef2ff;
+  --sidebar-accent-foreground: #3730a3;
+  --sidebar-border: #e5e7eb;
+  --sidebar-ring: #4f46e5;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* Backgrounds — blue-tinted near-black, tonal layered depth */
+  --background: #0c0c14;
+  --foreground: #f9fafb;
+  --card: #13131f;
+  --card-foreground: #f9fafb;
+  --popover: #1a1a2e;
+  --popover-foreground: #f9fafb;
+  --subtle: #1e1e30;
+  --elevated: #1a1a2e;
+
+  /* Brand — lighter indigo for contrast on dark */
+  --primary: #6366f1;
+  --primary-foreground: #ffffff;
+  --secondary: #1e1e30;
+  --secondary-foreground: #f9fafb;
+  --muted: #1e1e30;
+  --muted-foreground: #9ca3af;
+  --tertiary: #6b7280;
+  --accent: #1e1e30;
+  --accent-foreground: #c7d2fe;
+
+  /* Semantic — light variants become translucent tints, dark variants become readable text */
+  --destructive: #f87171;
+  --success: #10b981;
+  --success-light: rgba(16, 185, 129, 0.15);
+  --success-dark: #6ee7b7;
+  --warning: #f59e0b;
+  --warning-light: rgba(245, 158, 11, 0.15);
+  --warning-dark: #fcd34d;
+  --danger: #ef4444;
+  --danger-light: rgba(239, 68, 68, 0.15);
+  --danger-dark: #fca5a5;
+
+  /* Coin */
+  --coin: #f59e0b;
+  --coin-light: rgba(245, 158, 11, 0.15);
+  --coin-dark: #fcd34d;
+
+  /* Chrome */
+  --border: #1f2937;
+  --input: #1f2937;
+  --ring: #6366f1;
+
+  /* Charts */
+  --chart-1: #6366f1;
+  --chart-2: #818cf8;
+  --chart-3: #fbbf24;
+  --chart-4: #34d399;
+  --chart-5: #f87171;
+
+  /* Sidebar — slightly different from main bg to create depth */
+  --sidebar: #0f0f1a;
+  --sidebar-foreground: #f9fafb;
+  --sidebar-primary: #6366f1;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1e1e30;
+  --sidebar-accent-foreground: #c7d2fe;
+  --sidebar-border: #1f2937;
+  --sidebar-ring: #6366f1;
 }
 
 @layer base {
@@ -127,5 +226,147 @@
   }
   html {
     @apply font-sans;
+  }
+}
+
+@layer components {
+  /* 3D badge icon — the signature gamification element */
+  .badge-icon-wrapper {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: linear-gradient(145deg, #ffffff, #e6e6e6);
+    box-shadow:
+      4px 4px 8px rgba(0, 0, 0, 0.12),
+      -2px -2px 6px rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    transition:
+      transform 200ms ease,
+      box-shadow 200ms ease;
+  }
+
+  .badge-icon-wrapper:hover {
+    transform: translateY(-2px) rotate(-3deg);
+    box-shadow:
+      6px 8px 12px rgba(0, 0, 0, 0.15),
+      -2px -2px 6px rgba(255, 255, 255, 0.8);
+  }
+
+  .badge-icon-wrapper.locked {
+    filter: grayscale(1) opacity(0.4);
+  }
+
+  .badge-icon-wrapper.earned {
+    box-shadow:
+      4px 4px 8px rgba(0, 0, 0, 0.12),
+      -2px -2px 6px rgba(255, 255, 255, 0.8),
+      0 0 20px rgba(245, 158, 11, 0.35);
+  }
+
+  .badge-icon-wrapper.crown {
+    background: linear-gradient(145deg, #fef3c7, #fbbf24);
+    box-shadow:
+      4px 4px 8px rgba(0, 0, 0, 0.15),
+      -2px -2px 6px rgba(255, 255, 255, 0.6),
+      0 0 30px rgba(245, 158, 11, 0.4);
+  }
+
+  /* Dark mode — glows pop harder against dark backgrounds */
+  .dark .badge-icon-wrapper {
+    background: linear-gradient(145deg, #262640, #16161f);
+    box-shadow:
+      4px 4px 10px rgba(0, 0, 0, 0.5),
+      -1px -1px 4px rgba(255, 255, 255, 0.06);
+  }
+
+  .dark .badge-icon-wrapper.earned {
+    box-shadow:
+      4px 4px 10px rgba(0, 0, 0, 0.5),
+      -1px -1px 4px rgba(255, 255, 255, 0.06),
+      0 0 28px rgba(245, 158, 11, 0.45);
+  }
+
+  .dark .badge-icon-wrapper.crown {
+    background: linear-gradient(145deg, #78350f, #b45309);
+    box-shadow:
+      4px 4px 10px rgba(0, 0, 0, 0.5),
+      -1px -1px 4px rgba(255, 255, 255, 0.08),
+      0 0 36px rgba(245, 158, 11, 0.5);
+  }
+
+  /* Shimmer skeleton */
+  .skeleton-shimmer {
+    background: linear-gradient(
+      90deg,
+      var(--subtle) 25%,
+      color-mix(in srgb, var(--subtle) 60%, var(--border)) 50%,
+      var(--subtle) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Animated mesh gradient for the login brand panel */
+  .mesh-gradient {
+    background:
+      radial-gradient(at 20% 25%, rgba(99, 102, 241, 0.35) 0px, transparent 50%),
+      radial-gradient(at 80% 20%, rgba(79, 70, 229, 0.3) 0px, transparent 50%),
+      radial-gradient(at 30% 80%, rgba(129, 140, 248, 0.25) 0px, transparent 50%),
+      radial-gradient(at 75% 70%, rgba(67, 56, 202, 0.35) 0px, transparent 50%);
+    background-size: 160% 160%;
+    animation: mesh-move 18s ease-in-out infinite alternate;
+  }
+
+  /* Floating "+N" coin earn indicator */
+  .coin-float {
+    animation: coin-float-up 900ms var(--ease-out-token) forwards;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes mesh-move {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+@keyframes coin-float-up {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
+}
+
+/* Accessibility: respect reduced motion everywhere */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

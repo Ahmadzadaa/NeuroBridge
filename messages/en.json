@@ -41,7 +41,16 @@
     "total": "Total",
     "coins": "Coins",
     "badges": "Badges",
-    "certificates": "Certificates"
+    "certificates": "Certificates",
+    "seats": "Seats",
+    "navigation": "Navigation",
+    "more": "More",
+    "all": "All",
+    "roles": {
+      "superAdmin": "Super Admin",
+      "tenant": "Organization",
+      "participant": "Participant"
+    }
   },
   "auth": {
     "login": "Log In",
@@ -53,7 +62,12 @@
     "accountLocked": "Your account is temporarily locked. Please try again later.",
     "twoFactorRequired": "Authenticator code required. Enter the 6-digit code from your app.",
     "totpCode": "Authenticator code",
-    "recoveryCode": "Recovery code (optional)"
+    "recoveryCode": "Recovery code (optional)",
+    "featureSimulations": "Simulation-based learning",
+    "featureTracking": "Real-time progress tracking",
+    "featureAI": "AI-powered mentorship",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
   },
   "nav": {
     "superAdmin": {

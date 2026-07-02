@@ -3,8 +3,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { StatusChip, type StatusChipVariant } from "@/components/ui/status-chip";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Pagination } from "@/components/ui/pagination";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Select,
@@ -88,6 +90,25 @@ export function ParticipantsPageClient({
     return name || user.email;
   }
 
+  function statusChip(status: string) {
+    const normalized = status.toLowerCase();
+    const variant: StatusChipVariant =
+      normalized === "active"
+        ? "active"
+        : normalized === "inactive"
+          ? "inactive"
+          : "pending";
+    const label =
+      normalized === "active"
+        ? tc("active")
+        : normalized === "inactive"
+          ? tc("inactive")
+          : normalized === "pending"
+            ? tc("pending")
+            : status;
+    return <StatusChip variant={variant}>{label}</StatusChip>;
+  }
+
   return (
     <DashboardLayout panel="tenant" title={t("title")} userName={userName}>
       <Card className="rounded-2xl border-0 shadow-sm">
@@ -125,34 +146,29 @@ export function ParticipantsPageClient({
             </TableHeader>
             <TableBody>
               {loading ? (
-                <TableRow>
-                  <TableCell
-                    colSpan={4}
-                    className="py-8 text-center text-muted-foreground"
-                  >
-                    {tc("loading")}
-                  </TableCell>
-                </TableRow>
+                Array.from({ length: 5 }).map((_, i) => (
+                  <TableRow key={i} className="hover:bg-transparent hover:[&>td:first-child]:shadow-none">
+                    <TableCell><Skeleton className="h-4 w-32" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-44" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                    <TableCell><Skeleton className="h-5 w-16 rounded-full" /></TableCell>
+                  </TableRow>
+                ))
               ) : items.length === 0 ? (
-                <TableRow>
-                  <TableCell
-                    colSpan={4}
-                    className="py-8 text-center text-muted-foreground"
-                  >
-                    {tc("noData")}
+                <TableRow className="even:bg-transparent hover:bg-transparent hover:[&>td:first-child]:shadow-none">
+                  <TableCell colSpan={4} className="h-auto whitespace-normal">
+                    <EmptyState title={tc("noData")} />
                   </TableCell>
                 </TableRow>
               ) : (
                 items.map((item) => (
                   <TableRow key={item.id}>
-                    <TableCell>{formatName(item.user)}</TableCell>
-                    <TableCell>{item.user.email}</TableCell>
+                    <TableCell className="font-medium">{formatName(item.user)}</TableCell>
+                    <TableCell className="text-muted-foreground">{item.user.email}</TableCell>
                     <TableCell>
                       {new Date(item.registrationDate).toLocaleDateString()}
                     </TableCell>
-                    <TableCell>
-                      <Badge variant="secondary">{item.status}</Badge>
-                    </TableCell>
+                    <TableCell>{statusChip(item.status)}</TableCell>
                   </TableRow>
                 ))
               )}
@@ -160,34 +176,14 @@ export function ParticipantsPageClient({
           </Table>
 
           {totalPages > 1 && (
-            <div className="mt-4 flex items-center justify-between">
-              <p className="text-sm text-muted-foreground">
-                {total} {t("title").toLowerCase()}
-              </p>
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="rounded-xl"
-                  disabled={page <= 1 || loading}
-                  onClick={() => setPage((p) => p - 1)}
-                >
-                  {tc("back")}
-                </Button>
-                <span className="flex items-center px-2 text-sm text-muted-foreground">
-                  {page} / {totalPages}
-                </span>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="rounded-xl"
-                  disabled={page >= totalPages || loading}
-                  onClick={() => setPage((p) => p + 1)}
-                >
-                  {tc("next")}
-                </Button>
-              </div>
-            </div>
+            <Pagination
+              className="mt-4"
+              page={page}
+              pageSize={PAGE_SIZE}
+              totalItems={total}
+              onPageChange={(p) => setPage(p)}
+              itemLabel={t("title").toLowerCase()}
+            />
           )}
         </CardContent>
       </Card>

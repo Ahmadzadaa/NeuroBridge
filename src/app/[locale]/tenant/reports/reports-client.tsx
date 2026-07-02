@@ -23,7 +23,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Users, Gamepad2, GraduationCap, Award, FileText, Download } from "lucide-react";
+import { EmptyState } from "@/components/ui/empty-state";
 import { toast } from "sonner";
+
+function EmptyTableRow({ colSpan, label }: { colSpan: number; label: string }) {
+  return (
+    <TableRow className="even:bg-transparent hover:bg-transparent hover:[&>td:first-child]:shadow-none">
+      <TableCell colSpan={colSpan} className="h-auto whitespace-normal">
+        <EmptyState title={label} />
+      </TableCell>
+    </TableRow>
+  );
+}
 
 interface ProgramOption {
   id: string;
@@ -148,12 +159,12 @@ export function ReportsPageClient({ userName, programs }: ReportsPageClientProps
       </div>
 
       <div className="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-6">
-        <StatCard title={t("kpi.totalParticipants")} value={0} icon={Users} />
-        <StatCard title={t("kpi.simulationCompletion")} value="0%" icon={Gamepad2} />
-        <StatCard title={t("kpi.trainingCompletion")} value="0%" icon={GraduationCap} />
-        <StatCard title={t("kpi.averageTestScore")} value="—" icon={Award} />
-        <StatCard title={t("kpi.badgesAwarded")} value={0} icon={Award} />
-        <StatCard title={t("kpi.certificatesEarned")} value={0} icon={FileText} />
+        <StatCard title={t("kpi.totalParticipants")} value={0} icon={Users} accent="brand" />
+        <StatCard title={t("kpi.simulationCompletion")} value={0} suffix="%" icon={Gamepad2} accent="success" />
+        <StatCard title={t("kpi.trainingCompletion")} value={0} suffix="%" icon={GraduationCap} accent="success" />
+        <StatCard title={t("kpi.averageTestScore")} value="—" icon={Award} accent="purple" />
+        <StatCard title={t("kpi.badgesAwarded")} value={0} icon={Award} accent="coin" />
+        <StatCard title={t("kpi.certificatesEarned")} value={0} icon={FileText} accent="purple" />
       </div>
 
       <Card className="rounded-2xl border-0 shadow-sm">
@@ -202,11 +213,7 @@ export function ReportsPageClient({ userName, programs }: ReportsPageClientProps
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  <TableRow>
-                    <TableCell colSpan={5} className="text-center text-muted-foreground py-8">
-                      {tc("noData")}
-                    </TableCell>
-                  </TableRow>
+                  <EmptyTableRow colSpan={5} label={tc("noData")} />
                 </TableBody>
               </Table>
             </TabsContent>
@@ -222,11 +229,7 @@ export function ReportsPageClient({ userName, programs }: ReportsPageClientProps
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  <TableRow>
-                    <TableCell colSpan={4} className="text-center text-muted-foreground py-8">
-                      {tc("noData")}
-                    </TableCell>
-                  </TableRow>
+                  <EmptyTableRow colSpan={4} label={tc("noData")} />
                 </TableBody>
               </Table>
             </TabsContent>
@@ -242,11 +245,7 @@ export function ReportsPageClient({ userName, programs }: ReportsPageClientProps
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  <TableRow>
-                    <TableCell colSpan={4} className="text-center text-muted-foreground py-8">
-                      {tc("noData")}
-                    </TableCell>
-                  </TableRow>
+                  <EmptyTableRow colSpan={4} label={tc("noData")} />
                 </TableBody>
               </Table>
             </TabsContent>
@@ -262,11 +261,7 @@ export function ReportsPageClient({ userName, programs }: ReportsPageClientProps
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  <TableRow>
-                    <TableCell colSpan={4} className="text-center text-muted-foreground py-8">
-                      {tc("noData")}
-                    </TableCell>
-                  </TableRow>
+                  <EmptyTableRow colSpan={4} label={tc("noData")} />
                 </TableBody>
               </Table>
             </TabsContent>

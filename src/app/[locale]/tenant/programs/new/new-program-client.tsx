@@ -205,7 +205,7 @@ export function NewProgramClient({ userName }: NewProgramClientProps) {
         </Card>
 
         {applicationLink && (
-          <Card className="rounded-2xl border-0 bg-gradient-to-r from-indigo-500/10 to-blue-500/10 shadow-sm">
+          <Card className="rounded-2xl border-0 bg-gradient-to-r from-primary/10 to-chart-2/10 shadow-sm">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Link2 className="h-5 w-5" />

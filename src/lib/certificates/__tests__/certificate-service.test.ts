@@ -26,7 +26,7 @@ describe("certificate-service", () => {
 
   it("lists user certificates", async () => {
     vi.mocked(prisma.certificate.findMany).mockResolvedValue([
-      { id: "c1", type: "PARTICIPATION", issuedAt: new Date(), pdfUrl: null },
+      { id: "c1", userId: "user-1", type: "PARTICIPATION", issuedAt: new Date(), pdfUrl: null },
     ]);
 
     const list = await listUserCertificates("user-1");

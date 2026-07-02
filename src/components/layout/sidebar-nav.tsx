@@ -82,16 +82,26 @@ export function SidebarNav({ panel, collapsed }: SidebarNavProps) {
           <Link
             key={item.href}
             href={item.href}
+            aria-current={isActive ? "page" : undefined}
+            title={collapsed ? t(item.labelKey) : undefined}
             className={cn(
-              "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
-              "hover:bg-white/10 hover:translate-x-0.5",
+              "relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium",
+              "transition-all duration-150 ease-[cubic-bezier(0.4,0,0.2,1)]",
+              "focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
+              collapsed && "justify-center px-2",
               isActive
-                ? "bg-primary/10 text-primary shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-accent text-primary shadow-[inset_3px_0_0_var(--color-primary)]"
+                : "text-muted-foreground hover:translate-x-0.5 hover:bg-subtle hover:text-foreground"
             )}
           >
-            <Icon className="h-5 w-5 shrink-0" />
-            {!collapsed && <span>{t(item.labelKey)}</span>}
+            <Icon
+              className={cn(
+                "h-[18px] w-[18px] shrink-0",
+                !isActive && "opacity-70"
+              )}
+              aria-hidden="true"
+            />
+            {!collapsed && <span className="truncate">{t(item.labelKey)}</span>}
           </Link>
         );
       })}

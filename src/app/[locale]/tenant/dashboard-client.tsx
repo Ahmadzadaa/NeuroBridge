@@ -7,7 +7,8 @@ import { Users, FileText, Award, TrendingUp } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
-import { Progress } from "@/components/ui/progress";
+import { ProgressBar } from "@/components/ui/progress-bar";
+import { EmptyState } from "@/components/ui/empty-state";
 
 interface TenantDashboardClientProps {
   userName: string;
@@ -29,15 +30,25 @@ export function TenantDashboardClient({
   const utilization = seatLimit > 0 ? (seatsUsed / seatLimit) * 100 : 0;
 
   return (
-    <DashboardLayout panel="tenant" title={t("title")} userName={userName}>
-      <Card className="mb-6 rounded-2xl border-0 bg-gradient-to-r from-indigo-500/10 to-blue-500/10 shadow-sm">
+    <DashboardLayout
+      panel="tenant"
+      title={t("title")}
+      userName={userName}
+      seatUsage={{ used: seatsUsed, limit: seatLimit }}
+    >
+      <Card className="mb-6 rounded-2xl border-0 bg-gradient-to-r from-primary/10 to-chart-2/10 shadow-sm">
         <CardContent className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
-          <div>
+          <div className="w-full max-w-xs">
             <h3 className="font-semibold">{t("seats.total")}: {seatLimit}</h3>
             <p className="text-sm text-muted-foreground">
               {t("seats.used")}: {seatsUsed} · {t("seats.remaining")}: {remaining}
             </p>
-            <Progress value={utilization} className="mt-2 h-2 w-full max-w-xs" />
+            <ProgressBar
+              value={utilization}
+              color="inverse"
+              className="mt-2 h-2"
+              aria-label={t("seats.used")}
+            />
           </div>
           <Link href="/tenant/billing">
             <Button className="rounded-xl">{tc("upgradeSeats")}</Button>
@@ -45,11 +56,27 @@ export function TenantDashboardClient({
         </CardContent>
       </Card>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatCard title={t("programs.title")} value={programCount} icon={FileText} gradient="from-indigo-500/10 to-purple-500/10" />
-        <StatCard title={t("participants.title")} value={seatsUsed} icon={Users} gradient="from-blue-500/10 to-cyan-500/10" />
-        <StatCard title={tc("badges")} value={0} icon={Award} gradient="from-amber-500/10 to-orange-500/10" />
-        <StatCard title="Completion" value="0%" icon={TrendingUp} gradient="from-emerald-500/10 to-green-500/10" />
+      <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
+        <StatCard
+          title={t("programs.title")}
+          value={programCount}
+          icon={FileText}
+          accent="brand"
+        />
+        <StatCard
+          title={t("participants.title")}
+          value={seatsUsed}
+          icon={Users}
+          accent="purple"
+        />
+        <StatCard title={tc("badges")} value={0} icon={Award} accent="coin" />
+        <StatCard
+          title={t("reports.kpi.simulationCompletion")}
+          value={0}
+          suffix="%"
+          icon={TrendingUp}
+          accent="success"
+        />
       </div>
 
       <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
@@ -58,10 +85,15 @@ export function TenantDashboardClient({
             <CardTitle>{t("programs.title")}</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground mb-4">No programs yet. Create your first program.</p>
-            <Link href="/tenant/programs/new">
-              <Button className="rounded-xl">{t("programs.create")}</Button>
-            </Link>
+            <EmptyState
+              title={tc("noData")}
+              className="py-6"
+              action={
+                <Link href="/tenant/programs/new">
+                  <Button className="rounded-xl">{t("programs.create")}</Button>
+                </Link>
+              }
+            />
           </CardContent>
         </Card>
       </div>

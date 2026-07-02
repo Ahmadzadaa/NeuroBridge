@@ -47,30 +47,30 @@ export function SystemDashboardClient({ userName, title }: SystemDashboardClient
 
   return (
     <DashboardLayout panel="super-admin" title={title} userName={userName}>
-      <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="mb-6 grid grid-cols-2 gap-4 xl:grid-cols-4">
         <StatCard
           title="Registrations (24h)"
           value={metrics?.registrationRate.last24h ?? "—"}
           icon={Users}
-          gradient="from-indigo-500/10 to-purple-500/10"
+          accent="brand"
         />
         <StatCard
           title="Payment failures (24h)"
           value={metrics?.paymentFailures.last24h ?? "—"}
           icon={CreditCard}
-          gradient="from-red-500/10 to-orange-500/10"
+          accent="coin"
         />
         <StatCard
           title="AI usage (24h)"
           value={metrics?.aiUsage.last24h ?? "—"}
           icon={Brain}
-          gradient="from-blue-500/10 to-cyan-500/10"
+          accent="purple"
         />
         <StatCard
           title="Seat utilization"
           value={metrics ? `${metrics.seatUtilization.platformAverage}%` : "—"}
           icon={Activity}
-          gradient="from-emerald-500/10 to-green-500/10"
+          accent="success"
         />
       </div>
 
@@ -105,7 +105,7 @@ export function SystemDashboardClient({ userName, title }: SystemDashboardClient
                 <XAxis dataKey="date" tick={{ fontSize: 11 }} />
                 <YAxis allowDecimals={false} />
                 <Tooltip />
-                <Line type="monotone" dataKey="count" stroke="#6366f1" strokeWidth={2} />
+                <Line type="monotone" dataKey="count" stroke="var(--primary)" strokeWidth={2} />
               </LineChart>
             </ResponsiveContainer>
           </CardContent>
@@ -124,7 +124,7 @@ export function SystemDashboardClient({ userName, title }: SystemDashboardClient
                 <XAxis dataKey="date" tick={{ fontSize: 11 }} />
                 <YAxis allowDecimals={false} />
                 <Tooltip />
-                <Bar dataKey="count" fill="#0ea5e9" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="count" fill="var(--chart-2)" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
@@ -144,7 +144,7 @@ export function SystemDashboardClient({ userName, title }: SystemDashboardClient
                 <XAxis type="number" domain={[0, 100]} unit="%" />
                 <YAxis type="category" dataKey="tenantName" width={100} tick={{ fontSize: 11 }} />
                 <Tooltip />
-                <Bar dataKey="utilizationPercent" fill="#10b981" radius={[0, 6, 6, 0]} />
+                <Bar dataKey="utilizationPercent" fill="var(--success)" radius={[0, 6, 6, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>

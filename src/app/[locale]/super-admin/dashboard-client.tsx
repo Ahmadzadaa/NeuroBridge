@@ -33,34 +33,36 @@ export function SuperAdminDashboard({ userName }: SuperAdminDashboardProps) {
 
   return (
     <DashboardLayout panel="super-admin" title={t("title")} userName={userName}>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
         <StatCard
           title={t("stats.totalTenants")}
           value={22}
           icon={Building2}
           trend="+4 this month"
-          gradient="from-indigo-500/10 to-purple-500/10"
+          accent="brand"
         />
         <StatCard
           title={t("stats.activeUsers")}
-          value="1,248"
+          value={1248}
           icon={Users}
           trend="+12% growth"
-          gradient="from-blue-500/10 to-cyan-500/10"
+          accent="purple"
         />
         <StatCard
           title={t("stats.totalRevenue")}
-          value="₺350,000"
+          value={350000}
+          prefix="₺"
           icon={DollarSign}
           trend="+18% vs last month"
-          gradient="from-emerald-500/10 to-green-500/10"
+          accent="success"
         />
         <StatCard
           title={t("stats.growth")}
           value="+22%"
           icon={TrendingUp}
           trend="Monthly growth rate"
-          gradient="from-amber-500/10 to-orange-500/10"
+          trendDirection="neutral"
+          accent="coin"
         />
       </div>
 
@@ -73,8 +75,8 @@ export function SuperAdminDashboard({ userName }: SuperAdminDashboardProps) {
             <AreaChart data={growthData}>
               <defs>
                 <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
+                  <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="var(--primary)" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" className="stroke-border/50" />
@@ -84,7 +86,7 @@ export function SuperAdminDashboard({ userName }: SuperAdminDashboardProps) {
               <Area
                 type="monotone"
                 dataKey="revenue"
-                stroke="#6366f1"
+                stroke="var(--primary)"
                 fillOpacity={1}
                 fill="url(#colorRevenue)"
               />

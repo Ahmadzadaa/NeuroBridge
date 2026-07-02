@@ -41,7 +41,16 @@
     "total": "Toplam",
     "coins": "Coin",
     "badges": "Rozetler",
-    "certificates": "Sertifikalar"
+    "certificates": "Sertifikalar",
+    "seats": "Koltuklar",
+    "navigation": "Menü",
+    "more": "Daha Fazla",
+    "all": "Tümü",
+    "roles": {
+      "superAdmin": "Süper Admin",
+      "tenant": "Organizasyon",
+      "participant": "Katılımcı"
+    }
   },
   "auth": {
     "login": "Giriş Yap",
@@ -53,7 +62,12 @@
     "accountLocked": "Hesabınız geçici olarak kilitlendi. Lütfen daha sonra tekrar deneyin.",
     "twoFactorRequired": "Doğrulama kodu gerekli. Authenticator uygulamanızdaki 6 haneli kodu girin.",
     "totpCode": "Doğrulama kodu",
-    "recoveryCode": "Kurtarma kodu (isteğe bağlı)"
+    "recoveryCode": "Kurtarma kodu (isteğe bağlı)",
+    "featureSimulations": "Simülasyon tabanlı öğrenme",
+    "featureTracking": "Gerçek zamanlı ilerleme takibi",
+    "featureAI": "AI destekli mentorluk",
+    "showPassword": "Şifreyi göster",
+    "hidePassword": "Şifreyi gizle"
   },
   "nav": {
     "superAdmin": {

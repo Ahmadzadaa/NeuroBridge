@@ -3,13 +3,17 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { signOut } from "next-auth/react";
-import { Menu, LogOut, Bell } from "lucide-react";
+import { LogOut, Bell, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { CoinDisplay } from "@/components/ui/coin-display";
+import { ProgressBar } from "@/components/ui/progress-bar";
+import { Label } from "@/components/ui/typography";
 import { LanguageSwitcher } from "./language-switcher";
 import { ThemeToggle } from "./theme-toggle";
 import { SidebarNav } from "./sidebar-nav";
 import { MobileNav } from "./mobile-nav";
+import { PageTransition } from "./page-transition";
 import { cn } from "@/lib/utils";
 
 type PanelType = "super-admin" | "tenant" | "participant";
@@ -18,13 +22,25 @@ interface DashboardLayoutProps {
   panel: PanelType;
   title: string;
   userName?: string;
+  /** Participant coin balance — shows the coin chip in the topbar */
+  coinBalance?: number;
+  /** Tenant seat usage — shows the seat counter widget in the sidebar */
+  seatUsage?: { used: number; limit: number };
   children: React.ReactNode;
 }
+
+const roleKeyByPanel: Record<PanelType, string> = {
+  "super-admin": "superAdmin",
+  tenant: "tenant",
+  participant: "participant",
+};
 
 export function DashboardLayout({
   panel,
   title,
   userName = "User",
+  coinBalance,
+  seatUsage,
   children,
 }: DashboardLayoutProps) {
   const t = useTranslations("common");
@@ -36,56 +52,152 @@ export function DashboardLayout({
     .slice(0, 2)
     .toUpperCase();
 
+  const seatPercent =
+    seatUsage && seatUsage.limit > 0
+      ? (seatUsage.used / seatUsage.limit) * 100
+      : 0;
+
   return (
-    <div className="min-h-screen bg-[#F5F6FA] dark:bg-background">
-      {/* Desktop Sidebar */}
+    <div className="min-h-screen bg-background">
+      {/* ── Desktop sidebar ─────────────────────────────────────── */}
       <aside
         className={cn(
-          "fixed left-0 top-0 z-40 hidden h-full flex-col border-r border-border/50 bg-white/80 backdrop-blur-xl transition-all duration-300 dark:bg-card/80 lg:flex",
-          sidebarOpen ? "w-64" : "w-[72px]"
+          "fixed left-0 top-0 z-40 hidden h-full flex-col border-r border-sidebar-border bg-sidebar",
+          "transition-[width] duration-[250ms] ease-[cubic-bezier(0.4,0,0.2,1)] lg:flex",
+          sidebarOpen ? "w-60" : "w-16"
         )}
       >
-        <div className="flex h-16 items-center gap-2 border-b border-border/50 px-4">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground font-bold text-sm">
+        {/* Logo */}
+        <div className="flex h-16 shrink-0 items-center gap-2.5 border-b border-sidebar-border px-4">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary text-sm font-bold text-primary-foreground shadow-brand">
             B
           </div>
           {sidebarOpen && (
-            <span className="font-semibold text-lg tracking-tight">BizSim</span>
+            <span className="truncate text-lg font-semibold tracking-tight text-sidebar-foreground">
+              {t("appName")}
+            </span>
           )}
         </div>
-        <SidebarNav panel={panel} collapsed={!sidebarOpen} />
+
+        {/* User block */}
+        <div
+          className={cn(
+            "flex items-center gap-2.5 border-b border-sidebar-border px-4 py-3",
+            !sidebarOpen && "justify-center px-2"
+          )}
+        >
+          <Avatar className="h-8 w-8 shrink-0">
+            <AvatarFallback className="bg-primary/10 text-xs font-semibold text-primary">
+              {initials}
+            </AvatarFallback>
+          </Avatar>
+          {sidebarOpen && (
+            <div className="min-w-0">
+              <p className="truncate text-[13px] font-medium text-sidebar-foreground">
+                {userName}
+              </p>
+              <span className="inline-flex rounded-full bg-accent px-1.5 py-px text-[10px] font-semibold uppercase tracking-[0.5px] text-accent-foreground">
+                {t(`roles.${roleKeyByPanel[panel]}`)}
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Navigation */}
+        <div className="flex-1 overflow-y-auto">
+          {sidebarOpen && (
+            <Label className="block px-6 pt-4 text-sidebar-foreground/50">
+              {t("navigation")}
+            </Label>
+          )}
+          <SidebarNav panel={panel} collapsed={!sidebarOpen} />
+        </div>
+
+        {/* Seat counter widget */}
+        {seatUsage && sidebarOpen && (
+          <div className="mx-3 mb-2 rounded-xl border border-sidebar-border bg-subtle/60 p-3">
+            <div className="flex items-center justify-between">
+              <Label className="text-sidebar-foreground/60">{t("seats")}</Label>
+              <span className="text-[12px] font-semibold text-sidebar-foreground">
+                {seatUsage.used} / {seatUsage.limit}
+              </span>
+            </div>
+            <ProgressBar
+              value={seatPercent}
+              color="inverse"
+              className="mt-2"
+              aria-label={`${seatUsage.used} / ${seatUsage.limit} ${t("seats")}`}
+            />
+          </div>
+        )}
+
+        {/* Bottom actions */}
+        <div className="border-t border-sidebar-border p-3">
+          <button
+            type="button"
+            onClick={() => signOut()}
+            className={cn(
+              "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground",
+              "transition-colors duration-150 hover:bg-subtle hover:text-foreground",
+              "focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
+              !sidebarOpen && "justify-center px-2"
+            )}
+          >
+            <LogOut className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
+            {sidebarOpen && <span>{t("logout")}</span>}
+          </button>
+        </div>
+
+        {/* Collapse toggle on the sidebar edge */}
+        <button
+          type="button"
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+          className={cn(
+            "absolute -right-3 top-20 z-50 flex h-6 w-6 items-center justify-center rounded-full",
+            "border border-border bg-card text-muted-foreground shadow-sm",
+            "transition-colors duration-150 hover:text-foreground",
+            "focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+          )}
+        >
+          {sidebarOpen ? (
+            <ChevronLeft className="h-3.5 w-3.5" />
+          ) : (
+            <ChevronRight className="h-3.5 w-3.5" />
+          )}
+        </button>
       </aside>
 
-      {/* Main content */}
+      {/* ── Main column ─────────────────────────────────────────── */}
       <div
         className={cn(
-          "flex min-h-screen flex-col transition-all duration-300",
-          sidebarOpen ? "lg:ml-64" : "lg:ml-[72px]"
+          "flex min-h-screen flex-col transition-[margin] duration-[250ms] ease-[cubic-bezier(0.4,0,0.2,1)]",
+          sidebarOpen ? "lg:ml-60" : "lg:ml-16"
         )}
       >
-        {/* Top bar */}
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border/50 bg-white/70 px-4 backdrop-blur-xl dark:bg-card/70 lg:px-6">
-          <div className="flex items-center gap-3">
+        {/* Topbar */}
+        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-card/70 px-4 backdrop-blur-xl lg:px-6">
+          <h1 className="truncate text-[18px] font-semibold tracking-[-0.3px] text-foreground">
+            {title}
+          </h1>
+
+          <div className="flex items-center gap-2">
+            {typeof coinBalance === "number" && (
+              <CoinDisplay balance={coinBalance} />
+            )}
             <Button
               variant="ghost"
               size="icon"
-              className="hidden rounded-xl lg:flex"
-              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="rounded-xl"
+              aria-label="Notifications"
             >
-              <Menu className="h-5 w-5" />
-            </Button>
-            <h1 className="text-lg font-semibold tracking-tight">{title}</h1>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="rounded-xl">
               <Bell className="h-5 w-5" />
             </Button>
             <LanguageSwitcher />
             <ThemeToggle />
             <div className="hidden items-center gap-2 sm:flex">
               <Avatar className="h-8 w-8">
-                <AvatarFallback className="bg-primary/10 text-primary text-xs">
+                <AvatarFallback className="bg-primary/10 text-xs font-semibold text-primary">
                   {initials}
                 </AvatarFallback>
               </Avatar>
@@ -94,20 +206,24 @@ export function DashboardLayout({
             <Button
               variant="ghost"
               size="icon"
-              className="rounded-xl"
+              className="rounded-xl lg:hidden"
               onClick={() => signOut()}
-              title={t("logout")}
+              aria-label={t("logout")}
             >
               <LogOut className="h-5 w-5" />
             </Button>
           </div>
         </header>
 
-        {/* Page content */}
-        <main className="flex-1 p-4 pb-20 lg:p-6 lg:pb-6">{children}</main>
+        {/* Page content — capped at 1400px so ultra-wide screens stay composed */}
+        <main className="flex-1 p-4 pb-24 lg:p-6 lg:pb-6">
+          <div className="mx-auto w-full max-w-[1400px]">
+            <PageTransition>{children}</PageTransition>
+          </div>
+        </main>
       </div>
 
-      {/* Mobile bottom nav */}
+      {/* ── Mobile bottom tab bar ───────────────────────────────── */}
       <MobileNav panel={panel} />
     </div>
   );

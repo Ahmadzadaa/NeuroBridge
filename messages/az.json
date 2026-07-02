@@ -41,7 +41,16 @@
     "total": "Cəmi",
     "coins": "Coin",
     "badges": "Nişanlar",
-    "certificates": "Sertifikatlar"
+    "certificates": "Sertifikatlar",
+    "seats": "Yerlər",
+    "navigation": "Menyu",
+    "more": "Daha çox",
+    "all": "Hamısı",
+    "roles": {
+      "superAdmin": "Super Admin",
+      "tenant": "Təşkilat",
+      "participant": "İştirakçı"
+    }
   },
   "auth": {
     "login": "Daxil ol",
@@ -53,7 +62,12 @@
     "accountLocked": "Hesabınız müvəqqəti olaraq bloklanıb. Zəhmət olmasa sonra yenidən cəhd edin.",
     "twoFactorRequired": "Doğrulama kodu tələb olunur. Authenticator tətbiqindəki 6 rəqəmli kodu daxil edin.",
     "totpCode": "Doğrulama kodu",
-    "recoveryCode": "Bərpa kodu (isteğe bağlı)"
+    "recoveryCode": "Bərpa kodu (isteğe bağlı)",
+    "featureSimulations": "Simulyasiya əsaslı öyrənmə",
+    "featureTracking": "Real vaxt irəliləyiş izləmə",
+    "featureAI": "AI dəstəkli mentorluq",
+    "showPassword": "Şifrəni göstər",
+    "hidePassword": "Şifrəni gizlət"
   },
   "nav": {
     "superAdmin": {

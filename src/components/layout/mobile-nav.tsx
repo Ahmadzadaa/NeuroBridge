@@ -49,7 +49,7 @@ export function MobileNav({ panel }: MobileNavProps) {
   const items = mobileNavConfig[panel];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around border-t border-border/50 bg-white/90 px-2 py-2 backdrop-blur-xl dark:bg-card/90 lg:hidden">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around border-t border-border bg-card/80 px-2 pb-[max(env(safe-area-inset-bottom),0.5rem)] pt-2 backdrop-blur-[20px] lg:hidden">
       {items.map((item) => {
         const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
         const Icon = item.icon;
@@ -58,13 +58,30 @@ export function MobileNav({ panel }: MobileNavProps) {
           <Link
             key={item.href}
             href={item.href}
+            aria-current={isActive ? "page" : undefined}
+            aria-label={t(item.labelKey)}
             className={cn(
-              "flex flex-col items-center gap-0.5 rounded-xl px-3 py-1.5 text-[10px] font-medium transition-colors",
+              "flex min-h-11 min-w-11 flex-col items-center justify-center gap-0.5 rounded-xl px-3 py-1 text-[10px] font-medium",
+              "transition-colors duration-150",
+              "focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
               isActive ? "text-primary" : "text-muted-foreground"
             )}
           >
-            <Icon className={cn("h-5 w-5", isActive && "text-primary")} />
-            <span>{t(item.labelKey)}</span>
+            <Icon
+              className={cn(
+                "h-5 w-5 transition-transform duration-150 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
+                isActive && "scale-110 text-primary"
+              )}
+              aria-hidden="true"
+            />
+            <span
+              className={cn(
+                "transition-opacity duration-150",
+                isActive ? "opacity-100" : "opacity-70"
+              )}
+            >
+              {t(item.labelKey)}
+            </span>
           </Link>
         );
       })}

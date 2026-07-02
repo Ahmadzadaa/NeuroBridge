@@ -23,8 +23,8 @@ export default async function LandingPage({
   const tc = await getTranslations("common");
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#F5F6FA] dark:bg-background">
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-transparent to-amber-500/5" />
+    <div className="relative min-h-screen overflow-hidden bg-background">
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-coin/5" />
       <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-indigo-500/10 blur-3xl" />
       <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-amber-500/10 blur-3xl" />
 
