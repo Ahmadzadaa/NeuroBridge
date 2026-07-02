@@ -6,6 +6,7 @@ import { AUDIT_ACTIONS } from "@/lib/audit/actions";
 import { enqueueJob } from "@/lib/queue/queue";
 import type { ReportExportPayload } from "@/lib/queue/types";
 import { exportProgramReportCsv } from "@/lib/reports/export-service";
+import { enforceRateLimit } from "@/lib/security/rate-limit";
 
 const SYNC_EXPORT_THRESHOLD = 500;
 
@@ -16,6 +17,8 @@ export async function POST(request: Request) {
       if (!session.tenantId) {
         return NextResponse.json({ error: "Tenant required" }, { status: 400 });
       }
+
+      await enforceRateLimit("export", session.id);
 
       const body = parseBody(reportExportSchema, await request.json());
 

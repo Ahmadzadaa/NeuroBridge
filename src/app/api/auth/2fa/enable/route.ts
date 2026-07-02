@@ -9,11 +9,14 @@ import {
 import { twoFactorSetupSchema, parseBody } from "@/lib/validation/schemas";
 import { recordAudit, getClientIp } from "@/lib/audit/audit-service";
 import { AUDIT_ACTIONS } from "@/lib/audit/actions";
+import { enforceRateLimit } from "@/lib/security/rate-limit";
 
 export async function POST(request: Request) {
   return withAuthorizedHandler(
     "settings:write",
     async ({ session }) => {
+      await enforceRateLimit("twoFactor", session.id);
+
       const body = parseBody(twoFactorSetupSchema, await request.json());
 
       const user = await prisma.user.findUnique({

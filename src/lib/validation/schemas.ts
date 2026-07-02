@@ -123,6 +123,21 @@ export const issueCertificateSchema = z.object({
   type: z.enum(["PARTICIPATION", "ACHIEVEMENT", "COMPLETION"]),
 });
 
+export const auditQuerySchema = z.object({
+  tenantId: z.string().cuid().optional(),
+  action: z.string().trim().max(100).optional(),
+  userId: z.string().cuid().optional(),
+  page: z.coerce.number().int().min(1).max(100000).default(1),
+  pageSize: z.coerce.number().int().min(1).max(100).default(50),
+  from: z.coerce.date().optional(),
+  to: z.coerce.date().optional(),
+});
+
+export const recoveryCodeSchema = z
+  .string()
+  .trim()
+  .regex(/^[A-F0-9]{10}$/i, "Invalid recovery code format");
+
 export function parseBody<T extends z.ZodType>(
   schema: T,
   body: unknown

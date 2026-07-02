@@ -7,11 +7,14 @@ import {
   generateTotpSecret,
   getTotpUri,
 } from "@/lib/security/two-factor";
+import { enforceRateLimit } from "@/lib/security/rate-limit";
 
 export async function POST() {
   return withAuthorizedHandler(
     "settings:write",
     async ({ session }) => {
+      await enforceRateLimit("twoFactor", session.id);
+
       if (!adminRequires2FA(session.role)) {
         return Response.json(
           { error: "Two-factor authentication is only required for admin roles" },
