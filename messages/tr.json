@@ -67,7 +67,11 @@
     "featureTracking": "Gerçek zamanlı ilerleme takibi",
     "featureAI": "AI destekli mentorluk",
     "showPassword": "Şifreyi göster",
-    "hidePassword": "Şifreyi gizle"
+    "hidePassword": "Şifreyi gizle",
+    "trustEncryption": "256-bit şifreleme",
+    "trustCompliance": "KVKK/GDPR uyumlu",
+    "trustEnterprise": "Enterprise SaaS",
+    "allRightsReserved": "Tüm hakları saklıdır"
   },
   "nav": {
     "superAdmin": {

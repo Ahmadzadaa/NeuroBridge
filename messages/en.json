@@ -67,7 +67,11 @@
     "featureTracking": "Real-time progress tracking",
     "featureAI": "AI-powered mentorship",
     "showPassword": "Show password",
-    "hidePassword": "Hide password"
+    "hidePassword": "Hide password",
+    "trustEncryption": "256-bit encryption",
+    "trustCompliance": "KVKK/GDPR compliant",
+    "trustEnterprise": "Enterprise SaaS",
+    "allRightsReserved": "All rights reserved"
   },
   "nav": {
     "superAdmin": {

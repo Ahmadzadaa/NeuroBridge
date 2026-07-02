@@ -67,7 +67,11 @@
     "featureTracking": "Real vaxt irəliləyiş izləmə",
     "featureAI": "AI dəstəkli mentorluq",
     "showPassword": "Şifrəni göstər",
-    "hidePassword": "Şifrəni gizlət"
+    "hidePassword": "Şifrəni gizlət",
+    "trustEncryption": "256-bit şifrələmə",
+    "trustCompliance": "KVKK/GDPR uyğun",
+    "trustEnterprise": "Enterprise SaaS",
+    "allRightsReserved": "Bütün hüquqlar qorunur"
   },
   "nav": {
     "superAdmin": {
