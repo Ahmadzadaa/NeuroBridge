@@ -5,6 +5,8 @@ import { getRedisClient, isRedisAvailable } from "@/lib/redis/client";
 export type RateLimitBucket =
   | "login"
   | "registration"
+  | "twoFactor"
+  | "export"
   | "ai"
   | "webhook"
   | "api";
@@ -12,14 +14,18 @@ export type RateLimitBucket =
 const WINDOW_SECONDS: Record<RateLimitBucket, number> = {
   login: 60,
   registration: 60,
+  twoFactor: 60,
+  export: 60,
   ai: 60,
   webhook: 60,
   api: 60,
 };
 
 const LIMITS: Record<RateLimitBucket, number> = {
-  login: 10,
+  login: 5,
   registration: 5,
+  twoFactor: 5,
+  export: 5,
   ai: 20,
   webhook: 100,
   api: 120,
@@ -61,10 +67,6 @@ export async function enforceRateLimit(
   identifier: string
 ): Promise<void> {
   if (process.env.NODE_ENV === "test") {
-    return;
-  }
-
-  if (process.env.NODE_ENV === "development" && bucket === "login") {
     return;
   }
 
