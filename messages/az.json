@@ -49,8 +49,10 @@
     "roles": {
       "superAdmin": "Super Admin",
       "tenant": "Təşkilat",
-      "participant": "İştirakçı"
-    }
+      "participant": "İştirakçı",
+      "jury": "Jüri"
+    },
+    "error": "Xəta baş verdi"
   },
   "auth": {
     "login": "Daxil ol",
@@ -99,7 +101,12 @@
       "badges": "Nişanlar",
       "certificates": "Sertifikatlar",
       "leaderboard": "Liderlik Cədvəli",
-      "profile": "Profil"
+      "profile": "Profil",
+      "hackathon": "Hakaton"
+    },
+    "jury": {
+      "dashboard": "İdarə Paneli",
+      "rankings": "Sıralama"
     }
   },
   "superAdmin": {
@@ -265,6 +272,16 @@
       "changePassword": "Şifrə Dəyiş",
       "twoFactor": "İki Faktorlu Doğrulama",
       "sessionTimeout": "Sessiya Vaxtı"
+    },
+    "qrInvite": {
+      "invite": "QR Dəvət",
+      "hackathon": "Hakaton",
+      "title": "QR ilə dəvət",
+      "description": "bu QR kodu skan edən şəxs birbaşa müraciət səhifəsinə düşür.",
+      "qrAlt": "Müraciət linki üçün QR kod",
+      "linkCopied": "Link kopyalandı",
+      "copyLink": "Linki kopyala",
+      "downloadPng": "PNG endir"
     }
   },
   "participant": {
@@ -286,7 +303,28 @@
       "title": "Təlim Modulları",
       "assigned": "Təyin Olunan Təlimlər",
       "completed": "Tamamlanan",
-      "takeExam": "İmtahana Gir"
+      "takeExam": "İmtahana Gir",
+      "subtitle": "Video dərsləri izləyin, biliklərinizi imtahanla təsdiqləyin və coin qazanın.",
+      "lessonCount": "{count} dərs",
+      "minuteCount": "{count} dəq",
+      "progress": "İrəliləyiş",
+      "start": "Başla",
+      "continue": "Davam et",
+      "inProgress": "Davam edir",
+      "examPassed": "İmtahan verilib",
+      "bestScore": "Ən yaxşı nəticə",
+      "backToTrainings": "Təlimlərə qayıt",
+      "lessonLabel": "Dərs {number}",
+      "lessonsHeading": "Dərslər",
+      "markComplete": "Tamamlandı kimi işarələ",
+      "completedLesson": "Tamamlandı",
+      "nextLesson": "Növbəti dərs",
+      "lessonDone": "Hamısı tamamlandı",
+      "saveError": "Yadda saxlanmadı — yenidən cəhd edin",
+      "examHeading": "Yekun İmtahan",
+      "examMeta": "{count} sual · keçid balı {threshold}%",
+      "retakeExam": "Yenidən cəhd et",
+      "examHint": "Əvvəlcə bütün dərsləri tamamlamaq tövsiyə olunur"
     },
     "aiTools": {
       "title": "AI Dəstək Alətləri",
@@ -311,6 +349,27 @@
       "personalInfo": "Şəxsi Məlumatlar",
       "language": "Dil",
       "notifications": "Bildiriş Tərcihləri"
+    },
+    "exam": {
+      "backToTraining": "Təlimə qayıt",
+      "introText": "{count} sual sizi gözləyir. Keçid balı: {threshold}%. Uğurlar!",
+      "previousBest": "Əvvəlki nəticə: {score}%",
+      "begin": "İmtahana başla",
+      "retake": "Yenidən ver",
+      "questionLabel": "Sual {number}",
+      "back": "Geri",
+      "next": "İrəli",
+      "submit": "Təhvil ver",
+      "submitError": "Göndərilmədi — yenidən cəhd edin",
+      "passedTitle": "Təbriklər, keçdiniz!",
+      "failedTitle": "Bu dəfə alınmadı",
+      "resultSummary": "{total} sualdan {correct} düzgün",
+      "thresholdNote": "Keçid balı: {threshold}%",
+      "coinsEarned": "coin qazandınız",
+      "tryAgain": "Yenidən cəhd et",
+      "reviewHeading": "Cavabların təhlili",
+      "yourAnswer": "Sizin cavabınız",
+      "correctAnswer": "Düzgün cavab"
     }
   },
   "landing": {
@@ -318,5 +377,89 @@
     "subtitle": "Simulyasiya əsaslı öyrənmə və qiymətləndirmə platforması",
     "getStarted": "Başla",
     "learnMore": "Daha Çox Məlumat"
+  },
+  "hackathon": {
+    "title": "Hakaton",
+    "noProgram": "Hazırda aktiv hakaton yoxdur",
+    "noProgramHint": "Yeni hakaton elan olunanda burada görünəcək.",
+    "teamCount": "{count} komanda",
+    "deadline": "Son tarix",
+    "backToPrograms": "Proqramlara qayıt",
+    "team": {
+      "createHeading": "Komanda yarat",
+      "name": "Komanda adı",
+      "namePlaceholder": "məs. CodeCrafters",
+      "slogan": "Şüar (istəyə bağlı)",
+      "sloganPlaceholder": "Komandanızın devizi",
+      "create": "Komanda yarat",
+      "created": "Komanda yaradıldı!",
+      "joinHeading": "Komandaya qoşul",
+      "join": "Qoşul",
+      "joined": "Komandaya qoşuldunuz!",
+      "noTeams": "Hələ komanda yoxdur — ilk komandanı siz yaradın!",
+      "full": "Komanda doludur",
+      "fullLabel": "Dolu",
+      "nameTaken": "Bu ad artıq istifadə olunur",
+      "myTeam": "Mənim komandam"
+    },
+    "submission": {
+      "heading": "Layihə təqdimatı",
+      "hint": "Layihə sənədinizi PDF formatında yükləyin. Yeni versiya əvvəlkini əvəz edir.",
+      "projectTitle": "Layihə adı",
+      "titlePlaceholder": "məs. AI Mentor Platforması",
+      "summary": "Qısa təsvir (istəyə bağlı)",
+      "summaryPlaceholder": "Layihəniz hansı problemi həll edir?",
+      "dropHint": "PDF seçmək üçün klikləyin",
+      "pdfOnly": "Yalnız PDF · maksimum 10 MB",
+      "upload": "Layihəni təqdim et",
+      "uploadNewVersion": "Yeni versiya yüklə",
+      "uploaded": "Layihə uğurla təqdim olundu!",
+      "history": "Təqdim tarixçəsi"
+    },
+    "rankings": {
+      "heading": "Canlı Sıralama",
+      "rank": "Yer",
+      "team": "Komanda",
+      "project": "Layihə",
+      "juries": "Jüri",
+      "score": "Bal",
+      "yourTeam": "Sizin komanda",
+      "noSubmission": "Təqdimat yoxdur",
+      "weight": "Çəki",
+      "juryVotes": "{count} jüri səsi"
+    },
+    "criteria": {
+      "heading": "Qiymətləndirmə meyarları",
+      "hint": "Hər meyar üçün maksimum bal və çəki təyin edin.",
+      "points": "bal",
+      "add": "Meyar əlavə et",
+      "saved": "Meyarlar yadda saxlanıldı",
+      "resetWarning": "Meyarları dəyişmək mövcud jüri xallarını sıfırlayacaq.",
+      "namePlaceholder": "məs. İnnovasiya",
+      "maxScore": "Maksimum bal",
+      "weight": "Çəki"
+    },
+    "juries": {
+      "heading": "Jüri üzvləri",
+      "empty": "Hələ jüri üzvü yoxdur. İştirakçılar bölməsindən JURY rolu təyin edin."
+    },
+    "jury": {
+      "dashboardTitle": "Jüri Paneli",
+      "dashboardSubtitle": "Təqdim olunmuş layihələri nəzərdən keçirin və meyarlar üzrə qiymətləndirin.",
+      "noSubmissions": "Qiymətləndirmə üçün layihə hələ təqdim olunmayıb.",
+      "pendingHeading": "Qiymətləndirmə gözləyir",
+      "completedHeading": "Tamamlanıb",
+      "scored": "Qiymətləndirilib",
+      "scoredProgress": "{scored}/{total} meyar",
+      "backToDashboard": "Panelə qayıt",
+      "openPdf": "PDF-i aç",
+      "scoringHeading": "Qiymətləndirmə",
+      "scoringHint": "Hər meyar üzrə bal verin. Xallarınızı istənilən vaxt yeniləyə bilərsiniz.",
+      "commentPlaceholder": "Şərh (istəyə bağlı)",
+      "saveScores": "Xalları yadda saxla",
+      "scoresSaved": "Xallarınız yadda saxlanıldı",
+      "alreadyScored": "Bu layihəni qiymətləndirmisiniz",
+      "weightLabel": "Çəki"
+    }
   }
 }

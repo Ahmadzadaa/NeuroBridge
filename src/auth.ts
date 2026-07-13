@@ -119,6 +119,8 @@ export function getRoleDashboardPath(role: UserRole, locale: string): string {
       return `/${locale}/tenant`;
     case "PARTICIPANT":
       return `/${locale}/participant`;
+    case "JURY":
+      return `/${locale}/jury`;
     default:
       return `/${locale}/login`;
   }

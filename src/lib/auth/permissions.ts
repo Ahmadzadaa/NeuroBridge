@@ -22,6 +22,12 @@ export type Permission =
   | "badge:read"
   | "certificate:read"
   | "coin:read"
+  | "training:read"
+  | "training:submit"
+  | "hackathon:read"
+  | "hackathon:manage"
+  | "hackathon:submit"
+  | "hackathon:score"
   | "platform:admin";
 
 const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
@@ -47,6 +53,12 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "badge:read",
     "certificate:read",
     "coin:read",
+    "training:read",
+    "training:submit",
+    "hackathon:read",
+    "hackathon:manage",
+    "hackathon:submit",
+    "hackathon:score",
     "platform:admin",
   ],
   TENANT_ADMIN: [
@@ -68,6 +80,9 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "badge:read",
     "certificate:read",
     "coin:read",
+    "training:read",
+    "hackathon:read",
+    "hackathon:manage",
   ],
   TENANT_VIEWER: [
     "tenant:read",
@@ -81,6 +96,8 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "badge:read",
     "certificate:read",
     "coin:read",
+    "training:read",
+    "hackathon:read",
   ],
   PARTICIPANT: [
     "program:read",
@@ -89,6 +106,16 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "certificate:read",
     "coin:read",
     "settings:read",
+    "training:read",
+    "training:submit",
+    "hackathon:read",
+    "hackathon:submit",
+  ],
+  JURY: [
+    "program:read",
+    "settings:read",
+    "hackathon:read",
+    "hackathon:score",
   ],
 };
 

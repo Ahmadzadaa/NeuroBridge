@@ -49,8 +49,10 @@
     "roles": {
       "superAdmin": "Super Admin",
       "tenant": "Organization",
-      "participant": "Participant"
-    }
+      "participant": "Participant",
+      "jury": "Jury"
+    },
+    "error": "Something went wrong"
   },
   "auth": {
     "login": "Log In",
@@ -99,7 +101,12 @@
       "badges": "Badges",
       "certificates": "Certificates",
       "leaderboard": "Leaderboard",
-      "profile": "Profile"
+      "profile": "Profile",
+      "hackathon": "Hackathon"
+    },
+    "jury": {
+      "dashboard": "Dashboard",
+      "rankings": "Rankings"
     }
   },
   "superAdmin": {
@@ -265,6 +272,16 @@
       "changePassword": "Change Password",
       "twoFactor": "Two-Factor Authentication",
       "sessionTimeout": "Session Timeout"
+    },
+    "qrInvite": {
+      "invite": "QR Invite",
+      "hackathon": "Hackathon",
+      "title": "Invite via QR",
+      "description": "anyone who scans this QR code lands on the application page.",
+      "qrAlt": "QR code for the application link",
+      "linkCopied": "Link copied",
+      "copyLink": "Copy link",
+      "downloadPng": "Download PNG"
     }
   },
   "participant": {
@@ -286,7 +303,28 @@
       "title": "Training Modules",
       "assigned": "Assigned Trainings",
       "completed": "Completed",
-      "takeExam": "Take Exam"
+      "takeExam": "Take Exam",
+      "subtitle": "Watch video lessons, prove your knowledge with exams, and earn coins.",
+      "lessonCount": "{count} lessons",
+      "minuteCount": "{count} min",
+      "progress": "Progress",
+      "start": "Start",
+      "continue": "Continue",
+      "inProgress": "In progress",
+      "examPassed": "Exam passed",
+      "bestScore": "Best score",
+      "backToTrainings": "Back to trainings",
+      "lessonLabel": "Lesson {number}",
+      "lessonsHeading": "Lessons",
+      "markComplete": "Mark as complete",
+      "completedLesson": "Completed",
+      "nextLesson": "Next lesson",
+      "lessonDone": "All done",
+      "saveError": "Could not save — please try again",
+      "examHeading": "Final Exam",
+      "examMeta": "{count} questions · {threshold}% to pass",
+      "retakeExam": "Retake exam",
+      "examHint": "We recommend completing all lessons first"
     },
     "aiTools": {
       "title": "AI Support Tools",
@@ -311,6 +349,27 @@
       "personalInfo": "Personal Information",
       "language": "Language",
       "notifications": "Notification Preferences"
+    },
+    "exam": {
+      "backToTraining": "Back to training",
+      "introText": "{count} questions await you. Passing score: {threshold}%. Good luck!",
+      "previousBest": "Previous best: {score}%",
+      "begin": "Start exam",
+      "retake": "Retake",
+      "questionLabel": "Question {number}",
+      "back": "Back",
+      "next": "Next",
+      "submit": "Submit",
+      "submitError": "Submission failed — please try again",
+      "passedTitle": "Congratulations, you passed!",
+      "failedTitle": "Not this time",
+      "resultSummary": "{correct} of {total} correct",
+      "thresholdNote": "Passing score: {threshold}%",
+      "coinsEarned": "coins earned",
+      "tryAgain": "Try again",
+      "reviewHeading": "Answer review",
+      "yourAnswer": "Your answer",
+      "correctAnswer": "Correct answer"
     }
   },
   "landing": {
@@ -318,5 +377,89 @@
     "subtitle": "Simulation-based learning and assessment platform",
     "getStarted": "Get Started",
     "learnMore": "Learn More"
+  },
+  "hackathon": {
+    "title": "Hackathon",
+    "noProgram": "No active hackathon right now",
+    "noProgramHint": "It will appear here once a new hackathon is announced.",
+    "teamCount": "{count} teams",
+    "deadline": "Deadline",
+    "backToPrograms": "Back to programs",
+    "team": {
+      "createHeading": "Create a team",
+      "name": "Team name",
+      "namePlaceholder": "e.g. CodeCrafters",
+      "slogan": "Slogan (optional)",
+      "sloganPlaceholder": "Your team's motto",
+      "create": "Create team",
+      "created": "Team created!",
+      "joinHeading": "Join a team",
+      "join": "Join",
+      "joined": "You joined the team!",
+      "noTeams": "No teams yet — be the first to create one!",
+      "full": "Team is full",
+      "fullLabel": "Full",
+      "nameTaken": "This name is already taken",
+      "myTeam": "My team"
+    },
+    "submission": {
+      "heading": "Project submission",
+      "hint": "Upload your project document as a PDF. A new version replaces the previous one.",
+      "projectTitle": "Project title",
+      "titlePlaceholder": "e.g. AI Mentor Platform",
+      "summary": "Short summary (optional)",
+      "summaryPlaceholder": "What problem does your project solve?",
+      "dropHint": "Click to choose a PDF",
+      "pdfOnly": "PDF only · up to 10 MB",
+      "upload": "Submit project",
+      "uploadNewVersion": "Upload new version",
+      "uploaded": "Project submitted successfully!",
+      "history": "Submission history"
+    },
+    "rankings": {
+      "heading": "Live Rankings",
+      "rank": "Rank",
+      "team": "Team",
+      "project": "Project",
+      "juries": "Juries",
+      "score": "Score",
+      "yourTeam": "Your team",
+      "noSubmission": "No submission",
+      "weight": "Weight",
+      "juryVotes": "{count} jury votes"
+    },
+    "criteria": {
+      "heading": "Scoring criteria",
+      "hint": "Set a maximum score and weight for each criterion.",
+      "points": "pts",
+      "add": "Add criterion",
+      "saved": "Criteria saved",
+      "resetWarning": "Changing criteria will reset existing jury scores.",
+      "namePlaceholder": "e.g. Innovation",
+      "maxScore": "Max score",
+      "weight": "Weight"
+    },
+    "juries": {
+      "heading": "Jury members",
+      "empty": "No jury members yet. Assign the JURY role from the Participants section."
+    },
+    "jury": {
+      "dashboardTitle": "Jury Panel",
+      "dashboardSubtitle": "Review submitted projects and score them against the criteria.",
+      "noSubmissions": "No projects have been submitted for review yet.",
+      "pendingHeading": "Awaiting review",
+      "completedHeading": "Completed",
+      "scored": "Scored",
+      "scoredProgress": "{scored}/{total} criteria",
+      "backToDashboard": "Back to dashboard",
+      "openPdf": "Open PDF",
+      "scoringHeading": "Scoring",
+      "scoringHint": "Score each criterion. You can update your scores at any time.",
+      "commentPlaceholder": "Comment (optional)",
+      "saveScores": "Save scores",
+      "scoresSaved": "Your scores were saved",
+      "alreadyScored": "You have scored this project",
+      "weightLabel": "Weight"
+    }
   }
 }

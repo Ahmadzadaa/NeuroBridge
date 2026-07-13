@@ -49,8 +49,10 @@
     "roles": {
       "superAdmin": "Süper Admin",
       "tenant": "Organizasyon",
-      "participant": "Katılımcı"
-    }
+      "participant": "Katılımcı",
+      "jury": "Jüri"
+    },
+    "error": "Bir hata oluştu"
   },
   "auth": {
     "login": "Giriş Yap",
@@ -99,7 +101,12 @@
       "badges": "Rozetler",
       "certificates": "Sertifikalar",
       "leaderboard": "Liderlik Tablosu",
-      "profile": "Profil"
+      "profile": "Profil",
+      "hackathon": "Hackathon"
+    },
+    "jury": {
+      "dashboard": "Kontrol Paneli",
+      "rankings": "Sıralama"
     }
   },
   "superAdmin": {
@@ -265,6 +272,16 @@
       "changePassword": "Şifre Değiştir",
       "twoFactor": "İki Faktörlü Doğrulama",
       "sessionTimeout": "Oturum Zaman Aşımı"
+    },
+    "qrInvite": {
+      "invite": "QR Davet",
+      "hackathon": "Hackathon",
+      "title": "QR ile davet",
+      "description": "bu QR kodu tarayan kişi doğrudan başvuru sayfasına ulaşır.",
+      "qrAlt": "Başvuru bağlantısı için QR kod",
+      "linkCopied": "Bağlantı kopyalandı",
+      "copyLink": "Bağlantıyı kopyala",
+      "downloadPng": "PNG indir"
     }
   },
   "participant": {
@@ -286,7 +303,28 @@
       "title": "Eğitim Modülleri",
       "assigned": "Atanan Eğitimler",
       "completed": "Tamamlanan",
-      "takeExam": "Sınava Gir"
+      "takeExam": "Sınava Gir",
+      "subtitle": "Video dersleri izleyin, bilginizi sınavla kanıtlayın ve coin kazanın.",
+      "lessonCount": "{count} ders",
+      "minuteCount": "{count} dk",
+      "progress": "İlerleme",
+      "start": "Başla",
+      "continue": "Devam et",
+      "inProgress": "Devam ediyor",
+      "examPassed": "Sınav geçildi",
+      "bestScore": "En iyi skor",
+      "backToTrainings": "Eğitimlere dön",
+      "lessonLabel": "Ders {number}",
+      "lessonsHeading": "Dersler",
+      "markComplete": "Tamamlandı olarak işaretle",
+      "completedLesson": "Tamamlandı",
+      "nextLesson": "Sonraki ders",
+      "lessonDone": "Tümü tamamlandı",
+      "saveError": "Kaydedilemedi — tekrar deneyin",
+      "examHeading": "Final Sınavı",
+      "examMeta": "{count} soru · geçme notu %{threshold}",
+      "retakeExam": "Tekrar dene",
+      "examHint": "Önce tüm dersleri tamamlamanız önerilir"
     },
     "aiTools": {
       "title": "AI Destek Araçları",
@@ -311,6 +349,27 @@
       "personalInfo": "Kişisel Bilgiler",
       "language": "Dil",
       "notifications": "Bildirim Tercihleri"
+    },
+    "exam": {
+      "backToTraining": "Eğitime dön",
+      "introText": "{count} soru sizi bekliyor. Geçme notu: %{threshold}. Başarılar!",
+      "previousBest": "Önceki skor: %{score}",
+      "begin": "Sınava başla",
+      "retake": "Tekrar gir",
+      "questionLabel": "Soru {number}",
+      "back": "Geri",
+      "next": "İleri",
+      "submit": "Teslim et",
+      "submitError": "Gönderilemedi — tekrar deneyin",
+      "passedTitle": "Tebrikler, geçtiniz!",
+      "failedTitle": "Bu sefer olmadı",
+      "resultSummary": "{total} sorudan {correct} doğru",
+      "thresholdNote": "Geçme notu: %{threshold}",
+      "coinsEarned": "coin kazandınız",
+      "tryAgain": "Tekrar dene",
+      "reviewHeading": "Cevap analizi",
+      "yourAnswer": "Sizin cevabınız",
+      "correctAnswer": "Doğru cevap"
     }
   },
   "landing": {
@@ -318,5 +377,89 @@
     "subtitle": "Simülasyon tabanlı öğrenme ve değerlendirme platformu",
     "getStarted": "Başlayın",
     "learnMore": "Daha Fazla Bilgi"
+  },
+  "hackathon": {
+    "title": "Hackathon",
+    "noProgram": "Şu anda aktif bir hackathon yok",
+    "noProgramHint": "Yeni bir hackathon duyurulduğunda burada görünecek.",
+    "teamCount": "{count} takım",
+    "deadline": "Son tarih",
+    "backToPrograms": "Programlara dön",
+    "team": {
+      "createHeading": "Takım oluştur",
+      "name": "Takım adı",
+      "namePlaceholder": "örn. CodeCrafters",
+      "slogan": "Slogan (isteğe bağlı)",
+      "sloganPlaceholder": "Takımınızın mottosu",
+      "create": "Takım oluştur",
+      "created": "Takım oluşturuldu!",
+      "joinHeading": "Takıma katıl",
+      "join": "Katıl",
+      "joined": "Takıma katıldınız!",
+      "noTeams": "Henüz takım yok — ilk takımı siz kurun!",
+      "full": "Takım dolu",
+      "fullLabel": "Dolu",
+      "nameTaken": "Bu ad zaten kullanılıyor",
+      "myTeam": "Takımım"
+    },
+    "submission": {
+      "heading": "Proje teslimi",
+      "hint": "Proje dokümanınızı PDF olarak yükleyin. Yeni sürüm öncekinin yerini alır.",
+      "projectTitle": "Proje adı",
+      "titlePlaceholder": "örn. AI Mentor Platformu",
+      "summary": "Kısa açıklama (isteğe bağlı)",
+      "summaryPlaceholder": "Projeniz hangi sorunu çözüyor?",
+      "dropHint": "PDF seçmek için tıklayın",
+      "pdfOnly": "Yalnızca PDF · en fazla 10 MB",
+      "upload": "Projeyi teslim et",
+      "uploadNewVersion": "Yeni sürüm yükle",
+      "uploaded": "Proje başarıyla teslim edildi!",
+      "history": "Teslim geçmişi"
+    },
+    "rankings": {
+      "heading": "Canlı Sıralama",
+      "rank": "Sıra",
+      "team": "Takım",
+      "project": "Proje",
+      "juries": "Jüri",
+      "score": "Puan",
+      "yourTeam": "Takımınız",
+      "noSubmission": "Teslim yok",
+      "weight": "Ağırlık",
+      "juryVotes": "{count} jüri oyu"
+    },
+    "criteria": {
+      "heading": "Değerlendirme kriterleri",
+      "hint": "Her kriter için maksimum puan ve ağırlık belirleyin.",
+      "points": "puan",
+      "add": "Kriter ekle",
+      "saved": "Kriterler kaydedildi",
+      "resetWarning": "Kriterleri değiştirmek mevcut jüri puanlarını sıfırlar.",
+      "namePlaceholder": "örn. İnovasyon",
+      "maxScore": "Maksimum puan",
+      "weight": "Ağırlık"
+    },
+    "juries": {
+      "heading": "Jüri üyeleri",
+      "empty": "Henüz jüri üyesi yok. Katılımcılar bölümünden JURY rolü atayın."
+    },
+    "jury": {
+      "dashboardTitle": "Jüri Paneli",
+      "dashboardSubtitle": "Teslim edilen projeleri inceleyin ve kriterlere göre puanlayın.",
+      "noSubmissions": "Değerlendirilecek proje henüz teslim edilmedi.",
+      "pendingHeading": "Değerlendirme bekliyor",
+      "completedHeading": "Tamamlandı",
+      "scored": "Puanlandı",
+      "scoredProgress": "{scored}/{total} kriter",
+      "backToDashboard": "Panele dön",
+      "openPdf": "PDF'yi aç",
+      "scoringHeading": "Değerlendirme",
+      "scoringHint": "Her kriter için puan verin. Puanlarınızı istediğiniz zaman güncelleyebilirsiniz.",
+      "commentPlaceholder": "Yorum (isteğe bağlı)",
+      "saveScores": "Puanları kaydet",
+      "scoresSaved": "Puanlarınız kaydedildi",
+      "alreadyScored": "Bu projeyi puanladınız",
+      "weightLabel": "Ağırlık"
+    }
   }
 }

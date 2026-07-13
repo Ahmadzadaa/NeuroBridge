@@ -58,8 +58,11 @@ Open [http://localhost:3000/tr](http://localhost:3000/tr)
 | Role | Email | Password |
 |------|-------|----------|
 | Super Admin | admin@bizsim.com | Admin123! |
-| Tenant Admin | tenant@demo-tekno.com | Admin123! |
-| Participant | participant@demo.com | Admin123! |
+| Tenant Admin | admin@demo-teknopark.com | Demo123! |
+| Participant | ahmet.yilmaz0@demo.com | Demo123! |
+| Jury | jury@demo-teknopark.com | Demo123! |
+
+> Demo data: `npm run db:seed-demo` (tenant, programs, trainings, exams), then `npm run db:seed-hackathon` (hackathon program, teams, jury users, criteria, sample PDF submissions).
 
 > **Local dev:** Demo accounts skip 2FA automatically in development. Re-run `npx prisma db seed` to reset passwords and clear 2FA if you get locked out.
 
@@ -70,6 +73,7 @@ Open [http://localhost:3000/tr](http://localhost:3000/tr)
 | Super Admin | `/super-admin` | SUPER_ADMIN |
 | Tenant | `/tenant` | TENANT_ADMIN, TENANT_VIEWER |
 | Participant | `/participant` | PARTICIPANT |
+| Jury | `/jury` | JURY |
 
 ## Project Structure
 

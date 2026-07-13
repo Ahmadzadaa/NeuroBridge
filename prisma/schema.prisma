@@ -77,6 +77,9 @@ model User {
   auditLogs        AuditLog[]
   recoveryCodes    UserRecoveryCode[]
   examAttempts     ExamAttempt[]
+  lessonProgress   LessonProgress[]
+  teamMemberships  TeamMember[]
+  juryScores       JuryScore[]
 
   @@unique([tenantId, email])
   @@index([tenantId])
@@ -117,6 +120,7 @@ model Program {
   programSimulations ProgramSimulation[]
   programTrainings   ProgramTraining[]
   programAiTools     ProgramAiTool[]
+  hackathonTeams     HackathonTeam[]
 
   @@index([tenantId])
   @@map("programs")
@@ -236,6 +240,7 @@ model Lesson {
   createdAt        DateTime @default(now()) @map("created_at")
 
   training Training @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+  progress LessonProgress[]
 
   @@index([trainingId])
   @@map("lessons")
@@ -290,6 +295,106 @@ model ExamAttempt {
   @@unique([examId, userId])
   @@index([userId])
   @@map("exam_attempts")
+}
+
+model LessonProgress {
+  id          String   @id @default(cuid())
+  lessonId    String   @map("lesson_id")
+  userId      String   @map("user_id")
+  completedAt DateTime @default(now()) @map("completed_at")
+
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([lessonId, userId])
+  @@index([userId])
+  @@map("lesson_progress")
+}
+
+model HackathonTeam {
+  id        String   @id @default(cuid())
+  programId String   @map("program_id")
+  name      String
+  slogan    String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  program     Program            @relation(fields: [programId], references: [id], onDelete: Cascade)
+  members     TeamMember[]
+  submissions ProjectSubmission[]
+
+  @@unique([programId, name])
+  @@index([programId])
+  @@map("hackathon_teams")
+}
+
+model TeamMember {
+  id       String   @id @default(cuid())
+  teamId   String   @map("team_id")
+  userId   String   @map("user_id")
+  isLeader Boolean  @default(false) @map("is_leader")
+  joinedAt DateTime @default(now()) @map("joined_at")
+
+  team HackathonTeam @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, userId])
+  @@index([userId])
+  @@map("team_members")
+}
+
+model ProjectSubmission {
+  id          String   @id @default(cuid())
+  teamId      String   @map("team_id")
+  title       String
+  summary     String?
+  fileName    String   @map("file_name")
+  filePath    String   @map("file_path")
+  fileSize    Int      @map("file_size")
+  version     Int      @default(1)
+  submittedBy String   @map("submitted_by")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  team   HackathonTeam @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  scores JuryScore[]
+
+  @@index([teamId])
+  @@map("project_submissions")
+}
+
+model JuryCriterion {
+  id        String @id @default(cuid())
+  programId String @map("program_id")
+  name      String
+  nameTr    String? @map("name_tr")
+  nameEn    String? @map("name_en")
+  nameAz    String? @map("name_az")
+  maxScore  Int    @default(10) @map("max_score")
+  weight    Int    @default(1)
+  order     Int    @default(0)
+
+  scores JuryScore[]
+
+  @@index([programId])
+  @@map("jury_criteria")
+}
+
+model JuryScore {
+  id           String   @id @default(cuid())
+  submissionId String   @map("submission_id")
+  criterionId  String   @map("criterion_id")
+  juryUserId   String   @map("jury_user_id")
+  score        Int
+  comment      String?
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  submission ProjectSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  criterion  JuryCriterion     @relation(fields: [criterionId], references: [id], onDelete: Cascade)
+  jury       User              @relation(fields: [juryUserId], references: [id], onDelete: Cascade)
+
+  @@unique([submissionId, criterionId, juryUserId])
+  @@index([juryUserId])
+  @@map("jury_scores")
 }
 
 model Badge {

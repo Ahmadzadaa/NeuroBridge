@@ -1,0 +1,301 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import {
+  ArrowLeft,
+  GripVertical,
+  Loader2,
+  Plus,
+  Save,
+  Scale,
+  Trash2,
+  TriangleAlert,
+  Users,
+} from "lucide-react";
+import { toast } from "sonner";
+import { DashboardLayout } from "@/components/layout/dashboard-layout";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  RankingsTable,
+  type RankingRow,
+} from "@/components/hackathon/rankings-table";
+
+interface CriterionDraft {
+  key: string;
+  name: string;
+  maxScore: number;
+  weight: number;
+}
+
+interface HackathonAdminClientProps {
+  locale: string;
+  userName: string;
+  canManage: boolean;
+  program: { id: string; name: string };
+  criteria: { id: string; name: string; maxScore: number; weight: number }[];
+  rankings: RankingRow[];
+  hasScores: boolean;
+  juries: { id: string; name: string; email: string }[];
+}
+
+let draftCounter = 0;
+const nextKey = () => `draft-${draftCounter++}`;
+
+export function HackathonAdminClient({
+  locale,
+  userName,
+  canManage,
+  program,
+  criteria,
+  rankings,
+  hasScores,
+  juries,
+}: HackathonAdminClientProps) {
+  const t = useTranslations("hackathon");
+  const tc = useTranslations("common");
+  const router = useRouter();
+
+  const [drafts, setDrafts] = useState<CriterionDraft[]>(() =>
+    criteria.length > 0
+      ? criteria.map((c) => ({
+          key: c.id,
+          name: c.name,
+          maxScore: c.maxScore,
+          weight: c.weight,
+        }))
+      : [{ key: nextKey(), name: "", maxScore: 10, weight: 1 }]
+  );
+  const [saving, setSaving] = useState(false);
+
+  const valid =
+    drafts.length > 0 &&
+    drafts.every(
+      (d) =>
+        d.name.trim().length > 0 &&
+        d.maxScore >= 1 &&
+        d.maxScore <= 100 &&
+        d.weight >= 1 &&
+        d.weight <= 10
+    );
+
+  function updateDraft(key: string, patch: Partial<CriterionDraft>) {
+    setDrafts((prev) =>
+      prev.map((d) => (d.key === key ? { ...d, ...patch } : d))
+    );
+  }
+
+  async function saveCriteria() {
+    if (!valid || saving) return;
+    setSaving(true);
+    try {
+      const res = await fetch("/api/hackathon/criteria", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          programId: program.id,
+          criteria: drafts.map((d) => ({
+            name: d.name.trim(),
+            maxScore: d.maxScore,
+            weight: d.weight,
+          })),
+        }),
+      });
+      if (!res.ok) throw new Error();
+      toast.success(t("criteria.saved"));
+      router.refresh();
+    } catch {
+      toast.error(tc("error"));
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return (
+    <DashboardLayout panel="tenant" title={program.name} userName={userName}>
+      <Link
+        href={`/${locale}/tenant/programs`}
+        className="mb-5 inline-flex items-center gap-1.5 text-[13px] font-medium text-muted-foreground transition-colors hover:text-foreground"
+      >
+        <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+        {t("backToPrograms")}
+      </Link>
+
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1fr_400px]">
+        {/* ── Rankings ────────────────────────────────────────── */}
+        <div className="min-w-0">
+          <h2 className="mb-3 text-[15px] font-semibold">
+            {t("rankings.heading")}
+          </h2>
+          <RankingsTable rankings={rankings} />
+        </div>
+
+        {/* ── Criteria + juries ───────────────────────────────── */}
+        <div className="space-y-4 self-start">
+          <div className="rounded-2xl bg-card p-5 shadow-sm">
+            <h3 className="flex items-center gap-2 text-[15px] font-semibold">
+              <Scale className="h-4.5 w-4.5 text-primary" aria-hidden="true" />
+              {t("criteria.heading")}
+            </h3>
+            <p className="mt-1 text-[12px] text-muted-foreground">
+              {t("criteria.hint")}
+            </p>
+
+            {hasScores && canManage && (
+              <p className="mt-3 flex items-start gap-2 rounded-xl bg-warning/10 px-3 py-2.5 text-[12px] leading-relaxed text-warning-dark">
+                <TriangleAlert
+                  className="mt-0.5 h-4 w-4 shrink-0"
+                  aria-hidden="true"
+                />
+                {t("criteria.resetWarning")}
+              </p>
+            )}
+
+            <div className="mt-4 space-y-2.5">
+              {drafts.map((draft) => (
+                <div
+                  key={draft.key}
+                  className="flex items-center gap-2 rounded-xl border border-border p-2.5"
+                >
+                  <GripVertical
+                    className="h-4 w-4 shrink-0 text-border"
+                    aria-hidden="true"
+                  />
+                  <Input
+                    value={draft.name}
+                    disabled={!canManage}
+                    maxLength={100}
+                    placeholder={t("criteria.namePlaceholder")}
+                    onChange={(e) =>
+                      updateDraft(draft.key, { name: e.target.value })
+                    }
+                    className="h-9 flex-1 rounded-lg text-[13px]"
+                  />
+                  <div className="flex shrink-0 items-center gap-1">
+                    <Input
+                      type="number"
+                      min={1}
+                      max={100}
+                      disabled={!canManage}
+                      value={draft.maxScore}
+                      aria-label={t("criteria.maxScore")}
+                      onChange={(e) =>
+                        updateDraft(draft.key, {
+                          maxScore: Number(e.target.value),
+                        })
+                      }
+                      className="h-9 w-16 rounded-lg text-center text-[13px]"
+                    />
+                    <span className="text-[11px] text-muted-foreground">
+                      ×
+                    </span>
+                    <Input
+                      type="number"
+                      min={1}
+                      max={10}
+                      disabled={!canManage}
+                      value={draft.weight}
+                      aria-label={t("criteria.weight")}
+                      onChange={(e) =>
+                        updateDraft(draft.key, { weight: Number(e.target.value) })
+                      }
+                      className="h-9 w-13 rounded-lg text-center text-[13px]"
+                    />
+                  </div>
+                  {canManage && (
+                    <button
+                      type="button"
+                      aria-label={tc("delete")}
+                      onClick={() =>
+                        setDrafts((prev) =>
+                          prev.filter((d) => d.key !== draft.key)
+                        )
+                      }
+                      className="shrink-0 rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+                    >
+                      <Trash2 className="h-4 w-4" aria-hidden="true" />
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {canManage && (
+              <div className="mt-4 flex gap-2">
+                <Button
+                  variant="outline"
+                  className="flex-1 rounded-xl"
+                  onClick={() =>
+                    setDrafts((prev) => [
+                      ...prev,
+                      { key: nextKey(), name: "", maxScore: 10, weight: 1 },
+                    ])
+                  }
+                >
+                  <Plus className="h-4 w-4" aria-hidden="true" />
+                  {t("criteria.add")}
+                </Button>
+                <Button
+                  className="flex-1 rounded-xl"
+                  disabled={!valid || saving}
+                  onClick={saveCriteria}
+                >
+                  {saving ? (
+                    <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                  ) : (
+                    <>
+                      <Save className="h-4 w-4" aria-hidden="true" />
+                      {tc("save")}
+                    </>
+                  )}
+                </Button>
+              </div>
+            )}
+          </div>
+
+          {/* Juries */}
+          <div className="rounded-2xl bg-card p-5 shadow-sm">
+            <h3 className="flex items-center gap-2 text-[15px] font-semibold">
+              <Users className="h-4.5 w-4.5 text-primary" aria-hidden="true" />
+              {t("juries.heading")} ({juries.length})
+            </h3>
+            {juries.length === 0 ? (
+              <p className="mt-3 text-[13px] text-muted-foreground">
+                {t("juries.empty")}
+              </p>
+            ) : (
+              <div className="mt-3 space-y-2">
+                {juries.map((jury) => (
+                  <div
+                    key={jury.id}
+                    className="flex items-center gap-2.5 text-[13px]"
+                  >
+                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">
+                      {jury.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")
+                        .slice(0, 2)
+                        .toUpperCase()}
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate font-medium">
+                        {jury.name}
+                      </span>
+                      <span className="block truncate text-[11px] text-muted-foreground">
+                        {jury.email}
+                      </span>
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </DashboardLayout>
+  );
+}

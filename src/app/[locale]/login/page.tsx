@@ -102,6 +102,7 @@ export default function LoginPage() {
       TENANT_ADMIN: "/tenant",
       TENANT_VIEWER: "/tenant",
       PARTICIPANT: "/participant",
+      JURY: "/jury",
     };
 
     router.refresh();
@@ -283,10 +284,10 @@ export default function LoginPage() {
               <p className="mb-1 font-semibold uppercase tracking-[0.5px] text-muted-foreground">
                 Dev only
               </p>
-              <p>participant@demo.com</p>
-              <p>tenant@demo-tekno.com</p>
-              <p>admin@bizsim.com</p>
-              <p className="mt-1 font-mono">Şifrə: Admin123!</p>
+              <p>ahmet.yilmaz0@demo.com · iştirakçı</p>
+              <p>admin@demo-teknopark.com · admin</p>
+              <p>jury@demo-teknopark.com · jüri</p>
+              <p className="mt-1 font-mono">Şifrə: Demo123!</p>
             </div>
           )}
         </form>

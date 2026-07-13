@@ -20,9 +20,11 @@ import {
   Award,
   Trophy,
   User,
+  Rocket,
+  Scale,
 } from "lucide-react";
 
-type PanelType = "super-admin" | "tenant" | "participant";
+type PanelType = "super-admin" | "tenant" | "participant" | "jury";
 
 interface NavItem {
   href: string;
@@ -52,11 +54,16 @@ const navConfig: Record<PanelType, NavItem[]> = {
     { href: "/participant", labelKey: "dashboard", icon: LayoutDashboard },
     { href: "/participant/simulations", labelKey: "simulations", icon: Gamepad2 },
     { href: "/participant/trainings", labelKey: "trainings", icon: GraduationCap },
+    { href: "/participant/hackathon", labelKey: "hackathon", icon: Rocket },
     { href: "/participant/ai-tools", labelKey: "aiTools", icon: Bot },
     { href: "/participant/badges", labelKey: "badges", icon: Award },
     { href: "/participant/certificates", labelKey: "certificates", icon: FileText },
     { href: "/participant/leaderboard", labelKey: "leaderboard", icon: Trophy },
     { href: "/participant/profile", labelKey: "profile", icon: User },
+  ],
+  jury: [
+    { href: "/jury", labelKey: "dashboard", icon: LayoutDashboard },
+    { href: "/jury/rankings", labelKey: "rankings", icon: Scale },
   ],
 };
 

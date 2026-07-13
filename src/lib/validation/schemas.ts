@@ -138,6 +138,45 @@ export const recoveryCodeSchema = z
   .trim()
   .regex(/^[A-F0-9]{10}$/i, "Invalid recovery code format");
 
+export const examAttemptSchema = z.object({
+  answers: z
+    .record(z.string().min(1).max(50), z.enum(["A", "B", "C", "D"]))
+    .refine((val) => Object.keys(val).length <= 100, "Too many answers"),
+});
+
+export const createTeamSchema = z.object({
+  programId: z.string().min(1).max(50),
+  name: safeString(80),
+  slogan: safeString(160).optional(),
+});
+
+export const juryScoreSchema = z.object({
+  scores: z
+    .array(
+      z.object({
+        criterionId: z.string().min(1).max(50),
+        score: z.number().int().min(0).max(100),
+        comment: safeString(500).optional(),
+      })
+    )
+    .min(1)
+    .max(20),
+});
+
+export const criteriaSchema = z.object({
+  programId: z.string().min(1).max(50),
+  criteria: z
+    .array(
+      z.object({
+        name: safeString(100),
+        maxScore: z.number().int().min(1).max(100),
+        weight: z.number().int().min(1).max(10).default(1),
+      })
+    )
+    .min(1)
+    .max(20),
+});
+
 export function parseBody<T extends z.ZodType>(
   schema: T,
   body: unknown

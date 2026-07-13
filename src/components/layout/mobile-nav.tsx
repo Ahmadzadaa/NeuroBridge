@@ -12,9 +12,10 @@ import {
   Gamepad2,
   GraduationCap,
   Award,
+  Rocket,
 } from "lucide-react";
 
-type PanelType = "super-admin" | "tenant" | "participant";
+type PanelType = "super-admin" | "tenant" | "participant" | "jury";
 
 const mobileNavConfig: Record<PanelType, { href: string; labelKey: string; icon: React.ComponentType<{ className?: string }> }[]> = {
   "super-admin": [
@@ -34,8 +35,12 @@ const mobileNavConfig: Record<PanelType, { href: string; labelKey: string; icon:
     { href: "/participant", labelKey: "dashboard", icon: LayoutDashboard },
     { href: "/participant/simulations", labelKey: "simulations", icon: Gamepad2 },
     { href: "/participant/trainings", labelKey: "trainings", icon: GraduationCap },
-    { href: "/participant/badges", labelKey: "badges", icon: Award },
+    { href: "/participant/hackathon", labelKey: "hackathon", icon: Rocket },
     { href: "/participant/profile", labelKey: "profile", icon: Settings },
+  ],
+  jury: [
+    { href: "/jury", labelKey: "dashboard", icon: LayoutDashboard },
+    { href: "/jury/rankings", labelKey: "rankings", icon: Award },
   ],
 };
 
