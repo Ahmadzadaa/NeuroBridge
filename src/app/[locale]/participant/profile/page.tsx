@@ -1,11 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import { requireRole } from "@/lib/auth-utils";
-import { DashboardLayout } from "@/components/layout/dashboard-layout";
-import { getTranslations } from "next-intl/server";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+import { prisma } from "@/lib/prisma";
+import { ProfileClient } from "./profile-client";
 
 export default async function ProfilePage({
   params,
@@ -15,27 +11,43 @@ export default async function ProfilePage({
   const { locale } = await params;
   setRequestLocale(locale);
   const session = await requireRole(locale, ["PARTICIPANT"]);
-  const t = await getTranslations("participant.profile");
-  const tc = await getTranslations("common");
+
+  const [user, examsPassed] = await Promise.all([
+    prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: {
+        email: true,
+        firstName: true,
+        lastName: true,
+        phone: true,
+        language: true,
+        coinBalance: true,
+        createdAt: true,
+        _count: { select: { userBadges: true, certificates: true } },
+      },
+    }),
+    prisma.examAttempt.count({
+      where: { userId: session.user.id, passed: true },
+    }),
+  ]);
+
+  if (!user) return null;
 
   return (
-    <DashboardLayout panel="participant" title={t("title")} userName={session.user.name ?? "Participant"}>
-      <Card className="mx-auto max-w-lg rounded-2xl border-0 shadow-sm">
-        <CardHeader>
-          <CardTitle>{t("personalInfo")}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label>Email</Label>
-            <Input value={session.user.email} readOnly className="rounded-xl" />
-          </div>
-          <div className="space-y-2">
-            <Label>{t("language")}</Label>
-            <Input value={session.user.language} readOnly className="rounded-xl" />
-          </div>
-          <Button className="rounded-xl">{tc("save")}</Button>
-        </CardContent>
-      </Card>
-    </DashboardLayout>
+    <ProfileClient
+      locale={locale}
+      profile={{
+        email: user.email,
+        firstName: user.firstName ?? "",
+        lastName: user.lastName ?? "",
+        phone: user.phone ?? "",
+        language: user.language,
+        coinBalance: user.coinBalance,
+        memberSince: user.createdAt.toISOString(),
+        badges: user._count.userBadges,
+        certificates: user._count.certificates,
+        examsPassed,
+      }}
+    />
   );
 }

@@ -370,6 +370,34 @@
       "reviewHeading": "Cevap analizi",
       "yourAnswer": "Sizin cevabınız",
       "correctAnswer": "Doğru cevap"
+    },
+    "profilePage": {
+      "title": "Profil",
+      "memberSince": "Üyelik tarihi: {date}",
+      "stats": {
+        "badges": "Rozetler",
+        "certificates": "Sertifikalar",
+        "examsPassed": "Geçilen sınavlar"
+      },
+      "personalInfo": "Kişisel bilgiler",
+      "personalInfoHint": "Ad, telefon ve arayüz dilinizi buradan güncelleyin.",
+      "firstName": "Ad",
+      "lastName": "Soyad",
+      "phone": "Telefon",
+      "language": "Dil",
+      "email": "E-posta",
+      "emailLocked": "E-posta adresi değiştirilemez — destekle iletişime geçin.",
+      "profileSaved": "Profil güncellendi",
+      "security": "Güvenlik",
+      "securityHint": "Şifrenizi düzenli olarak yenileyin. En az 8 karakter, büyük/küçük harf ve rakam.",
+      "currentPassword": "Mevcut şifre",
+      "newPassword": "Yeni şifre",
+      "confirmPassword": "Yeni şifre (tekrar)",
+      "passwordPolicy": "En az 8 karakter, büyük harf, küçük harf ve rakam içermeli",
+      "passwordMismatch": "Şifreler eşleşmiyor",
+      "wrongCurrentPassword": "Mevcut şifre yanlış",
+      "passwordChanged": "Şifre başarıyla değiştirildi",
+      "changePassword": "Şifreyi değiştir"
     }
   },
   "landing": {
@@ -441,7 +469,16 @@
     },
     "juries": {
       "heading": "Jüri üyeleri",
-      "empty": "Henüz jüri üyesi yok. Katılımcılar bölümünden JURY rolü atayın."
+      "empty": "Henüz jüri üyesi yok. Katılımcılar bölümünden JURY rolü atayın.",
+      "addLabel": "E-posta ile jüri ata",
+      "emailPlaceholder": "juri@ornek.com",
+      "addHint": "Mevcut katılımcı jüriye dönüştürülür; bulunamazsa yeni jüri hesabı oluşturulur ve tek seferlik şifre gösterilir.",
+      "added": "Jüri üyesi atandı",
+      "removed": "Jüri üyesi çıkarıldı",
+      "remove": "Jüriden çıkar",
+      "accountCreated": "Yeni hesap oluşturuldu — şifreyi jüri üyesine iletin:",
+      "passwordCopied": "Şifre kopyalandı",
+      "passwordHint": "Bu şifre yalnızca bir kez gösterilir. Jüri ilk girişten sonra değiştirebilir."
     },
     "jury": {
       "dashboardTitle": "Jüri Paneli",

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import {
   ArrowLeft,
+  Copy,
   GripVertical,
   Loader2,
   Plus,
@@ -13,12 +14,14 @@ import {
   Scale,
   Trash2,
   TriangleAlert,
+  UserPlus,
   Users,
 } from "lucide-react";
 import { toast } from "sonner";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   RankingsTable,
   type RankingRow,
@@ -70,6 +73,9 @@ export function HackathonAdminClient({
       : [{ key: nextKey(), name: "", maxScore: 10, weight: 1 }]
   );
   const [saving, setSaving] = useState(false);
+  const [juryEmail, setJuryEmail] = useState("");
+  const [addingJury, setAddingJury] = useState(false);
+  const [tempPassword, setTempPassword] = useState<string | null>(null);
 
   const valid =
     drafts.length > 0 &&
@@ -111,6 +117,51 @@ export function HackathonAdminClient({
       toast.error(tc("error"));
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function addJury(e: React.FormEvent) {
+    e.preventDefault();
+    if (addingJury) return;
+    setAddingJury(true);
+    setTempPassword(null);
+    try {
+      const res = await fetch("/api/hackathon/juries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: juryEmail.trim().toLowerCase() }),
+      });
+      const data = (await res.json().catch(() => null)) as {
+        tempPassword?: string | null;
+        error?: string;
+      } | null;
+      if (!res.ok) {
+        toast.error(data?.error ?? tc("error"));
+        return;
+      }
+      if (data?.tempPassword) setTempPassword(data.tempPassword);
+      toast.success(t("juries.added"));
+      setJuryEmail("");
+      router.refresh();
+    } catch {
+      toast.error(tc("error"));
+    } finally {
+      setAddingJury(false);
+    }
+  }
+
+  async function removeJury(email: string) {
+    try {
+      const res = await fetch("/api/hackathon/juries", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      if (!res.ok) throw new Error();
+      toast.success(t("juries.removed"));
+      router.refresh();
+    } catch {
+      toast.error(tc("error"));
     }
   }
 
@@ -271,7 +322,7 @@ export function HackathonAdminClient({
                 {juries.map((jury) => (
                   <div
                     key={jury.id}
-                    className="flex items-center gap-2.5 text-[13px]"
+                    className="group flex items-center gap-2.5 text-[13px]"
                   >
                     <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">
                       {jury.name
@@ -289,9 +340,79 @@ export function HackathonAdminClient({
                         {jury.email}
                       </span>
                     </span>
+                    {canManage && (
+                      <button
+                        type="button"
+                        aria-label={t("juries.remove")}
+                        onClick={() => removeJury(jury.email)}
+                        className="shrink-0 rounded-lg p-1.5 text-muted-foreground opacity-0 transition-all hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
+            )}
+
+            {canManage && (
+              <form onSubmit={addJury} className="mt-4 border-t border-border pt-4">
+                <Label htmlFor="jury-email" className="text-[12px]">
+                  {t("juries.addLabel")}
+                </Label>
+                <div className="mt-1.5 flex gap-2">
+                  <Input
+                    id="jury-email"
+                    type="email"
+                    required
+                    value={juryEmail}
+                    onChange={(e) => setJuryEmail(e.target.value)}
+                    placeholder={t("juries.emailPlaceholder")}
+                    className="h-9 flex-1 rounded-lg text-[13px]"
+                  />
+                  <Button
+                    type="submit"
+                    size="sm"
+                    className="h-9 rounded-lg"
+                    disabled={!juryEmail.includes("@") || addingJury}
+                  >
+                    {addingJury ? (
+                      <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                    ) : (
+                      <UserPlus className="h-4 w-4" aria-hidden="true" />
+                    )}
+                  </Button>
+                </div>
+                <p className="mt-1.5 text-[11px] leading-relaxed text-muted-foreground">
+                  {t("juries.addHint")}
+                </p>
+                {tempPassword && (
+                  <div className="mt-3 rounded-xl bg-success/10 p-3 text-[12px]">
+                    <p className="font-semibold text-success">
+                      {t("juries.accountCreated")}
+                    </p>
+                    <p className="mt-1 flex items-center gap-2">
+                      <code className="rounded bg-card px-2 py-0.5 font-mono text-[13px]">
+                        {tempPassword}
+                      </code>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText(tempPassword);
+                          toast.success(t("juries.passwordCopied"));
+                        }}
+                        className="text-muted-foreground transition-colors hover:text-foreground"
+                        aria-label={tc("copyLink")}
+                      >
+                        <Copy className="h-3.5 w-3.5" aria-hidden="true" />
+                      </button>
+                    </p>
+                    <p className="mt-1 text-muted-foreground">
+                      {t("juries.passwordHint")}
+                    </p>
+                  </div>
+                )}
+              </form>
             )}
           </div>
         </div>

@@ -370,6 +370,34 @@
       "reviewHeading": "Answer review",
       "yourAnswer": "Your answer",
       "correctAnswer": "Correct answer"
+    },
+    "profilePage": {
+      "title": "Profile",
+      "memberSince": "Member since {date}",
+      "stats": {
+        "badges": "Badges",
+        "certificates": "Certificates",
+        "examsPassed": "Exams passed"
+      },
+      "personalInfo": "Personal information",
+      "personalInfoHint": "Update your name, phone and interface language here.",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phone": "Phone",
+      "language": "Language",
+      "email": "Email",
+      "emailLocked": "Email address cannot be changed — contact support.",
+      "profileSaved": "Profile updated",
+      "security": "Security",
+      "securityHint": "Refresh your password regularly. At least 8 characters with upper/lowercase and a number.",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "confirmPassword": "New password (repeat)",
+      "passwordPolicy": "At least 8 characters with uppercase, lowercase and a number",
+      "passwordMismatch": "Passwords do not match",
+      "wrongCurrentPassword": "Current password is incorrect",
+      "passwordChanged": "Password changed successfully",
+      "changePassword": "Change password"
     }
   },
   "landing": {
@@ -441,7 +469,16 @@
     },
     "juries": {
       "heading": "Jury members",
-      "empty": "No jury members yet. Assign the JURY role from the Participants section."
+      "empty": "No jury members yet. Assign the JURY role from the Participants section.",
+      "addLabel": "Assign a jury by email",
+      "emailPlaceholder": "jury@example.com",
+      "addHint": "An existing participant is promoted to jury; otherwise a new jury account is created and a one-time password is shown.",
+      "added": "Jury member assigned",
+      "removed": "Jury member removed",
+      "remove": "Remove from jury",
+      "accountCreated": "New account created — hand this password to the jury member:",
+      "passwordCopied": "Password copied",
+      "passwordHint": "This password is shown only once. The jury member can change it after first login."
     },
     "jury": {
       "dashboardTitle": "Jury Panel",

@@ -115,7 +115,38 @@ export const reportExportSchema = z.object({
 });
 
 export const roleChangeSchema = z.object({
-  role: z.enum(["TENANT_ADMIN", "TENANT_VIEWER", "PARTICIPANT"]),
+  role: z.enum(["TENANT_ADMIN", "TENANT_VIEWER", "PARTICIPANT", "JURY"]),
+});
+
+export const addJurySchema = z.object({
+  email: z.string().trim().toLowerCase().email().max(255),
+  firstName: safeString(100).optional(),
+  lastName: safeString(100).optional(),
+});
+
+export const updateProfileSchema = z.object({
+  firstName: safeString(100),
+  lastName: safeString(100),
+  phone: z
+    .string()
+    .trim()
+    .max(30)
+    .regex(/^[+\d\s()-]*$/, "Invalid phone format")
+    .optional()
+    .or(z.literal("")),
+  language: z.enum(["tr", "en", "az"]),
+});
+
+export const changePasswordSchema = z.object({
+  currentPassword: z.string().min(1).max(128),
+  newPassword: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .max(128)
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+      "Password must contain uppercase, lowercase and a number"
+    ),
 });
 
 export const issueCertificateSchema = z.object({
