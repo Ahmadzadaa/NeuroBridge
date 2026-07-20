@@ -497,6 +497,29 @@
       "scoresSaved": "Your scores were saved",
       "alreadyScored": "You have scored this project",
       "weightLabel": "Weight"
+    },
+    "reveal": {
+      "heading": "Results announcement",
+      "visibleHint": "Rankings are currently visible to all participants.",
+      "hiddenHint": "Rankings are hidden from participants — only juries and admins can see them.",
+      "scheduledFor": "Reveal time: {date}",
+      "dateLabel": "Reveal date",
+      "schedule": "Schedule",
+      "announceNow": "Announce now",
+      "clear": "Reset",
+      "announced": "Results announced! {count} emails sent",
+      "scheduled": "Reveal time scheduled",
+      "cleared": "Gate removed — rankings are live again",
+      "countdownTitle": "Results are coming soon",
+      "countdownHint": "Jury evaluation is in progress. The countdown to the big moment has started!",
+      "days": "days",
+      "hours": "hours",
+      "minutes": "min",
+      "seconds": "sec"
+    },
+    "feedback": {
+      "heading": "Jury feedback",
+      "outOf": "out of {max} points"
     }
   }
 }

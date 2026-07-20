@@ -497,6 +497,29 @@
       "scoresSaved": "Puanlarınız kaydedildi",
       "alreadyScored": "Bu projeyi puanladınız",
       "weightLabel": "Ağırlık"
+    },
+    "reveal": {
+      "heading": "Sonuçların açıklanması",
+      "visibleHint": "Sıralama şu anda tüm katılımcılara görünür.",
+      "hiddenHint": "Sıralama katılımcılardan gizlendi — yalnızca jüri ve adminler görür.",
+      "scheduledFor": "Açıklanma zamanı: {date}",
+      "dateLabel": "Açıklanma tarihi",
+      "schedule": "Planla",
+      "announceNow": "Şimdi açıkla",
+      "clear": "Sıfırla",
+      "announced": "Sonuçlar açıklandı! {count} e-posta gönderildi",
+      "scheduled": "Açıklanma zamanı ayarlandı",
+      "cleared": "Gizleme kaldırıldı — sıralama yeniden canlı",
+      "countdownTitle": "Sonuçlar yakında açıklanacak",
+      "countdownHint": "Jüri değerlendirmesi devam ediyor. Büyük an için geri sayım başladı!",
+      "days": "gün",
+      "hours": "saat",
+      "minutes": "dk",
+      "seconds": "sn"
+    },
+    "feedback": {
+      "heading": "Jüri geri bildirimi",
+      "outOf": "en fazla {max} puan"
     }
   }
 }

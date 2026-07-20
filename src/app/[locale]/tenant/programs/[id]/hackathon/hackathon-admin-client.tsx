@@ -7,8 +7,10 @@ import { useTranslations } from "next-intl";
 import {
   ArrowLeft,
   Copy,
+  EyeOff,
   GripVertical,
   Loader2,
+  Megaphone,
   Plus,
   Save,
   Scale,
@@ -26,6 +28,7 @@ import {
   RankingsTable,
   type RankingRow,
 } from "@/components/hackathon/rankings-table";
+import { cn } from "@/lib/utils";
 
 interface CriterionDraft {
   key: string;
@@ -38,7 +41,7 @@ interface HackathonAdminClientProps {
   locale: string;
   userName: string;
   canManage: boolean;
-  program: { id: string; name: string };
+  program: { id: string; name: string; resultsRevealAt: string | null };
   criteria: { id: string; name: string; maxScore: number; weight: number }[];
   rankings: RankingRow[];
   hasScores: boolean;
@@ -76,6 +79,10 @@ export function HackathonAdminClient({
   const [juryEmail, setJuryEmail] = useState("");
   const [addingJury, setAddingJury] = useState(false);
   const [tempPassword, setTempPassword] = useState<string | null>(null);
+  const [revealDraft, setRevealDraft] = useState(() =>
+    program.resultsRevealAt ? program.resultsRevealAt.slice(0, 16) : ""
+  );
+  const [savingReveal, setSavingReveal] = useState(false);
 
   const valid =
     drafts.length > 0 &&
@@ -150,6 +157,40 @@ export function HackathonAdminClient({
     }
   }
 
+  async function setReveal(revealAt: string | "now" | null) {
+    if (savingReveal) return;
+    setSavingReveal(true);
+    try {
+      const res = await fetch("/api/hackathon/reveal", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ programId: program.id, revealAt }),
+      });
+      const data = (await res.json().catch(() => null)) as {
+        emailed?: number;
+        error?: string;
+      } | null;
+      if (!res.ok) {
+        toast.error(data?.error ?? tc("error"));
+        return;
+      }
+      if (revealAt === "now") {
+        toast.success(
+          t("reveal.announced", { count: data?.emailed ?? 0 })
+        );
+      } else if (revealAt === null) {
+        toast.success(t("reveal.cleared"));
+      } else {
+        toast.success(t("reveal.scheduled"));
+      }
+      router.refresh();
+    } catch {
+      toast.error(tc("error"));
+    } finally {
+      setSavingReveal(false);
+    }
+  }
+
   async function removeJury(email: string) {
     try {
       const res = await fetch("/api/hackathon/juries", {
@@ -184,8 +225,110 @@ export function HackathonAdminClient({
           <RankingsTable rankings={rankings} />
         </div>
 
-        {/* ── Criteria + juries ───────────────────────────────── */}
+        {/* ── Reveal + criteria + juries ──────────────────────── */}
         <div className="space-y-4 self-start">
+          {(() => {
+            const revealDate = program.resultsRevealAt
+              ? new Date(program.resultsRevealAt)
+              : null;
+            const isVisible =
+              !revealDate || revealDate.getTime() <= Date.now();
+            return (
+              <div
+                className={cn(
+                  "rounded-2xl p-5 shadow-sm",
+                  isVisible
+                    ? "bg-card ring-1 ring-border"
+                    : "bg-gradient-to-br from-warning/10 to-card ring-1 ring-warning/30"
+                )}
+              >
+                <h3 className="flex items-center gap-2 text-[15px] font-semibold">
+                  {isVisible ? (
+                    <Megaphone
+                      className="h-4.5 w-4.5 text-primary"
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    <EyeOff
+                      className="h-4.5 w-4.5 text-warning-dark"
+                      aria-hidden="true"
+                    />
+                  )}
+                  {t("reveal.heading")}
+                </h3>
+                <p className="mt-1 text-[12px] leading-relaxed text-muted-foreground">
+                  {isVisible ? t("reveal.visibleHint") : t("reveal.hiddenHint")}
+                </p>
+                {revealDate && !isVisible && (
+                  <p className="mt-2 rounded-xl bg-warning/10 px-3 py-2 text-[12px] font-semibold text-warning-dark">
+                    {t("reveal.scheduledFor", {
+                      date: revealDate.toLocaleString(locale),
+                    })}
+                  </p>
+                )}
+
+                {canManage && (
+                  <div className="mt-4 space-y-2.5">
+                    <div className="flex gap-2">
+                      <Input
+                        type="datetime-local"
+                        value={revealDraft}
+                        onChange={(e) => setRevealDraft(e.target.value)}
+                        className="h-9 flex-1 rounded-lg text-[13px]"
+                        aria-label={t("reveal.dateLabel")}
+                      />
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="h-9 rounded-lg"
+                        disabled={!revealDraft || savingReveal}
+                        onClick={() =>
+                          setReveal(new Date(revealDraft).toISOString())
+                        }
+                      >
+                        {t("reveal.schedule")}
+                      </Button>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        className="h-9 flex-1 rounded-lg"
+                        disabled={savingReveal || isVisible}
+                        onClick={() => setReveal("now")}
+                      >
+                        {savingReveal ? (
+                          <Loader2
+                            className="h-4 w-4 animate-spin"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <>
+                            <Megaphone className="h-4 w-4" aria-hidden="true" />
+                            {t("reveal.announceNow")}
+                          </>
+                        )}
+                      </Button>
+                      {revealDate && (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="h-9 rounded-lg"
+                          disabled={savingReveal}
+                          onClick={() => {
+                            setRevealDraft("");
+                            setReveal(null);
+                          }}
+                        >
+                          {t("reveal.clear")}
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })()}
+
           <div className="rounded-2xl bg-card p-5 shadow-sm">
             <h3 className="flex items-center gap-2 text-[15px] font-semibold">
               <Scale className="h-4.5 w-4.5 text-primary" aria-hidden="true" />

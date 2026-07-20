@@ -112,6 +112,7 @@ model Program {
   simulationEnd    DateTime? @map("simulation_end")
   participantLimit Int       @map("participant_limit")
   applicationToken String    @unique @default(cuid()) @map("application_token")
+  resultsRevealAt  DateTime? @map("results_reveal_at")
   createdAt        DateTime  @default(now()) @map("created_at")
   updatedAt        DateTime  @updatedAt @map("updated_at")
 

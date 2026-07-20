@@ -6,6 +6,8 @@ import { addJurySchema, parseBody } from "@/lib/validation/schemas";
 import { prisma } from "@/lib/prisma";
 import { recordAudit, getClientIp } from "@/lib/audit/audit-service";
 import { AUDIT_ACTIONS } from "@/lib/audit/actions";
+import { sendEmail } from "@/lib/email/email-service";
+import { juryCredentialsEmail } from "@/lib/email/templates";
 
 /** Readable one-time password like "Kx7-Qm2-Rp9". */
 function generateTempPassword(): string {
@@ -86,6 +88,20 @@ export async function POST(request: Request) {
           createdAccount: created,
         },
       });
+
+      // New accounts also get their credentials by email (dev: uploads/dev-emails).
+      if (created && tempPassword) {
+        const origin =
+          process.env.APP_BASE_URL ?? new URL(request.url).origin;
+        await sendEmail({
+          to: body.email,
+          ...juryCredentialsEmail({
+            email: body.email,
+            tempPassword,
+            loginUrl: `${origin}/az/login`,
+          }),
+        });
+      }
 
       // tempPassword is returned exactly once so the admin can hand it over.
       return NextResponse.json(

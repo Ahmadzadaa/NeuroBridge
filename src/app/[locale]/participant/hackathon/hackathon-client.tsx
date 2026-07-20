@@ -1,14 +1,17 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { motion, useReducedMotion } from "framer-motion";
+import confetti from "canvas-confetti";
 import {
   Crown,
   FileText,
   FileUp,
+  Hourglass,
   Loader2,
+  MessageSquareQuote,
   Plus,
   Rocket,
   Upload,
@@ -51,6 +54,13 @@ interface MyTeam {
   }[];
 }
 
+export interface CriterionFeedback {
+  criterionId: string;
+  name: string;
+  maxScore: number;
+  entries: { juryLabel: number; score: number; comment: string | null }[];
+}
+
 interface HackathonClientProps {
   locale: string;
   userName: string;
@@ -65,6 +75,79 @@ interface HackathonClientProps {
   teams: TeamSummary[];
   rankings: RankingRow[];
   criteria: RankingCriterion[];
+  resultsRevealAt: string | null;
+  resultsAreVisible: boolean;
+  feedback: CriterionFeedback[];
+}
+
+/** Live countdown to the reveal moment; refreshes the page when it hits zero. */
+function RevealCountdown({ revealAt }: { revealAt: string }) {
+  const t = useTranslations("hackathon.reveal");
+  const router = useRouter();
+  const reducedMotion = useReducedMotion();
+  const [remaining, setRemaining] = useState(
+    () => new Date(revealAt).getTime() - Date.now()
+  );
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const left = new Date(revealAt).getTime() - Date.now();
+      setRemaining(left);
+      if (left <= 0) {
+        clearInterval(timer);
+        if (!reducedMotion) {
+          confetti({
+            particleCount: 160,
+            spread: 100,
+            origin: { y: 0.4 },
+            disableForReducedMotion: true,
+          });
+        }
+        router.refresh();
+      }
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [revealAt, router, reducedMotion]);
+
+  const total = Math.max(0, remaining);
+  const days = Math.floor(total / 86_400_000);
+  const hours = Math.floor((total % 86_400_000) / 3_600_000);
+  const minutes = Math.floor((total % 3_600_000) / 60_000);
+  const seconds = Math.floor((total % 60_000) / 1000);
+  const cells = [
+    { value: days, label: t("days") },
+    { value: hours, label: t("hours") },
+    { value: minutes, label: t("minutes") },
+    { value: seconds, label: t("seconds") },
+  ];
+
+  return (
+    <div className="rounded-2xl bg-gradient-to-br from-primary/12 via-card to-card p-8 text-center shadow-sm ring-1 ring-primary/20">
+      <Hourglass
+        className="mx-auto h-8 w-8 text-primary"
+        aria-hidden="true"
+      />
+      <h3 className="mt-3 text-[17px] font-bold">{t("countdownTitle")}</h3>
+      <p className="mx-auto mt-1 max-w-sm text-[13px] text-muted-foreground">
+        {t("countdownHint")}
+      </p>
+      <div className="mx-auto mt-6 flex max-w-sm justify-center gap-3">
+        {cells.map((cell) => (
+          <div
+            key={cell.label}
+            className="w-18 rounded-xl bg-card px-2 py-3 shadow-sm ring-1 ring-border"
+          >
+            <p className="text-[24px] font-bold tabular-nums leading-none">
+              {String(cell.value).padStart(2, "0")}
+            </p>
+            <p className="mt-1 text-[10px] uppercase tracking-[0.5px] text-muted-foreground">
+              {cell.label}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 const MAX_TEAM_SIZE = 5;
@@ -78,6 +161,9 @@ export function HackathonClient({
   teams,
   rankings,
   criteria,
+  resultsRevealAt,
+  resultsAreVisible,
+  feedback,
 }: HackathonClientProps) {
   const t = useTranslations("hackathon");
   const tc = useTranslations("common");
@@ -458,10 +544,64 @@ export function HackathonClient({
             </div>
           )}
 
-          {/* Rankings */}
+          {/* Jury feedback — after reveal only */}
+          {resultsAreVisible && feedback.length > 0 && (
+            <div>
+              <h3 className="mb-3 flex items-center gap-2 text-[15px] font-semibold">
+                <MessageSquareQuote
+                  className="h-4.5 w-4.5 text-primary"
+                  aria-hidden="true"
+                />
+                {t("feedback.heading")}
+              </h3>
+              <div className="space-y-3">
+                {feedback.map((criterion) => (
+                  <div
+                    key={criterion.criterionId}
+                    className="rounded-2xl bg-card p-5 shadow-sm"
+                  >
+                    <div className="flex items-baseline justify-between gap-3">
+                      <p className="text-[14px] font-semibold">{criterion.name}</p>
+                      <p className="shrink-0 text-[12px] text-muted-foreground">
+                        {t("feedback.outOf", { max: criterion.maxScore })}
+                      </p>
+                    </div>
+                    <div className="mt-3 space-y-2.5">
+                      {criterion.entries.map((entry, i) => (
+                        <div
+                          key={i}
+                          className="flex items-start gap-3 rounded-xl bg-subtle/60 px-3.5 py-2.5"
+                        >
+                          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">
+                            J{entry.juryLabel}
+                          </span>
+                          <div className="min-w-0 flex-1">
+                            <p className="text-[13px] font-semibold tabular-nums">
+                              {entry.score} / {criterion.maxScore}
+                            </p>
+                            {entry.comment && (
+                              <p className="mt-0.5 text-[12px] leading-relaxed text-muted-foreground">
+                                “{entry.comment}”
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Rankings — or the reveal countdown */}
           <div>
             <h3 className="mb-3 text-[15px] font-semibold">{t("rankings.heading")}</h3>
-            <RankingsTable rankings={rankings} highlightTeamId={myTeam?.id} />
+            {resultsAreVisible ? (
+              <RankingsTable rankings={rankings} highlightTeamId={myTeam?.id} />
+            ) : resultsRevealAt ? (
+              <RevealCountdown revealAt={resultsRevealAt} />
+            ) : null}
           </div>
         </div>
 

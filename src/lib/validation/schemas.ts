@@ -124,6 +124,12 @@ export const addJurySchema = z.object({
   lastName: safeString(100).optional(),
 });
 
+export const revealSchema = z.object({
+  programId: z.string().min(1).max(50),
+  /** ISO datetime, null to clear (rankings live again), "now" to announce immediately. */
+  revealAt: z.union([z.string().datetime(), z.literal("now"), z.null()]),
+});
+
 export const updateProfileSchema = z.object({
   firstName: safeString(100),
   lastName: safeString(100),

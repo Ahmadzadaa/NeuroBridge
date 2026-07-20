@@ -2,6 +2,7 @@ import { setRequestLocale } from "next-intl/server";
 import { requireRole } from "@/lib/auth-utils";
 import { prisma } from "@/lib/prisma";
 import { computeRankings } from "@/lib/hackathon/ranking";
+import { resultsVisible } from "@/lib/hackathon/reveal";
 import { HackathonClient } from "./hackathon-client";
 
 export default async function ParticipantHackathonPage({
@@ -25,7 +26,13 @@ export default async function ParticipantHackathonPage({
       ...(session.user.tenantId ? { tenantId: session.user.tenantId } : {}),
     },
     orderBy: { createdAt: "desc" },
-    select: { id: true, name: true, description: true, simulationEnd: true },
+    select: {
+      id: true,
+      name: true,
+      description: true,
+      simulationEnd: true,
+      resultsRevealAt: true,
+    },
   });
 
   if (!program) {
@@ -39,9 +46,14 @@ export default async function ParticipantHackathonPage({
         teams={[]}
         rankings={[]}
         criteria={[]}
+        resultsRevealAt={null}
+        resultsAreVisible={true}
+        feedback={[]}
       />
     );
   }
+
+  const visible = resultsVisible(program.resultsRevealAt);
 
   const [teams, membership, rankings, criteria] = await Promise.all([
     prisma.hackathonTeam.findMany({
@@ -70,13 +82,56 @@ export default async function ParticipantHackathonPage({
         },
       },
     }),
-    computeRankings(program.id),
+    // Rankings stay server-side until the reveal moment.
+    visible ? computeRankings(program.id) : Promise.resolve([]),
     prisma.juryCriterion.findMany({
       where: { programId: program.id },
       orderBy: { order: "asc" },
       select: { id: true, name: true, maxScore: true, weight: true },
     }),
   ]);
+
+  // Jury feedback for my team's latest submission — only after reveal.
+  const latestSubmissionId = membership?.team.submissions[0]?.id ?? null;
+  const feedback =
+    visible && latestSubmissionId
+      ? await prisma.juryScore
+          .findMany({
+            where: { submissionId: latestSubmissionId },
+            include: { criterion: { select: { id: true, name: true, maxScore: true, order: true } } },
+            orderBy: [{ criterion: { order: "asc" } }, { createdAt: "asc" }],
+          })
+          .then((scores) => {
+            const juryOrder: string[] = [];
+            for (const s of scores) {
+              if (!juryOrder.includes(s.juryUserId)) juryOrder.push(s.juryUserId);
+            }
+            const byCriterion = new Map<
+              string,
+              {
+                criterionId: string;
+                name: string;
+                maxScore: number;
+                entries: { juryLabel: number; score: number; comment: string | null }[];
+              }
+            >();
+            for (const s of scores) {
+              const bucket = byCriterion.get(s.criterion.id) ?? {
+                criterionId: s.criterion.id,
+                name: s.criterion.name,
+                maxScore: s.criterion.maxScore,
+                entries: [],
+              };
+              bucket.entries.push({
+                juryLabel: juryOrder.indexOf(s.juryUserId) + 1,
+                score: s.score,
+                comment: s.comment,
+              });
+              byCriterion.set(s.criterion.id, bucket);
+            }
+            return [...byCriterion.values()];
+          })
+      : [];
 
   return (
     <HackathonClient
@@ -120,6 +175,9 @@ export default async function ParticipantHackathonPage({
       }))}
       rankings={rankings}
       criteria={criteria}
+      resultsRevealAt={program.resultsRevealAt?.toISOString() ?? null}
+      resultsAreVisible={visible}
+      feedback={feedback}
     />
   );
 }

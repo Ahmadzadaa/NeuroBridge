@@ -10,6 +10,9 @@ import {
   SeatLimitReachedError,
 } from "@/lib/seats/errors";
 import { enforceRateLimit, getClientIdentifier } from "@/lib/security/rate-limit";
+import { prisma } from "@/lib/prisma";
+import { sendEmail } from "@/lib/email/email-service";
+import { welcomeEmail } from "@/lib/email/templates";
 
 function mapRegistrationError(error: unknown): NextResponse {
   if (error instanceof ValidationError) {
@@ -59,6 +62,22 @@ export async function POST(request: Request) {
   try {
     const body = parseBody(registrationSchema, await request.json());
     const result = await registerParticipant(body);
+
+    // Welcome email — never blocks or fails the registration itself.
+    const program = await prisma.program.findUnique({
+      where: { id: result.programId },
+      select: { name: true },
+    });
+    const origin = process.env.APP_BASE_URL ?? new URL(request.url).origin;
+    await sendEmail({
+      to: body.email,
+      ...welcomeEmail({
+        firstName: body.firstName,
+        programName: program?.name ?? "BizSim",
+        loginUrl: `${origin}/az/login`,
+      }),
+    });
+
     return NextResponse.json(result, { status: 201 });
   } catch (error) {
     return mapRegistrationError(error);

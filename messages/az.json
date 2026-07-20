@@ -497,6 +497,29 @@
       "scoresSaved": "Xallarınız yadda saxlanıldı",
       "alreadyScored": "Bu layihəni qiymətləndirmisiniz",
       "weightLabel": "Çəki"
+    },
+    "reveal": {
+      "heading": "Nəticələrin açıqlanması",
+      "visibleHint": "Sıralama hazırda bütün iştirakçılara görünür.",
+      "hiddenHint": "Sıralama iştirakçılardan gizlədilib — yalnız jüri və adminlər görür.",
+      "scheduledFor": "Açıqlanma vaxtı: {date}",
+      "dateLabel": "Açıqlanma tarixi",
+      "schedule": "Planla",
+      "announceNow": "İndi açıqla",
+      "clear": "Sıfırla",
+      "announced": "Nəticələr açıqlandı! {count} e-poçt göndərildi",
+      "scheduled": "Açıqlanma vaxtı təyin olundu",
+      "cleared": "Gizlətmə silindi — sıralama yenidən canlıdır",
+      "countdownTitle": "Nəticələr tezliklə açıqlanacaq",
+      "countdownHint": "Jüri qiymətləndirməsi davam edir. Böyük an üçün geri sayım başladı!",
+      "days": "gün",
+      "hours": "saat",
+      "minutes": "dəq",
+      "seconds": "san"
+    },
+    "feedback": {
+      "heading": "Jüri rəyi",
+      "outOf": "maksimum {max} bal"
     }
   }
 }

@@ -16,7 +16,13 @@ export default async function HackathonAdminPage({
 
   const program = await prisma.program.findUnique({
     where: { id },
-    select: { id: true, name: true, type: true, tenantId: true },
+    select: {
+      id: true,
+      name: true,
+      type: true,
+      tenantId: true,
+      resultsRevealAt: true,
+    },
   });
 
   if (
@@ -51,7 +57,11 @@ export default async function HackathonAdminPage({
       locale={locale}
       userName={session.user.name ?? "Admin"}
       canManage={session.user.role === "TENANT_ADMIN"}
-      program={{ id: program.id, name: program.name }}
+      program={{
+        id: program.id,
+        name: program.name,
+        resultsRevealAt: program.resultsRevealAt?.toISOString() ?? null,
+      }}
       criteria={criteria}
       rankings={rankings}
       hasScores={hasScores}
