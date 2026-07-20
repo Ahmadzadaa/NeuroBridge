@@ -19,7 +19,7 @@ export async function PUT(request: Request) {
           { status: 404 }
         );
       }
-      if (session.role !== "SUPER_ADMIN" && program.tenantId !== session.tenantId) {
+      if (program.tenantId !== session.tenantId) {
         return NextResponse.json({ error: "Forbidden" }, { status: 403 });
       }
 

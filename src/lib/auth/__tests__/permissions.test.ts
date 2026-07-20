@@ -6,15 +6,13 @@ import {
 } from "@/lib/auth/permissions";
 import type { UserRole } from "@/lib/types";
 
-const ALL_PERMISSIONS = [
+/** Platform-level permissions the SUPER_ADMIN must always hold. */
+const PLATFORM_PERMISSIONS = [
   "tenant:read",
   "tenant:write",
   "tenant:delete",
   "program:read",
-  "program:write",
-  "program:delete",
   "participant:read",
-  "participant:write",
   "report:read",
   "report:export",
   "billing:read",
@@ -24,19 +22,45 @@ const ALL_PERMISSIONS = [
   "user:read",
   "user:write",
   "audit:read",
-  "ai:use",
   "badge:read",
   "certificate:read",
   "coin:read",
+  "training:read",
+  "hackathon:read",
   "platform:admin",
+] as const;
+
+/** Tenant-content operations the platform owner must stay out of. */
+const TENANT_CONTENT_PERMISSIONS = [
+  "program:write",
+  "program:delete",
+  "participant:write",
+  "training:submit",
+  "hackathon:manage",
+  "hackathon:submit",
+  "hackathon:score",
+  "ai:use",
 ] as const;
 
 describe("RBAC permission matrix", () => {
   it("grants platform:admin only to SUPER_ADMIN", () => {
     expect(hasPermission("SUPER_ADMIN", "platform:admin")).toBe(true);
-    for (const role of ["TENANT_ADMIN", "TENANT_VIEWER", "PARTICIPANT"] as UserRole[]) {
+    for (const role of ["TENANT_ADMIN", "TENANT_VIEWER", "PARTICIPANT", "JURY"] as UserRole[]) {
       expect(hasPermission(role, "platform:admin")).toBe(false);
     }
+  });
+
+  it("keeps SUPER_ADMIN out of tenant content operations", () => {
+    for (const permission of TENANT_CONTENT_PERMISSIONS) {
+      expect(hasPermission("SUPER_ADMIN", permission)).toBe(false);
+    }
+  });
+
+  it("lets TENANT_ADMIN manage hackathons and juries score them", () => {
+    expect(hasPermission("TENANT_ADMIN", "hackathon:manage")).toBe(true);
+    expect(hasPermission("JURY", "hackathon:score")).toBe(true);
+    expect(hasPermission("JURY", "hackathon:manage")).toBe(false);
+    expect(hasPermission("PARTICIPANT", "hackathon:submit")).toBe(true);
   });
 
   it("denies program:write for PARTICIPANT and TENANT_VIEWER", () => {
@@ -63,6 +87,7 @@ describe("RBAC permission matrix", () => {
       "TENANT_ADMIN",
       "TENANT_VIEWER",
       "PARTICIPANT",
+      "JURY",
     ];
     for (const role of roles) {
       expect(hasPermission(role, "program:read")).toBeDefined();
@@ -82,8 +107,8 @@ describe("RBAC permission matrix", () => {
 });
 
 describe("permission coverage", () => {
-  it("evaluates every permission for SUPER_ADMIN without throwing", () => {
-    for (const permission of ALL_PERMISSIONS) {
+  it("evaluates every platform permission for SUPER_ADMIN without throwing", () => {
+    for (const permission of PLATFORM_PERMISSIONS) {
       expect(() => requirePermission("SUPER_ADMIN", permission)).not.toThrow();
     }
   });

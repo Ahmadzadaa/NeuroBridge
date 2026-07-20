@@ -24,7 +24,7 @@ export async function PATCH(request: Request) {
       if (!program || program.type !== "hackathon") {
         return NextResponse.json({ error: "Hackathon not found" }, { status: 404 });
       }
-      if (session.role !== "SUPER_ADMIN" && program.tenantId !== session.tenantId) {
+      if (program.tenantId !== session.tenantId) {
         return NextResponse.json({ error: "Forbidden" }, { status: 403 });
       }
 

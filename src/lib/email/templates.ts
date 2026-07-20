@@ -54,6 +54,31 @@ export function juryCredentialsEmail(params: {
   };
 }
 
+export function tenantWelcomeEmail(params: {
+  organizationName: string;
+  adminEmail: string;
+  tempPassword: string;
+  seatLimit: number;
+  loginUrl: string;
+}): { subject: string; html: string } {
+  return {
+    subject: `BizSim — "${params.organizationName}" hesabınız hazırdır`,
+    html: layout(
+      "Təşkilat hesabınız aktivləşdirildi 🎉",
+      paragraph(
+        `<strong>${params.organizationName}</strong> üçün BizSim platformasında <strong>${params.seatLimit} nəfərlik</strong> hesab yaradıldı.`
+      ) +
+        paragraph(
+          `Admin giriş məlumatlarınız:<br/>E-poçt: <strong>${params.adminEmail}</strong><br/>Müvəqqəti şifrə: <code style="background:#f1f5f9;border-radius:6px;padding:2px 8px;font-size:14px;">${params.tempPassword}</code>`
+        ) +
+        paragraph(
+          "İlk girişdən sonra: 1) şifrənizi dəyişin, 2) proqram yaradın, 3) QR kod və ya dəvət linki ilə iştirakçılarınızı qeydiyyata dəvət edin. Jüri üzvlərini hakaton panelindən özünüz təyin edə bilərsiniz."
+        ) +
+        button(params.loginUrl, "Panelə daxil ol")
+    ),
+  };
+}
+
 export function welcomeEmail(params: {
   firstName: string;
   programName: string;

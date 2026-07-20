@@ -124,6 +124,20 @@ export const addJurySchema = z.object({
   lastName: safeString(100).optional(),
 });
 
+export const provisionTenantSchema = z.object({
+  name: safeString(200),
+  adminEmail: z.string().trim().toLowerCase().email().max(255),
+  adminFirstName: safeString(100),
+  adminLastName: safeString(100),
+  seatLimit: z.number().int().min(1).max(100000),
+  planType: z.enum(["starter", "professional", "enterprise"]),
+});
+
+export const updateTenantSchema = z.object({
+  status: z.enum(["ACTIVE", "INACTIVE", "PENDING"]).optional(),
+  seatLimit: z.number().int().min(1).max(100000).optional(),
+});
+
 export const revealSchema = z.object({
   programId: z.string().min(1).max(50),
   /** ISO datetime, null to clear (rankings live again), "now" to announce immediately. */

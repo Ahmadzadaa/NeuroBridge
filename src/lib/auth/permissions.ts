@@ -30,16 +30,16 @@ export type Permission =
   | "hackathon:score"
   | "platform:admin";
 
+// SUPER_ADMIN is the platform owner: provisions tenants, oversees billing
+// and audit — but does NOT operate tenant content (programs, hackathons,
+// juries, trainings). Those belong exclusively to the tenant's own staff.
 const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
   SUPER_ADMIN: [
     "tenant:read",
     "tenant:write",
     "tenant:delete",
     "program:read",
-    "program:write",
-    "program:delete",
     "participant:read",
-    "participant:write",
     "report:read",
     "report:export",
     "billing:read",
@@ -49,16 +49,11 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "user:read",
     "user:write",
     "audit:read",
-    "ai:use",
     "badge:read",
     "certificate:read",
     "coin:read",
     "training:read",
-    "training:submit",
     "hackathon:read",
-    "hackathon:manage",
-    "hackathon:submit",
-    "hackathon:score",
     "platform:admin",
   ],
   TENANT_ADMIN: [

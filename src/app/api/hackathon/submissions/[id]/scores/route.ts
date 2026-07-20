@@ -21,10 +21,7 @@ export async function POST(
     if (!submission) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
-    if (
-      session.role !== "SUPER_ADMIN" &&
-      submission.team.program.tenantId !== session.tenantId
-    ) {
+    if (submission.team.program.tenantId !== session.tenantId) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
