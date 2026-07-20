@@ -398,6 +398,11 @@
       "wrongCurrentPassword": "Cari şifrə yanlışdır",
       "passwordChanged": "Şifrə uğurla dəyişdirildi",
       "changePassword": "Şifrəni dəyiş"
+    },
+    "certificateTypes": {
+      "participation": "İştirak Sertifikatı",
+      "achievement": "Uğur Sertifikatı",
+      "completion": "Proqram Tamamlama Sertifikatı"
     }
   },
   "landing": {

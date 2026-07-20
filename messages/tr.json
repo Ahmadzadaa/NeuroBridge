@@ -398,6 +398,11 @@
       "wrongCurrentPassword": "Mevcut şifre yanlış",
       "passwordChanged": "Şifre başarıyla değiştirildi",
       "changePassword": "Şifreyi değiştir"
+    },
+    "certificateTypes": {
+      "participation": "Katılım Sertifikası",
+      "achievement": "Başarı Sertifikası",
+      "completion": "Program Tamamlama Sertifikası"
     }
   },
   "landing": {

@@ -40,6 +40,17 @@ declare module "@auth/core/jwt" {
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  logger: {
+    error(error) {
+      // Failed sign-in attempts are expected (wrong password, lockout) and
+      // already audit-logged — keep them to one line instead of a stack trace.
+      if (error.name === "CredentialsSignin") {
+        console.warn("[auth] Sign-in rejected (invalid credentials)");
+        return;
+      }
+      console.error("[auth][error]", error);
+    },
+  },
   providers: [
     Credentials({
       credentials: {
