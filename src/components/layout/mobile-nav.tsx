@@ -15,7 +15,7 @@ import {
   Rocket,
 } from "lucide-react";
 
-type PanelType = "super-admin" | "tenant" | "participant" | "jury";
+type PanelType = "super-admin" | "tenant" | "participant" | "jury" | "teacher";
 
 const mobileNavConfig: Record<PanelType, { href: string; labelKey: string; icon: React.ComponentType<{ className?: string }> }[]> = {
   "super-admin": [
@@ -41,6 +41,11 @@ const mobileNavConfig: Record<PanelType, { href: string; labelKey: string; icon:
   jury: [
     { href: "/jury", labelKey: "dashboard", icon: LayoutDashboard },
     { href: "/jury/rankings", labelKey: "rankings", icon: Award },
+  ],
+  teacher: [
+    { href: "/teacher", labelKey: "dashboard", icon: LayoutDashboard },
+    { href: "/teacher/scenarios", labelKey: "scenarios", icon: FileText },
+    { href: "/teacher/grading", labelKey: "grading", icon: GraduationCap },
   ],
 };
 

@@ -79,6 +79,32 @@ export function tenantWelcomeEmail(params: {
   };
 }
 
+export function teacherCredentialsEmail(params: {
+  email: string;
+  tempPassword: string;
+  loginUrl: string;
+  organizationName?: string;
+}): { subject: string; html: string } {
+  return {
+    subject: "BizSim — Müəllim hesabınız hazırdır",
+    html: layout(
+      "Müəllim panelinə xoş gəlmisiniz 👩‍🏫",
+      paragraph(
+        params.organizationName
+          ? `<strong>${params.organizationName}</strong> sizin üçün BizSim-də müəllim hesabı yaratdı.`
+          : "Sizin üçün BizSim-də müəllim hesabı yaradıldı."
+      ) +
+        paragraph(
+          `Giriş məlumatlarınız:<br/>E-poçt: <strong>${params.email}</strong><br/>Müvəqqəti şifrə: <code style="background:#f1f5f9;border-radius:6px;padding:2px 8px;font-size:14px;">${params.tempPassword}</code>`
+        ) +
+        paragraph(
+          "Panelinizdə: tələbələrinizi QR kod / dəvət linki ilə qeydiyyata dəvət edin, öz biznes ssenarilərinizi yaradın və tələbələrin simulyasiya nəticələrini qiymətləndirin."
+        ) +
+        button(params.loginUrl, "Panelə daxil ol")
+    ),
+  };
+}
+
 export function welcomeEmail(params: {
   firstName: string;
   programName: string;

@@ -23,6 +23,7 @@ export default async function ProfilePage({
         language: true,
         coinBalance: true,
         createdAt: true,
+        teacher: { select: { firstName: true, lastName: true } },
         _count: { select: { userBadges: true, certificates: true } },
       },
     }),
@@ -47,6 +48,11 @@ export default async function ProfilePage({
         badges: user._count.userBadges,
         certificates: user._count.certificates,
         examsPassed,
+        teacherName: user.teacher
+          ? [user.teacher.firstName, user.teacher.lastName]
+              .filter(Boolean)
+              .join(" ")
+          : null,
       }}
     />
   );

@@ -9,6 +9,7 @@ import {
   CalendarDays,
   CheckCircle2,
   FileText,
+  GraduationCap,
   KeyRound,
   Loader2,
   Save,
@@ -39,6 +40,7 @@ interface ProfileData {
   badges: number;
   certificates: number;
   examsPassed: number;
+  teacherName: string | null;
 }
 
 interface ProfileClientProps {
@@ -181,6 +183,12 @@ export function ProfileClient({ locale, profile }: ProfileClientProps) {
                   date: new Date(profile.memberSince).toLocaleDateString(locale),
                 })}
               </p>
+              {profile.teacherName && (
+                <p className="mt-1 flex items-center gap-1.5 text-[12px] font-medium text-primary">
+                  <GraduationCap className="h-3.5 w-3.5" aria-hidden="true" />
+                  {t("myTeacher", { name: profile.teacherName })}
+                </p>
+              )}
             </div>
           </div>
 

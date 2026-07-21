@@ -3,7 +3,8 @@ export type UserRole =
   | "TENANT_ADMIN"
   | "TENANT_VIEWER"
   | "PARTICIPANT"
-  | "JURY";
+  | "JURY"
+  | "TEACHER";
 
 export type TenantStatus = "ACTIVE" | "INACTIVE" | "PENDING";
 

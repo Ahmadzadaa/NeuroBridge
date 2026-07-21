@@ -16,9 +16,18 @@ export async function POST(
   return withAuthorizedHandler("simulation:play", async ({ session }) => {
     const simulation = await prisma.simulation.findUnique({
       where: { id },
-      select: { id: true, startCash: true, _count: { select: { rounds: true } } },
+      select: {
+        id: true,
+        startCash: true,
+        tenantId: true,
+        _count: { select: { rounds: true } },
+      },
     });
-    if (!simulation || simulation._count.rounds === 0) {
+    if (
+      !simulation ||
+      simulation._count.rounds === 0 ||
+      (simulation.tenantId !== null && simulation.tenantId !== session.tenantId)
+    ) {
       return NextResponse.json(
         { error: "Simulation is not playable" },
         { status: 404 }

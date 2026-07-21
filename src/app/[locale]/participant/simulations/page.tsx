@@ -14,7 +14,16 @@ export default async function SimulationsPage({
   const session = await requireRole(locale, ["PARTICIPANT"]);
 
   const [simulations, runs, me] = await Promise.all([
+    // Platform scenarios + this tenant's teacher-authored scenarios.
     prisma.simulation.findMany({
+      where: {
+        OR: [
+          { tenantId: null },
+          ...(session.user.tenantId
+            ? [{ tenantId: session.user.tenantId }]
+            : []),
+        ],
+      },
       include: { _count: { select: { rounds: true } } },
     }),
     prisma.simulationRun.findMany({

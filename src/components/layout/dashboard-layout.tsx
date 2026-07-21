@@ -16,7 +16,7 @@ import { MobileNav } from "./mobile-nav";
 import { PageTransition } from "./page-transition";
 import { cn } from "@/lib/utils";
 
-type PanelType = "super-admin" | "tenant" | "participant" | "jury";
+type PanelType = "super-admin" | "tenant" | "participant" | "jury" | "teacher";
 
 interface DashboardLayoutProps {
   panel: PanelType;
@@ -34,6 +34,7 @@ const roleKeyByPanel: Record<PanelType, string> = {
   tenant: "tenant",
   participant: "participant",
   jury: "jury",
+  teacher: "teacher",
 };
 
 export function DashboardLayout({

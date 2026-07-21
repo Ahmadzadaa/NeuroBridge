@@ -124,6 +124,50 @@ export const addJurySchema = z.object({
   lastName: safeString(100).optional(),
 });
 
+export const joinTeacherSchema = z.object({
+  email: z.string().trim().toLowerCase().email().max(255),
+  password: z
+    .string()
+    .min(8)
+    .max(128)
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+      "Password must contain uppercase, lowercase and a number"
+    ),
+  firstName: safeString(100),
+  lastName: safeString(100),
+});
+
+export const scenarioSchema = z.object({
+  name: safeString(150),
+  description: safeString(500).optional(),
+  startCash: z.number().int().min(0).max(1_000_000),
+  targetCash: z.number().int().min(1).max(10_000_000),
+  rounds: z
+    .array(
+      z.object({
+        title: safeString(150),
+        context: safeString(2000),
+        choices: z
+          .array(
+            z.object({
+              label: safeString(200),
+              detail: safeString(300).optional(),
+              cashDelta: z.number().int().min(-1_000_000).max(1_000_000),
+              satisfactionDelta: z.number().int().min(-100).max(100),
+              reputationDelta: z.number().int().min(-100).max(100),
+              variance: z.number().int().min(0).max(100_000),
+              feedback: safeString(1000),
+            })
+          )
+          .min(2)
+          .max(4),
+      })
+    )
+    .min(2)
+    .max(15),
+});
+
 export const simulationDecideSchema = z.object({
   choiceId: z.string().min(1).max(50),
 });

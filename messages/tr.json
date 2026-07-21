@@ -50,7 +50,8 @@
       "superAdmin": "Süper Admin",
       "tenant": "Organizasyon",
       "participant": "Katılımcı",
-      "jury": "Jüri"
+      "jury": "Jüri",
+      "teacher": "Öğretmen"
     },
     "error": "Bir hata oluştu"
   },
@@ -92,7 +93,8 @@
       "reports": "Raporlar",
       "settings": "Ayarlar",
       "billing": "Ödemeler",
-      "simulations": "Simülasyonlar"
+      "simulations": "Simülasyonlar",
+      "teachers": "Öğretmenler"
     },
     "participant": {
       "dashboard": "Panel",
@@ -108,6 +110,11 @@
     "jury": {
       "dashboard": "Kontrol Paneli",
       "rankings": "Sıralama"
+    },
+    "teacher": {
+      "dashboard": "Kontrol Paneli",
+      "scenarios": "Senaryolar",
+      "grading": "Değerlendirme"
     }
   },
   "superAdmin": {
@@ -418,7 +425,8 @@
       "passwordMismatch": "Şifreler eşleşmiyor",
       "wrongCurrentPassword": "Mevcut şifre yanlış",
       "passwordChanged": "Şifre başarıyla değiştirildi",
-      "changePassword": "Şifreyi değiştir"
+      "changePassword": "Şifreyi değiştir",
+      "myTeacher": "Öğretmenim: {name}"
     },
     "certificateTypes": {
       "participation": "Katılım Sertifikası",
@@ -598,6 +606,102 @@
       "gradeSaved": "Not kaydedildi",
       "invalidGrade": "Not 0 ile maksimum arasında olmalı",
       "viewerNote": "Not vermek için admin yetkisi gerekir."
+    }
+  },
+  "teacher": {
+    "manage": {
+      "title": "Öğretmenler",
+      "subtitle": "Öğretmen hesabı oluşturup teslim edin — öğretmen kendi öğrencilerini davet eder, senaryolar kurar ve notlandırır.",
+      "addTeacher": "Yeni öğretmen",
+      "addDescription": "Öğretmen hesabı oluşturulur ve giriş bilgileri e-postasına gönderilir.",
+      "firstName": "Ad",
+      "lastName": "Soyad",
+      "email": "E-posta",
+      "create": "Hesabı oluştur ve teslim et",
+      "created": "Öğretmen hesabı oluşturuldu",
+      "removed": "Öğretmen hesabı silindi",
+      "remove": "Öğretmeni sil",
+      "empty": "Henüz öğretmen yok — ilk öğretmeni ekleyin.",
+      "studentCount": "{count} öğrenci",
+      "scenarioCount": "{count} senaryo",
+      "credentialsEmailed": "Giriş bilgileri {email} adresine gönderildi",
+      "passwordCopied": "Şifre kopyalandı",
+      "passwordShownOnce": "Bu geçici şifre yalnızca bir kez gösterilir. Öğretmen ilk girişten sonra değiştirmelidir."
+    },
+    "dashboard": {
+      "title": "Öğretmen Paneli",
+      "stats": {
+        "students": "Öğrencilerim",
+        "scenarios": "Senaryolarım",
+        "pendingGrades": "Not bekleyen"
+      },
+      "invite": {
+        "heading": "Öğrenci daveti",
+        "hint": "Bu QR kodu veya bağlantıyı öğrencilerinizle paylaşın — kaydolan her öğrenci otomatik olarak grubunuza düşer.",
+        "qrAlt": "Öğrenci davet bağlantısı için QR kod",
+        "copy": "Bağlantıyı kopyala",
+        "copied": "Bağlantı kopyalandı"
+      },
+      "students": {
+        "heading": "Öğrencilerim",
+        "empty": "Henüz öğrenci yok — QR kodu paylaşarak davet edin.",
+        "name": "Öğrenci",
+        "simScore": "Sim. puanı",
+        "grade": "Not"
+      }
+    },
+    "join": {
+      "title": "Gruba katıl",
+      "subtitle": "{teacher}, sizi {organization} platformunda kendi grubuna davet ediyor. Kaydolun ve simülasyonlara başlayın.",
+      "firstName": "Ad",
+      "lastName": "Soyad",
+      "email": "E-posta",
+      "password": "Şifre",
+      "passwordPolicy": "En az 8 karakter, büyük harf, küçük harf ve rakam",
+      "register": "Kaydol",
+      "doneTitle": "Hoş geldiniz! 🎉",
+      "doneText": "Kayıt tamamlandı — artık {teacher} grubundasınız. Şimdi giriş yapıp simülasyonlara başlayabilirsiniz.",
+      "goToLogin": "Giriş yap"
+    },
+    "scenarios": {
+      "title": "Senaryolarım",
+      "subtitle": "Kendi iş senaryolarınızı kurun — öğrencileriniz bunları simülasyon olarak oynayacak.",
+      "create": "Yeni senaryo",
+      "empty": "Henüz senaryonuz yok — ilk senaryonuzu oluşturun.",
+      "deleted": "Senaryo silindi",
+      "roundCount": "{count} tur",
+      "runCount": "{count} oyun"
+    },
+    "editor": {
+      "createTitle": "Yeni Senaryo",
+      "editTitle": "Senaryoyu Düzenle",
+      "back": "Senaryolara dön",
+      "runsWarning": "Bu senaryoda mevcut oyunlar var — kaydederseniz tüm oyunlar sıfırlanacak.",
+      "metaHeading": "Genel bilgi",
+      "name": "Senaryo adı",
+      "namePlaceholder": "örn. Kafe İşlet",
+      "description": "Açıklama",
+      "descriptionPlaceholder": "Öğrenci giriş ekranında bunu görecek...",
+      "startCash": "Başlangıç sermayesi (₺)",
+      "targetCash": "Hedef sermaye (₺)",
+      "untitledRound": "Adsız tur",
+      "roundTitle": "Tur başlığı",
+      "roundTitlePlaceholder": "örn. İlk müşteriler",
+      "roundContext": "Durum açıklaması",
+      "roundContextPlaceholder": "Öğrenciye durumu anlatın: ne oluyor, hangi karar verilmeli...",
+      "choiceLabel": "Seçenek {letter}",
+      "choiceTitlePlaceholder": "Kararın adı",
+      "choiceDetailPlaceholder": "Kısa ipucu — trade-off nedir? (isteğe bağlı)",
+      "cashDelta": "Sermaye Δ",
+      "satDelta": "Memnun. Δ",
+      "repDelta": "İtibar Δ",
+      "variance": "Rastgele ±",
+      "choiceFeedbackPlaceholder": "Bu seçimden sonra öğrenciye gösterilecek sonuç metni...",
+      "addChoice": "Seçenek ekle",
+      "addRound": "Tur ekle",
+      "save": "Senaryoyu kaydet",
+      "saved": "Senaryo kaydedildi",
+      "validationHint": "Kaydetmek için: ad, en az 2 tur, her turda başlık + açıklama + en az 2 seçenek (her seçenekte ad ve sonuç metni)."
     }
   }
 }

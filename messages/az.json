@@ -50,7 +50,8 @@
       "superAdmin": "Super Admin",
       "tenant": "Təşkilat",
       "participant": "İştirakçı",
-      "jury": "Jüri"
+      "jury": "Jüri",
+      "teacher": "Müəllim"
     },
     "error": "Xəta baş verdi"
   },
@@ -92,7 +93,8 @@
       "reports": "Hesabatlar",
       "settings": "Parametrlər",
       "billing": "Ödənişlər",
-      "simulations": "Simulyasiyalar"
+      "simulations": "Simulyasiyalar",
+      "teachers": "Müəllimlər"
     },
     "participant": {
       "dashboard": "Panel",
@@ -108,6 +110,11 @@
     "jury": {
       "dashboard": "İdarə Paneli",
       "rankings": "Sıralama"
+    },
+    "teacher": {
+      "dashboard": "İdarə Paneli",
+      "scenarios": "Ssenarilər",
+      "grading": "Qiymətləndirmə"
     }
   },
   "superAdmin": {
@@ -418,7 +425,8 @@
       "passwordMismatch": "Şifrələr uyğun gəlmir",
       "wrongCurrentPassword": "Cari şifrə yanlışdır",
       "passwordChanged": "Şifrə uğurla dəyişdirildi",
-      "changePassword": "Şifrəni dəyiş"
+      "changePassword": "Şifrəni dəyiş",
+      "myTeacher": "Müəllimim: {name}"
     },
     "certificateTypes": {
       "participation": "İştirak Sertifikatı",
@@ -598,6 +606,102 @@
       "gradeSaved": "Qiymət yadda saxlanıldı",
       "invalidGrade": "Qiymət 0 ilə maksimum arasında olmalıdır",
       "viewerNote": "Qiymət vermək üçün admin səlahiyyəti lazımdır."
+    }
+  },
+  "teacher": {
+    "manage": {
+      "title": "Müəllimlər",
+      "subtitle": "Müəllim hesabı yaradın və təhvil verin — müəllim öz tələbələrini dəvət edir, ssenarilər qurur və qiymətləndirir.",
+      "addTeacher": "Yeni müəllim",
+      "addDescription": "Müəllim hesabı yaradılır və giriş məlumatları e-poçtuna göndərilir.",
+      "firstName": "Ad",
+      "lastName": "Soyad",
+      "email": "E-poçt",
+      "create": "Hesabı yarat və təhvil ver",
+      "created": "Müəllim hesabı yaradıldı",
+      "removed": "Müəllim hesabı silindi",
+      "remove": "Müəllimi sil",
+      "empty": "Hələ müəllim yoxdur — ilk müəllimi əlavə edin.",
+      "studentCount": "{count} tələbə",
+      "scenarioCount": "{count} ssenari",
+      "credentialsEmailed": "Giriş məlumatları {email} ünvanına göndərildi",
+      "passwordCopied": "Şifrə kopyalandı",
+      "passwordShownOnce": "Bu müvəqqəti şifrə yalnız bir dəfə göstərilir. Müəllim ilk girişdən sonra dəyişməlidir."
+    },
+    "dashboard": {
+      "title": "Müəllim Paneli",
+      "stats": {
+        "students": "Tələbələrim",
+        "scenarios": "Ssenarilərim",
+        "pendingGrades": "Qiymət gözləyən"
+      },
+      "invite": {
+        "heading": "Tələbə dəvəti",
+        "hint": "Bu QR kodu və ya linki tələbələrinizlə paylaşın — qeydiyyatdan keçən hər tələbə avtomatik sizin qrupunuza düşür.",
+        "qrAlt": "Tələbə dəvət linki üçün QR kod",
+        "copy": "Linki kopyala",
+        "copied": "Link kopyalandı"
+      },
+      "students": {
+        "heading": "Tələbələrim",
+        "empty": "Hələ tələbə yoxdur — QR kodu paylaşaraq dəvət edin.",
+        "name": "Tələbə",
+        "simScore": "Sim. balı",
+        "grade": "Qiymət"
+      }
+    },
+    "join": {
+      "title": "Qrupa qoşul",
+      "subtitle": "{teacher} sizi {organization} platformasında öz qrupuna dəvət edir. Qeydiyyatdan keçin və simulyasiyalara başlayın.",
+      "firstName": "Ad",
+      "lastName": "Soyad",
+      "email": "E-poçt",
+      "password": "Şifrə",
+      "passwordPolicy": "Ən az 8 simvol, böyük hərf, kiçik hərf və rəqəm",
+      "register": "Qeydiyyatdan keç",
+      "doneTitle": "Xoş gəlmisiniz! 🎉",
+      "doneText": "Qeydiyyat tamamlandı — artıq {teacher} qrupundasınız. İndi daxil olub simulyasiyalara başlaya bilərsiniz.",
+      "goToLogin": "Daxil ol"
+    },
+    "scenarios": {
+      "title": "Ssenarilərim",
+      "subtitle": "Öz biznes ssenarilərinizi qurun — tələbələriniz onları simulyasiya kimi oynayacaq.",
+      "create": "Yeni ssenari",
+      "empty": "Hələ ssenariniz yoxdur — ilk ssenarinizi yaradın.",
+      "deleted": "Ssenari silindi",
+      "roundCount": "{count} raund",
+      "runCount": "{count} oyun"
+    },
+    "editor": {
+      "createTitle": "Yeni Ssenari",
+      "editTitle": "Ssenarini Redaktə Et",
+      "back": "Ssenarilərə qayıt",
+      "runsWarning": "Bu ssenari üzrə mövcud oyunlar var — yadda saxlasanız, bütün oyunlar sıfırlanacaq.",
+      "metaHeading": "Ümumi məlumat",
+      "name": "Ssenari adı",
+      "namePlaceholder": "məs. Kafe İdarə Et",
+      "description": "Təsvir",
+      "descriptionPlaceholder": "Tələbə intro ekranında bunu görəcək...",
+      "startCash": "Başlanğıc kapital (₼)",
+      "targetCash": "Hədəf kapital (₼)",
+      "untitledRound": "Adsız raund",
+      "roundTitle": "Raund başlığı",
+      "roundTitlePlaceholder": "məs. İlk müştərilər",
+      "roundContext": "Vəziyyət təsviri",
+      "roundContextPlaceholder": "Tələbəyə vəziyyəti təsvir edin: nə baş verir, hansı qərar verilməlidir...",
+      "choiceLabel": "Seçim {letter}",
+      "choiceTitlePlaceholder": "Qərarın adı",
+      "choiceDetailPlaceholder": "Qısa ipucu — trade-off nədir? (istəyə bağlı)",
+      "cashDelta": "Kapital Δ",
+      "satDelta": "Məmnun. Δ",
+      "repDelta": "Reput. Δ",
+      "variance": "Təsadüf ±",
+      "choiceFeedbackPlaceholder": "Bu seçimdən sonra tələbəyə göstəriləcək nəticə mətni...",
+      "addChoice": "Seçim əlavə et",
+      "addRound": "Raund əlavə et",
+      "save": "Ssenarini yadda saxla",
+      "saved": "Ssenari yadda saxlanıldı",
+      "validationHint": "Yadda saxlamaq üçün: ad, ən az 2 raund, hər raundda başlıq + təsvir + ən az 2 seçim (hər seçimdə ad və nəticə mətni)."
     }
   }
 }

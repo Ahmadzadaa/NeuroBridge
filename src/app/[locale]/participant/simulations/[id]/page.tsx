@@ -18,7 +18,14 @@ export default async function SimulationPlayPage({
     where: { id },
     include: { _count: { select: { rounds: true } } },
   });
-  if (!simulation || simulation._count.rounds === 0) notFound();
+  if (
+    !simulation ||
+    simulation._count.rounds === 0 ||
+    (simulation.tenantId !== null &&
+      simulation.tenantId !== session.user.tenantId)
+  ) {
+    notFound();
+  }
 
   const [activeRun, lastCompleted, me] = await Promise.all([
     prisma.simulationRun.findFirst({

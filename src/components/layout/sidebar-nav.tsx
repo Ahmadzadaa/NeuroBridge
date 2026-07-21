@@ -24,7 +24,7 @@ import {
   Scale,
 } from "lucide-react";
 
-type PanelType = "super-admin" | "tenant" | "participant" | "jury";
+type PanelType = "super-admin" | "tenant" | "participant" | "jury" | "teacher";
 
 interface NavItem {
   href: string;
@@ -46,6 +46,7 @@ const navConfig: Record<PanelType, NavItem[]> = {
     { href: "/tenant", labelKey: "dashboard", icon: LayoutDashboard },
     { href: "/tenant/programs", labelKey: "programs", icon: FileText },
     { href: "/tenant/simulations", labelKey: "simulations", icon: Gamepad2 },
+    { href: "/tenant/teachers", labelKey: "teachers", icon: GraduationCap },
     { href: "/tenant/participants", labelKey: "participants", icon: Users },
     { href: "/tenant/reports", labelKey: "reports", icon: BarChart3 },
     { href: "/tenant/settings", labelKey: "settings", icon: Settings },
@@ -65,6 +66,11 @@ const navConfig: Record<PanelType, NavItem[]> = {
   jury: [
     { href: "/jury", labelKey: "dashboard", icon: LayoutDashboard },
     { href: "/jury/rankings", labelKey: "rankings", icon: Scale },
+  ],
+  teacher: [
+    { href: "/teacher", labelKey: "dashboard", icon: LayoutDashboard },
+    { href: "/teacher/scenarios", labelKey: "scenarios", icon: FileText },
+    { href: "/teacher/grading", labelKey: "grading", icon: GraduationCap },
   ],
 };
 

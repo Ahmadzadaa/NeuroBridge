@@ -62,6 +62,8 @@ model User {
   role                String    @default("PARTICIPANT")
   language            String    @default("tr")
   coinBalance         Int       @default(0) @map("coin_balance")
+  teacherId           String?   @map("teacher_id")
+  inviteToken         String?   @unique @map("invite_token")
   twoFactorEnabled    Boolean   @default(false) @map("two_factor_enabled")
   twoFactorSecret     String?   @map("two_factor_secret")
   failedLoginAttempts Int       @default(0) @map("failed_login_attempts")
@@ -81,6 +83,9 @@ model User {
   teamMemberships  TeamMember[]
   juryScores       JuryScore[]
   simulationRuns   SimulationRun[]
+  teacher          User?             @relation("TeacherStudents", fields: [teacherId], references: [id])
+  students         User[]            @relation("TeacherStudents")
+  authoredSimulations Simulation[]   @relation("AuthoredSimulations")
 
   @@unique([tenantId, email])
   @@index([tenantId])
@@ -188,10 +193,16 @@ model Simulation {
   description String?
   startCash   Int              @default(1000) @map("start_cash")
   targetCash  Int              @default(3000) @map("target_cash")
+  // Platform scenarios have tenantId = null; teacher-authored scenarios
+  // belong to a tenant and their creator.
+  tenantId    String?          @map("tenant_id")
+  createdById String?          @map("created_by_id")
+  createdBy   User?            @relation("AuthoredSimulations", fields: [createdById], references: [id])
   tasks       SimulationTask[]
   rounds      SimulationRound[]
   runs        SimulationRun[]
 
+  @@index([tenantId])
   @@map("simulations")
 }
 

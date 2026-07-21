@@ -53,6 +53,8 @@ interface SimulationGradingClientProps {
   userName: string;
   canGrade: boolean;
   runs: GradingRun[];
+  /** Which dashboard shell to render in — dean ("tenant") or teacher. */
+  panel?: "tenant" | "teacher";
 }
 
 export function SimulationGradingClient({
@@ -60,6 +62,7 @@ export function SimulationGradingClient({
   userName,
   canGrade,
   runs,
+  panel = "tenant",
 }: SimulationGradingClientProps) {
   const t = useTranslations("simulation.grading");
   const tc = useTranslations("common");
@@ -315,7 +318,7 @@ export function SimulationGradingClient({
   };
 
   return (
-    <DashboardLayout panel="tenant" title={t("title")} userName={userName}>
+    <DashboardLayout panel={panel} title={t("title")} userName={userName}>
       <p className="mb-6 max-w-2xl text-[14px] text-muted-foreground">
         {t("subtitle")}
       </p>

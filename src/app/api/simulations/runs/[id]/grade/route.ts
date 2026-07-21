@@ -17,9 +17,13 @@ export async function POST(
 
       const run = await prisma.simulationRun.findUnique({
         where: { id },
-        include: { user: { select: { tenantId: true } } },
+        include: { user: { select: { tenantId: true, teacherId: true } } },
       });
       if (!run || run.user.tenantId !== session.tenantId) {
+        return NextResponse.json({ error: "Run not found" }, { status: 404 });
+      }
+      // Teachers grade only their own students; dean grades tenant-wide.
+      if (session.role === "TEACHER" && run.user.teacherId !== session.id) {
         return NextResponse.json({ error: "Run not found" }, { status: 404 });
       }
       if (run.status !== "COMPLETED") {

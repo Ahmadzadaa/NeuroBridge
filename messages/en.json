@@ -50,7 +50,8 @@
       "superAdmin": "Super Admin",
       "tenant": "Organization",
       "participant": "Participant",
-      "jury": "Jury"
+      "jury": "Jury",
+      "teacher": "Teacher"
     },
     "error": "Something went wrong"
   },
@@ -92,7 +93,8 @@
       "reports": "Reports",
       "settings": "Settings",
       "billing": "Billing",
-      "simulations": "Simulations"
+      "simulations": "Simulations",
+      "teachers": "Teachers"
     },
     "participant": {
       "dashboard": "Dashboard",
@@ -108,6 +110,11 @@
     "jury": {
       "dashboard": "Dashboard",
       "rankings": "Rankings"
+    },
+    "teacher": {
+      "dashboard": "Dashboard",
+      "scenarios": "Scenarios",
+      "grading": "Grading"
     }
   },
   "superAdmin": {
@@ -418,7 +425,8 @@
       "passwordMismatch": "Passwords do not match",
       "wrongCurrentPassword": "Current password is incorrect",
       "passwordChanged": "Password changed successfully",
-      "changePassword": "Change password"
+      "changePassword": "Change password",
+      "myTeacher": "My teacher: {name}"
     },
     "certificateTypes": {
       "participation": "Certificate of Participation",
@@ -598,6 +606,102 @@
       "gradeSaved": "Grade saved",
       "invalidGrade": "Grade must be between 0 and the maximum",
       "viewerNote": "Admin permission is required to grade."
+    }
+  },
+  "teacher": {
+    "manage": {
+      "title": "Teachers",
+      "subtitle": "Create and hand over teacher accounts — teachers invite their own students, build scenarios and grade results.",
+      "addTeacher": "New teacher",
+      "addDescription": "Creates a teacher account and emails the credentials to them.",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "create": "Create & hand over",
+      "created": "Teacher account created",
+      "removed": "Teacher account removed",
+      "remove": "Remove teacher",
+      "empty": "No teachers yet — add the first one.",
+      "studentCount": "{count} students",
+      "scenarioCount": "{count} scenarios",
+      "credentialsEmailed": "Credentials were emailed to {email}",
+      "passwordCopied": "Password copied",
+      "passwordShownOnce": "This temporary password is shown only once. The teacher should change it after first login."
+    },
+    "dashboard": {
+      "title": "Teacher Panel",
+      "stats": {
+        "students": "My students",
+        "scenarios": "My scenarios",
+        "pendingGrades": "Awaiting grade"
+      },
+      "invite": {
+        "heading": "Student invite",
+        "hint": "Share this QR code or link with your students — everyone who registers lands in your group automatically.",
+        "qrAlt": "QR code for the student invite link",
+        "copy": "Copy link",
+        "copied": "Link copied"
+      },
+      "students": {
+        "heading": "My students",
+        "empty": "No students yet — share the QR code to invite them.",
+        "name": "Student",
+        "simScore": "Sim score",
+        "grade": "Grade"
+      }
+    },
+    "join": {
+      "title": "Join the group",
+      "subtitle": "{teacher} invites you to their group on {organization}. Register and start the simulations.",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "password": "Password",
+      "passwordPolicy": "At least 8 characters with uppercase, lowercase and a number",
+      "register": "Register",
+      "doneTitle": "Welcome! 🎉",
+      "doneText": "Registration complete — you're now in {teacher}'s group. Sign in and start the simulations.",
+      "goToLogin": "Sign in"
+    },
+    "scenarios": {
+      "title": "My Scenarios",
+      "subtitle": "Build your own business scenarios — your students will play them as simulations.",
+      "create": "New scenario",
+      "empty": "No scenarios yet — create your first one.",
+      "deleted": "Scenario deleted",
+      "roundCount": "{count} rounds",
+      "runCount": "{count} runs"
+    },
+    "editor": {
+      "createTitle": "New Scenario",
+      "editTitle": "Edit Scenario",
+      "back": "Back to scenarios",
+      "runsWarning": "This scenario has existing runs — saving will reset all of them.",
+      "metaHeading": "General",
+      "name": "Scenario name",
+      "namePlaceholder": "e.g. Run a Café",
+      "description": "Description",
+      "descriptionPlaceholder": "Students see this on the intro screen...",
+      "startCash": "Starting capital",
+      "targetCash": "Target capital",
+      "untitledRound": "Untitled round",
+      "roundTitle": "Round title",
+      "roundTitlePlaceholder": "e.g. First customers",
+      "roundContext": "Situation description",
+      "roundContextPlaceholder": "Describe the situation: what's happening, what decision is needed...",
+      "choiceLabel": "Choice {letter}",
+      "choiceTitlePlaceholder": "Decision label",
+      "choiceDetailPlaceholder": "Short hint — what's the trade-off? (optional)",
+      "cashDelta": "Cash Δ",
+      "satDelta": "Satisf. Δ",
+      "repDelta": "Reput. Δ",
+      "variance": "Random ±",
+      "choiceFeedbackPlaceholder": "Outcome text shown to the student after this choice...",
+      "addChoice": "Add choice",
+      "addRound": "Add round",
+      "save": "Save scenario",
+      "saved": "Scenario saved",
+      "validationHint": "To save: a name, at least 2 rounds, each with a title + description + at least 2 choices (each with a label and outcome text)."
     }
   }
 }

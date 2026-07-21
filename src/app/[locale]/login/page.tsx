@@ -103,6 +103,7 @@ export default function LoginPage() {
       TENANT_VIEWER: "/tenant",
       PARTICIPANT: "/participant",
       JURY: "/jury",
+      TEACHER: "/teacher",
     };
 
     router.refresh();
