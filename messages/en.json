@@ -91,7 +91,8 @@
       "participants": "Participants",
       "reports": "Reports",
       "settings": "Settings",
-      "billing": "Billing"
+      "billing": "Billing",
+      "simulations": "Simulations"
     },
     "participant": {
       "dashboard": "Dashboard",
@@ -545,6 +546,58 @@
     "feedback": {
       "heading": "Jury feedback",
       "outOf": "out of {max} points"
+    }
+  },
+  "simulation": {
+    "list": {
+      "title": "Simulation Modules",
+      "subtitle": "Decide round by round and grow your business — your result becomes a score automatically and is graded by your teacher.",
+      "comingSoon": "Coming soon",
+      "roundProgress": "Round {current}/{total}",
+      "completed": "Completed",
+      "start": "Start",
+      "continue": "Continue",
+      "playAgain": "Play again",
+      "bestScore": "Best score"
+    },
+    "play": {
+      "backToList": "Back to simulations",
+      "roundLabel": "Round {current}/{total}",
+      "roundTitle": "Round {number}",
+      "metrics": {
+        "cash": "Capital",
+        "satisfaction": "Customer satisfaction",
+        "reputation": "Reputation"
+      },
+      "decisionPrompt": "Make your decision",
+      "outcomeLabel": "Outcome",
+      "nextRound": "Next round",
+      "completedTitle": "Simulation complete!",
+      "scoreLabel": "Final score (out of 100)",
+      "teacherPending": "Awaiting teacher review",
+      "teacherGraded": "Teacher grade: {grade}/{max}",
+      "viewSummary": "View summary",
+      "lastResultTitle": "Your latest result",
+      "introRules": "{rounds} rounds await you. Your starting capital is {cash}, the target is {target}. Make one decision per round — every choice affects capital, customer satisfaction and reputation. At the end, the three metrics become your final score.",
+      "begin": "Start simulation"
+    },
+    "grading": {
+      "title": "Simulation Grading",
+      "subtitle": "Review the simulations your students completed, inspect their decision history and assign grades.",
+      "empty": "No completed simulations yet.",
+      "pendingHeading": "Awaiting grade",
+      "gradedHeading": "Graded",
+      "decisions": "Decision history",
+      "gradeHeading": "Grading",
+      "grade": "Grade",
+      "maxGrade": "Maximum grade",
+      "comment": "Feedback (optional)",
+      "commentPlaceholder": "Short feedback for the student...",
+      "saveGrade": "Save grade",
+      "updateGrade": "Update",
+      "gradeSaved": "Grade saved",
+      "invalidGrade": "Grade must be between 0 and the maximum",
+      "viewerNote": "Admin permission is required to grade."
     }
   }
 }

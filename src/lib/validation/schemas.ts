@@ -124,6 +124,21 @@ export const addJurySchema = z.object({
   lastName: safeString(100).optional(),
 });
 
+export const simulationDecideSchema = z.object({
+  choiceId: z.string().min(1).max(50),
+});
+
+export const simulationGradeSchema = z
+  .object({
+    grade: z.number().int().min(0).max(1000),
+    maxGrade: z.number().int().min(1).max(1000),
+    comment: safeString(600).optional(),
+  })
+  .refine((data) => data.grade <= data.maxGrade, {
+    message: "Grade cannot exceed the maximum",
+    path: ["grade"],
+  });
+
 export const provisionTenantSchema = z.object({
   name: safeString(200),
   adminEmail: z.string().trim().toLowerCase().email().max(255),

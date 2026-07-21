@@ -80,6 +80,7 @@ model User {
   lessonProgress   LessonProgress[]
   teamMemberships  TeamMember[]
   juryScores       JuryScore[]
+  simulationRuns   SimulationRun[]
 
   @@unique([tenantId, email])
   @@index([tenantId])
@@ -185,9 +186,92 @@ model Simulation {
   nameAz      String           @map("name_az")
   category    String
   description String?
+  startCash   Int              @default(1000) @map("start_cash")
+  targetCash  Int              @default(3000) @map("target_cash")
   tasks       SimulationTask[]
+  rounds      SimulationRound[]
+  runs        SimulationRun[]
 
   @@map("simulations")
+}
+
+model SimulationRound {
+  id           String @id @default(cuid())
+  simulationId String @map("simulation_id")
+  order        Int
+  title        String
+  context      String
+
+  simulation Simulation           @relation(fields: [simulationId], references: [id], onDelete: Cascade)
+  choices    SimulationChoice[]
+  decisions  SimulationDecision[]
+
+  @@unique([simulationId, order])
+  @@map("simulation_rounds")
+}
+
+model SimulationChoice {
+  id                String  @id @default(cuid())
+  roundId           String  @map("round_id")
+  label             String
+  detail            String?
+  cashDelta         Int     @default(0) @map("cash_delta")
+  satisfactionDelta Int     @default(0) @map("satisfaction_delta")
+  reputationDelta   Int     @default(0) @map("reputation_delta")
+  variance          Int     @default(0)
+  feedback          String
+  order             Int     @default(0)
+
+  round     SimulationRound      @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  decisions SimulationDecision[]
+
+  @@index([roundId])
+  @@map("simulation_choices")
+}
+
+model SimulationRun {
+  id              String    @id @default(cuid())
+  simulationId    String    @map("simulation_id")
+  userId          String    @map("user_id")
+  status          String    @default("IN_PROGRESS")
+  currentRound    Int       @default(1) @map("current_round")
+  cash            Int
+  satisfaction    Int
+  reputation      Int
+  score           Int?
+  teacherGrade    Int?      @map("teacher_grade")
+  teacherMaxGrade Int?      @map("teacher_max_grade")
+  teacherComment  String?   @map("teacher_comment")
+  gradedByUserId  String?   @map("graded_by_user_id")
+  gradedAt        DateTime? @map("graded_at")
+  startedAt       DateTime  @default(now()) @map("started_at")
+  completedAt     DateTime? @map("completed_at")
+
+  simulation Simulation           @relation(fields: [simulationId], references: [id], onDelete: Cascade)
+  user       User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  decisions  SimulationDecision[]
+
+  @@index([userId])
+  @@index([simulationId])
+  @@map("simulation_runs")
+}
+
+model SimulationDecision {
+  id                String   @id @default(cuid())
+  runId             String   @map("run_id")
+  roundId           String   @map("round_id")
+  choiceId          String   @map("choice_id")
+  cashAfter         Int      @map("cash_after")
+  satisfactionAfter Int      @map("satisfaction_after")
+  reputationAfter   Int      @map("reputation_after")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  run    SimulationRun    @relation(fields: [runId], references: [id], onDelete: Cascade)
+  round  SimulationRound  @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  choice SimulationChoice @relation(fields: [choiceId], references: [id], onDelete: Cascade)
+
+  @@unique([runId, roundId])
+  @@map("simulation_decisions")
 }
 
 model SimulationTask {

@@ -91,7 +91,8 @@
       "participants": "Katılımcılar",
       "reports": "Raporlar",
       "settings": "Ayarlar",
-      "billing": "Ödemeler"
+      "billing": "Ödemeler",
+      "simulations": "Simülasyonlar"
     },
     "participant": {
       "dashboard": "Panel",
@@ -545,6 +546,58 @@
     "feedback": {
       "heading": "Jüri geri bildirimi",
       "outOf": "en fazla {max} puan"
+    }
+  },
+  "simulation": {
+    "list": {
+      "title": "Simülasyon Modülleri",
+      "subtitle": "Tur tur karar verin, işinizi büyütün — sonucunuz otomatik puana dönüşür ve öğretmen tarafından değerlendirilir.",
+      "comingSoon": "Yakında",
+      "roundProgress": "Tur {current}/{total}",
+      "completed": "Tamamlandı",
+      "start": "Başla",
+      "continue": "Devam et",
+      "playAgain": "Tekrar oyna",
+      "bestScore": "En iyi puan"
+    },
+    "play": {
+      "backToList": "Simülasyonlara dön",
+      "roundLabel": "Tur {current}/{total}",
+      "roundTitle": "Tur {number}",
+      "metrics": {
+        "cash": "Sermaye",
+        "satisfaction": "Müşteri memnuniyeti",
+        "reputation": "İtibar"
+      },
+      "decisionPrompt": "Kararınızı verin",
+      "outcomeLabel": "Sonuç",
+      "nextRound": "Sonraki tur",
+      "completedTitle": "Simülasyon tamamlandı!",
+      "scoreLabel": "Final puanı (100 üzerinden)",
+      "teacherPending": "Öğretmen değerlendirmesi bekleniyor",
+      "teacherGraded": "Öğretmen notu: {grade}/{max}",
+      "viewSummary": "Özete bak",
+      "lastResultTitle": "Son sonucunuz",
+      "introRules": "{rounds} tur sizi bekliyor. Başlangıç sermayeniz {cash}, hedef {target}. Her turda bir karar verin — her seçimin sermayeye, müşteri memnuniyetine ve itibara etkisi var. Sonunda üç metrik final puanına dönüşür.",
+      "begin": "Simülasyona başla"
+    },
+    "grading": {
+      "title": "Simülasyon Değerlendirmesi",
+      "subtitle": "Öğrencilerin tamamladığı simülasyonları inceleyin, karar geçmişine bakın ve not verin.",
+      "empty": "Henüz tamamlanmış simülasyon yok.",
+      "pendingHeading": "Not bekliyor",
+      "gradedHeading": "Notlandırıldı",
+      "decisions": "Karar geçmişi",
+      "gradeHeading": "Değerlendirme",
+      "grade": "Not",
+      "maxGrade": "Maksimum not",
+      "comment": "Yorum (isteğe bağlı)",
+      "commentPlaceholder": "Öğrenciye kısa yorum...",
+      "saveGrade": "Notu kaydet",
+      "updateGrade": "Güncelle",
+      "gradeSaved": "Not kaydedildi",
+      "invalidGrade": "Not 0 ile maksimum arasında olmalı",
+      "viewerNote": "Not vermek için admin yetkisi gerekir."
     }
   }
 }

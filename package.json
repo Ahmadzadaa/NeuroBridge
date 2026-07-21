@@ -14,6 +14,7 @@
     "db:seed": "tsx prisma/seed.ts",
     "db:seed-demo": "tsx prisma/seed-demo.ts",
     "db:seed-hackathon": "tsx prisma/seed-hackathon.ts",
+    "db:seed-simulation": "tsx prisma/seed-simulation.ts",
     "db:seed-demo:reset": "tsx prisma/seed-demo.ts --reset",
     "db:push": "prisma db push",
     "db:rls": "psql %DATABASE_URL% -f prisma/migrations/rls/001_enable_rls.sql",

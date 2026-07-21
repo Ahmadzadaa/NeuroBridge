@@ -45,6 +45,7 @@ const navConfig: Record<PanelType, NavItem[]> = {
   tenant: [
     { href: "/tenant", labelKey: "dashboard", icon: LayoutDashboard },
     { href: "/tenant/programs", labelKey: "programs", icon: FileText },
+    { href: "/tenant/simulations", labelKey: "simulations", icon: Gamepad2 },
     { href: "/tenant/participants", labelKey: "participants", icon: Users },
     { href: "/tenant/reports", labelKey: "reports", icon: BarChart3 },
     { href: "/tenant/settings", labelKey: "settings", icon: Settings },

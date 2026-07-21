@@ -91,7 +91,8 @@
       "participants": "İştirakçılar",
       "reports": "Hesabatlar",
       "settings": "Parametrlər",
-      "billing": "Ödənişlər"
+      "billing": "Ödənişlər",
+      "simulations": "Simulyasiyalar"
     },
     "participant": {
       "dashboard": "Panel",
@@ -545,6 +546,58 @@
     "feedback": {
       "heading": "Jüri rəyi",
       "outOf": "maksimum {max} bal"
+    }
+  },
+  "simulation": {
+    "list": {
+      "title": "Simulyasiya Modulları",
+      "subtitle": "Raund-raund qərar verin, biznesinizi böyüdün — nəticəniz avtomatik bala çevrilir və müəllim tərəfindən qiymətləndirilir.",
+      "comingSoon": "Tezliklə",
+      "roundProgress": "Raund {current}/{total}",
+      "completed": "Tamamlanıb",
+      "start": "Başla",
+      "continue": "Davam et",
+      "playAgain": "Yenidən oyna",
+      "bestScore": "Ən yaxşı bal"
+    },
+    "play": {
+      "backToList": "Simulyasiyalara qayıt",
+      "roundLabel": "Raund {current}/{total}",
+      "roundTitle": "Raund {number}",
+      "metrics": {
+        "cash": "Kapital",
+        "satisfaction": "Müştəri məmnuniyyəti",
+        "reputation": "Reputasiya"
+      },
+      "decisionPrompt": "Qərarınızı verin",
+      "outcomeLabel": "Nəticə",
+      "nextRound": "Növbəti raund",
+      "completedTitle": "Simulyasiya tamamlandı!",
+      "scoreLabel": "Yekun bal (100 üzərindən)",
+      "teacherPending": "Müəllim qiymətləndirməsi gözlənilir",
+      "teacherGraded": "Müəllim qiyməti: {grade}/{max}",
+      "viewSummary": "Xülasəyə bax",
+      "lastResultTitle": "Son nəticəniz",
+      "introRules": "{rounds} raund sizi gözləyir. Başlanğıc kapitalınız {cash}, hədəf {target}. Hər raundda bir qərar verin — hər seçimin kapitala, müştəri məmnuniyyətinə və reputasiyaya təsiri var. Sonda üç metrik yekun bala çevrilir.",
+      "begin": "Simulyasiyaya başla"
+    },
+    "grading": {
+      "title": "Simulyasiya Qiymətləndirməsi",
+      "subtitle": "Tələbələrin tamamladığı simulyasiyaları nəzərdən keçirin, qərar tarixçəsinə baxın və qiymət verin.",
+      "empty": "Hələ tamamlanmış simulyasiya yoxdur.",
+      "pendingHeading": "Qiymət gözləyir",
+      "gradedHeading": "Qiymətləndirilib",
+      "decisions": "Qərar tarixçəsi",
+      "gradeHeading": "Qiymətləndirmə",
+      "grade": "Qiymət",
+      "maxGrade": "Maksimum qiymət",
+      "comment": "Rəy (istəyə bağlı)",
+      "commentPlaceholder": "Tələbəyə qısa rəy...",
+      "saveGrade": "Qiyməti yaz",
+      "updateGrade": "Yenilə",
+      "gradeSaved": "Qiymət yadda saxlanıldı",
+      "invalidGrade": "Qiymət 0 ilə maksimum arasında olmalıdır",
+      "viewerNote": "Qiymət vermək üçün admin səlahiyyəti lazımdır."
     }
   }
 }
