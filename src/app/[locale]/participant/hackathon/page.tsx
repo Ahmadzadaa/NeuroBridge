@@ -1,5 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
 import { requireRole } from "@/lib/auth-utils";
+import { requireFeature } from "@/lib/tenant/require-feature";
 import { prisma } from "@/lib/prisma";
 import { computeRankings } from "@/lib/hackathon/ranking";
 import { resultsVisible } from "@/lib/hackathon/reveal";
@@ -13,6 +14,7 @@ export default async function ParticipantHackathonPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const session = await requireRole(locale, ["PARTICIPANT"]);
+  await requireFeature(session.user.tenantId, "hackathon");
 
   const me = await prisma.user.findUnique({
     where: { id: session.user.id },

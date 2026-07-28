@@ -2,6 +2,8 @@
 
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
+import { useTenantFeatures } from "@/components/providers/tenant-features-provider";
+import type { TenantFeature } from "@/lib/tenant/features";
 import { cn } from "@/lib/utils";
 import {
   LayoutDashboard,
@@ -17,7 +19,15 @@ import {
 
 type PanelType = "super-admin" | "tenant" | "participant" | "jury" | "teacher";
 
-const mobileNavConfig: Record<PanelType, { href: string; labelKey: string; icon: React.ComponentType<{ className?: string }> }[]> = {
+interface MobileNavItem {
+  href: string;
+  labelKey: string;
+  icon: React.ComponentType<{ className?: string }>;
+  /** Hidden when the organisation does not have this module. */
+  feature?: TenantFeature;
+}
+
+const mobileNavConfig: Record<PanelType, MobileNavItem[]> = {
   "super-admin": [
     { href: "/super-admin", labelKey: "dashboard", icon: LayoutDashboard },
     { href: "/super-admin/tenants", labelKey: "tenants", icon: Users },
@@ -33,9 +43,24 @@ const mobileNavConfig: Record<PanelType, { href: string; labelKey: string; icon:
   ],
   participant: [
     { href: "/participant", labelKey: "dashboard", icon: LayoutDashboard },
-    { href: "/participant/simulations", labelKey: "simulations", icon: Gamepad2 },
-    { href: "/participant/trainings", labelKey: "trainings", icon: GraduationCap },
-    { href: "/participant/hackathon", labelKey: "hackathon", icon: Rocket },
+    {
+      href: "/participant/simulations",
+      labelKey: "simulations",
+      icon: Gamepad2,
+      feature: "simulations",
+    },
+    {
+      href: "/participant/trainings",
+      labelKey: "trainings",
+      icon: GraduationCap,
+      feature: "trainings",
+    },
+    {
+      href: "/participant/hackathon",
+      labelKey: "hackathon",
+      icon: Rocket,
+      feature: "hackathon",
+    },
     { href: "/participant/profile", labelKey: "profile", icon: Settings },
   ],
   jury: [
@@ -56,7 +81,10 @@ interface MobileNavProps {
 export function MobileNav({ panel }: MobileNavProps) {
   const t = useTranslations(`nav.${panel === "super-admin" ? "superAdmin" : panel}`);
   const pathname = usePathname();
-  const items = mobileNavConfig[panel];
+  const features = useTenantFeatures();
+  const items = mobileNavConfig[panel].filter(
+    (item) => item.feature === undefined || features[item.feature]
+  );
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around border-t border-border bg-card/80 px-2 pb-[max(env(safe-area-inset-bottom),0.5rem)] pt-2 backdrop-blur-[20px] lg:hidden">

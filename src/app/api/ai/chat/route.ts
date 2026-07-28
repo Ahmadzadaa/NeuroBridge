@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { withAuthorizedHandler } from "@/lib/auth/authorize";
+import { assertFeatureEnabled } from "@/lib/tenant/features";
 import { aiChatSchema, parseBody } from "@/lib/validation/schemas";
 import { enforceRateLimit, getClientIdentifier } from "@/lib/security/rate-limit";
 import { recordAudit, getClientIp } from "@/lib/audit/audit-service";
@@ -33,6 +34,7 @@ export async function POST(request: Request) {
   }
 
   return withAuthorizedHandler("ai:use", async ({ session }) => {
+    await assertFeatureEnabled(session.tenantId, "aiTools");
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
       return NextResponse.json(

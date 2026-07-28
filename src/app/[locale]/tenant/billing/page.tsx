@@ -36,7 +36,7 @@ export default async function TenantBillingPage({
         </CardContent>
       </Card>
 
-      <BillingClient defaultProvider="STRIPE" />
+      <BillingClient />
 
       <Card className="mt-6 rounded-2xl border-0 shadow-sm">
         <CardHeader>

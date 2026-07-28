@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { withAuthorizedHandler } from "@/lib/auth/authorize";
+import { assertFeatureEnabled } from "@/lib/tenant/features";
 import { prisma } from "@/lib/prisma";
 
 export async function POST(
@@ -9,6 +10,7 @@ export async function POST(
   const { id } = await context.params;
 
   return withAuthorizedHandler("training:submit", async ({ session }) => {
+    await assertFeatureEnabled(session.tenantId, "trainings");
     const lesson = await prisma.lesson.findUnique({
       where: { id },
       select: { id: true },

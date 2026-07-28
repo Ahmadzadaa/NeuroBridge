@@ -1,6 +1,7 @@
 import * as Sentry from "@sentry/nextjs";
 import { AUDIT_ACTIONS } from "@/lib/audit/actions";
 import { emitSeatUtilizationMetric } from "@/lib/monitoring/cloudwatch";
+import { isPostgresDatabase } from "@/lib/db/tenant-context";
 import { prisma } from "@/lib/prisma";
 import {
   CacheKeys,
@@ -59,15 +60,6 @@ async function dailyAuditCountsSql(
 ): Promise<Array<{ date: string; count: number }>> {
   const since = daysAgo(days);
 
-  const rows = await prisma.$queryRaw<Array<{ day: Date; count: bigint }>>`
-    SELECT date_trunc('day', created_at) AS day, COUNT(*)::bigint AS count
-    FROM audit_logs
-    WHERE action = ANY(${actions})
-      AND created_at >= ${since}
-    GROUP BY date_trunc('day', created_at)
-    ORDER BY day ASC
-  `;
-
   const buckets = new Map<string, number>();
   for (let i = days - 1; i >= 0; i--) {
     const d = new Date();
@@ -75,10 +67,37 @@ async function dailyAuditCountsSql(
     buckets.set(d.toISOString().slice(0, 10), 0);
   }
 
-  for (const row of rows) {
-    const key = new Date(row.day).toISOString().slice(0, 10);
-    if (buckets.has(key)) {
-      buckets.set(key, Number(row.count));
+  if (isPostgresDatabase()) {
+    const rows = await prisma.$queryRaw<Array<{ day: Date; count: bigint }>>`
+      SELECT date_trunc('day', created_at) AS day, COUNT(*)::bigint AS count
+      FROM audit_logs
+      WHERE action = ANY(${actions})
+        AND created_at >= ${since}
+      GROUP BY date_trunc('day', created_at)
+      ORDER BY day ASC
+    `;
+
+    for (const row of rows) {
+      const key = new Date(row.day).toISOString().slice(0, 10);
+      if (buckets.has(key)) {
+        buckets.set(key, Number(row.count));
+      }
+    }
+  } else {
+    // SQLite (local dev): no date_trunc/ANY/:: casts — group in JS.
+    const rows = await prisma.auditLog.findMany({
+      where: {
+        action: { in: actions },
+        createdAt: { gte: since },
+      },
+      select: { createdAt: true },
+    });
+
+    for (const row of rows) {
+      const key = row.createdAt.toISOString().slice(0, 10);
+      if (buckets.has(key)) {
+        buckets.set(key, (buckets.get(key) ?? 0) + 1);
+      }
     }
   }
 

@@ -61,6 +61,15 @@ async function deleteDemoData() {
     await prisma.program.deleteMany({ where: { id: { in: programIds } } });
   }
 
+  // Billing rows reference the tenant, so they go first.
+  await prisma.paymentTransaction.deleteMany({
+    where: { invoice: { tenantId: { in: tenantIds } } },
+  });
+  await prisma.seatChangeLog.deleteMany({ where: { tenantId: { in: tenantIds } } });
+  await prisma.invoice.deleteMany({ where: { tenantId: { in: tenantIds } } });
+  await prisma.subscription.deleteMany({ where: { tenantId: { in: tenantIds } } });
+  await prisma.paymentMethod.deleteMany({ where: { tenantId: { in: tenantIds } } });
+
   await prisma.user.deleteMany({ where: { tenantId: { in: tenantIds } } });
   await prisma.tenantSettings.deleteMany({ where: { tenantId: { in: tenantIds } } });
   await prisma.tenant.deleteMany({ where: { id: { in: tenantIds } } });
@@ -1350,6 +1359,55 @@ async function main() {
       firstName: "Viewer",
       lastName: "User",
       role: "TENANT_VIEWER",
+      language: "tr",
+      coinBalance: 0
+    }
+  });
+
+  // Billing: a plan and an active subscription matching the tenant's seats,
+  // so the billing screens have something real to show.
+  console.log("💳 Creating billing plan and subscription...");
+  const plan = await prisma.plan.upsert({
+    where: { id: "plan-standard" },
+    update: {},
+    create: {
+      id: "plan-standard",
+      name: "Standard",
+      pricePerSeatMonthly: 2500, // 25.00 TRY per seat, in kuruş
+      currency: "TRY",
+      minSeats: 10,
+      trialDays: 0,
+      isActive: true,
+    },
+  });
+
+  const billingPeriodStart = new Date();
+  const billingPeriodEnd = new Date(billingPeriodStart);
+  billingPeriodEnd.setMonth(billingPeriodEnd.getMonth() + 1);
+
+  await prisma.subscription.create({
+    data: {
+      tenantId: tenant.id,
+      planId: plan.id,
+      status: "ACTIVE",
+      seats: 100,
+      pricePerSeatMonthly: 2500,
+      currency: "TRY",
+      currentPeriodStart: billingPeriodStart,
+      currentPeriodEnd: billingPeriodEnd,
+    },
+  });
+
+  // Create teacher
+  console.log("👩‍🏫 Creating teacher...");
+  await prisma.user.create({
+    data: {
+      tenantId: tenant.id,
+      email: "teacher@demo-teknopark.com",
+      passwordHash,
+      firstName: "Teacher",
+      lastName: "User",
+      role: "TEACHER",
       language: "tr",
       coinBalance: 0
     }

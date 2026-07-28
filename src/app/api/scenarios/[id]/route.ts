@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { withAuthorizedHandler } from "@/lib/auth/authorize";
+import { assertFeatureEnabled } from "@/lib/tenant/features";
 import { scenarioSchema, parseBody } from "@/lib/validation/schemas";
 import { prisma } from "@/lib/prisma";
 
@@ -22,6 +23,7 @@ export async function PUT(
   return withAuthorizedHandler(
     "simulation:author",
     async ({ session }) => {
+      await assertFeatureEnabled(session.tenantId, "teachers");
       const simulation = await loadOwnScenario(id, session.id);
       if (!simulation) {
         return NextResponse.json({ error: "Scenario not found" }, { status: 404 });
@@ -80,6 +82,7 @@ export async function DELETE(
   return withAuthorizedHandler(
     "simulation:author",
     async ({ session }) => {
+      await assertFeatureEnabled(session.tenantId, "teachers");
       const simulation = await loadOwnScenario(id, session.id);
       if (!simulation) {
         return NextResponse.json({ error: "Scenario not found" }, { status: 404 });

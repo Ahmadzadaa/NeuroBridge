@@ -2,6 +2,7 @@ import { randomBytes, randomUUID } from "crypto";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { withAuthorizedHandler } from "@/lib/auth/authorize";
+import { assertFeatureEnabled } from "@/lib/tenant/features";
 import { addJurySchema, parseBody } from "@/lib/validation/schemas";
 import { prisma } from "@/lib/prisma";
 import { recordAudit, getClientIp } from "@/lib/audit/audit-service";
@@ -27,6 +28,7 @@ export async function POST(request: Request) {
   return withAuthorizedHandler(
     "teacher:manage",
     async ({ session }) => {
+      await assertFeatureEnabled(session.tenantId, "teachers");
       if (!session.tenantId) {
         return NextResponse.json({ error: "Tenant required" }, { status: 400 });
       }
@@ -127,6 +129,7 @@ export async function DELETE(request: Request) {
   return withAuthorizedHandler(
     "teacher:manage",
     async ({ session }) => {
+      await assertFeatureEnabled(session.tenantId, "teachers");
       if (!session.tenantId) {
         return NextResponse.json({ error: "Tenant required" }, { status: 400 });
       }

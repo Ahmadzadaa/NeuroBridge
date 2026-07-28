@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { withAuthorizedHandler } from "@/lib/auth/authorize";
+import { assertFeatureEnabled } from "@/lib/tenant/features";
 import { prisma } from "@/lib/prisma";
 import {
   START_SATISFACTION,
@@ -14,6 +15,7 @@ export async function POST(
   const { id } = await context.params;
 
   return withAuthorizedHandler("simulation:play", async ({ session }) => {
+    await assertFeatureEnabled(session.tenantId, "simulations");
     const simulation = await prisma.simulation.findUnique({
       where: { id },
       select: {

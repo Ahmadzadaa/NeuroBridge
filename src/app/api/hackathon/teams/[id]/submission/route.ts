@@ -3,6 +3,7 @@ import { mkdir, writeFile } from "fs/promises";
 import path from "path";
 import { NextResponse } from "next/server";
 import { withAuthorizedHandler } from "@/lib/auth/authorize";
+import { assertFeatureEnabled } from "@/lib/tenant/features";
 import { prisma } from "@/lib/prisma";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
@@ -19,6 +20,7 @@ export async function POST(
   const { id } = await context.params;
 
   return withAuthorizedHandler("hackathon:submit", async ({ session }) => {
+    await assertFeatureEnabled(session.tenantId, "hackathon");
     const membership = await prisma.teamMember.findUnique({
       where: { teamId_userId: { teamId: id, userId: session.id } },
     });

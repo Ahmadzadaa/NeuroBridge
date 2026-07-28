@@ -19,6 +19,19 @@ model Tenant {
   seatLimit  Int      @default(0) @map("seat_limit")
   seatsUsed  Int      @default(0) @map("seats_used")
   planType   String?  @map("plan_type")
+
+  /// UNIVERSITY | TECHNOPARK | FULL — a preset that seeds the flags below.
+  /// It is only a starting point; each flag can be changed independently
+  /// afterwards, so e.g. a university can still run a hackathon.
+  tenantType String @default("FULL") @map("tenant_type")
+
+  /// Module entitlements, set by the platform owner. Default to true so
+  /// organisations created before this existed keep everything they had.
+  teachersEnabled    Boolean @default(true) @map("teachers_enabled")
+  hackathonEnabled   Boolean @default(true) @map("hackathon_enabled")
+  simulationsEnabled Boolean @default(true) @map("simulations_enabled")
+  trainingsEnabled   Boolean @default(true) @map("trainings_enabled")
+  aiToolsEnabled     Boolean @default(true) @map("ai_tools_enabled")
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
 
@@ -27,6 +40,11 @@ model Tenant {
   payments     Payment[]
   auditLogs    AuditLog[]
   settings     TenantSettings?
+
+  subscription   Subscription?
+  invoices       Invoice[]
+  paymentMethods PaymentMethod[]
+  seatChangeLogs SeatChangeLog[]
 
   @@map("tenants")
 }
@@ -62,6 +80,19 @@ model User {
   role                String    @default("PARTICIPANT")
   language            String    @default("tr")
   coinBalance         Int       @default(0) @map("coin_balance")
+
+  // Academic profile, collected at registration for university participants.
+  // Nullable because accounts created before this existed have none.
+  university String?
+  faculty    String?
+  specialty  String?
+  /// Year of study, 1–6.
+  studyYear  Int?    @map("study_year")
+
+  /// Stored avatar file, relative to uploads/avatars. Served through an
+  /// authenticated route — never exposed as a public static path.
+  avatarPath String? @map("avatar_path")
+
   teacherId           String?   @map("teacher_id")
   inviteToken         String?   @unique @map("invite_token")
   twoFactorEnabled    Boolean   @default(false) @map("two_factor_enabled")
@@ -86,6 +117,8 @@ model User {
   teacher          User?             @relation("TeacherStudents", fields: [teacherId], references: [id])
   students         User[]            @relation("TeacherStudents")
   authoredSimulations Simulation[]   @relation("AuthoredSimulations")
+  approvedInvoices Invoice[]         @relation("InvoiceApprover")
+  seatChanges      SeatChangeLog[]   @relation("SeatChangeActor")
 
   @@unique([tenantId, email])
   @@index([tenantId])
@@ -580,11 +613,188 @@ model WebhookEvent {
   status          String   @default("PROCESSED")
   payload         String?
   errorMessage    String?  @map("error_message")
+  signatureValid  Boolean? @map("signature_valid")
   createdAt       DateTime @default(now()) @map("created_at")
 
   @@unique([provider, externalEventId])
   @@index([provider])
   @@map("webhook_events")
+}
+
+// ---------------------------------------------------------------------------
+// Billing (PayTR seat-based subscriptions)
+//
+// All money is stored as INTEGER kuruş (1 TRY = 100 kuruş). Never Float.
+// Statuses are String (not enum) because the SQLite connector used in local
+// dev does not support Prisma enums; the union types live in src/lib/types.ts.
+// ---------------------------------------------------------------------------
+
+model Plan {
+  id                  String   @id @default(cuid())
+  name                String
+  pricePerSeatMonthly Int      @map("price_per_seat_monthly")
+  currency            String   @default("TRY")
+  minSeats            Int      @default(1) @map("min_seats")
+  trialDays           Int      @default(0) @map("trial_days")
+  isActive            Boolean  @default(true) @map("is_active")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  subscriptions Subscription[]
+
+  @@index([isActive])
+  @@map("plans")
+}
+
+model Subscription {
+  id       String @id @default(cuid())
+  tenantId String @unique @map("tenant_id")
+  planId   String @map("plan_id")
+
+  /// TRIALING | ACTIVE | PAST_DUE | CANCELED | EXPIRED
+  status String @default("TRIALING")
+
+  seats Int
+  /// Seat reduction is deferred to the end of the current period.
+  pendingSeats Int? @map("pending_seats")
+
+  /// Contract price negotiated per tenant, snapshotted from Plan at signup.
+  pricePerSeatMonthly Int    @map("price_per_seat_monthly")
+  currency            String @default("TRY")
+
+  currentPeriodStart DateTime  @map("current_period_start")
+  currentPeriodEnd   DateTime  @map("current_period_end")
+  trialEndsAt        DateTime? @map("trial_ends_at")
+  canceledAt         DateTime? @map("canceled_at")
+
+  /// Dunning bookkeeping (retry on day 1, 3, 5; expire after 7).
+  pastDueSince    DateTime? @map("past_due_since")
+  dunningAttempts Int       @default(0) @map("dunning_attempts")
+  nextRetryAt     DateTime? @map("next_retry_at")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  tenant   Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  plan     Plan      @relation(fields: [planId], references: [id])
+  invoices Invoice[]
+
+  @@index([status])
+  @@index([currentPeriodEnd])
+  @@index([nextRetryAt])
+  @@map("subscriptions")
+}
+
+model PaymentMethod {
+  id       String @id @default(cuid())
+  tenantId String @map("tenant_id")
+  provider String @default("PAYTR")
+
+  /// PayTR card vault handles. PAN/CVV/expiry never touch this system.
+  utoken    String
+  ctoken    String?
+  cardMask  String? @map("card_mask")
+  cardBrand String? @map("card_brand")
+
+  isDefault Boolean  @default(false) @map("is_default")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, utoken, ctoken])
+  @@index([tenantId])
+  @@map("payment_methods")
+}
+
+model Invoice {
+  id             String  @id @default(cuid())
+  tenantId       String  @map("tenant_id")
+  subscriptionId String? @map("subscription_id")
+
+  /// PayTR order id: alphanumeric only, never reused. BIZ{tenant}{ts}{rand}
+  merchantOid String @unique @map("merchant_oid")
+
+  /// Integer kuruş.
+  amount   Int
+  currency String @default("TRY")
+
+  /// SUBSCRIPTION | SEAT_UPGRADE
+  type String
+  /// PENDING | PAID | FAILED | REFUNDED
+  status String @default("PENDING")
+  /// PAYTR | MANUAL — MANUAL is the offline "bank transfer" flow.
+  method String @default("PAYTR")
+
+  seatCount   Int?      @map("seat_count")
+  periodStart DateTime? @map("period_start")
+  periodEnd   DateTime? @map("period_end")
+  paidAt      DateTime? @map("paid_at")
+
+  /// Set only for method = MANUAL, when a super admin confirms the transfer.
+  approvedBy String?   @map("approved_by")
+  approvedAt DateTime? @map("approved_at")
+  note       String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  tenant       Tenant               @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  subscription Subscription?        @relation(fields: [subscriptionId], references: [id])
+  approver     User?                @relation("InvoiceApprover", fields: [approvedBy], references: [id])
+  transactions PaymentTransaction[]
+  seatChanges  SeatChangeLog[]
+
+  @@index([tenantId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("invoices")
+}
+
+model PaymentTransaction {
+  id          String @id @default(cuid())
+  invoiceId   String @map("invoice_id")
+  provider    String @default("PAYTR")
+  merchantOid String @map("merchant_oid")
+
+  amount Int
+  /// PENDING | SUCCESS | FAILED
+  status String
+
+  /// Raw provider response as a JSON string (SQLite has no native Json).
+  rawResponse      String? @map("raw_response")
+  failedReasonCode String? @map("failed_reason_code")
+  failedReasonMsg  String? @map("failed_reason_msg")
+  attemptNo        Int     @default(1) @map("attempt_no")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@index([invoiceId])
+  @@index([merchantOid])
+  @@map("payment_transactions")
+}
+
+model SeatChangeLog {
+  id        String  @id @default(cuid())
+  tenantId  String  @map("tenant_id")
+  oldSeats  Int     @map("old_seats")
+  newSeats  Int     @map("new_seats")
+  changedBy String? @map("changed_by")
+  invoiceId String? @map("invoice_id")
+  /// UPGRADE | DOWNGRADE_SCHEDULED | DOWNGRADE_APPLIED | ADMIN_OVERRIDE
+  reason String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  tenant  Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  invoice Invoice? @relation(fields: [invoiceId], references: [id])
+  actor   User?    @relation("SeatChangeActor", fields: [changedBy], references: [id])
+
+  @@index([tenantId])
+  @@index([createdAt])
+  @@map("seat_change_logs")
 }
 
 model AuditLog {

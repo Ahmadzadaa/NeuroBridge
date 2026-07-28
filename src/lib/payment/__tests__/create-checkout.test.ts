@@ -21,8 +21,8 @@ describe("createSeatPurchaseCheckout", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     resetPaymentProvidersForTests();
-    registerPaymentProvider("STRIPE", {
-      name: "STRIPE",
+    registerPaymentProvider("PAYTR", {
+      name: "PAYTR",
       createCheckout: vi.fn().mockResolvedValue({
         checkoutUrl: "https://checkout.test",
         providerRef: "cs_test",
@@ -45,7 +45,7 @@ describe("createSeatPurchaseCheckout", () => {
     const result = await createSeatPurchaseCheckout({
       tenantId: "t1",
       seatCount: 50,
-      provider: "STRIPE",
+      provider: "PAYTR",
       customerEmail: "admin@test.com",
       successUrl: "http://localhost/success",
       cancelUrl: "http://localhost/cancel",

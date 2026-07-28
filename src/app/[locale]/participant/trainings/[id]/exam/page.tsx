@@ -1,6 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { requireRole } from "@/lib/auth-utils";
+import { requireFeature } from "@/lib/tenant/require-feature";
 import { prisma } from "@/lib/prisma";
 import { localized } from "@/lib/i18n-content";
 import { ExamClient } from "./exam-client";
@@ -13,6 +14,7 @@ export default async function ExamPage({
   const { locale, id } = await params;
   setRequestLocale(locale);
   const session = await requireRole(locale, ["PARTICIPANT"]);
+  await requireFeature(session.user.tenantId, "trainings");
 
   const training = await prisma.training.findUnique({
     where: { id },

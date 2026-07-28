@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { withAuthorizedHandler } from "@/lib/auth/authorize";
+import { assertFeatureEnabled } from "@/lib/tenant/features";
 import { simulationGradeSchema, parseBody } from "@/lib/validation/schemas";
 import { prisma } from "@/lib/prisma";
 
@@ -13,6 +14,7 @@ export async function POST(
   return withAuthorizedHandler(
     "simulation:grade",
     async ({ session }) => {
+      await assertFeatureEnabled(session.tenantId, "simulations");
       const body = parseBody(simulationGradeSchema, await request.json());
 
       const run = await prisma.simulationRun.findUnique({

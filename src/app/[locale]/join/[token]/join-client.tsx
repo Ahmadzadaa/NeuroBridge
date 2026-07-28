@@ -32,6 +32,10 @@ export function JoinClient({
     lastName: "",
     email: "",
     password: "",
+    university: "",
+    faculty: "",
+    specialty: "",
+    studyYear: "",
   });
   const [saving, setSaving] = useState(false);
   const [done, setDone] = useState(false);
@@ -45,7 +49,11 @@ export function JoinClient({
     form.firstName.trim() &&
     form.lastName.trim() &&
     form.email.includes("@") &&
-    passwordOk;
+    passwordOk &&
+    form.university.trim() &&
+    form.faculty.trim() &&
+    form.specialty.trim() &&
+    form.studyYear;
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -60,6 +68,10 @@ export function JoinClient({
           email: form.email.trim().toLowerCase(),
           firstName: form.firstName.trim(),
           lastName: form.lastName.trim(),
+          university: form.university.trim(),
+          faculty: form.faculty.trim(),
+          specialty: form.specialty.trim(),
+          studyYear: Number(form.studyYear),
         }),
       });
       const data = (await res.json().catch(() => null)) as {
@@ -176,6 +188,75 @@ export function JoinClient({
                   </p>
                 )}
               </div>
+
+              <div className="border-t border-border pt-4">
+                <p className="text-[13px] font-semibold">{t("academicTitle")}</p>
+                <p className="mt-0.5 text-[11px] text-muted-foreground">
+                  {t("academicHint")}
+                </p>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="join-university">{t("university")}</Label>
+                <Input
+                  id="join-university"
+                  required
+                  maxLength={200}
+                  value={form.university}
+                  onChange={(e) =>
+                    setForm({ ...form, university: e.target.value })
+                  }
+                  className="rounded-xl"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="join-faculty">{t("faculty")}</Label>
+                <Input
+                  id="join-faculty"
+                  required
+                  maxLength={200}
+                  value={form.faculty}
+                  onChange={(e) => setForm({ ...form, faculty: e.target.value })}
+                  className="rounded-xl"
+                />
+              </div>
+              <div className="grid grid-cols-[1fr_auto] gap-3">
+                <div className="space-y-1.5">
+                  <Label htmlFor="join-specialty">{t("specialty")}</Label>
+                  <Input
+                    id="join-specialty"
+                    required
+                    maxLength={200}
+                    value={form.specialty}
+                    onChange={(e) =>
+                      setForm({ ...form, specialty: e.target.value })
+                    }
+                    className="rounded-xl"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="join-year">{t("studyYear")}</Label>
+                  <select
+                    id="join-year"
+                    required
+                    value={form.studyYear}
+                    onChange={(e) =>
+                      setForm({ ...form, studyYear: e.target.value })
+                    }
+                    className="h-9 w-[110px] rounded-xl border border-input bg-transparent px-3 text-[14px] shadow-xs outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                  >
+                    <option value="" disabled>
+                      —
+                    </option>
+                    {[1, 2, 3, 4, 5, 6].map((year) => (
+                      <option key={year} value={year}>
+                        {t("studyYearUnit", { year })}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
               <Button
                 type="submit"
                 disabled={!valid || saving}

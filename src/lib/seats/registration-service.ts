@@ -10,6 +10,8 @@ import {
   RegistrationClosedError,
 } from "@/lib/seats/errors";
 import { consumeSeat, lockTenantForUpdate } from "@/lib/seats/seat-service";
+import { isPostgresDatabase } from "@/lib/db/tenant-context";
+import { normalizeAcademicProfile } from "@/lib/users/academic-profile";
 import { invalidateCache } from "@/lib/cache/cache-service";
 
 export interface RegisterParticipantInput {
@@ -19,6 +21,11 @@ export interface RegisterParticipantInput {
   firstName: string;
   lastName: string;
   phone?: string;
+  /** Optional here — open programmes accept non-students too. */
+  university?: string | null;
+  faculty?: string | null;
+  specialty?: string | null;
+  studyYear?: number | null;
 }
 
 export interface RegisterParticipantResult {
@@ -32,23 +39,30 @@ export interface RegisterParticipantResult {
 async function lockProgramForUpdate(
   tx: Prisma.TransactionClient,
   programId: string
-): Promise<{ id: string; tenant_id: string; participant_limit: number }> {
-  const rows = await tx.$queryRaw<
-    Array<{
-      id: string;
-      tenant_id: string;
-      participant_limit: number;
-      application_start: Date;
-      application_end: Date;
-    }>
-  >`
-    SELECT id, tenant_id, participant_limit, application_start, application_end
-    FROM programs
-    WHERE id = ${programId}
-    FOR UPDATE
-  `;
+): Promise<{ id: string }> {
+  if (isPostgresDatabase()) {
+    const rows = await tx.$queryRaw<Array<{ id: string }>>`
+      SELECT id
+      FROM programs
+      WHERE id = ${programId}
+      FOR UPDATE
+    `;
 
-  const row = rows[0];
+    const row = rows[0];
+    if (!row) {
+      throw new Error("Program not found");
+    }
+
+    return row;
+  }
+
+  // SQLite (local dev) has no row-level locking; the surrounding
+  // transaction already serializes writes, so a plain read is enough.
+  const row = await tx.program.findUnique({
+    where: { id: programId },
+    select: { id: true },
+  });
+
   if (!row) {
     throw new Error("Program not found");
   }
@@ -134,6 +148,8 @@ export async function registerParticipant(
 
     const seatState = await consumeSeat(tx, program.tenantId);
 
+    const academic = normalizeAcademicProfile(input);
+
     const user = await tx.user.create({
       data: {
         tenantId: program.tenantId,
@@ -144,6 +160,7 @@ export async function registerParticipant(
         phone: input.phone ?? null,
         role: "PARTICIPANT",
         language: "tr",
+        ...academic,
       },
     });
 

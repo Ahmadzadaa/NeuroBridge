@@ -152,7 +152,21 @@
       "activate": "Activate",
       "deactivate": "Suspend",
       "activated": "Organization activated",
-      "deactivated": "Organization suspended — its users can no longer sign in"
+      "deactivated": "Organization suspended — its users can no longer sign in",
+      "tenantType": "Organization type",
+      "tenantTypeHint": "The type preselects modules — adjust each one below.",
+      "tenantTypes": {
+        "UNIVERSITY": "University",
+        "TECHNOPARK": "Technopark",
+        "FULL": "All modules"
+      },
+      "modules": {
+        "teachers": "Teacher panel",
+        "hackathon": "Hackathon",
+        "simulations": "Simulations",
+        "trainings": "Trainings",
+        "aiTools": "AI tools"
+      }
     },
     "billing": {
       "title": "License & Billing",
@@ -426,7 +440,23 @@
       "wrongCurrentPassword": "Current password is incorrect",
       "passwordChanged": "Password changed successfully",
       "changePassword": "Change password",
-      "myTeacher": "My teacher: {name}"
+      "myTeacher": "My teacher: {name}",
+      "academicInfo": "Academic details",
+      "academicHint": "Your university and field of study.",
+      "university": "University",
+      "faculty": "Faculty",
+      "specialty": "Field of study",
+      "studyYear": "Year",
+      "studyYearUnit": "Year {year}",
+      "notSet": "Not set",
+      "photo": "Profile picture",
+      "photoHint": "JPEG, PNG or WebP · 2 MB maximum",
+      "uploadPhoto": "Upload picture",
+      "removePhoto": "Remove picture",
+      "photoUpdated": "Profile picture updated",
+      "photoRemoved": "Profile picture removed",
+      "photoTooLarge": "Image must be 2 MB or smaller",
+      "photoInvalid": "Only JPEG, PNG or WebP is accepted"
     },
     "certificateTypes": {
       "participation": "Certificate of Participation",
@@ -647,7 +677,8 @@
         "empty": "No students yet — share the QR code to invite them.",
         "name": "Student",
         "simScore": "Sim score",
-        "grade": "Grade"
+        "grade": "Grade",
+        "studyYearUnit": "Year {year}"
       }
     },
     "join": {
@@ -661,7 +692,14 @@
       "register": "Register",
       "doneTitle": "Welcome! 🎉",
       "doneText": "Registration complete — you're now in {teacher}'s group. Sign in and start the simulations.",
-      "goToLogin": "Sign in"
+      "goToLogin": "Sign in",
+      "university": "University",
+      "faculty": "Faculty",
+      "specialty": "Field of study",
+      "studyYear": "Year",
+      "studyYearUnit": "Year {year}",
+      "academicTitle": "Academic details",
+      "academicHint": "This helps your teacher run the class."
     },
     "scenarios": {
       "title": "My Scenarios",

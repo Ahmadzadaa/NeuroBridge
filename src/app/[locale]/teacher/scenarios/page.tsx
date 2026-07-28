@@ -1,5 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
 import { requireRole } from "@/lib/auth-utils";
+import { requireFeature } from "@/lib/tenant/require-feature";
 import { prisma } from "@/lib/prisma";
 import { ScenariosListClient } from "./scenarios-client";
 
@@ -11,6 +12,7 @@ export default async function TeacherScenariosPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const session = await requireRole(locale, ["TEACHER"]);
+  await requireFeature(session.user.tenantId, "teachers");
 
   const scenarios = await prisma.simulation.findMany({
     where: { createdById: session.user.id },

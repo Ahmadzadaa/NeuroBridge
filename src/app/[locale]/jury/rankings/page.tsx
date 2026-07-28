@@ -1,6 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import { getTranslations } from "next-intl/server";
 import { requireRole } from "@/lib/auth-utils";
+import { requireFeature } from "@/lib/tenant/require-feature";
 import { prisma } from "@/lib/prisma";
 import { computeRankings } from "@/lib/hackathon/ranking";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
@@ -14,6 +15,7 @@ export default async function JuryRankingsPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const session = await requireRole(locale, ["JURY"]);
+  await requireFeature(session.user.tenantId, "hackathon");
   const t = await getTranslations("hackathon.rankings");
 
   const programs = await prisma.program.findMany({

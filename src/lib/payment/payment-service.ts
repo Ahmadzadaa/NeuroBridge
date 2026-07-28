@@ -25,6 +25,8 @@ export async function createSeatPurchaseCheckout(input: {
   customerEmail: string;
   successUrl: string;
   cancelUrl: string;
+  /** PayTR requires the payer's IP address. */
+  userIp?: string;
 }) {
   const tenant = await prisma.tenant.findUnique({
     where: { id: input.tenantId },
@@ -64,6 +66,7 @@ export async function createSeatPurchaseCheckout(input: {
       successUrl: input.successUrl,
       cancelUrl: input.cancelUrl,
       idempotencyKey,
+      userIp: input.userIp,
     });
 
     await prisma.payment.update({

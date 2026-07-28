@@ -20,6 +20,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { EmptyState } from "@/components/ui/empty-state";
 import { StatusChip, type StatusChipVariant } from "@/components/ui/status-chip";
+import { Switch } from "@/components/ui/switch";
+import {
+  TENANT_FEATURES,
+  TENANT_TYPES,
+  presetFor,
+  type TenantFeature,
+  type TenantType,
+} from "@/lib/tenant/features";
 import {
   Dialog,
   DialogContent,
@@ -82,6 +90,8 @@ export function TenantsPageClient({
     adminLastName: "",
     seatLimit: 100,
     planType: "professional" as (typeof PLANS)[number],
+    tenantType: "FULL" as TenantType,
+    modules: presetFor("FULL"),
   });
   const [provisioned, setProvisioned] = useState<{
     tempPassword: string;
@@ -174,6 +184,8 @@ export function TenantsPageClient({
       adminLastName: "",
       seatLimit: 100,
       planType: "professional",
+      tenantType: "FULL",
+      modules: presetFor("FULL"),
     });
   }
 
@@ -409,6 +421,64 @@ export function TenantsPageClient({
                       ))}
                     </SelectContent>
                   </Select>
+                </div>
+              </div>
+
+              {/* Modules: the type seeds the switches, each stays editable. */}
+              <div className="space-y-3 rounded-xl border border-border p-4">
+                <div className="space-y-1.5">
+                  <Label htmlFor="tenant-type">{t("tenantType")}</Label>
+                  <Select
+                    value={form.tenantType}
+                    onValueChange={(v) => {
+                      if (!v) return;
+                      const next = v as TenantType;
+                      // Switching type re-seeds the flags; they can then be
+                      // adjusted one by one below.
+                      setForm({
+                        ...form,
+                        tenantType: next,
+                        modules: presetFor(next),
+                      });
+                    }}
+                  >
+                    <SelectTrigger id="tenant-type" className="w-full rounded-xl">
+                      <SelectValue>{t(`tenantTypes.${form.tenantType}`)}</SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {TENANT_TYPES.map((type) => (
+                        <SelectItem key={type} value={type}>
+                          {t(`tenantTypes.${type}`)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <p className="text-[11px] text-muted-foreground">
+                    {t("tenantTypeHint")}
+                  </p>
+                </div>
+
+                <div className="space-y-2 border-t border-border pt-3">
+                  {TENANT_FEATURES.map((feature) => (
+                    <label
+                      key={feature}
+                      className="flex items-center justify-between gap-3 text-[13px]"
+                    >
+                      <span>{t(`modules.${feature}`)}</span>
+                      <Switch
+                        checked={form.modules[feature]}
+                        onCheckedChange={(checked) =>
+                          setForm({
+                            ...form,
+                            modules: {
+                              ...form.modules,
+                              [feature as TenantFeature]: checked,
+                            },
+                          })
+                        }
+                      />
+                    </label>
+                  ))}
                 </div>
               </div>
 

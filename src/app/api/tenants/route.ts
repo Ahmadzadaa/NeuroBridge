@@ -8,6 +8,7 @@ import { recordAudit, getClientIp } from "@/lib/audit/audit-service";
 import { AUDIT_ACTIONS } from "@/lib/audit/actions";
 import { sendEmail } from "@/lib/email/email-service";
 import { tenantWelcomeEmail } from "@/lib/email/templates";
+import { presetFor, toFeatureColumns } from "@/lib/tenant/features";
 
 function generateTempPassword(): string {
   const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789";
@@ -42,6 +43,10 @@ export async function POST(request: Request) {
     const passwordHash = await bcrypt.hash(tempPassword, 12);
 
     const tenant = await prisma.$transaction(async (tx) => {
+      // The type seeds the module flags; anything sent explicitly wins, so a
+      // university can be provisioned with a hackathon in one step.
+      const features = { ...presetFor(body.tenantType), ...(body.modules ?? {}) };
+
       const created = await tx.tenant.create({
         data: {
           name: body.name,
@@ -49,6 +54,8 @@ export async function POST(request: Request) {
           status: "ACTIVE",
           seatLimit: body.seatLimit,
           planType: body.planType,
+          tenantType: body.tenantType,
+          ...toFeatureColumns(features),
           settings: { create: {} },
         },
       });
@@ -78,6 +85,8 @@ export async function POST(request: Request) {
         adminEmail: body.adminEmail,
         seatLimit: body.seatLimit,
         planType: body.planType,
+        tenantType: body.tenantType,
+        modules: { ...presetFor(body.tenantType), ...(body.modules ?? {}) },
       },
     });
 

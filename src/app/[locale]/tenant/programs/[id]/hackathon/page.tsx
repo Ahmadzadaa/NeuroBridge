@@ -1,6 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { requireRole } from "@/lib/auth-utils";
+import { requireFeature } from "@/lib/tenant/require-feature";
 import { prisma } from "@/lib/prisma";
 import { computeRankings } from "@/lib/hackathon/ranking";
 import { HackathonAdminClient } from "./hackathon-admin-client";
@@ -13,6 +14,7 @@ export default async function HackathonAdminPage({
   const { locale, id } = await params;
   setRequestLocale(locale);
   const session = await requireRole(locale, ["TENANT_ADMIN", "TENANT_VIEWER"]);
+  await requireFeature(session.user.tenantId, "hackathon");
 
   const program = await prisma.program.findUnique({
     where: { id },

@@ -16,6 +16,7 @@ export default async function ProfilePage({
     prisma.user.findUnique({
       where: { id: session.user.id },
       select: {
+        id: true,
         email: true,
         firstName: true,
         lastName: true,
@@ -23,6 +24,11 @@ export default async function ProfilePage({
         language: true,
         coinBalance: true,
         createdAt: true,
+        university: true,
+        faculty: true,
+        specialty: true,
+        studyYear: true,
+        avatarPath: true,
         teacher: { select: { firstName: true, lastName: true } },
         _count: { select: { userBadges: true, certificates: true } },
       },
@@ -48,6 +54,11 @@ export default async function ProfilePage({
         badges: user._count.userBadges,
         certificates: user._count.certificates,
         examsPassed,
+        university: user.university ?? "",
+        faculty: user.faculty ?? "",
+        specialty: user.specialty ?? "",
+        studyYear: user.studyYear,
+        avatarUrl: user.avatarPath ? `/api/profile/avatar/${user.id}` : null,
         teacherName: user.teacher
           ? [user.teacher.firstName, user.teacher.lastName]
               .filter(Boolean)

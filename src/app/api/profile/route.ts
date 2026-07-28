@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { withAuthorizedHandler } from "@/lib/auth/authorize";
 import { updateProfileSchema, parseBody } from "@/lib/validation/schemas";
+import { normalizeAcademicProfile } from "@/lib/users/academic-profile";
 import { prisma } from "@/lib/prisma";
 
 /** Self-service profile update — always scoped to the session user. */
@@ -15,8 +16,18 @@ export async function PATCH(request: Request) {
         lastName: body.lastName,
         phone: body.phone || null,
         language: body.language,
+        ...normalizeAcademicProfile(body),
       },
-      select: { id: true, firstName: true, lastName: true, language: true },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        language: true,
+        university: true,
+        faculty: true,
+        specialty: true,
+        studyYear: true,
+      },
     });
 
     return NextResponse.json(updated);

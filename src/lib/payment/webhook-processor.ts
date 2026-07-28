@@ -201,6 +201,7 @@ export async function processWebhookEvent(
         externalEventId: eventId,
         eventType,
         status: "PROCESSED",
+        signatureValid: true,
         payload: JSON.stringify(payload),
       },
       update: {

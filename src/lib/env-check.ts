@@ -15,13 +15,11 @@ const REQUIRED_IN_PRODUCTION = [
   "NEXT_PUBLIC_APP_URL",
 ] as const;
 
-// Payment providers are optional integrations, but if one key of a provider
-// is set, its counterparts must be set too — a half-configured provider
-// would only fail when a customer hits checkout.
+// PayTR is an optional integration, but a half-configured provider would only
+// fail when a customer reaches checkout — so the three credentials must be set
+// together or not at all.
 const PAIRED_PROVIDER_VARS: Record<string, string[]> = {
-  STRIPE_SECRET_KEY: ["STRIPE_WEBHOOK_SECRET"],
-  PAYRIFF_API_KEY: ["PAYRIFF_MERCHANT_ID", "PAYRIFF_WEBHOOK_SECRET"],
-  IYZICO_API_KEY: ["IYZICO_SECRET_KEY", "IYZICO_WEBHOOK_SECRET"],
+  PAYTR_MERCHANT_ID: ["PAYTR_MERCHANT_KEY", "PAYTR_MERCHANT_SALT"],
 };
 
 const MIN_SECRET_LENGTH = 32;
@@ -64,13 +62,12 @@ export function validateEnv(env: NodeJS.ProcessEnv = process.env): void {
     }
   }
 
-  // Guard against secrets accidentally exposed to the client bundle.
+  // Guard against secrets accidentally exposed to the client bundle. PayTR has
+  // no browser-side key, so there is nothing to allow-list here.
   const clientExposedSecrets = Object.keys(env).filter(
     (key) =>
       key.startsWith("NEXT_PUBLIC_") &&
-      /(SECRET|PRIVATE|PASSWORD|_KEY$|TOKEN)/i.test(key.replace("NEXT_PUBLIC_", "")) &&
-      // Allow-list of intentionally public values.
-      !["NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY"].includes(key)
+      /(SECRET|PRIVATE|PASSWORD|_KEY$|TOKEN)/i.test(key.replace("NEXT_PUBLIC_", ""))
   );
   for (const key of clientExposedSecrets) {
     problems.push(

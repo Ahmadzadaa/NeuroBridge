@@ -1,134 +1,110 @@
-import { createHmac } from "crypto";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { createPayriffProvider } from "@/lib/payment/payriff-provider";
-import { createIyzicoProvider } from "@/lib/payment/iyzico-provider";
-import { createStripeProvider } from "@/lib/payment/stripe-provider";
+import { createPaytrProvider } from "@/lib/payment/paytr-provider";
 import { PaymentVerificationError } from "@/lib/payment/types";
+import { buildCallbackHash } from "@/lib/payment/paytr/paytr.hash";
+import type { PaytrCredentials } from "@/lib/payment/paytr/paytr.types";
 
-const PAYRIFF_SECRET = "payriff-test-webhook-secret";
-const IYZICO_SECRET = "iyzico-test-secret-key";
+const CREDENTIALS: PaytrCredentials = {
+  merchantId: "123456",
+  merchantKey: "test-merchant-key",
+  merchantSalt: "test-merchant-salt",
+  testMode: 1,
+};
 
-function payriffRequest(body: string, signature: string): Request {
-  return new Request("https://example.com/api/webhooks/payriff", {
+function callbackRequest(fields: Record<string, string>): Request {
+  const body = new URLSearchParams(fields);
+  return new Request("https://example.com/api/billing/paytr/callback", {
     method: "POST",
-    headers: { "x-payriff-signature": signature },
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body,
   });
 }
 
-describe("Payriff webhook signature verification", () => {
+function signedFields(overrides: Partial<Record<string, string>> = {}) {
+  const merchantOid = overrides.merchant_oid ?? "BIZten1abc123";
+  const status = overrides.status ?? "success";
+  const totalAmount = overrides.total_amount ?? "250000";
+
+  return {
+    merchant_oid: merchantOid,
+    status,
+    total_amount: totalAmount,
+    hash: buildCallbackHash(CREDENTIALS, { merchantOid, status, totalAmount }),
+    ...overrides,
+  };
+}
+
+describe("PayTR callback verification", () => {
   beforeEach(() => {
-    vi.stubEnv("PAYRIFF_API_KEY", "test-api-key");
-    vi.stubEnv("PAYRIFF_MERCHANT_ID", "test-merchant");
-    vi.stubEnv("PAYRIFF_WEBHOOK_SECRET", PAYRIFF_SECRET);
+    vi.stubEnv("PAYTR_MERCHANT_ID", CREDENTIALS.merchantId);
+    vi.stubEnv("PAYTR_MERCHANT_KEY", CREDENTIALS.merchantKey);
+    vi.stubEnv("PAYTR_MERCHANT_SALT", CREDENTIALS.merchantSalt);
+    vi.stubEnv("PAYTR_TEST_MODE", "1");
   });
 
   afterEach(() => {
     vi.unstubAllEnvs();
   });
 
-  const validBody = JSON.stringify({
-    eventId: "evt_1",
-    eventType: "order.updated",
-    orderId: "order_1",
-    status: "APPROVED",
-    metadata: { paymentId: "pay_1", tenantId: "ten_1", seatCount: 50 },
-  });
+  it("accepts a callback carrying a valid hash", async () => {
+    const provider = createPaytrProvider();
+    const event = await provider.verifyWebhook(callbackRequest(signedFields()));
 
-  it("rejects a webhook with an invalid signature", async () => {
-    const provider = createPayriffProvider();
-    await expect(
-      provider.verifyWebhook(payriffRequest(validBody, "forged-signature"))
-    ).rejects.toThrow(PaymentVerificationError);
-  });
-
-  it("rejects a webhook with a missing signature header", async () => {
-    const provider = createPayriffProvider();
-    const request = new Request("https://example.com/api/webhooks/payriff", {
-      method: "POST",
-      body: validBody,
-    });
-    await expect(provider.verifyWebhook(request)).rejects.toThrow(
-      /Missing Payriff signature/
-    );
-  });
-
-  it("rejects a tampered body even with a previously valid signature (replay guard)", async () => {
-    const provider = createPayriffProvider();
-    const signatureForOriginal = createHmac("sha256", PAYRIFF_SECRET)
-      .update(validBody)
-      .digest("hex");
-    const tamperedBody = validBody.replace('"seatCount":50', '"seatCount":5000');
-    await expect(
-      provider.verifyWebhook(payriffRequest(tamperedBody, signatureForOriginal))
-    ).rejects.toThrow(PaymentVerificationError);
-  });
-
-  it("accepts a webhook with a valid HMAC signature", async () => {
-    const provider = createPayriffProvider();
-    const signature = createHmac("sha256", PAYRIFF_SECRET)
-      .update(validBody)
-      .digest("hex");
-    const event = await provider.verifyWebhook(payriffRequest(validBody, signature));
-    expect(event.eventId).toBe("evt_1");
+    expect(event.eventId).toBe("BIZten1abc123");
     expect(event.payload.eventType).toBe("payment.completed");
-  });
-});
-
-describe("Iyzico webhook signature verification", () => {
-  beforeEach(() => {
-    vi.stubEnv("IYZICO_API_KEY", "test-api-key");
-    vi.stubEnv("IYZICO_SECRET_KEY", "test-secret");
-    vi.stubEnv("IYZICO_WEBHOOK_SECRET", IYZICO_SECRET);
+    expect(event.payload.providerRef).toBe("BIZten1abc123");
   });
 
-  afterEach(() => {
-    vi.unstubAllEnvs();
-  });
-
-  it("rejects a webhook with an invalid signature", async () => {
-    const provider = createIyzicoProvider();
-    const request = new Request("https://example.com/api/webhooks/iyzico", {
-      method: "POST",
-      headers: { "x-iyz-signature": "forged" },
-      body: JSON.stringify({ status: "SUCCESS" }),
-    });
-    await expect(provider.verifyWebhook(request)).rejects.toThrow(
-      PaymentVerificationError
+  it("maps a failed payment to payment.failed", async () => {
+    const provider = createPaytrProvider();
+    const event = await provider.verifyWebhook(
+      callbackRequest(signedFields({ status: "failed" }))
     );
-  });
-});
 
-describe("Stripe webhook signature verification", () => {
-  beforeEach(() => {
-    vi.stubEnv("STRIPE_SECRET_KEY", "sk_test_placeholder");
-    vi.stubEnv("STRIPE_WEBHOOK_SECRET", "whsec_test_placeholder");
+    expect(event.payload.eventType).toBe("payment.failed");
   });
 
-  afterEach(() => {
-    vi.unstubAllEnvs();
+  it("rejects a forged hash", async () => {
+    const provider = createPaytrProvider();
+    await expect(
+      provider.verifyWebhook(
+        callbackRequest({ ...signedFields(), hash: "forged-hash-value" })
+      )
+    ).rejects.toThrow(PaymentVerificationError);
   });
 
-  it("rejects a webhook with a missing signature header", async () => {
-    const provider = createStripeProvider();
-    const request = new Request("https://example.com/api/webhooks/stripe", {
-      method: "POST",
-      body: JSON.stringify({ type: "checkout.session.completed" }),
-    });
-    await expect(provider.verifyWebhook(request)).rejects.toThrow(
-      /Missing Stripe signature/
+  it("rejects a tampered amount even when the original hash is reused", async () => {
+    const provider = createPaytrProvider();
+    const fields = signedFields();
+
+    await expect(
+      provider.verifyWebhook(
+        callbackRequest({ ...fields, total_amount: "999999" })
+      )
+    ).rejects.toThrow(PaymentVerificationError);
+  });
+
+  it("rejects a callback that omits the hash", async () => {
+    const provider = createPaytrProvider();
+    const withoutHash = { ...signedFields() };
+    delete (withoutHash as Partial<typeof withoutHash>).hash;
+
+    await expect(
+      provider.verifyWebhook(callbackRequest(withoutHash as Record<string, string>))
+    ).rejects.toThrow(/missing required fields/i);
+  });
+
+  it("rejects a callback for a different merchant salt", async () => {
+    const provider = createPaytrProvider();
+    const foreignHash = buildCallbackHash(
+      { ...CREDENTIALS, merchantSalt: "someone-elses-salt" },
+      { merchantOid: "BIZten1abc123", status: "success", totalAmount: "250000" }
     );
-  });
 
-  it("rejects a webhook with an invalid signature", async () => {
-    const provider = createStripeProvider();
-    const request = new Request("https://example.com/api/webhooks/stripe", {
-      method: "POST",
-      headers: { "stripe-signature": "t=123,v1=forged" },
-      body: JSON.stringify({ type: "checkout.session.completed" }),
-    });
-    await expect(provider.verifyWebhook(request)).rejects.toThrow(
-      /Invalid Stripe webhook signature/
-    );
+    await expect(
+      provider.verifyWebhook(
+        callbackRequest({ ...signedFields(), hash: foreignHash })
+      )
+    ).rejects.toThrow(PaymentVerificationError);
   });
 });

@@ -35,6 +35,7 @@ export async function POST(request: Request) {
           customerEmail: session.email,
           successUrl: `${appUrl}/tenant/billing`,
           cancelUrl: `${appUrl}/tenant/billing`,
+          userIp: getClientIp(request),
         });
 
         await recordAudit({

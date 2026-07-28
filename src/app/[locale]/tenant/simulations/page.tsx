@@ -1,5 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
 import { requireRole } from "@/lib/auth-utils";
+import { requireFeature } from "@/lib/tenant/require-feature";
 import { prisma } from "@/lib/prisma";
 import { localized } from "@/lib/i18n-content";
 import { SimulationGradingClient } from "./grading-client";
@@ -12,6 +13,7 @@ export default async function TenantSimulationsPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const session = await requireRole(locale, ["TENANT_ADMIN", "TENANT_VIEWER"]);
+  await requireFeature(session.user.tenantId, "simulations");
 
   const runs = session.user.tenantId
     ? await prisma.simulationRun.findMany({

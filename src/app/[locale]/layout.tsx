@@ -9,6 +9,9 @@ import { QueryProvider } from "@/components/providers/query-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import { SessionProvider } from "@/components/providers/session-provider";
+import { TenantFeaturesProvider } from "@/components/providers/tenant-features-provider";
+import { auth } from "@/auth";
+import { getTenantFeatures } from "@/lib/tenant/features";
 import "../globals.css";
 
 const inter = Inter({
@@ -41,6 +44,11 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
   const messages = await getMessages();
 
+  // The tenant id rides on the session token, so this costs one query for a
+  // signed-in user and none at all on public pages.
+  const session = await auth();
+  const features = await getTenantFeatures(session?.user?.tenantId);
+
   return (
     <html lang={locale} suppressHydrationWarning className={`${inter.variable} h-full`}>
       <body className="min-h-full font-sans antialiased">
@@ -49,7 +57,9 @@ export default async function LocaleLayout({
             <ThemeProvider>
               <QueryProvider>
                 <TooltipProvider>
-                  {children}
+                  <TenantFeaturesProvider features={features}>
+                    {children}
+                  </TenantFeaturesProvider>
                   <Toaster position="top-right" richColors />
                 </TooltipProvider>
               </QueryProvider>

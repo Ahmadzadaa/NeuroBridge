@@ -1,6 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { requireRole } from "@/lib/auth-utils";
+import { requireFeature } from "@/lib/tenant/require-feature";
 import { prisma } from "@/lib/prisma";
 import { ScenarioEditor } from "../scenario-editor";
 
@@ -12,6 +13,7 @@ export default async function EditScenarioPage({
   const { locale, id } = await params;
   setRequestLocale(locale);
   const session = await requireRole(locale, ["TEACHER"]);
+  await requireFeature(session.user.tenantId, "teachers");
 
   const simulation = await prisma.simulation.findUnique({
     where: { id },

@@ -152,7 +152,21 @@
       "activate": "Aktivləşdir",
       "deactivate": "Dayandır",
       "activated": "Təşkilat aktivləşdirildi",
-      "deactivated": "Təşkilat dayandırıldı — istifadəçilər daxil ola bilməz"
+      "deactivated": "Təşkilat dayandırıldı — istifadəçilər daxil ola bilməz",
+      "tenantType": "Təşkilat tipi",
+      "tenantTypeHint": "Tip modulları ilkin olaraq seçir — aşağıdan tək-tək dəyişə bilərsiniz.",
+      "tenantTypes": {
+        "UNIVERSITY": "Universitet",
+        "TECHNOPARK": "Texnopark",
+        "FULL": "Hamısı"
+      },
+      "modules": {
+        "teachers": "Müəllim paneli",
+        "hackathon": "Hakaton",
+        "simulations": "Simulyasiyalar",
+        "trainings": "Təlimlər",
+        "aiTools": "AI alətləri"
+      }
     },
     "billing": {
       "title": "Lisenziya və Faktura",
@@ -426,7 +440,23 @@
       "wrongCurrentPassword": "Cari şifrə yanlışdır",
       "passwordChanged": "Şifrə uğurla dəyişdirildi",
       "changePassword": "Şifrəni dəyiş",
-      "myTeacher": "Müəllimim: {name}"
+      "myTeacher": "Müəllimim: {name}",
+      "academicInfo": "Təhsil məlumatları",
+      "academicHint": "Universitet və ixtisas məlumatlarınız.",
+      "university": "Universitet",
+      "faculty": "Fakültə",
+      "specialty": "İxtisas",
+      "studyYear": "Kurs",
+      "studyYearUnit": "{year}-ci kurs",
+      "notSet": "Qeyd edilməyib",
+      "photo": "Profil şəkli",
+      "photoHint": "JPEG, PNG və ya WebP · maksimum 2 MB",
+      "uploadPhoto": "Şəkil yüklə",
+      "removePhoto": "Şəkli sil",
+      "photoUpdated": "Profil şəkli yeniləndi",
+      "photoRemoved": "Profil şəkli silindi",
+      "photoTooLarge": "Şəkil 2 MB-dan böyük olmamalıdır",
+      "photoInvalid": "Yalnız JPEG, PNG və ya WebP formatı qəbul olunur"
     },
     "certificateTypes": {
       "participation": "İştirak Sertifikatı",
@@ -647,7 +677,8 @@
         "empty": "Hələ tələbə yoxdur — QR kodu paylaşaraq dəvət edin.",
         "name": "Tələbə",
         "simScore": "Sim. balı",
-        "grade": "Qiymət"
+        "grade": "Qiymət",
+        "studyYearUnit": "{year}-ci kurs"
       }
     },
     "join": {
@@ -661,7 +692,14 @@
       "register": "Qeydiyyatdan keç",
       "doneTitle": "Xoş gəlmisiniz! 🎉",
       "doneText": "Qeydiyyat tamamlandı — artıq {teacher} qrupundasınız. İndi daxil olub simulyasiyalara başlaya bilərsiniz.",
-      "goToLogin": "Daxil ol"
+      "goToLogin": "Daxil ol",
+      "university": "Universitet",
+      "faculty": "Fakültə",
+      "specialty": "İxtisas",
+      "studyYear": "Kurs",
+      "studyYearUnit": "{year}-ci kurs",
+      "academicTitle": "Təhsil məlumatları",
+      "academicHint": "Bu məlumatlar müəlliminizə qrupu idarə etməkdə kömək edir."
     },
     "scenarios": {
       "title": "Ssenarilərim",

@@ -1,6 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { requireRole } from "@/lib/auth-utils";
+import { requireFeature } from "@/lib/tenant/require-feature";
 import { prisma } from "@/lib/prisma";
 import { localized } from "@/lib/i18n-content";
 import { SimulationPlayClient } from "./play-client";
@@ -13,6 +14,7 @@ export default async function SimulationPlayPage({
   const { locale, id } = await params;
   setRequestLocale(locale);
   const session = await requireRole(locale, ["PARTICIPANT"]);
+  await requireFeature(session.user.tenantId, "simulations");
 
   const simulation = await prisma.simulation.findUnique({
     where: { id },

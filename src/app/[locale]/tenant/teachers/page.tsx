@@ -1,5 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
 import { requireRole } from "@/lib/auth-utils";
+import { requireFeature } from "@/lib/tenant/require-feature";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import { TeachersPageClient } from "./teachers-client";
@@ -12,6 +13,7 @@ export default async function TeachersPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const session = await requireRole(locale, ["TENANT_ADMIN", "TENANT_VIEWER"]);
+  await requireFeature(session.user.tenantId, "teachers");
   if (!session.user.tenantId) redirect(`/${locale}/tenant`);
 
   const teachers = await prisma.user.findMany({

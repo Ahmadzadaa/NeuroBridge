@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { withAuthorizedHandler } from "@/lib/auth/authorize";
+import { assertFeatureEnabled } from "@/lib/tenant/features";
 import { examAttemptSchema, parseBody } from "@/lib/validation/schemas";
 import { prisma } from "@/lib/prisma";
 
@@ -12,6 +13,7 @@ export async function POST(
   const { id } = await context.params;
 
   return withAuthorizedHandler("training:submit", async ({ session }) => {
+    await assertFeatureEnabled(session.tenantId, "trainings");
     const body = parseBody(examAttemptSchema, await request.json());
 
     const exam = await prisma.exam.findUnique({

@@ -3,6 +3,12 @@ import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { joinTeacherSchema, parseBody } from "@/lib/validation/schemas";
 import { ValidationError } from "@/lib/auth/permissions";
+import { apiErrorResponse } from "@/lib/auth/api-errors";
+import { assertCanAddUsers } from "@/lib/billing/seat-guard";
+import {
+  SeatLimitExceededError,
+  SubscriptionExpiredError,
+} from "@/lib/billing/errors";
 import { enforceRateLimit, getClientIdentifier } from "@/lib/security/rate-limit";
 import { recordAudit, getClientIp } from "@/lib/audit/audit-service";
 import { AUDIT_ACTIONS } from "@/lib/audit/actions";
@@ -83,13 +89,10 @@ export async function POST(
       }
 
       // Seat consumption inside the transaction — checked before increment.
-      const tenant = await tx.tenant.findUnique({
-        where: { id: tenantId },
-        select: { seatsUsed: true, seatLimit: true },
-      });
-      if (!tenant || tenant.seatsUsed >= tenant.seatLimit) {
-        throw new ValidationError("Oturacaq limiti dolub — müəllimlə əlaqə saxlayın");
-      }
+      // Raises 402 SEAT_LIMIT_EXCEEDED, or SUBSCRIPTION_EXPIRED if the
+      // organisation has lapsed into read-only.
+      await assertCanAddUsers(tenantId, 1, tx);
+
       await tx.tenant.update({
         where: { id: tenantId },
         data: { seatsUsed: { increment: 1 } },
@@ -105,6 +108,10 @@ export async function POST(
           role: "PARTICIPANT",
           language: "az",
           teacherId: teacher.id,
+          university: body.university,
+          faculty: body.faculty,
+          specialty: body.specialty,
+          studyYear: body.studyYear,
         },
         select: { id: true, email: true },
       });
@@ -125,6 +132,10 @@ export async function POST(
         { error: error.message, issues: error.issues },
         { status: 400 }
       );
+    }
+    // Seat/subscription errors carry their own status (402) and code.
+    if (error instanceof SeatLimitExceededError || error instanceof SubscriptionExpiredError) {
+      return apiErrorResponse(error);
     }
     console.error("Join registration error:", error);
     return NextResponse.json({ error: "Registration failed" }, { status: 500 });

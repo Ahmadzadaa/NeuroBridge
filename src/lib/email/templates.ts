@@ -151,3 +151,92 @@ export function resultsAnnouncedEmail(params: {
     ),
   };
 }
+
+/** Formats integer kuruş for email copy, e.g. 250000 -> "2.500,00 ₺". */
+function formatAmount(kurus: number, currency = "TRY"): string {
+  return new Intl.NumberFormat("az-AZ", { style: "currency", currency }).format(
+    kurus / 100
+  );
+}
+
+export function subscriptionRenewalEmail(params: {
+  organizationName: string;
+  seats: number;
+  amount: number;
+  currency: string;
+  periodEnd: Date;
+  paymentUrl: string;
+}): { subject: string; html: string } {
+  return {
+    subject: "BizSim — abunəliyinizin ödənişi gözlənilir",
+    html: layout(
+      "Abunəlik yenilənməsi",
+      paragraph(
+        `<strong>${params.organizationName}</strong> üçün yeni dövrün hesabı hazırdır.`
+      ) +
+        paragraph(
+          `Yer sayı: <strong>${params.seats}</strong><br/>` +
+            `Məbləğ: <strong>${formatAmount(params.amount, params.currency)}</strong><br/>` +
+            `Dövrün sonu: <strong>${params.periodEnd.toLocaleDateString("az-AZ")}</strong>`
+        ) +
+        paragraph(
+          "Ödənişi aşağıdakı düymə ilə edə bilərsiniz. Bank köçürməsi ilə ödəmək istəsəniz bizimlə əlaqə saxlayın."
+        ) +
+        button(params.paymentUrl, "Ödənişi et")
+    ),
+  };
+}
+
+export function paymentFailedEmail(params: {
+  organizationName: string;
+  amount: number;
+  currency: string;
+  attemptNo: number;
+  nextRetryAt: Date | null;
+  expiresAt: Date;
+  paymentUrl: string;
+}): { subject: string; html: string } {
+  const retryLine = params.nextRetryAt
+    ? `Növbəti cəhd: <strong>${params.nextRetryAt.toLocaleDateString("az-AZ")}</strong>`
+    : "Bu, son avtomatik cəhd idi.";
+
+  return {
+    subject: "BizSim — ödəniş alınmadı",
+    html: layout(
+      "Ödəniş alınmadı",
+      paragraph(
+        `<strong>${params.organizationName}</strong> üçün ${formatAmount(
+          params.amount,
+          params.currency
+        )} məbləğində ödəniş uğursuz oldu (cəhd ${params.attemptNo}).`
+      ) +
+        paragraph(retryLine) +
+        paragraph(
+          `<strong>${params.expiresAt.toLocaleDateString("az-AZ")}</strong> tarixinədək ödəniş edilməsə, ` +
+            "hesabınız yalnız oxuma rejiminə keçəcək. <strong>Məlumatlarınız silinmir.</strong>"
+        ) +
+        button(params.paymentUrl, "İndi ödə")
+    ),
+  };
+}
+
+export function subscriptionExpiredEmail(params: {
+  organizationName: string;
+  paymentUrl: string;
+}): { subject: string; html: string } {
+  return {
+    subject: "BizSim — abunəliyiniz dayandırıldı",
+    html: layout(
+      "Abunəlik dayandırıldı",
+      paragraph(
+        `<strong>${params.organizationName}</strong> üçün ödəniş alınmadığı üçün hesabınız ` +
+          "<strong>yalnız oxuma</strong> rejiminə keçdi."
+      ) +
+        paragraph(
+          "Bütün məlumatlarınız — proqramlar, iştirakçılar, nəticələr — yerindədir və silinməyib. " +
+            "Ödənişi tamamladıqdan sonra hər şey dərhal bərpa olunur."
+        ) +
+        button(params.paymentUrl, "Abunəliyi bərpa et")
+    ),
+  };
+}

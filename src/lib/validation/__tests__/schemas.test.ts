@@ -50,10 +50,10 @@ describe("validation schemas", () => {
   });
 
   it("validates checkout seat packages", () => {
-    expect(checkoutSchema.safeParse({ seatCount: 50, provider: "STRIPE" }).success).toBe(
+    expect(checkoutSchema.safeParse({ seatCount: 50, provider: "PAYTR" }).success).toBe(
       true
     );
-    expect(checkoutSchema.safeParse({ seatCount: 75, provider: "STRIPE" }).success).toBe(
+    expect(checkoutSchema.safeParse({ seatCount: 75, provider: "PAYTR" }).success).toBe(
       false
     );
   });

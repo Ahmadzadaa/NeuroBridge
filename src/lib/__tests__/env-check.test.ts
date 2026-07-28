@@ -45,11 +45,21 @@ describe("validateEnv", () => {
   it("throws when a payment provider is half-configured", () => {
     const env = {
       ...validProdEnv,
-      STRIPE_SECRET_KEY: "sk_test_placeholder",
+      PAYTR_MERCHANT_ID: "123456",
     } as NodeJS.ProcessEnv;
     expect(() => validateEnv(env)).toThrow(
-      /STRIPE_WEBHOOK_SECRET is missing \(required because STRIPE_SECRET_KEY is set\)/
+      /PAYTR_MERCHANT_KEY is missing \(required because PAYTR_MERCHANT_ID is set\)/
     );
+  });
+
+  it("accepts a fully configured PayTR provider", () => {
+    const env = {
+      ...validProdEnv,
+      PAYTR_MERCHANT_ID: "123456",
+      PAYTR_MERCHANT_KEY: "merchant-key",
+      PAYTR_MERCHANT_SALT: "merchant-salt",
+    } as NodeJS.ProcessEnv;
+    expect(() => validateEnv(env)).not.toThrow();
   });
 
   it("throws when a secret-looking NEXT_PUBLIC_ variable is present", () => {
@@ -58,14 +68,6 @@ describe("validateEnv", () => {
       NEXT_PUBLIC_API_SECRET: "leaked-secret",
     } as NodeJS.ProcessEnv;
     expect(() => validateEnv(env)).toThrow(/NEXT_PUBLIC_API_SECRET looks like a secret/);
-  });
-
-  it("allows the Stripe publishable key as NEXT_PUBLIC_", () => {
-    const env = {
-      ...validProdEnv,
-      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_placeholder",
-    } as NodeJS.ProcessEnv;
-    expect(() => validateEnv(env)).not.toThrow();
   });
 
   it("does not throw in development (warns instead)", () => {

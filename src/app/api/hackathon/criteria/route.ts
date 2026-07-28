@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { withAuthorizedHandler } from "@/lib/auth/authorize";
+import { assertFeatureEnabled } from "@/lib/tenant/features";
 import { criteriaSchema, parseBody } from "@/lib/validation/schemas";
 import { prisma } from "@/lib/prisma";
 
@@ -7,6 +8,7 @@ export async function PUT(request: Request) {
   return withAuthorizedHandler(
     "hackathon:manage",
     async ({ session }) => {
+      await assertFeatureEnabled(session.tenantId, "hackathon");
       const body = parseBody(criteriaSchema, await request.json());
 
       const program = await prisma.program.findUnique({

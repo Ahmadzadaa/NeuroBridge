@@ -152,7 +152,21 @@
       "activate": "Aktifleştir",
       "deactivate": "Durdur",
       "activated": "Kuruluş aktifleştirildi",
-      "deactivated": "Kuruluş durduruldu — kullanıcılar giriş yapamaz"
+      "deactivated": "Kuruluş durduruldu — kullanıcılar giriş yapamaz",
+      "tenantType": "Kurum tipi",
+      "tenantTypeHint": "Tip modülleri ön seçer — aşağıdan tek tek değiştirebilirsiniz.",
+      "tenantTypes": {
+        "UNIVERSITY": "Üniversite",
+        "TECHNOPARK": "Teknopark",
+        "FULL": "Tümü"
+      },
+      "modules": {
+        "teachers": "Öğretmen paneli",
+        "hackathon": "Hackathon",
+        "simulations": "Simülasyonlar",
+        "trainings": "Eğitimler",
+        "aiTools": "AI araçları"
+      }
     },
     "billing": {
       "title": "Lisans ve Faturalandırma",
@@ -426,7 +440,23 @@
       "wrongCurrentPassword": "Mevcut şifre yanlış",
       "passwordChanged": "Şifre başarıyla değiştirildi",
       "changePassword": "Şifreyi değiştir",
-      "myTeacher": "Öğretmenim: {name}"
+      "myTeacher": "Öğretmenim: {name}",
+      "academicInfo": "Eğitim bilgileri",
+      "academicHint": "Üniversite ve bölüm bilgileriniz.",
+      "university": "Üniversite",
+      "faculty": "Fakülte",
+      "specialty": "Bölüm",
+      "studyYear": "Sınıf",
+      "studyYearUnit": "{year}. sınıf",
+      "notSet": "Belirtilmemiş",
+      "photo": "Profil fotoğrafı",
+      "photoHint": "JPEG, PNG veya WebP · en fazla 2 MB",
+      "uploadPhoto": "Fotoğraf yükle",
+      "removePhoto": "Fotoğrafı kaldır",
+      "photoUpdated": "Profil fotoğrafı güncellendi",
+      "photoRemoved": "Profil fotoğrafı kaldırıldı",
+      "photoTooLarge": "Fotoğraf 2 MB'dan büyük olmamalı",
+      "photoInvalid": "Yalnızca JPEG, PNG veya WebP kabul edilir"
     },
     "certificateTypes": {
       "participation": "Katılım Sertifikası",
@@ -647,7 +677,8 @@
         "empty": "Henüz öğrenci yok — QR kodu paylaşarak davet edin.",
         "name": "Öğrenci",
         "simScore": "Sim. puanı",
-        "grade": "Not"
+        "grade": "Not",
+        "studyYearUnit": "{year}. sınıf"
       }
     },
     "join": {
@@ -661,7 +692,14 @@
       "register": "Kaydol",
       "doneTitle": "Hoş geldiniz! 🎉",
       "doneText": "Kayıt tamamlandı — artık {teacher} grubundasınız. Şimdi giriş yapıp simülasyonlara başlayabilirsiniz.",
-      "goToLogin": "Giriş yap"
+      "goToLogin": "Giriş yap",
+      "university": "Üniversite",
+      "faculty": "Fakülte",
+      "specialty": "Bölüm",
+      "studyYear": "Sınıf",
+      "studyYearUnit": "{year}. sınıf",
+      "academicTitle": "Eğitim bilgileri",
+      "academicHint": "Bu bilgiler öğretmeninizin sınıfı yönetmesine yardımcı olur."
     },
     "scenarios": {
       "title": "Senaryolarım",

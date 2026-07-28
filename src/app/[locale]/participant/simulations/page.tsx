@@ -1,5 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
 import { requireRole } from "@/lib/auth-utils";
+import { requireFeature } from "@/lib/tenant/require-feature";
 import { prisma } from "@/lib/prisma";
 import { localized } from "@/lib/i18n-content";
 import { SimulationsPageClient } from "./simulations-client";
@@ -12,6 +13,7 @@ export default async function SimulationsPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const session = await requireRole(locale, ["PARTICIPANT"]);
+  await requireFeature(session.user.tenantId, "simulations");
 
   const [simulations, runs, me] = await Promise.all([
     // Platform scenarios + this tenant's teacher-authored scenarios.

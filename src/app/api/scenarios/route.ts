@@ -1,6 +1,7 @@
 import { randomUUID } from "crypto";
 import { NextResponse } from "next/server";
 import { withAuthorizedHandler } from "@/lib/auth/authorize";
+import { assertFeatureEnabled } from "@/lib/tenant/features";
 import { scenarioSchema, parseBody } from "@/lib/validation/schemas";
 import { prisma } from "@/lib/prisma";
 
@@ -9,6 +10,7 @@ export async function POST(request: Request) {
   return withAuthorizedHandler(
     "simulation:author",
     async ({ session }) => {
+      await assertFeatureEnabled(session.tenantId, "teachers");
       if (!session.tenantId) {
         return NextResponse.json({ error: "Tenant required" }, { status: 400 });
       }

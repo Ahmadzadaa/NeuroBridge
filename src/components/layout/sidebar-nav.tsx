@@ -1,6 +1,8 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { useTenantFeatures } from "@/components/providers/tenant-features-provider";
+import type { TenantFeature } from "@/lib/tenant/features";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import {
@@ -30,6 +32,8 @@ interface NavItem {
   href: string;
   labelKey: string;
   icon: React.ComponentType<{ className?: string }>;
+  /** Hidden when the organisation does not have this module. */
+  feature?: TenantFeature;
 }
 
 const navConfig: Record<PanelType, NavItem[]> = {
@@ -45,8 +49,18 @@ const navConfig: Record<PanelType, NavItem[]> = {
   tenant: [
     { href: "/tenant", labelKey: "dashboard", icon: LayoutDashboard },
     { href: "/tenant/programs", labelKey: "programs", icon: FileText },
-    { href: "/tenant/simulations", labelKey: "simulations", icon: Gamepad2 },
-    { href: "/tenant/teachers", labelKey: "teachers", icon: GraduationCap },
+    {
+      href: "/tenant/simulations",
+      labelKey: "simulations",
+      icon: Gamepad2,
+      feature: "simulations",
+    },
+    {
+      href: "/tenant/teachers",
+      labelKey: "teachers",
+      icon: GraduationCap,
+      feature: "teachers",
+    },
     { href: "/tenant/participants", labelKey: "participants", icon: Users },
     { href: "/tenant/reports", labelKey: "reports", icon: BarChart3 },
     { href: "/tenant/settings", labelKey: "settings", icon: Settings },
@@ -54,10 +68,30 @@ const navConfig: Record<PanelType, NavItem[]> = {
   ],
   participant: [
     { href: "/participant", labelKey: "dashboard", icon: LayoutDashboard },
-    { href: "/participant/simulations", labelKey: "simulations", icon: Gamepad2 },
-    { href: "/participant/trainings", labelKey: "trainings", icon: GraduationCap },
-    { href: "/participant/hackathon", labelKey: "hackathon", icon: Rocket },
-    { href: "/participant/ai-tools", labelKey: "aiTools", icon: Bot },
+    {
+      href: "/participant/simulations",
+      labelKey: "simulations",
+      icon: Gamepad2,
+      feature: "simulations",
+    },
+    {
+      href: "/participant/trainings",
+      labelKey: "trainings",
+      icon: GraduationCap,
+      feature: "trainings",
+    },
+    {
+      href: "/participant/hackathon",
+      labelKey: "hackathon",
+      icon: Rocket,
+      feature: "hackathon",
+    },
+    {
+      href: "/participant/ai-tools",
+      labelKey: "aiTools",
+      icon: Bot,
+      feature: "aiTools",
+    },
     { href: "/participant/badges", labelKey: "badges", icon: Award },
     { href: "/participant/certificates", labelKey: "certificates", icon: FileText },
     { href: "/participant/leaderboard", labelKey: "leaderboard", icon: Trophy },
@@ -82,7 +116,10 @@ interface SidebarNavProps {
 export function SidebarNav({ panel, collapsed }: SidebarNavProps) {
   const t = useTranslations(`nav.${panel === "super-admin" ? "superAdmin" : panel}`);
   const pathname = usePathname();
-  const items = navConfig[panel];
+  const features = useTenantFeatures();
+  const items = navConfig[panel].filter(
+    (item) => item.feature === undefined || features[item.feature]
+  );
 
   return (
     <nav className="flex flex-col gap-1 p-3">

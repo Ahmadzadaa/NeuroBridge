@@ -8,11 +8,13 @@ import {
   Copy,
   Download,
   FileText,
+  GraduationCap,
   QrCode,
   Users,
 } from "lucide-react";
 import { toast } from "sonner";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { StatCard } from "@/components/ui/stat-card";
@@ -23,6 +25,11 @@ interface StudentRow {
   name: string;
   email: string;
   joinedAt: string;
+  university: string | null;
+  faculty: string | null;
+  specialty: string | null;
+  studyYear: number | null;
+  avatarUrl: string | null;
   lastRun: {
     score: number;
     teacherGrade: number | null;
@@ -31,18 +38,17 @@ interface StudentRow {
 }
 
 interface TeacherDashboardClientProps {
-  locale: string;
   userName: string;
-  inviteToken: string;
+  /** Absolute join link, built on the server so nothing is derived on mount. */
+  inviteUrl: string;
   scenarioCount: number;
   pendingGrades: number;
   students: StudentRow[];
 }
 
 export function TeacherDashboardClient({
-  locale,
   userName,
-  inviteToken,
+  inviteUrl,
   scenarioCount,
   pendingGrades,
   students,
@@ -50,19 +56,44 @@ export function TeacherDashboardClient({
   const t = useTranslations("teacher.dashboard");
   const tc = useTranslations("common");
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
-  const [inviteUrl, setInviteUrl] = useState("");
 
+  /**
+   * Compact academic summary, e.g. "Maliyyə · 3-cü kurs · BDU".
+   * Missing parts are skipped rather than rendered as blanks — accounts made
+   * before academic details existed have none.
+   */
+  function academicLine(student: StudentRow): string {
+    return [
+      student.specialty,
+      student.studyYear
+        ? t("students.studyYearUnit", { year: student.studyYear })
+        : null,
+      student.university,
+    ]
+      .filter(Boolean)
+      .join(" · ");
+  }
+
+  // Rendering the QR code is genuinely asynchronous work against an external
+  // library, so it belongs in an effect. The URL itself arrives as a prop, so
+  // nothing here duplicates state the server already knows.
   useEffect(() => {
-    const url = `${window.location.origin}/${locale}/join/${inviteToken}`;
-    setInviteUrl(url);
-    QRCode.toDataURL(url, {
+    let cancelled = false;
+
+    QRCode.toDataURL(inviteUrl, {
       width: 480,
       margin: 2,
       color: { dark: "#0f172a", light: "#ffffff" },
     })
-      .then(setQrDataUrl)
+      .then((dataUrl) => {
+        if (!cancelled) setQrDataUrl(dataUrl);
+      })
       .catch(() => null);
-  }, [locale, inviteToken]);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [inviteUrl]);
 
   return (
     <DashboardLayout panel="teacher" title={t("title")} userName={userName}>
@@ -157,14 +188,19 @@ export function TeacherDashboardClient({
                   key={student.id}
                   className="flex items-center gap-4 border-b border-border/60 px-4 py-3 text-[13px] last:border-0"
                 >
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">
-                    {student.name
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")
-                      .slice(0, 2)
-                      .toUpperCase()}
-                  </span>
+                  <Avatar className="h-8 w-8 shrink-0">
+                    {student.avatarUrl && (
+                      <AvatarImage src={student.avatarUrl} alt={student.name} />
+                    )}
+                    <AvatarFallback className="bg-primary/10 text-[10px] font-bold text-primary">
+                      {student.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")
+                        .slice(0, 2)
+                        .toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
                   <span className="min-w-0 flex-1">
                     <span className="block truncate font-medium">
                       {student.name}
@@ -172,6 +208,15 @@ export function TeacherDashboardClient({
                     <span className="block truncate text-[11px] text-muted-foreground">
                       {student.email}
                     </span>
+                    {academicLine(student) && (
+                      <span className="mt-0.5 flex items-center gap-1 truncate text-[11px] text-muted-foreground">
+                        <GraduationCap
+                          className="h-3 w-3 shrink-0"
+                          aria-hidden="true"
+                        />
+                        <span className="truncate">{academicLine(student)}</span>
+                      </span>
+                    )}
                   </span>
                   <span className="w-24 text-right tabular-nums">
                     {student.lastRun ? (

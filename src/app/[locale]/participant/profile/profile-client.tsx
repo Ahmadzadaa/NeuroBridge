@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   Award,
+  BookOpen,
+  Camera,
   CalendarDays,
   CheckCircle2,
   FileText,
@@ -14,10 +16,11 @@ import {
   Loader2,
   Save,
   ShieldCheck,
+  Trash2,
 } from "lucide-react";
 import { toast } from "sonner";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -41,7 +44,16 @@ interface ProfileData {
   certificates: number;
   examsPassed: number;
   teacherName: string | null;
+  university: string;
+  faculty: string;
+  specialty: string;
+  studyYear: number | null;
+  avatarUrl: string | null;
 }
+
+const MAX_AVATAR_BYTES = 2 * 1024 * 1024;
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
+const STUDY_YEARS = [1, 2, 3, 4, 5, 6];
 
 interface ProfileClientProps {
   locale: string;
@@ -65,6 +77,17 @@ export function ProfileClient({ locale, profile }: ProfileClientProps) {
   const [phone, setPhone] = useState(profile.phone);
   const [language, setLanguage] = useState(profile.language);
   const [savingProfile, setSavingProfile] = useState(false);
+
+  const [university, setUniversity] = useState(profile.university);
+  const [faculty, setFaculty] = useState(profile.faculty);
+  const [specialty, setSpecialty] = useState(profile.specialty);
+  const [studyYear, setStudyYear] = useState(
+    profile.studyYear ? String(profile.studyYear) : ""
+  );
+
+  const [avatarUrl, setAvatarUrl] = useState(profile.avatarUrl);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -95,7 +118,16 @@ export function ProfileClient({ locale, profile }: ProfileClientProps) {
       const res = await fetch("/api/profile", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ firstName, lastName, phone, language }),
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          phone,
+          language,
+          university,
+          faculty,
+          specialty,
+          studyYear: studyYear ? Number(studyYear) : null,
+        }),
       });
       if (!res.ok) throw new Error();
       toast.success(t("profileSaved"));
@@ -109,6 +141,59 @@ export function ProfileClient({ locale, profile }: ProfileClientProps) {
       toast.error(tc("error"));
     } finally {
       setSavingProfile(false);
+    }
+  }
+
+  async function uploadAvatar(file: File) {
+    // Check locally first so an oversized or wrong-typed file never travels.
+    if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) {
+      toast.error(t("photoInvalid"));
+      return;
+    }
+    if (file.size > MAX_AVATAR_BYTES) {
+      toast.error(t("photoTooLarge"));
+      return;
+    }
+
+    setUploadingAvatar(true);
+    try {
+      const body = new FormData();
+      body.append("avatar", file);
+      const res = await fetch("/api/profile/avatar", { method: "POST", body });
+      const data = (await res.json().catch(() => null)) as {
+        avatarUrl?: string;
+        error?: string;
+      } | null;
+
+      if (!res.ok) {
+        toast.error(data?.error ?? tc("error"));
+        return;
+      }
+
+      // The query string busts the cached image after a replacement.
+      setAvatarUrl(data?.avatarUrl ?? null);
+      toast.success(t("photoUpdated"));
+      router.refresh();
+    } catch {
+      toast.error(tc("error"));
+    } finally {
+      setUploadingAvatar(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  }
+
+  async function removeAvatar() {
+    setUploadingAvatar(true);
+    try {
+      const res = await fetch("/api/profile/avatar", { method: "DELETE" });
+      if (!res.ok) throw new Error();
+      setAvatarUrl(null);
+      toast.success(t("photoRemoved"));
+      router.refresh();
+    } catch {
+      toast.error(tc("error"));
+    } finally {
+      setUploadingAvatar(false);
     }
   }
 
@@ -167,11 +252,56 @@ export function ProfileClient({ locale, profile }: ProfileClientProps) {
           className="rounded-2xl bg-gradient-to-br from-primary/10 via-card to-card p-6 shadow-sm ring-1 ring-primary/10 sm:p-8"
         >
           <div className="flex flex-wrap items-center gap-5">
-            <Avatar className="h-16 w-16 text-lg ring-2 ring-primary/30">
-              <AvatarFallback className="bg-primary/10 font-semibold text-primary">
-                {initials}
-              </AvatarFallback>
-            </Avatar>
+            <div className="flex flex-col items-center gap-2">
+              <Avatar className="h-16 w-16 text-lg ring-2 ring-primary/30">
+                {avatarUrl && <AvatarImage src={avatarUrl} alt={fullName} />}
+                <AvatarFallback className="bg-primary/10 font-semibold text-primary">
+                  {initials}
+                </AvatarFallback>
+              </Avatar>
+
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept={ACCEPTED_IMAGE_TYPES.join(",")}
+                className="sr-only"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) uploadAvatar(file);
+                }}
+              />
+              <div className="flex items-center gap-1">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  disabled={uploadingAvatar}
+                  onClick={() => fileInputRef.current?.click()}
+                  className="h-7 rounded-lg px-2 text-[11px]"
+                >
+                  {uploadingAvatar ? (
+                    <Loader2 className="h-3 w-3 animate-spin" aria-hidden="true" />
+                  ) : (
+                    <>
+                      <Camera className="h-3 w-3" aria-hidden="true" />
+                      {t("uploadPhoto")}
+                    </>
+                  )}
+                </Button>
+                {avatarUrl && !uploadingAvatar && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={removeAvatar}
+                    className="h-7 rounded-lg px-2 text-[11px] text-muted-foreground"
+                    aria-label={t("removePhoto")}
+                  >
+                    <Trash2 className="h-3 w-3" aria-hidden="true" />
+                  </Button>
+                )}
+              </div>
+            </div>
             <div className="min-w-0 flex-1">
               <h2 className="text-[19px] font-bold leading-snug">{fullName}</h2>
               <p className="mt-0.5 text-[13px] text-muted-foreground">
@@ -287,6 +417,72 @@ export function ProfileClient({ locale, profile }: ProfileClientProps) {
               <p className="text-[11px] text-muted-foreground">
                 {t("emailLocked")}
               </p>
+            </div>
+          </div>
+
+          {/* ── Academic details ─────────────────────────────── */}
+          <div className="mt-8 border-t border-border pt-6">
+            <h3 className="flex items-center gap-2 text-[15px] font-semibold">
+              <BookOpen className="h-4.5 w-4.5 text-primary" aria-hidden="true" />
+              {t("academicInfo")}
+            </h3>
+            <p className="mt-1 text-[12px] text-muted-foreground">
+              {t("academicHint")}
+            </p>
+
+            <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="space-y-1.5 sm:col-span-2">
+                <Label htmlFor="university">{t("university")}</Label>
+                <Input
+                  id="university"
+                  maxLength={200}
+                  value={university}
+                  onChange={(e) => setUniversity(e.target.value)}
+                  className="rounded-xl"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="faculty">{t("faculty")}</Label>
+                <Input
+                  id="faculty"
+                  maxLength={200}
+                  value={faculty}
+                  onChange={(e) => setFaculty(e.target.value)}
+                  className="rounded-xl"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="specialty">{t("specialty")}</Label>
+                <Input
+                  id="specialty"
+                  maxLength={200}
+                  value={specialty}
+                  onChange={(e) => setSpecialty(e.target.value)}
+                  className="rounded-xl"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="studyYear">{t("studyYear")}</Label>
+                <Select
+                  value={studyYear}
+                  onValueChange={(v) => setStudyYear(v ?? "")}
+                >
+                  <SelectTrigger id="studyYear" className="w-full rounded-xl">
+                    <SelectValue>
+                      {studyYear
+                        ? t("studyYearUnit", { year: studyYear })
+                        : t("notSet")}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {STUDY_YEARS.map((year) => (
+                      <SelectItem key={year} value={String(year)}>
+                        {t("studyYearUnit", { year })}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
 

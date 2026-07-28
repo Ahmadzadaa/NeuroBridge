@@ -15,6 +15,8 @@ export interface CreateCheckoutInput {
   successUrl: string;
   cancelUrl: string;
   idempotencyKey: string;
+  /** Required by PayTR, which rejects requests without the payer's IP. */
+  userIp?: string;
 }
 
 export interface CreateCheckoutResult {

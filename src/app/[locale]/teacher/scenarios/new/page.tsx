@@ -1,5 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
 import { requireRole } from "@/lib/auth-utils";
+import { requireFeature } from "@/lib/tenant/require-feature";
 import { ScenarioEditor, emptyScenario } from "../scenario-editor";
 
 export default async function NewScenarioPage({
@@ -10,6 +11,7 @@ export default async function NewScenarioPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const session = await requireRole(locale, ["TEACHER"]);
+  await requireFeature(session.user.tenantId, "teachers");
 
   return (
     <ScenarioEditor

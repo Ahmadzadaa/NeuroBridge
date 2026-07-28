@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { withAuthorizedHandler } from "@/lib/auth/authorize";
+import { assertFeatureEnabled } from "@/lib/tenant/features";
 import { juryScoreSchema, parseBody } from "@/lib/validation/schemas";
 import { prisma } from "@/lib/prisma";
 
@@ -10,6 +11,7 @@ export async function POST(
   const { id } = await context.params;
 
   return withAuthorizedHandler("hackathon:score", async ({ session }) => {
+    await assertFeatureEnabled(session.tenantId, "hackathon");
     const body = parseBody(juryScoreSchema, await request.json());
 
     const submission = await prisma.projectSubmission.findUnique({

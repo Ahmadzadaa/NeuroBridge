@@ -28,7 +28,7 @@ describe.skipIf(!hasTestDb)("webhook processor integration", () => {
         amount: 1450,
         currency: "TRY",
         seatCount: 50,
-        provider: "STRIPE",
+        provider: "PAYTR",
         providerRef: `cs_test_${Date.now()}`,
         paymentType: "UPGRADE",
         idempotencyKey: `idem_${Date.now()}`,
@@ -65,7 +65,7 @@ describe.skipIf(!hasTestDb)("webhook processor integration", () => {
         amount: 1450,
         currency: "TRY",
         seatCount: 50,
-        provider: "STRIPE",
+        provider: "PAYTR",
         providerRef: `cs_fail_${Date.now()}`,
         paymentType: "UPGRADE",
         idempotencyKey: `idem_fail_${Date.now()}`,
@@ -103,7 +103,7 @@ describe.skipIf(!hasTestDb)("webhook processor integration", () => {
         amount: 1450,
         currency: "TRY",
         seatCount: 50,
-        provider: "STRIPE",
+        provider: "PAYTR",
         providerRef: `cs_idem_${Date.now()}`,
         paymentType: "UPGRADE",
         idempotencyKey: `idem_idem_${Date.now()}`,
@@ -123,8 +123,8 @@ describe.skipIf(!hasTestDb)("webhook processor integration", () => {
     };
 
     const eventId = `evt_${Date.now()}`;
-    const first = await processWebhookEvent("STRIPE", eventId, "checkout.session.completed", payload);
-    const second = await processWebhookEvent("STRIPE", eventId, "checkout.session.completed", payload);
+    const first = await processWebhookEvent("PAYTR", eventId, "checkout.session.completed", payload);
+    const second = await processWebhookEvent("PAYTR", eventId, "checkout.session.completed", payload);
 
     const updatedTenant = await prisma.tenant.findUnique({ where: { id: tenant.id } });
 
@@ -132,7 +132,7 @@ describe.skipIf(!hasTestDb)("webhook processor integration", () => {
     expect(second.duplicate).toBe(true);
     expect(updatedTenant?.seatLimit).toBe(100);
 
-    await prisma.webhookEvent.deleteMany({ where: { provider: "STRIPE" } });
+    await prisma.webhookEvent.deleteMany({ where: { provider: "PAYTR" } });
     await prisma.payment.deleteMany({ where: { tenantId: tenant.id } });
     await prisma.auditLog.deleteMany({ where: { tenantId: tenant.id } });
     await prisma.tenant.delete({ where: { id: tenant.id } });
@@ -154,7 +154,7 @@ describe.skipIf(!hasTestDb)("webhook processor integration", () => {
         amount: 1450,
         currency: "TRY",
         seatCount: 50,
-        provider: "STRIPE",
+        provider: "PAYTR",
         providerRef: `cs_refund_${Date.now()}`,
         paymentType: "UPGRADE",
         idempotencyKey: `idem_refund_${Date.now()}`,

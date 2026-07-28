@@ -10,8 +10,8 @@ import { handlePaymentCompleted } from "../src/lib/payment/webhook-processor";
 test.describe("Tenant purchase", () => {
   test("checkout and webhook upgrade tenant seats", async () => {
     resetPaymentProvidersForTests();
-    registerPaymentProvider("STRIPE", {
-      name: "STRIPE",
+    registerPaymentProvider("PAYTR", {
+      name: "PAYTR",
       createCheckout: async () => ({
         checkoutUrl: "https://checkout.e2e.test/session",
         providerRef: `e2e_purchase_${Date.now()}`,
@@ -40,7 +40,7 @@ test.describe("Tenant purchase", () => {
     const checkout = await createSeatPurchaseCheckout({
       tenantId: tenant.id,
       seatCount: 50,
-      provider: "STRIPE",
+      provider: "PAYTR",
       customerEmail: "purchase@e2e.test",
       successUrl: "http://localhost:3000/tenant/billing",
       cancelUrl: "http://localhost:3000/tenant/billing",

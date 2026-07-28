@@ -1,5 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
 import { requireRole } from "@/lib/auth-utils";
+import { requireFeature } from "@/lib/tenant/require-feature";
 import { prisma } from "@/lib/prisma";
 import { localized } from "@/lib/i18n-content";
 import { SimulationGradingClient } from "@/app/[locale]/tenant/simulations/grading-client";
@@ -12,6 +13,7 @@ export default async function TeacherGradingPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const session = await requireRole(locale, ["TEACHER"]);
+  await requireFeature(session.user.tenantId, "teachers");
 
   // Only the teacher's own students' runs.
   const runs = await prisma.simulationRun.findMany({

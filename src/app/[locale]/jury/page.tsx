@@ -1,5 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
 import { requireRole } from "@/lib/auth-utils";
+import { requireFeature } from "@/lib/tenant/require-feature";
 import { prisma } from "@/lib/prisma";
 import { JuryDashboardClient } from "./jury-client";
 
@@ -11,6 +12,7 @@ export default async function JuryDashboardPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const session = await requireRole(locale, ["JURY"]);
+  await requireFeature(session.user.tenantId, "hackathon");
 
   const programs = await prisma.program.findMany({
     where: {

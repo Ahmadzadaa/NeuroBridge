@@ -1,6 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { requireRole } from "@/lib/auth-utils";
+import { requireFeature } from "@/lib/tenant/require-feature";
 import { prisma } from "@/lib/prisma";
 import { ScoreSubmissionClient } from "./score-client";
 
@@ -12,6 +13,7 @@ export default async function ScoreSubmissionPage({
   const { locale, id } = await params;
   setRequestLocale(locale);
   const session = await requireRole(locale, ["JURY"]);
+  await requireFeature(session.user.tenantId, "hackathon");
 
   const submission = await prisma.projectSubmission.findUnique({
     where: { id },

@@ -15,8 +15,8 @@ const hasTestDb = Boolean(process.env.TEST_DATABASE_URL);
 describe.skipIf(!hasTestDb)("checkout flow integration", () => {
   it("creates checkout and upgrades seats on payment completion", async () => {
     resetPaymentProvidersForTests();
-    registerPaymentProvider("STRIPE", {
-      name: "STRIPE",
+    registerPaymentProvider("PAYTR", {
+      name: "PAYTR",
       createCheckout: async () => ({
         checkoutUrl: "https://checkout.test/session",
         providerRef: `cs_test_${Date.now()}`,
@@ -45,7 +45,7 @@ describe.skipIf(!hasTestDb)("checkout flow integration", () => {
     const checkout = await createSeatPurchaseCheckout({
       tenantId: tenant.id,
       seatCount: 50,
-      provider: "STRIPE",
+      provider: "PAYTR",
       customerEmail: "billing@test.com",
       successUrl: "http://localhost:3000/tenant/billing",
       cancelUrl: "http://localhost:3000/tenant/billing",

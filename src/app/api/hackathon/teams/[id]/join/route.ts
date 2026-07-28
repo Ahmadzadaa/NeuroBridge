@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { withAuthorizedHandler } from "@/lib/auth/authorize";
+import { assertFeatureEnabled } from "@/lib/tenant/features";
 import { prisma } from "@/lib/prisma";
 
 const MAX_TEAM_SIZE = 5;
@@ -11,6 +12,7 @@ export async function POST(
   const { id } = await context.params;
 
   return withAuthorizedHandler("hackathon:submit", async ({ session }) => {
+    await assertFeatureEnabled(session.tenantId, "hackathon");
     const team = await prisma.hackathonTeam.findUnique({
       where: { id },
       include: {

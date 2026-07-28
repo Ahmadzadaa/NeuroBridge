@@ -3,6 +3,7 @@ import {
   SeatLimitReachedError,
   TenantNotActiveError,
 } from "@/lib/seats/errors";
+import { isPostgresDatabase } from "@/lib/db/tenant-context";
 
 export interface LockedTenantRow {
   id: string;
@@ -15,31 +16,46 @@ export async function lockTenantForUpdate(
   tx: Prisma.TransactionClient,
   tenantId: string
 ): Promise<LockedTenantRow> {
-  const rows = await tx.$queryRaw<
-    Array<{
-      id: string;
-      seat_limit: number;
-      seats_used: number;
-      status: string;
-    }>
-  >`
-    SELECT id, seat_limit, seats_used, status
-    FROM tenants
-    WHERE id = ${tenantId}
-    FOR UPDATE
-  `;
+  if (isPostgresDatabase()) {
+    const rows = await tx.$queryRaw<
+      Array<{
+        id: string;
+        seat_limit: number;
+        seats_used: number;
+        status: string;
+      }>
+    >`
+      SELECT id, seat_limit, seats_used, status
+      FROM tenants
+      WHERE id = ${tenantId}
+      FOR UPDATE
+    `;
 
-  const row = rows[0];
+    const row = rows[0];
+    if (!row) {
+      throw new Error(`Tenant not found: ${tenantId}`);
+    }
+
+    return {
+      id: row.id,
+      seatLimit: row.seat_limit,
+      seatsUsed: row.seats_used,
+      status: row.status,
+    };
+  }
+
+  // SQLite (local dev) has no row-level locking; the surrounding
+  // transaction already serializes writes, so a plain read is enough.
+  const row = await tx.tenant.findUnique({
+    where: { id: tenantId },
+    select: { id: true, seatLimit: true, seatsUsed: true, status: true },
+  });
+
   if (!row) {
     throw new Error(`Tenant not found: ${tenantId}`);
   }
 
-  return {
-    id: row.id,
-    seatLimit: row.seat_limit,
-    seatsUsed: row.seats_used,
-    status: row.status,
-  };
+  return row;
 }
 
 export async function consumeSeat(

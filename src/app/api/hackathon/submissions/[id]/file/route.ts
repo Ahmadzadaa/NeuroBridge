@@ -2,6 +2,7 @@ import { readFile } from "fs/promises";
 import path from "path";
 import { NextResponse } from "next/server";
 import { withAuthorizedHandler } from "@/lib/auth/authorize";
+import { assertFeatureEnabled } from "@/lib/tenant/features";
 import { hasPermission } from "@/lib/auth/permissions";
 import { prisma } from "@/lib/prisma";
 
@@ -14,6 +15,7 @@ export async function GET(
   const { id } = await context.params;
 
   return withAuthorizedHandler("hackathon:read", async ({ session }) => {
+    await assertFeatureEnabled(session.tenantId, "hackathon");
     const submission = await prisma.projectSubmission.findUnique({
       where: { id },
       include: {

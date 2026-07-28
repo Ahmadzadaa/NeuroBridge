@@ -15,6 +15,42 @@ const safeString = (max: number) =>
     .max(max)
     .refine((val) => !/[<>]/.test(val), "Invalid characters detected");
 
+/** Same rules as `safeString`, but an empty value is allowed and becomes null. */
+const optionalSafeString = (max: number) =>
+  z
+    .string()
+    .trim()
+    .max(max)
+    .refine((val) => !/[<>]/.test(val), "Invalid characters detected")
+    .optional()
+    .or(z.literal(""));
+
+/** Undergraduate years; universities here run 1–6 depending on the degree. */
+export const MIN_STUDY_YEAR = 1;
+export const MAX_STUDY_YEAR = 6;
+
+const studyYear = z.coerce
+  .number()
+  .int()
+  .min(MIN_STUDY_YEAR, `Study year must be between ${MIN_STUDY_YEAR} and ${MAX_STUDY_YEAR}`)
+  .max(MAX_STUDY_YEAR, `Study year must be between ${MIN_STUDY_YEAR} and ${MAX_STUDY_YEAR}`)
+  .optional()
+  .nullable();
+
+/**
+ * Academic details for university participants. Optional throughout so the
+ * same shape works for the open programme flow, where applicants are not
+ * necessarily students.
+ */
+export const academicProfileFields = {
+  university: optionalSafeString(200),
+  faculty: optionalSafeString(200),
+  specialty: optionalSafeString(200),
+  studyYear,
+};
+
+export const academicProfileSchema = z.object(academicProfileFields);
+
 export const createProgramSchema = z
   .object({
     name: safeString(200),
@@ -74,6 +110,10 @@ export const webhookSeatSchema = z.object({
   currency: z.enum(["TRY", "USD", "EUR", "AZN"]),
 });
 
+/**
+ * Open programme applications. Academic details are collected but optional —
+ * applicants here are not always students.
+ */
 export const registrationSchema = z.object({
   token: z.string().min(1).max(100),
   email: z.string().trim().email().max(320),
@@ -81,6 +121,7 @@ export const registrationSchema = z.object({
   firstName: safeString(100),
   lastName: safeString(100),
   phone: z.string().trim().max(30).optional(),
+  ...academicProfileFields,
 });
 
 export const checkoutSchema = z.object({
@@ -88,7 +129,7 @@ export const checkoutSchema = z.object({
     .number()
     .int()
     .refine((value) => [50, 100, 250].includes(value), "Invalid seat package"),
-  provider: z.enum(["STRIPE", "PAYRIFF", "IYZICO"]),
+  provider: z.enum(["PAYTR"]).default("PAYTR"),
 });
 
 export const updateTenantSettingsSchema = z.object({
@@ -124,6 +165,10 @@ export const addJurySchema = z.object({
   lastName: safeString(100).optional(),
 });
 
+/**
+ * Students joining through a teacher's invite. Academic details are required
+ * here — this is the university flow, and teachers need them to run a class.
+ */
 export const joinTeacherSchema = z.object({
   email: z.string().trim().toLowerCase().email().max(255),
   password: z
@@ -136,6 +181,10 @@ export const joinTeacherSchema = z.object({
     ),
   firstName: safeString(100),
   lastName: safeString(100),
+  university: safeString(200),
+  faculty: safeString(200),
+  specialty: safeString(200),
+  studyYear: z.coerce.number().int().min(MIN_STUDY_YEAR).max(MAX_STUDY_YEAR),
 });
 
 export const scenarioSchema = z.object({
@@ -183,6 +232,19 @@ export const simulationGradeSchema = z
     path: ["grade"],
   });
 
+/**
+ * Module flags. Omitted entirely, the tenant type's preset applies; any flag
+ * that is sent overrides that preset, so a university can be given a hackathon
+ * without changing its type.
+ */
+const tenantModuleFlags = z.object({
+  teachers: z.boolean().optional(),
+  hackathon: z.boolean().optional(),
+  simulations: z.boolean().optional(),
+  trainings: z.boolean().optional(),
+  aiTools: z.boolean().optional(),
+});
+
 export const provisionTenantSchema = z.object({
   name: safeString(200),
   adminEmail: z.string().trim().toLowerCase().email().max(255),
@@ -190,11 +252,15 @@ export const provisionTenantSchema = z.object({
   adminLastName: safeString(100),
   seatLimit: z.number().int().min(1).max(100000),
   planType: z.enum(["starter", "professional", "enterprise"]),
+  tenantType: z.enum(["UNIVERSITY", "TECHNOPARK", "FULL"]).default("FULL"),
+  modules: tenantModuleFlags.optional(),
 });
 
 export const updateTenantSchema = z.object({
   status: z.enum(["ACTIVE", "INACTIVE", "PENDING"]).optional(),
   seatLimit: z.number().int().min(1).max(100000).optional(),
+  tenantType: z.enum(["UNIVERSITY", "TECHNOPARK", "FULL"]).optional(),
+  modules: tenantModuleFlags.optional(),
 });
 
 export const revealSchema = z.object({
@@ -214,6 +280,7 @@ export const updateProfileSchema = z.object({
     .optional()
     .or(z.literal("")),
   language: z.enum(["tr", "en", "az"]),
+  ...academicProfileFields,
 });
 
 export const changePasswordSchema = z.object({
