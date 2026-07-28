@@ -179,10 +179,10 @@ describe.skipIf(!hasTestDb)("webhook processor integration", () => {
 
 describe("webhook processor exports", () => {
   it("exports payment lifecycle handlers", async () => {
-    const module = await import("@/lib/payment/webhook-processor");
-    expect(module.handlePaymentCompleted).toBeTypeOf("function");
-    expect(module.handlePaymentFailed).toBeTypeOf("function");
-    expect(module.handlePaymentRefunded).toBeTypeOf("function");
-    expect(module.processWebhookEvent).toBeTypeOf("function");
+    const exports = await import("@/lib/payment/webhook-processor");
+    expect(exports.handlePaymentCompleted).toBeTypeOf("function");
+    expect(exports.handlePaymentFailed).toBeTypeOf("function");
+    expect(exports.handlePaymentRefunded).toBeTypeOf("function");
+    expect(exports.processWebhookEvent).toBeTypeOf("function");
   });
 });

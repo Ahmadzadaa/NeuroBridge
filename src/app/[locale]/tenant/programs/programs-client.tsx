@@ -67,20 +67,36 @@ export function ProgramsPageClient({
   const applyUrl = (token: string) =>
     `${window.location.origin}/${locale}/apply/${token}`;
 
+  // Rendering the QR image is asynchronous work against an external library,
+  // so it belongs in an effect. Clearing the previous image happens where the
+  // dialog is closed instead, keeping this effect free of synchronous state
+  // updates.
   useEffect(() => {
-    if (!qrProgram) {
-      setQrDataUrl(null);
-      return;
-    }
+    if (!qrProgram) return;
+    let cancelled = false;
+
     QRCode.toDataURL(applyUrl(qrProgram.applicationToken), {
       width: 560,
       margin: 2,
       color: { dark: "#0f172a", light: "#ffffff" },
     })
-      .then(setQrDataUrl)
-      .catch(() => toast.error(tc("error")));
+      .then((dataUrl) => {
+        if (!cancelled) setQrDataUrl(dataUrl);
+      })
+      .catch(() => {
+        if (!cancelled) toast.error(tc("error"));
+      });
+
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [qrProgram]);
+
+  function closeQrDialog() {
+    setQrProgram(null);
+    setQrDataUrl(null);
+  }
 
   async function copyLink() {
     if (!qrProgram) return;
@@ -184,7 +200,7 @@ export function ProgramsPageClient({
       {/* ── QR invite dialog ─────────────────────────────────── */}
       <Dialog
         open={qrProgram !== null}
-        onOpenChange={(open) => !open && setQrProgram(null)}
+        onOpenChange={(open) => !open && closeQrDialog()}
       >
         <DialogContent className="max-w-md">
           <DialogHeader>

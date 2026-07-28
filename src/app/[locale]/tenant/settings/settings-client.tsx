@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -42,9 +42,14 @@ export function SettingsPageClient({
   const [settings, setSettings] = useState(initialSettings);
   const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
+  // The server re-sends settings after a refresh. Reconciling during render is
+  // React's documented way to adjust state when a prop changes — an effect
+  // would render the stale values once before correcting them.
+  const [syncedFrom, setSyncedFrom] = useState(initialSettings);
+  if (initialSettings !== syncedFrom) {
+    setSyncedFrom(initialSettings);
     setSettings(initialSettings);
-  }, [initialSettings]);
+  }
 
   async function saveSettings(fields: Partial<TenantSettingsData>) {
     setSaving(true);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import {
   Table,
@@ -46,30 +46,50 @@ export function AuditClient({ userName, title }: AuditClientProps) {
   const [action, setAction] = useState<string>("all");
   const [loading, setLoading] = useState(true);
 
-  const loadLogs = useCallback(async () => {
-    setLoading(true);
+  // The spinner is turned on by whichever control changed the query, so this
+  // effect only writes state once the response is in.
+  useEffect(() => {
+    let cancelled = false;
+
     const params = new URLSearchParams({ page: String(page), pageSize: "25" });
     if (action !== "all") params.set("action", action);
 
-    const res = await fetch(`/api/audit?${params.toString()}`);
-    if (res.ok) {
-      const data = await res.json();
-      setItems(data.items);
-      setTotal(data.total);
-    }
-    setLoading(false);
+    fetch(`/api/audit?${params.toString()}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (cancelled) return;
+        if (data) {
+          setItems(data.items);
+          setTotal(data.total);
+        }
+        setLoading(false);
+      })
+      .catch(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [page, action]);
 
-  useEffect(() => {
-    loadLogs();
-  }, [loadLogs]);
+  function changePage(next: number) {
+    setLoading(true);
+    setPage(next);
+  }
+
+  function changeAction(next: string) {
+    setLoading(true);
+    setAction(next);
+    setPage(1);
+  }
 
   const totalPages = Math.max(1, Math.ceil(total / 25));
 
   return (
     <DashboardLayout panel="super-admin" title={title} userName={userName}>
       <div className="mb-4 flex flex-wrap items-center gap-3">
-        <Select value={action} onValueChange={(v) => { setAction(v ?? "all"); setPage(1); }}>
+        <Select value={action} onValueChange={(v) => changeAction(v ?? "all")}>
           <SelectTrigger className="w-56 rounded-xl">
             <SelectValue placeholder="Filter by action" />
           </SelectTrigger>
@@ -143,7 +163,7 @@ export function AuditClient({ userName, title }: AuditClientProps) {
             variant="outline"
             className="rounded-xl"
             disabled={page <= 1}
-            onClick={() => setPage((p) => p - 1)}
+            onClick={() => changePage(page - 1)}
           >
             Previous
           </Button>
@@ -151,7 +171,7 @@ export function AuditClient({ userName, title }: AuditClientProps) {
             variant="outline"
             className="rounded-xl"
             disabled={page >= totalPages}
-            onClick={() => setPage((p) => p + 1)}
+            onClick={() => changePage(page + 1)}
           >
             Next
           </Button>

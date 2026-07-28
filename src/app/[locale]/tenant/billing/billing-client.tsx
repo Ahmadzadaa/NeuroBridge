@@ -25,7 +25,9 @@ export function BillingClient() {
     }
 
     const data = await res.json();
-    window.location.href = data.checkoutUrl;
+    // assign() rather than setting location.href: same navigation, but it is
+    // a method call instead of mutating a value owned outside the component.
+    window.location.assign(data.checkoutUrl);
   }
 
   return (

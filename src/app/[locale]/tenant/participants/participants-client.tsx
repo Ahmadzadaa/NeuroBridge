@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { StatusChip, type StatusChipVariant } from "@/components/ui/status-chip";
@@ -60,8 +60,11 @@ export function ParticipantsPageClient({
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
 
-  const loadParticipants = useCallback(async () => {
-    setLoading(true);
+  // The spinner is turned on by whichever control changed the query, so this
+  // effect only writes state once the response is in.
+  useEffect(() => {
+    let cancelled = false;
+
     const params = new URLSearchParams({
       page: String(page),
       pageSize: String(PAGE_SIZE),
@@ -70,18 +73,35 @@ export function ParticipantsPageClient({
       params.set("programId", programFilter);
     }
 
-    const res = await fetch(`/api/participants?${params.toString()}`);
-    if (res.ok) {
-      const data = await res.json();
-      setItems(data.items);
-      setTotal(data.total);
-    }
-    setLoading(false);
+    fetch(`/api/participants?${params.toString()}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (cancelled) return;
+        if (data) {
+          setItems(data.items);
+          setTotal(data.total);
+        }
+        setLoading(false);
+      })
+      .catch(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [page, programFilter]);
 
-  useEffect(() => {
-    loadParticipants();
-  }, [loadParticipants]);
+  function changePage(next: number) {
+    setLoading(true);
+    setPage(next);
+  }
+
+  function changeProgramFilter(next: string) {
+    setLoading(true);
+    setProgramFilter(next);
+    setPage(1);
+  }
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
@@ -116,10 +136,7 @@ export function ParticipantsPageClient({
           <CardTitle>{t("title")}</CardTitle>
           <Select
             value={programFilter}
-            onValueChange={(value) => {
-              setProgramFilter(value ?? "all");
-              setPage(1);
-            }}
+            onValueChange={(value) => changeProgramFilter(value ?? "all")}
           >
             <SelectTrigger className="w-full max-w-xs rounded-xl">
               <SelectValue placeholder={t("title")} />
@@ -181,7 +198,7 @@ export function ParticipantsPageClient({
               page={page}
               pageSize={PAGE_SIZE}
               totalItems={total}
-              onPageChange={(p) => setPage(p)}
+              onPageChange={(p) => changePage(p)}
               itemLabel={t("title").toLowerCase()}
             />
           )}

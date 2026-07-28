@@ -83,6 +83,9 @@ export function HackathonAdminClient({
     program.resultsRevealAt ? program.resultsRevealAt.slice(0, 16) : ""
   );
   const [savingReveal, setSavingReveal] = useState(false);
+  // Captured once: reading the clock during render would make the output
+  // depend on when React happens to re-render.
+  const [renderedAt] = useState(() => Date.now());
 
   const valid =
     drafts.length > 0 &&
@@ -232,7 +235,7 @@ export function HackathonAdminClient({
               ? new Date(program.resultsRevealAt)
               : null;
             const isVisible =
-              !revealDate || revealDate.getTime() <= Date.now();
+              !revealDate || revealDate.getTime() <= renderedAt;
             return (
               <div
                 className={cn(

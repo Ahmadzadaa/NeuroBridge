@@ -1,4 +1,3 @@
-import { prisma } from "@/lib/prisma";
 import { withTenantContext } from "@/lib/db/tenant-context";
 import type { TenantContext } from "@/lib/auth/session";
 import {
