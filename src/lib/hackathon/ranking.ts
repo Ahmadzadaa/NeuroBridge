@@ -29,8 +29,9 @@ export interface TeamRanking {
  * Computes the live leaderboard for a hackathon program.
  *
  * Each criterion's jury scores are averaged, normalized to 0–100 by its
- * maxScore, then combined as a weighted average. Teams without a scored
- * submission sort below scored teams, keeping their registration order.
+ * maxScore, then combined as a weighted average over the criteria that have
+ * actually been scored. Teams without a scored submission sort below scored
+ * teams, keeping their registration order.
  */
 export async function computeRankings(programId: string): Promise<TeamRanking[]> {
   const [teams, criteria] = await Promise.all([
@@ -52,7 +53,6 @@ export async function computeRankings(programId: string): Promise<TeamRanking[]>
     }),
   ]);
 
-  const totalWeight = criteria.reduce((sum, c) => sum + c.weight, 0) || 1;
 
   const rankings = teams.map((team) => {
     const submission = team.submissions[0] ?? null;
@@ -78,13 +78,19 @@ export async function computeRankings(programId: string): Promise<TeamRanking[]>
       };
     });
 
+    // Normalise over the weight that was actually judged, not the full weight
+    // of every criterion. Dividing by the total weight would deflate a team's
+    // score whenever the panel has not finished a criterion yet — which is the
+    // normal state of the live leaderboard — and would rank a fully-judged team
+    // against a partly-judged one on different scales.
     const scored = breakdown.filter((b) => b.average !== null);
+    const scoredWeight = scored.reduce((sum, b) => sum + b.weight, 0);
     const total =
-      scored.length > 0
+      scored.length > 0 && scoredWeight > 0
         ? scored.reduce(
-            (sum, b) => sum + ((b.average! / b.maxScore) * 100 * b.weight),
+            (sum, b) => sum + (b.average! / b.maxScore) * 100 * b.weight,
             0
-          ) / totalWeight
+          ) / scoredWeight
         : null;
 
     return {

@@ -1,0 +1,267 @@
+{
+  "achievement": {
+    "name": "Başarı Sertifikası (qızılı guilloche)",
+    "type": "ACHIEVEMENT",
+    "background": "bg_achievement.pdf",
+    "page": {
+      "w": 297,
+      "h": 210
+    },
+    "blocks": [
+      {
+        "key": "recipientName",
+        "kind": "text",
+        "y": 74.4,
+        "cx": 148.5,
+        "maxW": 170,
+        "font": "PinyonScript",
+        "size": 21.2,
+        "minSize": 12,
+        "color": "#B08A3E",
+        "align": "center",
+        "fit": "shrink"
+      },
+      {
+        "key": "body",
+        "kind": "paragraph",
+        "y": 101.2,
+        "cx": 148.5,
+        "maxW": 215,
+        "font": "Lora",
+        "size": 5.3,
+        "lineHeight": 1.65,
+        "color": "#3F3A34",
+        "align": "center"
+      },
+      {
+        "key": "signature1Name",
+        "kind": "text",
+        "y": 157.1,
+        "cx": 88.0,
+        "maxW": 60,
+        "font": "PlayfairDisplay",
+        "weight": 700,
+        "size": 4.5,
+        "color": "#2E2A25",
+        "align": "center",
+        "fit": "shrink"
+      },
+      {
+        "key": "signature1Role",
+        "kind": "text",
+        "y": 162.9,
+        "cx": 88.0,
+        "maxW": 60,
+        "font": "PlayfairDisplay",
+        "size": 3.5,
+        "color": "#5A5248",
+        "align": "center"
+      },
+      {
+        "key": "signature2Name",
+        "kind": "text",
+        "y": 157.1,
+        "cx": 209.0,
+        "maxW": 60,
+        "font": "PlayfairDisplay",
+        "weight": 700,
+        "size": 4.5,
+        "color": "#2E2A25",
+        "align": "center",
+        "fit": "shrink"
+      },
+      {
+        "key": "signature2Role",
+        "kind": "text",
+        "y": 162.9,
+        "cx": 209.0,
+        "maxW": 60,
+        "font": "PlayfairDisplay",
+        "size": 3.5,
+        "color": "#5A5248",
+        "align": "center"
+      }
+    ]
+  },
+  "participation": {
+    "name": "Proje Katılım Sertifikası (lacivert/qızılı)",
+    "type": "PARTICIPATION",
+    "background": "bg_participation.pdf",
+    "page": {
+      "w": 297,
+      "h": 210
+    },
+    "blocks": [
+      {
+        "key": "recipientName",
+        "kind": "text",
+        "y": 99.2,
+        "cx": 159.2,
+        "maxW": 150,
+        "font": "PlayfairDisplay",
+        "size": 13.6,
+        "minSize": 8,
+        "color": "#C9A227",
+        "align": "center",
+        "fit": "shrink",
+        "transform": "uppercase",
+        "letterSpacing": 0.6
+      },
+      {
+        "key": "body",
+        "kind": "paragraph",
+        "y": 121.6,
+        "cx": 166.3,
+        "maxW": 180,
+        "font": "Lora",
+        "size": 5.2,
+        "lineHeight": 1.6,
+        "color": "#12315C",
+        "align": "center"
+      },
+      {
+        "key": "signature1Name",
+        "kind": "text",
+        "y": 161.6,
+        "cx": 121.2,
+        "maxW": 50,
+        "font": "PlayfairDisplay",
+        "size": 6.0,
+        "color": "#12315C",
+        "align": "center",
+        "fit": "shrink"
+      },
+      {
+        "key": "signature1Role",
+        "kind": "text",
+        "y": 170.9,
+        "cx": 121.2,
+        "maxW": 50,
+        "font": "Lora",
+        "size": 5.3,
+        "color": "#12315C",
+        "align": "center"
+      },
+      {
+        "key": "signature2Name",
+        "kind": "text",
+        "y": 162.0,
+        "cx": 211.0,
+        "maxW": 50,
+        "font": "PlayfairDisplay",
+        "size": 6.0,
+        "color": "#12315C",
+        "align": "center",
+        "fit": "shrink"
+      },
+      {
+        "key": "signature2Role",
+        "kind": "text",
+        "y": 171.4,
+        "cx": 211.0,
+        "maxW": 50,
+        "font": "Lora",
+        "size": 5.3,
+        "color": "#12315C",
+        "align": "center"
+      }
+    ]
+  },
+  "completion": {
+    "name": "Eğitim Sertifikası (krem, mum möhürlü)",
+    "type": "COMPLETION",
+    "background": "bg_completion.pdf",
+    "page": {
+      "w": 297,
+      "h": 210
+    },
+    "blocks": [
+      {
+        "key": "issuerName",
+        "kind": "text",
+        "y": 40.8,
+        "cx": 148.5,
+        "maxW": 45,
+        "font": "PlayfairDisplay",
+        "size": 5.5,
+        "color": "#6B4423",
+        "align": "center",
+        "fit": "shrink",
+        "note": "emblemin içindəki təşkilat adı"
+      },
+      {
+        "key": "recipientName",
+        "kind": "text",
+        "y": 95.9,
+        "cx": 148.5,
+        "maxW": 190,
+        "font": "GreatVibes",
+        "size": 21.2,
+        "minSize": 12,
+        "color": "#1A1A1A",
+        "align": "center",
+        "fit": "shrink"
+      },
+      {
+        "key": "body",
+        "kind": "paragraph",
+        "y": 120.3,
+        "cx": 148.5,
+        "maxW": 175,
+        "font": "Merriweather",
+        "size": 5.3,
+        "lineHeight": 1.55,
+        "color": "#3B2A1A",
+        "align": "center"
+      },
+      {
+        "key": "signature1Role",
+        "kind": "text",
+        "y": 146.0,
+        "cx": 96.0,
+        "maxW": 60,
+        "font": "Merriweather",
+        "weight": 700,
+        "size": 5.3,
+        "color": "#3B2A1A",
+        "align": "center"
+      },
+      {
+        "key": "signature1Name",
+        "kind": "text",
+        "y": 154.9,
+        "cx": 96.0,
+        "maxW": 60,
+        "font": "Merriweather",
+        "size": 5.3,
+        "color": "#3B2A1A",
+        "align": "center",
+        "fit": "shrink"
+      },
+      {
+        "key": "signature2Role",
+        "kind": "text",
+        "y": 146.0,
+        "cx": 201.0,
+        "maxW": 60,
+        "font": "Merriweather",
+        "weight": 700,
+        "size": 5.3,
+        "color": "#3B2A1A",
+        "align": "center"
+      },
+      {
+        "key": "signature2Name",
+        "kind": "text",
+        "y": 154.9,
+        "cx": 201.0,
+        "maxW": 60,
+        "font": "Merriweather",
+        "size": 5.3,
+        "color": "#3B2A1A",
+        "align": "center",
+        "fit": "shrink"
+      }
+    ]
+  }
+}

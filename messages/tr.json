@@ -53,7 +53,19 @@
       "jury": "Jüri",
       "teacher": "Öğretmen"
     },
-    "error": "Bir hata oluştu"
+    "error": "Bir hata oluştu",
+    "previous": "Önceki",
+    "notifications": "Bildirimler",
+    "close": "Kapat",
+    "toggleSidebar": "Yan paneli aç/kapat",
+    "changeLanguage": "Dili değiştir",
+    "toggleTheme": "Temayı değiştir",
+    "rowsPerPage": "Sayfa başına satır",
+    "nextPage": "Sonraki sayfa",
+    "previousPage": "Önceki sayfa",
+    "pageNumber": "Sayfa {number}",
+    "collapseSidebar": "Yan paneli daralt",
+    "expandSidebar": "Yan paneli genişlet"
   },
   "auth": {
     "login": "Giriş Yap",
@@ -94,7 +106,9 @@
       "settings": "Ayarlar",
       "billing": "Ödemeler",
       "simulations": "Simülasyonlar",
-      "teachers": "Öğretmenler"
+      "teachers": "Öğretmenler",
+      "certificates": "Sertifikalar",
+      "analytics": "Analitik"
     },
     "participant": {
       "dashboard": "Panel",
@@ -172,6 +186,41 @@
       "title": "Lisans ve Faturalandırma",
       "pricePerSeat": "Koltuk Başına Fiyat",
       "paymentStatus": "Ödeme Durumu"
+    },
+    "audit": {
+      "filterByAction": "İşleme göre filtrele",
+      "allActions": "Tüm işlemler",
+      "searchDetails": "Ayrıntılarda ara",
+      "timestamp": "Zaman",
+      "action": "İşlem",
+      "user": "Kullanıcı",
+      "tenant": "Kurum",
+      "ip": "IP adresi",
+      "details": "Ayrıntı",
+      "empty": "Denetim kaydı bulunamadı.",
+      "totalEntries": "{count} kayıt"
+    },
+    "growthChart": "Gelir ve kurum büyümesi",
+    "trends": {
+      "newTenants": "bu ay +4",
+      "userGrowth": "+12% büyüme",
+      "revenueVsLastMonth": "geçen aya göre +18%",
+      "monthlyGrowth": "Aylık büyüme hızı"
+    },
+    "system": {
+      "registrations24h": "Kayıtlar (24 saat)",
+      "paymentFailures24h": "Başarısız ödemeler (24 saat)",
+      "aiUsage24h": "AI kullanımı (24 saat)",
+      "seatUtilization": "Koltuk kullanımı",
+      "health": "Sistem durumu",
+      "statusLabel": "Durum",
+      "databaseLabel": "Veritabanı",
+      "uptimeLabel": "Çalışma süresi",
+      "metricsUpdated": "Metrikler güncellendi",
+      "unknown": "bilinmiyor",
+      "registrationRate7d": "Kayıt hızı (7 gün)",
+      "aiUsage7d": "AI kullanımı (7 gün)",
+      "seatByTenant": "Kurumlara göre koltuk kullanımı"
     }
   },
   "tenant": {
@@ -199,7 +248,9 @@
       "applicationLink": "Başvuru Linki",
       "participants": "Katılımcılar",
       "start": "Başlangıç",
-      "end": "Bitiş"
+      "end": "Bitiş",
+      "created": "Program oluşturuldu",
+      "createFailed": "Program oluşturulamadı. Biraz sonra tekrar deneyin."
     },
     "projectTypes": {
       "entrepreneurship_training": "Girişimcilik Eğitimi",
@@ -244,7 +295,11 @@
       "registrationDate": "Kayıt Tarihi",
       "lastLogin": "Son Giriş",
       "exportExcel": "Excel'e Aktar",
-      "allPrograms": "Tüm programlar"
+      "allPrograms": "Tüm programlar",
+      "university": "Üniversite",
+      "studyYear": "Sınıf",
+      "profile": "Profil",
+      "noProfile": "Bilgi yok"
     },
     "reports": {
       "title": "Raporlar",
@@ -281,7 +336,11 @@
         "result": "Sonuç",
         "certificatesEarned": "Kazanılan Sertifikalar",
         "lastCertificateDate": "Son Sertifika Tarihi"
-      }
+      },
+      "noPrograms": "Program yok",
+      "exported": "Rapor hazır",
+      "exportQueued": "Büyük dışa aktarma sıraya alındı — dosya hazırlanıyor…",
+      "exportFailed": "Dışa aktarma başarısız. Biraz sonra tekrar deneyin."
     },
     "settings": {
       "title": "Ayarlar",
@@ -313,7 +372,9 @@
       "security": "Güvenlik Ayarları",
       "changePassword": "Şifre Değiştir",
       "twoFactor": "İki Faktörlü Doğrulama",
-      "sessionTimeout": "Oturum Zaman Aşımı"
+      "sessionTimeout": "Oturum Zaman Aşımı",
+      "saved": "Ayarlar kaydedildi",
+      "saveFailed": "Ayarlar kaydedilemedi. Biraz sonra tekrar deneyin."
     },
     "qrInvite": {
       "invite": "QR Davet",
@@ -324,6 +385,220 @@
       "linkCopied": "Bağlantı kopyalandı",
       "copyLink": "Bağlantıyı kopyala",
       "downloadPng": "PNG indir"
+    },
+    "billing": {
+      "paymentHistory": "Ödeme geçmişi",
+      "noPayments": "Henüz ödeme yok.",
+      "seatsUnit": "koltuk",
+      "perSeat": "koltuk başına",
+      "totalLabel": "Toplam",
+      "purchase": "Satın al",
+      "purchasing": "Bekleyin…",
+      "checkoutFailed": "Ödeme sayfası açılamadı. Biraz sonra tekrar deneyin.",
+      "statuses": {
+        "PENDING": "Bekliyor",
+        "COMPLETED": "Ödendi",
+        "FAILED": "Başarısız",
+        "REFUNDED": "İade edildi"
+      },
+      "types": {
+        "INITIAL": "İlk alım",
+        "UPGRADE": "Yükseltme"
+      }
+    },
+    "certificates": {
+      "title": "Sertifikalar",
+      "subtitle": "Şablonu seçin, metinleri düzenleyin, önizleyin ve sertifikayı verin.",
+      "template": "Şablon",
+      "participant": "Katılımcı",
+      "program": "Program",
+      "recipientName": "Sertifikadaki ad",
+      "body": "Sertifika metni",
+      "issuerName": "Amblemdeki kurum adı",
+      "sig1": "1. imza",
+      "sig2": "2. imza",
+      "nameField": "Ad",
+      "roleField": "Görev",
+      "preview": "Önizleme",
+      "refresh": "Önizlemeyi yenile",
+      "download": "PDF indir",
+      "search": "Ad veya soyad yazın…",
+      "noMatch": "Eşleşen katılımcı yok",
+      "clear": "Temizle",
+      "found": "sonuç",
+      "single": "Tek sertifika",
+      "bulk": "Toplu verme",
+      "selected": "seçildi",
+      "selectAll": "Görünenlerin hepsini seç",
+      "clearAll": "Seçimi kaldır",
+      "bulkHint": "Seçilen herkes için aynı metinle ayrı sertifika oluşur. Metne {token} yazarsanız her sertifikada o kişinin adıyla değişir.",
+      "exportMerged": "Tek PDF olarak indir",
+      "exportZip": "ZIP (ayrı dosyalar)",
+      "exportingLabel": "Hazırlanıyor…",
+      "expandList": "Katılımcı listesini aç",
+      "collapseList": "Listeyi kapat",
+      "sendToAccounts": "Hesaplarına gönder",
+      "sendToAccount": "Hesabına gönder",
+      "needAccount": "Göndermek için adı listeden seçin — elle yazılan ada karşılık gelen hesap yok.",
+      "sendHint": "Sertifika katılımcının kendi panelinde görünecek ve oradan indirebilecek.",
+      "sending": "Gönderiliyor…",
+      "sentOk": "sertifika hesaplara gönderildi",
+      "sentAlready": "zaten verilmişti",
+      "sentFailed": "başarısız",
+      "rendering": "Hazırlanıyor…",
+      "hint": "Metne {token} yazarsanız seçili programın adıyla değiştirilir.",
+      "empty": "Önizleme için ad ve metni doldurun.",
+      "exportFailed": "Dışa aktarma başarısız. Biraz sonra tekrar deneyin.",
+      "previewFailed": "Önizleme oluşturulamadı. Biraz sonra tekrar deneyin.",
+      "pageFormat": "A4 yatay",
+      "templates": {
+        "achievement": {
+          "name": "Başarı Sertifikası",
+          "style": "Altın guilloche deseni"
+        },
+        "participation": {
+          "name": "Katılım Sertifikası",
+          "style": "Lacivert ve altın"
+        },
+        "completion": {
+          "name": "Eğitim Sertifikası",
+          "style": "Krem rengi, mum mühürlü"
+        }
+      }
+    },
+    "analytics": {
+      "title": "Analitik",
+      "downloadCsv": "CSV indir",
+      "csvNeedsProgram": "CSV dışa aktarımı için bir program seçin",
+      "csvFailed": "Dışa aktarma başarısız",
+      "csvQueued": "Dışa aktarma kuyruğa alındı, hazır olduğunda indirilecek",
+      "csvDownloaded": "CSV indirildi",
+      "loadFailed": "Analitik yüklenemedi",
+      "loadFailedHint": "Filtreleri değiştirip tekrar deneyin.",
+      "cachedNote": "Önbellekten (1 saate kadar eski olabilir)",
+      "liveNote": "Güncel hesaplama",
+      "durationNote": "«Ortalama gün», ilk ve son ders tamamlama arasındaki süredir — harcanan zaman değil.",
+      "filters": {
+        "from": "Başlangıç",
+        "to": "Bitiş",
+        "program": "Program",
+        "course": "Kurs",
+        "allPrograms": "Tüm programlar",
+        "allCourses": "Tüm kurslar"
+      },
+      "kpi": {
+        "totalStudents": "Toplam öğrenci",
+        "active7": "Aktif (7 gün)",
+        "active30": "Aktif (30 gün)",
+        "enrolments": "Kayıt",
+        "completion": "Tamamlama",
+        "certificates": "Verilen sertifika"
+      },
+      "charts": {
+        "activity": "Haftalık aktivite",
+        "completion": "Haftalık tamamlama",
+        "activeStudents": "Aktif öğrenci",
+        "lessonsCompleted": "Tamamlanan ders",
+        "coursesCompleted": "Tamamlanan kurs"
+      },
+      "courses": {
+        "title": "Kurs bazında göstergeler",
+        "name": "Kurs",
+        "enrolled": "Kayıtlı",
+        "completed": "Tamamlayan",
+        "completionRate": "Tamamlama",
+        "averageScore": "Ortalama puan",
+        "activeDays": "Ortalama gün",
+        "days": "{count} gün"
+      },
+      "empty": {
+        "activity": "Bu dönemde aktivite yok",
+        "activityHint": "Tarih aralığını genişletin veya başka bir program seçin.",
+        "courses": "Kurs verisi yok",
+        "coursesHint": "Programlarınıza eğitim eklendiğinde burada görünecek.",
+        "completions": "Henüz tamamlanan kurs yok",
+        "completionsHint": "Öğrenciler bir kursun tüm derslerini bitirdiğinde burada görünecek."
+      }
+    },
+    "programBuilder": {
+      "maxReached": "En fazla {count} seçim yapabilirsiniz",
+      "typeRequired": "Program türünü seçin",
+      "basics": {
+        "title": "Temel bilgiler",
+        "description": "Programın adı, açıklaması ve kaç kişi alacağı.",
+        "namePlaceholder": "Örneğin: Bahar Girişimcilik Programı 2026",
+        "descriptionPlaceholder": "Katılımcılar bu programda ne öğrenecek?"
+      },
+      "type": {
+        "title": "Program türü",
+        "description": "Bu program hangi formatta yürütülecek? Birini seçin."
+      },
+      "timeline": {
+        "title": "Tarihler",
+        "description": "Kaydın açık olduğu dönem ve programın kendi süresi.",
+        "application": "Kayıt dönemi",
+        "applicationHint": "Katılımcılar bu aralıkta başvurabilir.",
+        "programme": "Program dönemi",
+        "programmeHint": "Zorunlu değil — sonradan da belirlenebilir."
+      },
+      "modules": {
+        "simulationsDescription": "Katılımcıların oynayacağı iş senaryoları. En fazla dört.",
+        "trainingsDescription": "Programa dahil edilecek video eğitim modülleri.",
+        "aiDescription": "Katılımcıların kullanabileceği AI araçları."
+      },
+      "summary": {
+        "selected": "{count} modül seçildi",
+        "empty": "Henüz modül seçilmedi"
+      },
+      "done": {
+        "title": "Program oluşturuldu",
+        "description": "Aşağıdaki bağlantıyı paylaşın — katılımcılar bununla kayıt olacak."
+      }
+    },
+    "settingsDetail": {
+      "organization": {
+        "description": "Bu bilgiler sertifikalarda ve katılımcılara giden e-postalarda görünür."
+      },
+      "certificates": {
+        "description": "Katılımcılara hangi sertifika türlerinin verilebileceğini seçin.",
+        "participation": {
+          "title": "Katılım sertifikası",
+          "description": "Programa katılan herkese verilebilir."
+        },
+        "achievement": {
+          "title": "Başarı sertifikası",
+          "description": "Sınavı geçen veya yüksek sonuç alanlara."
+        },
+        "completion": {
+          "title": "Program tamamlama sertifikası",
+          "description": "Programın tüm aşamalarını bitirenlere."
+        }
+      },
+      "notifications": {
+        "description": "Sistemin hangi durumlarda otomatik e-posta göndereceği.",
+        "pendingNotice": "Bu bölümdeki seçimler kaydedilir, ancak e-posta gönderimi henüz bağlanmadı — şu anda hiçbir bildirim gitmiyor.",
+        "pendingBadge": "Planlanıyor",
+        "invitation": {
+          "title": "Davet e-postası",
+          "description": "Katılımcı programa eklendiğinde davet gönderilsin."
+        },
+        "start": {
+          "title": "Program başlangıç hatırlatması",
+          "description": "Program başlamadan önce katılımcılara hatırlatma."
+        },
+        "end": {
+          "title": "Program bitiş hatırlatması",
+          "description": "Programın son tarihi yaklaşınca uyarı."
+        },
+        "certificate": {
+          "title": "Sertifika bildirimi",
+          "description": "Sertifika verildiğinde sahibine bilgi verilsin."
+        },
+        "weekly": {
+          "title": "Haftalık ilerleme",
+          "description": "Katılımcılara haftada bir ilerleme özeti."
+        }
+      }
     }
   },
   "participant": {
@@ -462,7 +737,9 @@
       "participation": "Katılım Sertifikası",
       "achievement": "Başarı Sertifikası",
       "completion": "Program Tamamlama Sertifikası"
-    }
+    },
+    "downloadCertificate": "İndir",
+    "certificateRevoked": "İptal edildi"
   },
   "landing": {
     "hero": "Girişimcilik Yolculuğunuz Başlasın",
@@ -610,6 +887,7 @@
       "decisionPrompt": "Kararınızı verin",
       "outcomeLabel": "Sonuç",
       "nextRound": "Sonraki tur",
+      "playAgain": "Tekrar oyna",
       "completedTitle": "Simülasyon tamamlandı!",
       "scoreLabel": "Final puanı (100 üzerinden)",
       "teacherPending": "Öğretmen değerlendirmesi bekleniyor",
@@ -740,6 +1018,543 @@
       "save": "Senaryoyu kaydet",
       "saved": "Senaryo kaydedildi",
       "validationHint": "Kaydetmek için: ad, en az 2 tur, her turda başlık + açıklama + en az 2 seçenek (her seçenekte ad ve sonuç metni)."
+    }
+  },
+  "apply": {
+    "notFound": "Program bulunamadı",
+    "notFoundHint": "Davet bağlantısı hatalı veya artık geçerli değil.",
+    "loadFailed": "Program bilgisi yüklenemedi. Bağlantınızı kontrol edip tekrar deneyin.",
+    "registrationClosed": "Bu programa kayıt kapalı.",
+    "seatLimitReached": "Kurumun koltuk limiti doldu.",
+    "capacityReached": "Programın katılımcı limiti doldu.",
+    "firstName": "Ad",
+    "lastName": "Soyad",
+    "email": "E-posta",
+    "password": "Şifre",
+    "passwordHint": "En az 8 karakter",
+    "phone": "Telefon (isteğe bağlı)",
+    "submit": "Kayıt ol",
+    "submitting": "Gönderiliyor…",
+    "successToast": "Kayıt tamamlandı. Artık giriş yapabilirsiniz.",
+    "seatLimitToast": "Kurumun koltuk limiti dolduğu için kayıt yapılamıyor.",
+    "failedToast": "Kayıt tamamlanamadı. Biraz sonra tekrar deneyin."
+  },
+  "security": {
+    "title": "İki adımlı doğrulama",
+    "subtitleRequired": "Yönetici hesapları platformu kullanmadan önce iki adımlı doğrulamayı açmak zorundadır.",
+    "subtitleManage": "Hesabınızın güvenlik ayarlarını yönetin.",
+    "generateQr": "QR kod oluştur",
+    "qrAlt": "İki adımlı doğrulama için QR kod",
+    "qrHint": "Kodu Google Authenticator veya benzeri bir uygulamayla okutun, ardından ekranda çıkan 6 haneyi aşağıya yazın.",
+    "verificationCode": "Doğrulama kodu",
+    "enable": "Etkinleştir",
+    "working": "Bekleyin…",
+    "recoveryTitle": "Bu kurtarma kodlarını güvenli bir yerde saklayın:",
+    "recoveryHint": "Telefonunuzu kaybederseniz hesaba yalnızca bu kodlarla girebilirsiniz. Her kod bir kez çalışır.",
+    "continue": "Devam et",
+    "setupFailed": "Kurulum başlatılamadı. Biraz sonra tekrar deneyin.",
+    "invalidCode": "Kod hatalı. Uygulamadaki güncel kodu kontrol edin.",
+    "enabledToast": "İki adımlı doğrulama etkinleştirildi",
+    "tooManyAttempts": "Çok fazla deneme yapıldı. Yaklaşık bir dakika bekleyip tekrar deneyin."
+  },
+  "errors": {
+    "generic": "İşlem tamamlanamadı. Biraz sonra tekrar deneyin.",
+    "SEAT_LIMIT_REACHED": "Kurumun koltuk limiti doldu. Yeni katılımcı eklemek için paketi genişletin.",
+    "TENANT_NOT_ACTIVE": "Kurum hesabı aktif değil.",
+    "PROGRAM_CAPACITY_REACHED": "Programın katılımcı limiti doldu.",
+    "REGISTRATION_CLOSED": "Bu programa kayıt kapalı.",
+    "DUPLICATE_REGISTRATION": "Bu kişi bu programa zaten kayıtlı.",
+    "EMAIL_ALREADY_REGISTERED": "Bu e-posta kurumda zaten kayıtlı.",
+    "CERTIFICATE_DISABLED": "Bu sertifika türü kurum ayarlarında kapalı.",
+    "CERTIFICATE_ALREADY_ISSUED": "Bu sertifika bu kişiye zaten verilmiş.",
+    "CERTIFICATE_PARTICIPANT_NOT_FOUND": "Bu kişi kurumun katılımcısı değil.",
+    "PROGRAM_NOT_FOUND": "Program bulunamadı.",
+    "TRAINING_NOT_ASSIGNED": "Bu eğitim sizin programlarınıza dahil değil.",
+    "MODULE_NOT_ENABLED": "Bu modül kurumunuz için aktif değil.",
+    "WRONG_CURRENT_PASSWORD": "Mevcut şifre hatalı.",
+    "INVALID_APPLICATION_TOKEN": "Davet bağlantısı geçersiz veya süresi dolmuş.",
+    "PAYMENT_UNAVAILABLE": "Ödeme sistemi şu anda kullanılamıyor. Biraz sonra tekrar deneyin.",
+    "PAYMENT_VERIFICATION_FAILED": "Ödeme doğrulanamadı."
+  },
+  "marketing": {
+    "nav": {
+      "features": "Özellikler",
+      "pricing": "Fiyatlandırma",
+      "contact": "İletişim",
+      "signIn": "Giriş yap",
+      "requestDemo": "Demo talep et",
+      "toggleMenu": "Menüyü aç veya kapat"
+    },
+    "footer": {
+      "tagline": "Teknoparklar, üniversiteler ve hızlandırıcılar için girişimcilik eğitimini ölçülebilir bir programa dönüştüren platform.",
+      "product": "Ürün",
+      "company": "Şirket",
+      "legal": "Yasal",
+      "privacy": "Gizlilik politikası",
+      "terms": "Kullanım şartları",
+      "copyright": "© {year} BizSim. Tüm hakları saklıdır."
+    },
+    "seo": {
+      "home": {
+        "title": "BizSim — Girişimcilik eğitim platformu",
+        "description": "Teknopark ve üniversiteler için girişimcilik programlarını dijitalleştirin: video eğitim, sınav, iş simülasyonu, hackathon ve sertifika — tek platformda."
+      },
+      "features": {
+        "title": "Özellikler — BizSim platformu",
+        "description": "Video eğitimden hackathon jürisine kadar altı modül: ders takibi, sunucu taraflı sınav, iş simülasyonu, sertifika ve kurum analitiği."
+      },
+      "pricing": {
+        "title": "Fiyatlandırma — BizSim",
+        "description": "Katılımcı başına aylık şeffaf fiyat. Üç plan, gizli ücret yok. Planları karşılaştırın ve kurumunuza uygun olanı seçin."
+      },
+      "contact": {
+        "title": "Demo talep edin — BizSim",
+        "description": "15 dakikalık canlı demo ile platformu kurumunuzun senaryosu üzerinde görün. Bir iş günü içinde dönüş yapıyoruz."
+      },
+      "privacy": {
+        "title": "Gizlilik politikası — BizSim",
+        "description": "BizSim platformunda kişisel verilerin nasıl toplandığı, işlendiği, saklandığı ve korunduğu hakkında bilgi."
+      },
+      "terms": {
+        "title": "Kullanım şartları — BizSim",
+        "description": "BizSim platformunun kullanım şartları: hesaplar, lisans, ödemeler, sorumluluk ve hizmetin sonlandırılması."
+      }
+    },
+    "home": {
+      "hero": {
+        "eyebrow": "Teknoparklar ve üniversiteler için",
+        "headline": "Girişimcilik programınızı ölçülebilir sonuca dönüştürün",
+        "problem": "Programlar Excel, e-posta ve kağıt jüri formlarıyla yönetiliyor — kimin ne öğrendiği ölçülmüyor.",
+        "solution": "BizSim eğitimi, sınavı, iş simülasyonunu, hackathonu ve sertifikayı tek platformda birleştirir. Her katılımcının ilerlemesi otomatik kaydedilir, her jüri puanı kriter bazında şeffaf kalır.",
+        "primaryCta": "Demo talep et",
+        "secondaryCta": "Özellikler",
+        "reassurance": "Kurulum gerekmez · Kendi markanız altında · AZ / TR / EN",
+        "screenshot": "Kurum yönetim paneli: aktif programlar, katılımcı sayısı ve haftalık ilerleme grafiği"
+      },
+      "proof": {
+        "title": "Kimler için tasarlandı",
+        "logos": {
+          "a": "Örnek Teknopark",
+          "b": "Örnek Üniversite",
+          "c": "Örnek Hızlandırıcı",
+          "d": "Örnek İnovasyon Merkezi"
+        },
+        "quote": "«Önceden bir hackathonun sonuçlarını toplamak iki hafta sürüyordu. Şimdi jüri puanları kriter bazında anında görünüyor ve katılımcı geri bildirimini aynı gün alıyor.»",
+        "attribution": "Program direktörü · örnek metin, gerçek müşteri görüşüyle değiştirilmelidir"
+      },
+      "features": {
+        "eyebrow": "Platformda ne var",
+        "title": "Programın her aşaması tek yerde",
+        "description": "Kayıttan sertifikaya kadar ayrı araçlara ihtiyaç kalmıyor.",
+        "items": {
+          "a": {
+            "title": "Video eğitim ve sınav",
+            "body": "Dersler playlist halinde, her dersin tamamlanması ayrı kaydedilir. Sınav sunucu tarafında değerlendirilir — doğru cevaplar tarayıcıya hiçbir zaman gönderilmez.",
+            "screenshot": "Katılımcı eğitim ekranı: video oynatıcı, ders listesi ve ilerleme çubuğu"
+          },
+          "b": {
+            "title": "İş simülasyonu",
+            "body": "Katılımcı tur tur karar verir; nakit, müşteri memnuniyeti ve itibar gerçek zamanlı değişir. Senaryolar veriyle kurulur — yenisi için kod yazmak gerekmez.",
+            "screenshot": "Simülasyon oynanış ekranı: tur bağlamı, seçenekler ve metrik göstergeleri"
+          },
+          "c": {
+            "title": "Hackathon ve jüri",
+            "body": "Takım kurulur, proje PDF'i yüklenir, jüri her kriter için puan ve yorum verir. Sonuçlar siz açıklayana kadar gizli kalır, sonra her takım anonim geri bildirimini görür.",
+            "screenshot": "Jüri değerlendirme ekranı: PDF önizleme ve kriter bazlı puan kaydırıcıları"
+          },
+          "d": {
+            "title": "Sertifika ve analitik",
+            "body": "Sertifikalar seri numarası ve doğrulama koduyla PDF olarak verilir. Analitik paneli kurs bazında tamamlama, ortalama puan ve haftalık aktiviteyi gösterir.",
+            "screenshot": "Analitik paneli: KPI kartları, haftalık aktivite grafiği ve kurs tablosu"
+          }
+        }
+      },
+      "steps": {
+        "title": "Nasıl çalışır",
+        "description": "Hesabınız açıldıktan sonra programı kendiniz yönetirsiniz — içeriğinize müdahalemiz olmaz.",
+        "items": {
+          "one": {
+            "title": "Hesabınızı teslim alın",
+            "body": "Kurumunuz için koltuk limitiyle hesap açılır ve yönetici girişi e-postayla gönderilir. İlk girişte iki adımlı doğrulama kurulur."
+          },
+          "two": {
+            "title": "Programınızı kurun",
+            "body": "Eğitim, simülasyon ve hackathon modüllerinden ihtiyacınız olanı seçin, jüri kriterlerini belirleyin, katılımcıları QR kod veya davet linkiyle çağırın."
+          },
+          "three": {
+            "title": "Sonuçları ölçün",
+            "body": "Kim neyi tamamladı, ortalama puan nedir, hangi takım hangi kriterden kaç aldı — hepsi panele düşer ve CSV olarak dışa aktarılır."
+          }
+        }
+      },
+      "pricingPreview": {
+        "title": "Şeffaf fiyat",
+        "description": "Katılımcı başına aylık ödersiniz. Gizli kurulum ücreti yoktur.",
+        "cta": "Tüm planları gör"
+      },
+      "cta": {
+        "title": "Platformu kendi senaryonuzda görün",
+        "body": "15 dakikalık demo ile programınızın nasıl kurulacağını gösterelim. Bir iş günü içinde dönüş yapıyoruz.",
+        "bullets": {
+          "a": "Taahhüt yok",
+          "b": "Kendi verinizle",
+          "c": "AZ / TR / EN"
+        },
+        "button": "Demo talep et"
+      }
+    },
+    "features": {
+      "eyebrow": "Modüller",
+      "title": "Altı modül, tek platform",
+      "description": "Her modül ayrı ayrı açılıp kapatılabilir — kurumunuza gerekmeyeni ödemezsiniz.",
+      "items": {
+        "trainings": {
+          "eyebrow": "Eğitim",
+          "title": "Video eğitim ve ders takibi",
+          "body": "Eğitimler derslerden oluşan bir playlist gibi kurulur. Her dersin tamamlanması ayrı kaydedilir, bu yüzden ilerleme yüzdesi tahmin değil — gerçek olaylardan hesaplanır. İçerik üç dilde tutulur ve katılımcı kendi dilinde görür.",
+          "bullets": {
+            "a": "Ders bazlı ilerleme",
+            "b": "YouTube video entegrasyonu",
+            "c": "Üç dilde içerik"
+          },
+          "screenshot": "Eğitim detayı: video oynatıcı, sağda ders listesi, altta ilerleme çubuğu"
+        },
+        "exams": {
+          "eyebrow": "Sınav",
+          "title": "Sunucu tarafında değerlendirilen sınav",
+          "body": "Sorular tek tek verilir, cevaplar sunucuda kontrol edilir — doğru cevaplar tarayıcıya hiç gönderilmez, bu yüzden sonucu tarayıcıdan değiştirmek mümkün değildir. Sonuç ekranında her soru için katılımcının cevabı, doğru cevap ve açıklama gösterilir.",
+          "bullets": {
+            "a": "Sonuç tarayıcıdan değiştirilemez",
+            "b": "En iyi sonuç saklanır",
+            "c": "Her soru için açıklama"
+          },
+          "screenshot": "Sınav sonuç ekranı: puan, geçme durumu ve soru bazlı açıklama listesi"
+        },
+        "simulations": {
+          "eyebrow": "Simülasyon",
+          "title": "Veriyle kurulan iş simülasyonu",
+          "body": "Katılımcı tur tur karar verir; her seçim nakde, müşteri memnuniyetine ve itibara etki eder. Piyasa dalgalanması için sonuca küçük bir rastgelelik eklenir, bu yüzden aynı strateji her seferinde aynı sayıyı vermez. Öğretmen sonucu elle de değerlendirebilir.",
+          "bullets": {
+            "a": "Yeni senaryo için kod gerekmez",
+            "b": "Öğretmen değerlendirmesi",
+            "c": "Üç metrik üzerinden sonuç"
+          },
+          "screenshot": "Senaryo editörü: turlar, seçenekler ve her seçeneğin metrik etkileri"
+        },
+        "hackathon": {
+          "eyebrow": "Hackathon",
+          "title": "Hackathon ve şeffaf jüri değerlendirmesi",
+          "body": "Katılımcılar takım kurar, proje PDF'ini yükler; jüri her kriter için puan ve yorum verir. Sıralama ağırlıklı ortalamayla hesaplanır, böylece kimin hangi kriterden kaç aldığı sonradan da izlenebilir. Sonuçlar siz açıklayana kadar gizli kalır.",
+          "bullets": {
+            "a": "Kriter bazlı ağırlıklı sıralama",
+            "b": "Planlanan sonuç açıklaması",
+            "c": "Takımlara anonim jüri geri bildirimi"
+          },
+          "screenshot": "Canlı sıralama tablosu: takımlar, ağırlıklı puan ve kriter bazlı kırılım"
+        },
+        "certificates": {
+          "eyebrow": "Sertifika",
+          "title": "Doğrulanabilir sertifikalar",
+          "body": "Katılım, başarı ve program tamamlama sertifikaları PDF olarak verilir. Her sertifikanın kurum bazında sıralı seri numarası ve rastgele doğrulama kodu olur; belge verildiği andaki ad ve başlıkla dondurulur — sonradan ad değişse bile belge değişmez.",
+          "bullets": {
+            "a": "Sıralı seri numarası",
+            "b": "Toplu verme ve ZIP dışa aktarımı",
+            "c": "Kendi imza ve şablonunuz"
+          },
+          "screenshot": "Sertifika şablonu önizlemesi: seri numarası, imza alanları ve doğrulama kodu"
+        },
+        "analytics": {
+          "eyebrow": "Analitik",
+          "title": "Programın durumunu sayıyla görün",
+          "body": "Analitik paneli toplam ve aktif katılımcı sayısını, kayıtları, ortalama tamamlama yüzdesini ve verilen sertifikaları gösterir. Kurs tablosunda kayıtlı, tamamlayan, ortalama puan ve ortalama süre yer alır; haftalık grafik son 12 haftanın aktivitesini izler.",
+          "bullets": {
+            "a": "Kurs bazlı tamamlama ve ortalama puan",
+            "b": "Son 12 haftanın aktivitesi",
+            "c": "Tek tıkla CSV dışa aktarımı"
+          },
+          "screenshot": "Analitik paneli: KPI kartları, haftalık aktivite çizgisi ve sıralanabilir kurs tablosu"
+        }
+      },
+      "cta": {
+        "title": "Hangi modüller size gerekli?",
+        "body": "Demo sırasında kurumunuzun senaryosunu birlikte kuralım ve yalnızca gereken modülleri açalım.",
+        "primary": "Demo talep et",
+        "secondary": "Fiyatlandırma"
+      }
+    },
+    "pricing": {
+      "title": "Kurumunuza uygun planı seçin",
+      "subtitle": "Katılımcı başına aylık ödersiniz. Kurulum ücreti yok, planı istediğiniz zaman değiştirebilirsiniz.",
+      "perSeatMonth": "katılımcı başına / ay",
+      "minSeats": "En az {count} katılımcı",
+      "trialDays": "{count} gün ücretsiz deneme",
+      "cta": "Demo talep et",
+      "popular": "En çok tercih edilen",
+      "noPlans": "Şu anda aktif plan yok",
+      "noPlansHint": "Fiyat planları faturalandırma modülüne eklendiğinde burada görünecek.",
+      "plans": {
+        "default": {
+          "tagline": "Kurumunuz için uyarlanmış plan",
+          "bullets": {
+            "a": "Video eğitim ve sınav",
+            "b": "İş simülasyonu",
+            "c": "Sertifika verme",
+            "d": "E-posta desteği"
+          }
+        },
+        "starter": {
+          "tagline": "Küçük programlar ve pilot projeler için",
+          "bullets": {
+            "a": "Video eğitim ve sınav",
+            "b": "3 simülasyon senaryosu",
+            "c": "Sertifika verme",
+            "d": "E-posta desteği"
+          }
+        },
+        "professional": {
+          "tagline": "Tam program yürüten teknopark ve üniversiteler için",
+          "bullets": {
+            "a": "Starter'daki her şey",
+            "b": "Hackathon ve jüri modülü",
+            "c": "AI araçları",
+            "d": "Tam analitik ve CSV dışa aktarımı"
+          }
+        },
+        "enterprise": {
+          "tagline": "Çok sayıda program yürüten büyük kurumlar için",
+          "bullets": {
+            "a": "Professional'daki her şey",
+            "b": "Sınırsız simülasyon senaryosu",
+            "c": "Özel senaryo hazırlama",
+            "d": "Atanmış hesap yöneticisi"
+          }
+        }
+      },
+      "comparison": {
+        "title": "Plan karşılaştırması",
+        "feature": "Özellik",
+        "included": "Dahil",
+        "notIncluded": "Dahil değil",
+        "rows": {
+          "trainings": "Video eğitim ve dersler",
+          "exams": "Sınav ve değerlendirme",
+          "simulations": "İş simülasyonu",
+          "hackathon": "Hackathon ve jüri",
+          "certificates": "Sertifikalar",
+          "analytics": "Analitik paneli",
+          "aiTools": "AI araçları",
+          "support": "Destek",
+          "gamification": "Oyunlaştırma (rozet, coin, liderlik)"
+        },
+        "values": {
+          "starter": {
+            "trainings": "yes",
+            "exams": "yes",
+            "simulations": "3 senaryo",
+            "hackathon": "no",
+            "certificates": "yes",
+            "analytics": "Temel",
+            "aiTools": "no",
+            "gamification": "yes",
+            "support": "E-posta"
+          },
+          "professional": {
+            "trainings": "yes",
+            "exams": "yes",
+            "simulations": "Tüm senaryolar",
+            "hackathon": "yes",
+            "certificates": "yes",
+            "analytics": "Tam",
+            "aiTools": "yes",
+            "gamification": "yes",
+            "support": "E-posta ve telefon"
+          },
+          "enterprise": {
+            "trainings": "yes",
+            "exams": "yes",
+            "simulations": "Sınırsız + özel",
+            "hackathon": "yes",
+            "certificates": "yes",
+            "analytics": "Tam + CSV dışa aktarım",
+            "aiTools": "yes",
+            "gamification": "yes",
+            "support": "Atanmış yönetici"
+          }
+        }
+      },
+      "faq": {
+        "title": "Sıkça sorulan sorular",
+        "items": {
+          "a": {
+            "question": "Koltuk (seat) nedir ve nasıl sayılır?",
+            "answer": "Bir koltuk, platformda hesabı olan bir katılımcıya karşılık gelir. Kayıt sırasında koltuk tutulur, katılımcı silindiğinde serbest kalır. Yönetici, öğretmen ve jüri hesapları koltuk saymaz."
+          },
+          "b": {
+            "question": "Ödeme nasıl yapılır?",
+            "answer": "Abonelik aylıktır ve koltuk sayısına göre hesaplanır. Ödeme kartla çevrimiçi veya kurumlar için faturalı havale ile yapılabilir."
+          },
+          "c": {
+            "question": "Yıl ortasında plan değiştirebilir miyim?",
+            "answer": "Evet. Planı ve koltuk sayısını istediğiniz zaman artırabilirsiniz; fark cari dönem için oransal hesaplanır. Azaltma bir sonraki dönemde geçerli olur."
+          },
+          "d": {
+            "question": "Verilerimiz nerede saklanıyor?",
+            "answer": "Her kurumun verisi ayrı izole edilir ve veritabanı seviyesinde korunur. Sertifika ve proje dosyaları şifreli nesne deposunda saklanır. Ayrıntılar gizlilik politikasındadır."
+          },
+          "e": {
+            "question": "Sözleşme ve fatura veriliyor mu?",
+            "answer": "Evet. Kurumlar için yazılı sözleşme yapılır ve her dönem için fatura düzenlenir. İhale ve satın alma süreçleri için gerekli belgeleri sağlıyoruz."
+          }
+        }
+      },
+      "bottomCta": {
+        "title": "Hangi plan uygun, birlikte bakalım",
+        "body": "Katılımcı sayınızı ve program formatınızı söyleyin — uygun planı ve tahmini bütçeyi bir iş günü içinde gönderelim.",
+        "button": "Demo talep et"
+      }
+    },
+    "contact": {
+      "title": "Demo talep edin",
+      "description": "Formu doldurun — kurumunuzun senaryosu üzerinde 15 dakikalık canlı demo ayarlayalım.",
+      "assurances": {
+        "response": {
+          "title": "Bir iş günü içinde dönüş",
+          "body": "Talebiniz satış ekibimize anında ulaşır ve bir iş günü içinde sizinle iletişime geçiyoruz."
+        },
+        "privacy": {
+          "title": "Verileriniz yalnızca bu amaçla",
+          "body": "Verdiğiniz bilgiler yalnızca demo organizasyonu ve teklif hazırlığı için kullanılır, üçüncü taraflarla paylaşılmaz."
+        },
+        "noSpam": {
+          "title": "Reklam listesine girmiyorsunuz",
+          "body": "Sizi bülten listesine eklemiyoruz. Yalnızca bu talep için yazıyoruz."
+        }
+      },
+      "form": {
+        "name": "Ad, soyad",
+        "company": "Şirket veya kurum",
+        "email": "E-posta",
+        "phone": "Telefon",
+        "seatCount": "Tahmini öğrenci sayısı",
+        "seatCountHint": "Örneğin: 50-100",
+        "message": "Mesaj",
+        "submit": "Demo talep et",
+        "successTitle": "Talebiniz alındı",
+        "failed": "Gönderilemedi. Biraz sonra tekrar deneyin.",
+        "rateLimited": "Çok fazla talep gönderildi. Bir saat sonra tekrar deneyin.",
+        "successBody": "Talebiniz satış ekibimize iletildi. Bir iş günü içinde sizinle iletişime geçeceğiz.",
+        "consent": "Formu göndererek bilgilerinizin demo organizasyonu ve teklif hazırlığı amacıyla işlenmesine onay vermiş olursunuz. Ayrıntılar: gizlilik politikası."
+      }
+    },
+    "privacy": {
+      "title": "Gizlilik politikası",
+      "updated": "Son güncelleme: 6 Eylül 2026",
+      "draftNotice": "TASLAK — bu belgenin metni hukuki incelemeden geçmemiştir ve bağlayıcı değildir.",
+      "sections": {
+        "controller": {
+          "heading": "Veri sorumlusu",
+          "body": "Platformu kullanan kurum kendi katılımcılarının verileri için veri sorumlusu, BizSim ise veri işleyendir. Pazarlama sitesi üzerinden doğrudan bize gönderilen veriler için sorumlu BizSim'dir."
+        },
+        "dataCollected": {
+          "heading": "Toplanan veriler",
+          "body": "Hesap bilgileri (ad, e-posta, telefon, rol), akademik profil (üniversite, fakülte, bölüm, sınıf), kullanım olayları (ders tamamlama, sınav denemesi, giriş kaydı) ve yüklenen dosyalar (proje PDF'leri, avatar).\n\nDemo formu üzerinden: ad, şirket, e-posta, telefon, tahmini katılımcı sayısı ve mesaj."
+        },
+        "purposes": {
+          "heading": "Kullanım amaçları",
+          "body": "Hizmetin sunulması, katılımcı ilerlemesinin izlenmesi, sertifikaların verilmesi ve doğrulanması, güvenlik olaylarının incelenmesi, faturalandırma ve destek."
+        },
+        "legalBasis": {
+          "heading": "Hukuki dayanak",
+          "body": "Sözleşmenin ifası (hizmetin sunulması), meşru menfaat (güvenlik ve kötüye kullanımın önlenmesi), yasal yükümlülük (muhasebe) ve açık rıza (pazarlama formu)."
+        },
+        "sharing": {
+          "heading": "Üçüncü taraflarla paylaşım",
+          "body": "Veriler satılmaz. Yalnızca hizmetin çalışması için gerekli işleyenlerle paylaşılır: bulut altyapısı, e-posta gönderimi ve ödeme sağlayıcısı. Her biriyle veri işleme sözleşmesi yapılır."
+        },
+        "transfers": {
+          "heading": "Uluslararası aktarımlar",
+          "body": "Veri işleme temel olarak Avrupa bölgesindeki sunucularda yapılır. Bölge dışına aktarım olduğunda standart sözleşme maddeleri gibi hukuki mekanizmalar uygulanır."
+        },
+        "retention": {
+          "heading": "Saklama süresi",
+          "body": "Hesap bilgileri abonelik süresince ve sonrasında yasal olarak gereken süre boyunca saklanır. Verilen sertifikalar doğrulama amacıyla daha uzun tutulur. Demo formu verileri satış süreci bittikten sonra silinir."
+        },
+        "security": {
+          "heading": "Güvenlik önlemleri",
+          "body": "Şifreli bağlantı, parolaların hash'lenmesi, yönetici rolleri için zorunlu iki adımlı doğrulama, rol tabanlı yetkilendirme, veritabanı seviyesinde kurum izolasyonu ve denetim kaydı."
+        },
+        "rights": {
+          "heading": "Kişinin hakları",
+          "body": "Verilerinize erişim, düzeltme, silme, işlemenin kısıtlanması, taşınabilirlik ve itiraz hakkınız vardır. Başvuru için aşağıdaki iletişim bölümüne bakın.\n\nNot: katılımcısı olduğunuz kurumun verileri için başvuruyu önce ilgili kuruma yöneltmek gerekir."
+        },
+        "cookies": {
+          "heading": "Çerezler",
+          "body": "Yalnızca hizmetin çalışması için gerekli çerezler kullanılır: oturum, dil seçimi ve arayüz teması. Reklam ve izleme çerezleri kullanılmaz."
+        },
+        "changes": {
+          "heading": "Politikadaki değişiklikler",
+          "body": "Bu belge güncellendiğinde yukarıdaki tarih değişir. Önemli değişiklikler kurum yöneticilerine e-postayla bildirilir."
+        },
+        "contact": {
+          "heading": "İletişim",
+          "body": "Gizlilikle ilgili sorular ve veri başvuruları için iletişim sayfasındaki formu kullanın ve konuya «Gizlilik» yazın."
+        }
+      }
+    },
+    "terms": {
+      "title": "Kullanım şartları",
+      "updated": "Son güncelleme: 6 Eylül 2026",
+      "draftNotice": "TASLAK — bu belgenin metni hukuki incelemeden geçmemiştir ve bağlayıcı değildir.",
+      "sections": {
+        "acceptance": {
+          "heading": "Şartların kabulü",
+          "body": "Platformu kullanarak bu şartları kabul etmiş olursunuz. Kurum adına imzalanan ayrı bir sözleşme varsa, çelişki halinde o sözleşme önceliklidir."
+        },
+        "service": {
+          "heading": "Hizmetin tanımı",
+          "body": "BizSim çok kiracılı bir yazılım hizmetidir: eğitim, sınav, simülasyon, hackathon, sertifika ve analitik modüllerini kapsar. Hangi modüllerin aktif olduğu abonelik planına bağlıdır."
+        },
+        "accounts": {
+          "heading": "Hesaplar ve güvenlik",
+          "body": "Hesap güvenliğinden kullanıcı sorumludur. Yönetici rolleri için iki adımlı doğrulama zorunludur. Hesap bilgilerinin paylaşılması yasaktır."
+        },
+        "seats": {
+          "heading": "Koltuk lisansı",
+          "body": "Abonelik koltuk sayısıyla sınırlıdır. Limit dolduğunda yeni katılımcı kayıt olamaz. Koltuk sayısı istenildiği zaman artırılabilir."
+        },
+        "acceptableUse": {
+          "heading": "Kabul edilebilir kullanım",
+          "body": "Platformun yasa dışı amaçla, başkasının haklarını ihlal ederek, sisteme yetkisiz erişim girişimiyle veya otomatik toplu isteklerle kullanılması yasaktır."
+        },
+        "content": {
+          "heading": "İçerik ve mülkiyet",
+          "body": "Kurumun yüklediği içerik (programlar, senaryolar, projeler) o kuruma aittir. Platformun kendisi, kodu ve tasarımı BizSim'e aittir."
+        },
+        "availability": {
+          "heading": "Erişilebilirlik",
+          "body": "Hizmetin kesintisiz çalışması hedeflenir, ancak planlı bakım ve sağlayıcı kaynaklı kesintiler olabilir. Planlı çalışmalar önceden duyurulur."
+        },
+        "fees": {
+          "heading": "Ücretler",
+          "body": "Abonelik ücreti aylık olarak koltuk sayısına göre hesaplanır. Ödeme geciktiğinde hizmet geçici olarak durdurulabilir. Fiyat değişikliği en az bir dönem önceden bildirilir."
+        },
+        "termination": {
+          "heading": "Hizmetin sonlandırılması",
+          "body": "Abonelik cari dönemin sonunda iptal edilebilir. Şartların ciddi ihlali halinde hizmet derhal durdurulabilir. İptalden sonra veri dışa aktarımı için makul bir süre tanınır."
+        },
+        "liability": {
+          "heading": "Sorumluluğun sınırlandırılması",
+          "body": "Yasanın izin verdiği ölçüde, dolaylı zararlardan sorumluluk kabul edilmez. Toplam sorumluluk son 12 ayda ödenen abonelik ücretiyle sınırlıdır."
+        },
+        "governingLaw": {
+          "heading": "Uygulanacak hukuk",
+          "body": "Bu şartlara hizmet sağlayıcının kayıtlı olduğu ülkenin mevzuatı uygulanır. Uyuşmazlıklar o yargı çevresinin yetkili mahkemelerinde görülür."
+        },
+        "contact": {
+          "heading": "İletişim",
+          "body": "Şartlarla ilgili sorular için iletişim sayfasındaki formu kullanın."
+        }
+      }
     }
   }
 }

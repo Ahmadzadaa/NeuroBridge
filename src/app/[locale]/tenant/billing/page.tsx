@@ -16,6 +16,7 @@ export default async function TenantBillingPage({
   setRequestLocale(locale);
   const session = await requireRole(locale, ["TENANT_ADMIN"]);
   const t = await getTranslations("tenant.seats");
+  const tb = await getTranslations("tenant.billing");
 
   const tenantId = session.user.tenantId!;
   const [seats, payments] = await Promise.all([
@@ -40,11 +41,11 @@ export default async function TenantBillingPage({
 
       <Card className="mt-6 rounded-2xl border-0 shadow-sm">
         <CardHeader>
-          <CardTitle>Payment history</CardTitle>
+          <CardTitle>{tb("paymentHistory")}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
           {payments.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No payments yet.</p>
+            <p className="text-sm text-muted-foreground">{tb("noPayments")}</p>
           ) : (
             payments.map((payment) => (
               <div
@@ -52,10 +53,20 @@ export default async function TenantBillingPage({
                 className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-muted/50 p-3 text-sm"
               >
                 <span>
-                  {payment.seatCount} seats · {payment.provider} · {payment.paymentType}
+                  {payment.seatCount} {tb("seatsUnit")} · {payment.provider} ·{" "}
+                  {tb.has(`types.${payment.paymentType}`)
+                    ? tb(`types.${payment.paymentType}`)
+                    : payment.paymentType}
                 </span>
                 <span>
-                  {payment.status} · ₺{payment.amount}
+                  {tb.has(`statuses.${payment.status}`)
+                    ? tb(`statuses.${payment.status}`)
+                    : payment.status}{" "}
+                  ·{" "}
+                  {new Intl.NumberFormat(locale, {
+                    style: "currency",
+                    currency: payment.currency,
+                  }).format(payment.amount)}
                 </span>
               </div>
             ))

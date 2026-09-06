@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { useApiErrorMessage } from "@/lib/api/api-error";
 import { motion, useReducedMotion } from "framer-motion";
 import { CheckCircle2, GraduationCap, Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -24,6 +25,7 @@ export function JoinClient({
   organizationName,
 }: JoinClientProps) {
   const t = useTranslations("teacher.join");
+  const apiError = useApiErrorMessage();
   const tc = useTranslations("common");
   const reducedMotion = useReducedMotion();
 
@@ -78,7 +80,7 @@ export function JoinClient({
         error?: string;
       } | null;
       if (!res.ok) {
-        toast.error(data?.error ?? tc("error"));
+        toast.error(apiError(data));
         return;
       }
       setDone(true);
@@ -108,6 +110,7 @@ export function JoinClient({
             </p>
             <Button
               className="mt-6 w-full rounded-xl"
+              nativeButton={false}
               render={<Link href={`/${locale}/login`} />}
             >
               {t("goToLogin")}

@@ -16,7 +16,9 @@ export async function POST(request: Request) {
     if (!program || program.type !== "hackathon") {
       return NextResponse.json({ error: "Hackathon not found" }, { status: 404 });
     }
-    if (session.tenantId && program.tenantId !== session.tenantId) {
+    // Guarding on `session.tenantId &&` would skip the check for a tenant-less
+    // session instead of refusing it. Fail closed.
+    if (program.tenantId !== session.tenantId) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 

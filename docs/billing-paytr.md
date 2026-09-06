@@ -1,8 +1,11 @@
 # Billing — PayTR seat-based subscriptions
 
-Status: **Phases 1–7 complete.** Data model, PayTR provider, callback, billing
-services, API routes, seat enforcement, renewal/dunning worker and the sandbox
-guide (§9) are all implemented and tested.
+Status: **Phases 1–8 complete.** Data model, PayTR provider, callback, billing
+services, API routes, seat enforcement, renewal/dunning worker, the sandbox
+guide (§9) and the go-live infrastructure (§10) are all implemented and tested.
+
+Switching to a live merchant account is a manual procedure with its own
+document: **`docs/paytr-golive-checklist.md`**.
 
 One capability is **not** live: automatic card charging, which depends on two
 answers from PayTR — see §7. Renewal works today by emailing an invoice and a
@@ -474,3 +477,137 @@ in a browser to check the copy.
    exercised end to end.
 
 Until 1 and 2 are answered, leave `PAYTR_NON3D_ENABLED=0`.
+
+---
+
+## 10. Going live
+
+Everything in §§1–9 was written against the sandbox. This section covers what
+had to exist before a live merchant key could be used safely. The manual
+procedure itself — what to request from the account holder, what to configure
+in the PayTR panel, what to verify with a real card — is in
+`docs/paytr-golive-checklist.md`.
+
+### 10.1 Sandbox and live credentials are separate variables
+
+`PAYTR_MODE` (`sandbox` | `live`) selects which credential set is read:
+
+| Mode | Reads | `test_mode` sent to PayTR |
+| --- | --- | --- |
+| `sandbox` (default) | `PAYTR_SANDBOX_*`, falling back to the pre-split `PAYTR_MERCHANT_*` | always `1` |
+| `live` | `PAYTR_LIVE_*` **only** | `0`, or `1` for the rehearsal |
+
+Two decisions are worth stating:
+
+- **An unset mode means sandbox.** A forgotten variable should cost a failed
+  test payment, never a real charge.
+- **The pre-split `PAYTR_MERCHANT_*` names are ignored in live mode.** Nothing
+  about that name says whether it holds a sandbox or a production key, and
+  guessing is exactly how test keys reach production. Sandbox still accepts
+  them so existing local setups keep working.
+
+`test_mode` is derived from the mode rather than set by hand, so the two cannot
+disagree. The one surviving override — `PAYTR_TEST_MODE=1` while live — is the
+go-live rehearsal: real credentials, real notification URL, no money moved. It
+warns on every boot.
+
+### 10.2 Fail fast at startup
+
+`src/lib/env-check.ts` refuses to boot in production when `PAYTR_MODE=live` and
+any of `PAYTR_LIVE_MERCHANT_ID/KEY/SALT` is missing, or when
+`NEXT_PUBLIC_APP_URL` is not https (PayTR posts the notification to it). It
+warns — rather than failing — when production is still pointed at the sandbox,
+when live credentials are running in rehearsal mode, and when the ignored
+pre-split variables are set.
+
+A container that will not start is the intended outcome. A container that
+starts and fails at checkout is worse: it passes its health check, takes
+traffic, and produces a generic 503 that names no variable.
+
+### 10.3 The callback reads the raw body
+
+`readPaytrCallback` reads the notification with `request.text()` and parses the
+string, rather than calling `request.formData()`. A body can only be read once,
+and two things need the bytes as they arrived: the signature is computed over
+the values PayTR sent, and a callback that fails to verify has to be stored
+verbatim or there is nothing to take to PayTR support.
+
+A correctly signed callback whose `merchant_oid` is not alphanumeric is also
+refused — PayTR only ever issues alphanumeric order ids, so that shape never
+reaches a database query.
+
+### 10.4 Idempotency is a claim, not a check
+
+The previous implementation read `webhook_events` and processed the
+notification if no `PROCESSED` row was found. Two concurrent deliveries of the
+same order — which PayTR does produce, because it retries until answered — both
+pass that check and both grant seats.
+
+`claimCallback` inserts into `webhook_events` instead and lets the unique index
+on `(provider, external_event_id)` decide the winner. The loser is told the
+work is in flight and answers `409`, so PayTR redelivers rather than dropping
+the notification. A claim left behind by a process that died is retaken after
+five minutes, and a claim is released explicitly when the order matches no
+invoice, so the redelivery that arrives once the invoice exists is not turned
+away.
+
+### 10.5 `paytr_webhook_events`
+
+`webhook_events` holds one row per order, because that is what makes the
+callback idempotent. It therefore cannot answer the questions a disputed
+payment actually raises: how many times did PayTR call, did an earlier delivery
+carry a different status, was a call rejected for a bad hash and never seen
+again.
+
+`paytr_webhook_events` is the other half — **one row per HTTP request**,
+duplicates and rejections included, written before the payload is acted on and
+completed afterwards, so a crash mid-processing still leaves evidence. Failing
+to write it never fails a payment.
+
+| Column | Note |
+| --- | --- |
+| `hash_valid` | Whether the signature verified. The hash itself is never stored. |
+| `mode` | `sandbox` \| `live` — which credential set was in use. |
+| `outcome` | `RECEIVED` → `PROCESSED` \| `DUPLICATE` \| `REJECTED` \| `UNMATCHED` \| `IN_FLIGHT` \| `ERROR` |
+| `remote_ip` | Recorded, never enforced on — see the checklist §3. |
+| `raw_payload` | Masked, see §10.6. |
+
+### 10.6 Masking
+
+`src/lib/payment/paytr/paytr-log.ts` is the single place that decides what a log
+line or a stored payload may contain. Redacted everywhere: merchant key, salt
+and id, `paytr_token`, the callback `hash`, and any card field. Card handles
+(`utoken`, `ctoken`) are reduced to a stable non-reversible fingerprint, which
+is enough to tell whether two failed renewals concern the same card without
+carrying something that can charge it.
+
+The callback `hash` is masked even though it is a signature rather than a key:
+it is valid signing material for its own notification, so a stored copy is
+replayable. What is worth knowing — whether it verified — is the `hash_valid`
+boolean instead.
+
+The redaction is a denylist rather than an allowlist on purpose. The point of
+keeping the raw callback is to debug fields we did not anticipate; an allowlist
+would drop exactly those.
+
+### 10.7 Structured logs
+
+One JSON object per line, tagged `"component":"paytr"`, covering the payment
+lifecycle: `checkout.token_requested` / `_issued` / `_failed`,
+`callback.received` / `_rejected` / `_duplicate` / `_processed` / `_failed` /
+`_unmatched`, and `recurring.charge_started` / `_succeeded` / `_declined` /
+`_failed` / `skipped`. Every line carries the mode, and every field passes
+through the masking above before it is written.
+
+### 10.8 `npm run paytr:smoke`
+
+`scripts/paytr-smoke-test.ts` exercises the whole path against the sandbox:
+token request → signed callback → invoice paid → seats granted → replayed
+callback grants nothing more → forged hash rejected → every delivery logged
+with no hash stored.
+
+It refuses to run while `PAYTR_MODE=live`, with no flag to override that, and
+it creates and removes its own tenant, plan, subscription and invoice rather
+than touching existing rows. The callback steps POST to the running
+application, not to the service directly, so the route, the hash check and the
+raw-body handling are all part of what is tested.

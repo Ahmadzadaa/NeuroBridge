@@ -13,6 +13,7 @@ import { consumeSeat, lockTenantForUpdate } from "@/lib/seats/seat-service";
 import { isPostgresDatabase } from "@/lib/db/tenant-context";
 import { normalizeAcademicProfile } from "@/lib/users/academic-profile";
 import { invalidateCache } from "@/lib/cache/cache-service";
+import { routing } from "@/i18n/routing";
 
 export interface RegisterParticipantInput {
   token: string;
@@ -21,6 +22,8 @@ export interface RegisterParticipantInput {
   firstName: string;
   lastName: string;
   phone?: string;
+  /** The locale the application form was filled in. */
+  locale?: "az" | "tr" | "en";
   /** Optional here — open programmes accept non-students too. */
   university?: string | null;
   faculty?: string | null;
@@ -159,7 +162,7 @@ export async function registerParticipant(
         lastName: input.lastName,
         phone: input.phone ?? null,
         role: "PARTICIPANT",
-        language: "tr",
+        language: input.locale ?? routing.defaultLocale,
         ...academic,
       },
     });

@@ -46,6 +46,8 @@ model Tenant {
   paymentMethods PaymentMethod[]
   seatChangeLogs SeatChangeLog[]
 
+  certificates         Certificate[]
+  certificateSequences CertificateSequence[]
   @@map("tenants")
 }
 
@@ -122,6 +124,7 @@ model User {
 
   @@unique([tenantId, email])
   @@index([tenantId])
+  @@index([teacherId])
   @@index([email])
   @@map("users")
 }
@@ -162,6 +165,7 @@ model Program {
   programAiTools     ProgramAiTool[]
   hackathonTeams     HackathonTeam[]
 
+  certificates       Certificate[]
   @@index([tenantId])
   @@map("programs")
 }
@@ -213,6 +217,10 @@ model Participant {
   @@unique([programId, userId])
   @@index([programId])
   @@index([userId])
+  /// Enrolment counts filter on programme + ACTIVE status, and on the
+  /// registration date for the selected window.
+  @@index([programId, status])
+  @@index([registrationDate])
   @@map("participants")
 }
 
@@ -236,6 +244,7 @@ model Simulation {
   runs        SimulationRun[]
 
   @@index([tenantId])
+  @@index([createdById])
   @@map("simulations")
 }
 
@@ -423,6 +432,8 @@ model ExamAttempt {
 
   @@unique([examId, userId])
   @@index([userId])
+  /// Average-score rollups filter by exam set; see lib/analytics.
+  @@index([examId, completedAt])
   @@map("exam_attempts")
 }
 
@@ -437,6 +448,10 @@ model LessonProgress {
 
   @@unique([lessonId, userId])
   @@index([userId])
+  /// Analytics reads progress by lesson set and by week; without these the
+  /// tenant dashboard degrades into a full scan of the table.
+  @@index([completedAt])
+  @@index([lessonId, completedAt])
   @@map("lesson_progress")
 }
 
@@ -556,16 +571,67 @@ model UserBadge {
 }
 
 model Certificate {
-  id       String   @id @default(cuid())
-  userId   String   @map("user_id")
-  type     String
-  issuedAt DateTime @default(now()) @map("issued_at")
-  pdfUrl   String?  @map("pdf_url")
+  id        String  @id @default(cuid())
+  tenantId  String  @map("tenant_id")
+  userId    String  @map("user_id")
+  programId String? @map("program_id")
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /// PARTICIPATION | ACHIEVEMENT | COMPLETION
+  type       String
+  /// Which visual template rendered the PDF (see src/lib/certificates/templates.ts).
+  templateId String? @map("template_id")
 
+  /// Human-readable and sequential per tenant per year: BIZ-2026-DEM-000417.
+  serialNumber String @unique @map("serial_number")
+  /// Random public lookup key. Verification must never accept the serial —
+  /// a sequential id would let anyone enumerate every certificate issued.
+  verifyCode   String @unique @map("verify_code")
+
+  /// Snapshots taken at issue time. A certificate is an issued document: it
+  /// must not change when the holder renames themselves or an admin edits the
+  /// programme title afterwards.
+  recipientName String @map("recipient_name")
+  title         String
+  locale        String @default("az")
+
+  issuedAt      DateTime  @default(now()) @map("issued_at")
+  revokedAt     DateTime? @map("revoked_at")
+  revokedReason String?   @map("revoked_reason")
+
+  /// Path under uploads/certificates, plus a hash so a re-download can be
+  /// proven identical to what was issued.
+  pdfPath String? @map("pdf_path")
+  pdfHash String? @map("pdf_hash")
+
+  issuedByUserId String? @map("issued_by_user_id")
+
+  tenant  Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  program Program? @relation(fields: [programId], references: [id], onDelete: SetNull)
+
+  /// Scoped per programme, not globally per type. The previous userId+type
+  /// rule made a second PARTICIPATION certificate impossible for anyone who
+  /// joined a second programme.
+  @@unique([userId, type, programId])
   @@index([userId])
+  @@index([tenantId, issuedAt])
+  @@index([verifyCode])
   @@map("certificates")
+}
+
+/// Per-tenant, per-year counter behind the serial number. Incremented in the
+/// same transaction that creates the certificate so two concurrent bulk issues
+/// cannot mint the same serial.
+model CertificateSequence {
+  id        String @id @default(cuid())
+  tenantId  String @map("tenant_id")
+  year      Int
+  lastValue Int    @default(0) @map("last_value")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, year])
+  @@map("certificate_sequences")
 }
 
 model CoinTransaction {
@@ -776,6 +842,50 @@ model PaymentTransaction {
   @@map("payment_transactions")
 }
 
+/// Append-only log of every PayTR notification, written before the payload is
+/// trusted and regardless of whether it is acted on.
+///
+/// `webhook_events` already enforces idempotency (one row per merchant_oid),
+/// which means it cannot answer "how many times did PayTR call us, and what
+/// did the second call say?" — exactly the question a disputed payment raises.
+/// This table is the other half: one row per HTTP request, duplicates and
+/// rejected hashes included.
+///
+/// `raw_payload` is stored with secrets masked (see paytr-log.ts): the hash and
+/// any card handle are replaced, because a stored signature can be replayed.
+model PaytrWebhookEvent {
+  id          String @id @default(cuid())
+  merchantOid String @map("merchant_oid")
+
+  /// As reported by PayTR: success | failed. Null when the body did not parse.
+  status      String? 
+  hashValid   Boolean @map("hash_valid")
+  /// sandbox | live — which credential set verified (or failed to verify) this.
+  mode        String
+  totalAmount String? @map("total_amount")
+  paymentType String? @map("payment_type")
+
+  failedReasonCode String? @map("failed_reason_code")
+  failedReasonMsg  String? @map("failed_reason_msg")
+
+  /// PROCESSED | DUPLICATE | REJECTED | UNMATCHED | ERROR
+  outcome      String
+  errorMessage String? @map("error_message")
+
+  /// Recorded, never enforced on: PayTR's source IPs are not contractually
+  /// fixed, so this is evidence for building an allowlist, not a gate.
+  remoteIp   String? @map("remote_ip")
+  rawPayload String  @map("raw_payload")
+
+  receivedAt  DateTime  @default(now()) @map("received_at")
+  processedAt DateTime? @map("processed_at")
+
+  @@index([merchantOid])
+  @@index([receivedAt])
+  @@index([outcome])
+  @@map("paytr_webhook_events")
+}
+
 model SeatChangeLog {
   id        String  @id @default(cuid())
   tenantId  String  @map("tenant_id")
@@ -811,6 +921,45 @@ model AuditLog {
 
   @@index([tenantId])
   @@index([action])
+  @@index([userId])
   @@index([createdAt])
+  /// Active-user counts scan one tenant's LOGIN_SUCCESS rows over a window;
+  /// the single-column indexes above force a merge that this avoids.
+  @@index([tenantId, action, createdAt])
   @@map("audit_logs")
+}
+
+/// A demo request from the public marketing site.
+///
+/// Deliberately outside the tenant graph: a lead is someone who does not have
+/// an organisation on the platform yet, so there is no tenantId to scope it by
+/// and no user to attach it to. Sales staff read these; the marketing pages
+/// only ever write.
+model Lead {
+  id          String   @id @default(cuid())
+  name        String
+  company     String
+  email       String
+  phone       String?
+  /// Roughly how many seats they expect to need. Free text, because the
+  /// answer on a marketing form is a guess, not a commitment.
+  seatCount   String?
+  message     String?
+
+  /// Which language the form was submitted in, so a reply goes out in it.
+  locale      String   @default("az")
+  /// Marketing attribution, when the visitor arrived with parameters.
+  source      String?
+
+  /// NEW | CONTACTED | QUALIFIED | CLOSED — moved by sales, not by the site.
+  status      String   @default("NEW")
+
+  ip          String?
+  userAgent   String?  @map("user_agent")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([createdAt])
+  @@index([status, createdAt])
+  @@index([email])
+  @@map("leads")
 }

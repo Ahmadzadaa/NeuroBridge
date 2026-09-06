@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatCard } from "@/components/ui/stat-card";
@@ -29,45 +30,63 @@ interface HealthStatus {
   uptime?: number;
 }
 
-export function SystemDashboardClient({ userName, title }: SystemDashboardClientProps) {
+export function SystemDashboardClient({
+  userName,
+  title,
+}: SystemDashboardClientProps) {
+  const t = useTranslations("superAdmin.system");
   const [metrics, setMetrics] = useState<BusinessMetrics | null>(null);
   const [health, setHealth] = useState<HealthStatus | null>(null);
 
   useEffect(() => {
+    // The two requests can still be in flight when the operator navigates
+    // away; without the guard their responses would land on an unmounted
+    // component.
+    let cancelled = false;
+
     async function load() {
-      const [metricsRes, healthRes] = await Promise.all([
-        fetch("/api/metrics/business"),
-        fetch("/api/health/ready"),
-      ]);
-      if (metricsRes.ok) setMetrics(await metricsRes.json());
-      if (healthRes.ok) setHealth(await healthRes.json());
+      try {
+        const [metricsRes, healthRes] = await Promise.all([
+          fetch("/api/metrics/business"),
+          fetch("/api/health/ready"),
+        ]);
+        if (cancelled) return;
+        if (metricsRes.ok) setMetrics(await metricsRes.json());
+        if (healthRes.ok) setHealth(await healthRes.json());
+      } catch {
+        // The cards already render an em dash when the data never arrives.
+      }
     }
+
     load();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return (
     <DashboardLayout panel="super-admin" title={title} userName={userName}>
       <div className="mb-6 grid grid-cols-2 gap-4 xl:grid-cols-4">
         <StatCard
-          title="Registrations (24h)"
+          title={t("registrations24h")}
           value={metrics?.registrationRate.last24h ?? "—"}
           icon={Users}
           accent="brand"
         />
         <StatCard
-          title="Payment failures (24h)"
+          title={t("paymentFailures24h")}
           value={metrics?.paymentFailures.last24h ?? "—"}
           icon={CreditCard}
           accent="coin"
         />
         <StatCard
-          title="AI usage (24h)"
+          title={t("aiUsage24h")}
           value={metrics?.aiUsage.last24h ?? "—"}
           icon={Brain}
           accent="purple"
         />
         <StatCard
-          title="Seat utilization"
+          title={t("seatUtilization")}
           value={metrics ? `${metrics.seatUtilization.platformAverage}%` : "—"}
           icon={Activity}
           accent="success"
@@ -77,26 +96,37 @@ export function SystemDashboardClient({ userName, title }: SystemDashboardClient
       <div className="mb-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
         <Card className="rounded-2xl border-0 shadow-sm lg:col-span-1">
           <CardHeader>
-            <CardTitle>System health</CardTitle>
+            <CardTitle>{t("health")}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2 text-sm">
             <p>
-              Status:{" "}
-              <span className={health?.status === "ok" ? "text-emerald-600" : "text-red-600"}>
-                {health?.status ?? "unknown"}
+              {t("statusLabel")}:{" "}
+              <span
+                className={
+                  health?.status === "ok" ? "text-emerald-600" : "text-red-600"
+                }
+              >
+                {health?.status ?? t("unknown")}
               </span>
             </p>
-            <p>Database: {health?.checks?.database ?? "unknown"}</p>
-            <p>Uptime: {health?.uptime ? `${health.uptime}s` : "—"}</p>
+            <p>
+              {t("databaseLabel")}: {health?.checks?.database ?? t("unknown")}
+            </p>
+            <p>
+              {t("uptimeLabel")}: {health?.uptime ? `${health.uptime}s` : "—"}
+            </p>
             <p className="text-muted-foreground">
-              Metrics updated: {metrics?.generatedAt ? new Date(metrics.generatedAt).toLocaleString() : "—"}
+              {t("metricsUpdated")}:{" "}
+              {metrics?.generatedAt
+                ? new Date(metrics.generatedAt).toLocaleString()
+                : "—"}
             </p>
           </CardContent>
         </Card>
 
         <Card className="rounded-2xl border-0 shadow-sm lg:col-span-2">
           <CardHeader>
-            <CardTitle>Registration rate (7 days)</CardTitle>
+            <CardTitle>{t("registrationRate7d")}</CardTitle>
           </CardHeader>
           <CardContent className="h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -105,7 +135,12 @@ export function SystemDashboardClient({ userName, title }: SystemDashboardClient
                 <XAxis dataKey="date" tick={{ fontSize: 11 }} />
                 <YAxis allowDecimals={false} />
                 <Tooltip />
-                <Line type="monotone" dataKey="count" stroke="var(--primary)" strokeWidth={2} />
+                <Line
+                  type="monotone"
+                  dataKey="count"
+                  stroke="var(--primary)"
+                  strokeWidth={2}
+                />
               </LineChart>
             </ResponsiveContainer>
           </CardContent>
@@ -115,7 +150,7 @@ export function SystemDashboardClient({ userName, title }: SystemDashboardClient
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <Card className="rounded-2xl border-0 shadow-sm">
           <CardHeader>
-            <CardTitle>AI usage (7 days)</CardTitle>
+            <CardTitle>{t("aiUsage7d")}</CardTitle>
           </CardHeader>
           <CardContent className="h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -124,7 +159,11 @@ export function SystemDashboardClient({ userName, title }: SystemDashboardClient
                 <XAxis dataKey="date" tick={{ fontSize: 11 }} />
                 <YAxis allowDecimals={false} />
                 <Tooltip />
-                <Bar dataKey="count" fill="var(--chart-2)" radius={[6, 6, 0, 0]} />
+                <Bar
+                  dataKey="count"
+                  fill="var(--chart-2)"
+                  radius={[6, 6, 0, 0]}
+                />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
@@ -132,7 +171,7 @@ export function SystemDashboardClient({ userName, title }: SystemDashboardClient
 
         <Card className="rounded-2xl border-0 shadow-sm">
           <CardHeader>
-            <CardTitle>Seat utilization by tenant</CardTitle>
+            <CardTitle>{t("seatByTenant")}</CardTitle>
           </CardHeader>
           <CardContent className="h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -142,9 +181,18 @@ export function SystemDashboardClient({ userName, title }: SystemDashboardClient
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis type="number" domain={[0, 100]} unit="%" />
-                <YAxis type="category" dataKey="tenantName" width={100} tick={{ fontSize: 11 }} />
+                <YAxis
+                  type="category"
+                  dataKey="tenantName"
+                  width={100}
+                  tick={{ fontSize: 11 }}
+                />
                 <Tooltip />
-                <Bar dataKey="utilizationPercent" fill="var(--success)" radius={[0, 6, 6, 0]} />
+                <Bar
+                  dataKey="utilizationPercent"
+                  fill="var(--success)"
+                  radius={[0, 6, 6, 0]}
+                />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>

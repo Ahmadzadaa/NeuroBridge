@@ -19,6 +19,7 @@ import type {
 } from "@/lib/payment/paytr/paytr.types";
 import { toMajorUnits } from "@/lib/billing/money";
 import { markInvoicePaid } from "@/lib/billing/invoice-service";
+import { fingerprint, logPaytr } from "@/lib/payment/paytr/paytr-log";
 
 /**
  * Automatic charging of a vaulted card.
@@ -45,6 +46,17 @@ const NOT_ATTEMPTED = (reason: string): ChargeAttempt => ({
   reason,
 });
 
+/** Records why no charge was tried, which is the harder case to diagnose later. */
+function skip(invoice: Invoice, reason: string): ChargeAttempt {
+  logPaytr("info", "recurring.skipped", {
+    merchantOid: invoice.merchantOid,
+    invoiceId: invoice.id,
+    tenantId: invoice.tenantId,
+    reason,
+  });
+  return NOT_ATTEMPTED(reason);
+}
+
 function toPaytrCurrency(currency: string): PaytrCurrency {
   const normalized = currency.toUpperCase();
   return normalized === "TRY" || normalized === "TL"
@@ -56,12 +68,12 @@ export async function chargeStoredCardForInvoice(
   invoice: Invoice,
   options: { customerEmail: string; userIp?: string }
 ): Promise<ChargeAttempt> {
-  if (!isPaytrConfigured()) return NOT_ATTEMPTED("PayTR is not configured");
+  if (!isPaytrConfigured()) return skip(invoice, "PayTR is not configured");
   if (!isRecurringEnabled()) {
-    return NOT_ATTEMPTED("Automatic charging is disabled (PAYTR_NON3D_ENABLED)");
+    return skip(invoice, "Automatic charging is disabled (PAYTR_NON3D_ENABLED)");
   }
   if (!options.customerEmail) {
-    return NOT_ATTEMPTED("Tenant has no billing email");
+    return skip(invoice, "Tenant has no billing email");
   }
 
   const method = await prisma.paymentMethod.findFirst({
@@ -69,7 +81,7 @@ export async function chargeStoredCardForInvoice(
     orderBy: [{ isDefault: "desc" }, { createdAt: "desc" }],
   });
 
-  if (!method) return NOT_ATTEMPTED("No stored card for this tenant");
+  if (!method) return skip(invoice, "No stored card for this tenant");
 
   const credentials = getPaytrCredentials();
 
@@ -79,7 +91,7 @@ export async function chargeStoredCardForInvoice(
   try {
     const cards = await listStoredCards(credentials, method.utoken);
     const card = cards[0];
-    if (!card) return NOT_ATTEMPTED("PayTR has no cards stored for this utoken");
+    if (!card) return skip(invoice, "PayTR has no cards stored for this utoken");
 
     ctoken = card.ctoken;
 
@@ -101,7 +113,7 @@ export async function chargeStoredCardForInvoice(
     };
   }
 
-  if (!ctoken) return NOT_ATTEMPTED("Stored card has no ctoken");
+  if (!ctoken) return skip(invoice, "Stored card has no ctoken");
 
   const currency = toPaytrCurrency(invoice.currency);
   const userIp = options.userIp ?? "127.0.0.1";
@@ -145,6 +157,23 @@ export async function chargeStoredCardForInvoice(
   const attemptNo =
     (await prisma.paymentTransaction.count({ where: { invoiceId: invoice.id } })) + 1;
 
+  const startedAt = Date.now();
+  // The card handle is logged as a fingerprint only: it is not a secret, but it
+  // is enough to charge the card, so it never appears in plaintext in a log.
+  const cardFingerprint = fingerprint(method.utoken);
+
+  logPaytr("info", "recurring.charge_started", {
+    merchantOid: invoice.merchantOid,
+    invoiceId: invoice.id,
+    tenantId: invoice.tenantId,
+    amount: invoice.amount,
+    currency: invoice.currency,
+    mode: credentials.mode,
+    testMode: credentials.testMode,
+    attemptNo,
+    cardFingerprint,
+  });
+
   try {
     const response = await chargeStoredCard(request);
 
@@ -166,11 +195,30 @@ export async function chargeStoredCardForInvoice(
 
     if (response.status === "success") {
       await markInvoicePaid(invoice.id);
+      logPaytr("info", "recurring.charge_succeeded", {
+        merchantOid: invoice.merchantOid,
+        invoiceId: invoice.id,
+        tenantId: invoice.tenantId,
+        amount: invoice.amount,
+        mode: credentials.mode,
+        attemptNo,
+        cardFingerprint,
+        durationMs: Date.now() - startedAt,
+      });
       return { attempted: true, succeeded: true };
     }
 
     if (response.status === "wait_callback") {
       // PayTR will confirm asynchronously; the callback settles the invoice.
+      logPaytr("info", "recurring.charge_declined", {
+        merchantOid: invoice.merchantOid,
+        invoiceId: invoice.id,
+        tenantId: invoice.tenantId,
+        mode: credentials.mode,
+        attemptNo,
+        outcome: "WAIT_CALLBACK",
+        durationMs: Date.now() - startedAt,
+      });
       return {
         attempted: true,
         succeeded: false,
@@ -178,17 +226,38 @@ export async function chargeStoredCardForInvoice(
       };
     }
 
-    return {
-      attempted: true,
-      succeeded: false,
-      reason:
-        response.failed_reason_msg ??
-        response.err_msg ??
-        response.reason ??
-        "Charge declined",
-    };
+    const declineReason =
+      response.failed_reason_msg ??
+      response.err_msg ??
+      response.reason ??
+      "Charge declined";
+
+    logPaytr("warn", "recurring.charge_declined", {
+      merchantOid: invoice.merchantOid,
+      invoiceId: invoice.id,
+      tenantId: invoice.tenantId,
+      mode: credentials.mode,
+      attemptNo,
+      cardFingerprint,
+      failed_reason_code: response.failed_reason_code ?? null,
+      reason: declineReason,
+      durationMs: Date.now() - startedAt,
+    });
+
+    return { attempted: true, succeeded: false, reason: declineReason };
   } catch (error) {
     const reason = error instanceof Error ? error.message : "Charge request failed";
+
+    logPaytr("error", "recurring.charge_failed", {
+      merchantOid: invoice.merchantOid,
+      invoiceId: invoice.id,
+      tenantId: invoice.tenantId,
+      mode: credentials.mode,
+      attemptNo,
+      cardFingerprint,
+      reason,
+      durationMs: Date.now() - startedAt,
+    });
 
     await prisma.paymentTransaction
       .create({

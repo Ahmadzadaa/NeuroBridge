@@ -6,10 +6,14 @@
  */
 
 export interface PaytrCredentials {
+  /** Which account these belong to. Carried so logs can state it without
+   *  re-reading the environment, and so a live charge can never be attributed
+   *  to the sandbox in the audit trail. */
+  mode: "sandbox" | "live";
   merchantId: string;
   merchantKey: string;
   merchantSalt: string;
-  /** 1 while integrating against the sandbox. */
+  /** 1 while integrating against the sandbox, or during a live rehearsal. */
   testMode: 0 | 1;
 }
 

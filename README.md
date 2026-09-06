@@ -66,6 +66,52 @@ Open [http://localhost:3000/tr](http://localhost:3000/tr)
 
 > **Local dev:** Demo accounts skip 2FA automatically in development. Re-run `npx prisma db seed` to reset passwords and clear 2FA if you get locked out.
 
+## Document Storage
+
+Issued certificates are written through a storage adapter (`src/lib/storage/`),
+selected by `STORAGE_DRIVER`:
+
+| Driver | When | Where |
+|--------|------|-------|
+| `local` | development (default) | `uploads/` on disk |
+| `s3` | production (default) | `S3_DOCUMENTS_BUCKET` |
+
+The ECS container filesystem is ephemeral, so `local` in production loses every
+issued certificate on the next deploy. The bucket is fully private: downloads
+go through `/api/certificates/[id]/file`, which authorises the caller and then
+redirects to a presigned URL (`STORAGE_SIGNED_URL_TTL`, default 300s).
+
+Copy existing local certificates into the bucket with:
+
+```bash
+npx tsx scripts/migrate-certificates-to-s3.ts --dry-run
+```
+
+Drop `--dry-run` to apply. The script is idempotent and never deletes the local
+original.
+
+### Minimal IAM policy
+
+The task role needs object-level access to one prefix, and nothing else:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "BizSimCertificateObjects",
+      "Effect": "Allow",
+      "Action": ["s3:PutObject", "s3:GetObject", "s3:DeleteObject"],
+      "Resource": "arn:aws:s3:::<S3_DOCUMENTS_BUCKET>/certificates/*"
+    }
+  ]
+}
+```
+
+`s3:ListBucket` is deliberately omitted — `exists()` uses `HeadObject`, which is
+covered by `s3:GetObject`, so the role cannot enumerate the bucket. Add
+`arn:aws:s3:::<bucket>/exports/*` only once something writes export archives.
+
 ## Panel Architecture
 
 | Panel | Route | Roles |

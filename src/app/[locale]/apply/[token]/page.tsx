@@ -2,10 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { toast } from "sonner";
 
 interface ApplyProgram {
@@ -21,8 +28,10 @@ interface ApplyProgram {
 export default function ApplyPage() {
   const params = useParams<{ token: string; locale: string }>();
   const router = useRouter();
+  const t = useTranslations("apply");
   const [program, setProgram] = useState<ApplyProgram | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
     email: "",
@@ -33,46 +42,67 @@ export default function ApplyPage() {
   });
 
   useEffect(() => {
+    let cancelled = false;
+
     async function loadProgram() {
-      const res = await fetch(`/api/apply/${params.token}`);
-      if (!res.ok) {
-        setProgram(null);
-        setLoading(false);
-        return;
+      try {
+        const res = await fetch(`/api/apply/${params.token}`);
+        if (cancelled) return;
+        if (!res.ok) {
+          setProgram(null);
+          return;
+        }
+        setProgram(await res.json());
+      } catch {
+        // A dead network here is not the same as a bad token, and telling the
+        // applicant their invitation is invalid would send them to the wrong
+        // person for help.
+        if (!cancelled) setLoadError(true);
+      } finally {
+        if (!cancelled) setLoading(false);
       }
-      setProgram(await res.json());
-      setLoading(false);
     }
+
     loadProgram();
+    return () => {
+      cancelled = true;
+    };
   }, [params.token]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSubmitting(true);
 
-    const res = await fetch("/api/registration", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        token: params.token,
-        ...form,
-      }),
-    });
+    try {
+      const res = await fetch("/api/registration", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token: params.token,
+          // The account and the welcome email are created from this, so the
+          // applicant lands in the language they applied in.
+          locale: params.locale,
+          ...form,
+        }),
+      });
 
-    setSubmitting(false);
-
-    if (!res.ok) {
-      const data = await res.json();
-      if (data.code === "SEAT_LIMIT_REACHED") {
-        toast.error("Seat limit reached for this organization.");
-      } else {
-        toast.error(data.error ?? "Registration failed");
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        toast.error(
+          data.code === "SEAT_LIMIT_REACHED"
+            ? t("seatLimitToast")
+            : t("failedToast"),
+        );
+        return;
       }
-      return;
-    }
 
-    toast.success("Registration successful. You can now sign in.");
-    router.push(`/${params.locale}/login`);
+      toast.success(t("successToast"));
+      router.push(`/${params.locale}/login`);
+    } catch {
+      toast.error(t("failedToast"));
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   if (loading) return null;
@@ -82,7 +112,10 @@ export default function ApplyPage() {
       <div className="flex min-h-screen items-center justify-center p-4">
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle>Program not found</CardTitle>
+            <CardTitle>{loadError ? t("loadFailed") : t("notFound")}</CardTitle>
+            {!loadError && (
+              <CardDescription>{t("notFoundHint")}</CardDescription>
+            )}
           </CardHeader>
         </Card>
       </div>
@@ -96,72 +129,96 @@ export default function ApplyPage() {
           <CardTitle>{program.name}</CardTitle>
           <CardDescription>{program.tenantName}</CardDescription>
           {program.description && (
-            <p className="text-sm text-muted-foreground">{program.description}</p>
+            <p className="text-sm text-muted-foreground">
+              {program.description}
+            </p>
           )}
         </CardHeader>
         <CardContent>
           {!program.canRegister ? (
             <p className="text-sm text-destructive">
-              {!program.registrationOpen && "Registration is closed for this program."}
-              {program.registrationOpen && !program.seatsAvailable && "Organization seat limit reached."}
+              {!program.registrationOpen && t("registrationClosed")}
+              {program.registrationOpen &&
+                !program.seatsAvailable &&
+                t("seatLimitReached")}
               {program.registrationOpen &&
                 program.seatsAvailable &&
                 !program.programCapacityAvailable &&
-                "Program participant limit reached."}
+                t("capacityReached")}
             </p>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="firstName">First name</Label>
+                  <Label htmlFor="firstName">{t("firstName")}</Label>
                   <Input
                     id="firstName"
                     required
+                    autoComplete="given-name"
                     value={form.firstName}
-                    onChange={(e) => setForm({ ...form, firstName: e.target.value })}
+                    onChange={(e) =>
+                      setForm({ ...form, firstName: e.target.value })
+                    }
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="lastName">Last name</Label>
+                  <Label htmlFor="lastName">{t("lastName")}</Label>
                   <Input
                     id="lastName"
                     required
+                    autoComplete="family-name"
                     value={form.lastName}
-                    onChange={(e) => setForm({ ...form, lastName: e.target.value })}
+                    onChange={(e) =>
+                      setForm({ ...form, lastName: e.target.value })
+                    }
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t("email")}</Label>
                 <Input
                   id="email"
                   type="email"
                   required
+                  autoComplete="email"
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{t("password")}</Label>
                 <Input
                   id="password"
                   type="password"
                   required
                   minLength={8}
+                  autoComplete="new-password"
+                  aria-describedby="password-hint"
                   value={form.password}
-                  onChange={(e) => setForm({ ...form, password: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, password: e.target.value })
+                  }
                 />
+                <p id="password-hint" className="text-xs text-muted-foreground">
+                  {t("passwordHint")}
+                </p>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="phone">Phone (optional)</Label>
+                <Label htmlFor="phone">{t("phone")}</Label>
                 <Input
                   id="phone"
+                  type="tel"
+                  autoComplete="tel"
                   value={form.phone}
                   onChange={(e) => setForm({ ...form, phone: e.target.value })}
                 />
               </div>
-              <Button type="submit" className="w-full rounded-xl" disabled={submitting}>
-                {submitting ? "..." : "Register"}
+              <Button
+                type="submit"
+                className="w-full rounded-xl"
+                disabled={submitting}
+              >
+                {submitting ? t("submitting") : t("submit")}
               </Button>
             </form>
           )}

@@ -1,3 +1,5 @@
+import { localeUrl } from "@/lib/app-url";
+import { routing } from "@/i18n/routing";
 import { randomBytes } from "crypto";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
@@ -68,7 +70,9 @@ export async function POST(request: Request) {
           firstName: body.adminFirstName,
           lastName: body.adminLastName,
           role: "TENANT_ADMIN",
-          language: "az",
+          // No preference exists yet for a brand-new admin; the language the
+          // super admin is provisioning in is the closest available signal.
+          language: session.language ?? routing.defaultLocale,
         },
       });
 
@@ -98,7 +102,8 @@ export async function POST(request: Request) {
         adminEmail: body.adminEmail,
         tempPassword,
         seatLimit: body.seatLimit,
-        loginUrl: `${origin}/az/login`,
+        loginUrl: localeUrl(origin, "/login", session.language),
+        language: session.language,
       }),
     });
 

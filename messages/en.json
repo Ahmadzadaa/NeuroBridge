@@ -53,7 +53,19 @@
       "jury": "Jury",
       "teacher": "Teacher"
     },
-    "error": "Something went wrong"
+    "error": "Something went wrong",
+    "previous": "Previous",
+    "notifications": "Notifications",
+    "close": "Close",
+    "toggleSidebar": "Toggle sidebar",
+    "changeLanguage": "Change language",
+    "toggleTheme": "Toggle theme",
+    "rowsPerPage": "Rows per page",
+    "nextPage": "Next page",
+    "previousPage": "Previous page",
+    "pageNumber": "Page {number}",
+    "collapseSidebar": "Collapse sidebar",
+    "expandSidebar": "Expand sidebar"
   },
   "auth": {
     "login": "Log In",
@@ -94,7 +106,9 @@
       "settings": "Settings",
       "billing": "Billing",
       "simulations": "Simulations",
-      "teachers": "Teachers"
+      "teachers": "Teachers",
+      "certificates": "Certificates",
+      "analytics": "Analytics"
     },
     "participant": {
       "dashboard": "Dashboard",
@@ -172,6 +186,41 @@
       "title": "License & Billing",
       "pricePerSeat": "Price Per Seat",
       "paymentStatus": "Payment Status"
+    },
+    "audit": {
+      "filterByAction": "Filter by action",
+      "allActions": "All actions",
+      "searchDetails": "Search in details",
+      "timestamp": "Timestamp",
+      "action": "Action",
+      "user": "User",
+      "tenant": "Organization",
+      "ip": "IP address",
+      "details": "Details",
+      "empty": "No audit entries found.",
+      "totalEntries": "{count} entries"
+    },
+    "growthChart": "Revenue and organization growth",
+    "trends": {
+      "newTenants": "+4 this month",
+      "userGrowth": "+12% growth",
+      "revenueVsLastMonth": "+18% vs last month",
+      "monthlyGrowth": "Monthly growth rate"
+    },
+    "system": {
+      "registrations24h": "Registrations (24h)",
+      "paymentFailures24h": "Payment failures (24h)",
+      "aiUsage24h": "AI usage (24h)",
+      "seatUtilization": "Seat utilization",
+      "health": "System health",
+      "statusLabel": "Status",
+      "databaseLabel": "Database",
+      "uptimeLabel": "Uptime",
+      "metricsUpdated": "Metrics updated",
+      "unknown": "unknown",
+      "registrationRate7d": "Registration rate (7 days)",
+      "aiUsage7d": "AI usage (7 days)",
+      "seatByTenant": "Seat utilization by organization"
     }
   },
   "tenant": {
@@ -199,7 +248,9 @@
       "applicationLink": "Application Link",
       "participants": "Participants",
       "start": "Start",
-      "end": "End"
+      "end": "End",
+      "created": "Program created",
+      "createFailed": "The program could not be created. Please try again in a moment."
     },
     "projectTypes": {
       "entrepreneurship_training": "Entrepreneurship Training",
@@ -244,7 +295,11 @@
       "registrationDate": "Registration Date",
       "lastLogin": "Last Login",
       "exportExcel": "Export to Excel",
-      "allPrograms": "All programs"
+      "allPrograms": "All programs",
+      "university": "University",
+      "studyYear": "Year",
+      "profile": "Profile",
+      "noProfile": "No details"
     },
     "reports": {
       "title": "Reports",
@@ -281,7 +336,11 @@
         "result": "Result",
         "certificatesEarned": "Certificates Earned",
         "lastCertificateDate": "Last Certificate Date"
-      }
+      },
+      "noPrograms": "No programs",
+      "exported": "Your report is ready",
+      "exportQueued": "Large export queued — preparing the file…",
+      "exportFailed": "Export failed. Please try again in a moment."
     },
     "settings": {
       "title": "Settings",
@@ -313,7 +372,9 @@
       "security": "Security Settings",
       "changePassword": "Change Password",
       "twoFactor": "Two-Factor Authentication",
-      "sessionTimeout": "Session Timeout"
+      "sessionTimeout": "Session Timeout",
+      "saved": "Settings saved",
+      "saveFailed": "Settings could not be saved. Please try again in a moment."
     },
     "qrInvite": {
       "invite": "QR Invite",
@@ -324,6 +385,220 @@
       "linkCopied": "Link copied",
       "copyLink": "Copy link",
       "downloadPng": "Download PNG"
+    },
+    "billing": {
+      "paymentHistory": "Payment history",
+      "noPayments": "No payments yet.",
+      "seatsUnit": "seats",
+      "perSeat": "per seat",
+      "totalLabel": "Total",
+      "purchase": "Purchase",
+      "purchasing": "Working…",
+      "checkoutFailed": "Checkout could not be opened. Please try again in a moment.",
+      "statuses": {
+        "PENDING": "Pending",
+        "COMPLETED": "Paid",
+        "FAILED": "Failed",
+        "REFUNDED": "Refunded"
+      },
+      "types": {
+        "INITIAL": "Initial purchase",
+        "UPGRADE": "Upgrade"
+      }
+    },
+    "certificates": {
+      "title": "Certificates",
+      "subtitle": "Pick a template, edit the text, preview it, then issue.",
+      "template": "Template",
+      "participant": "Participant",
+      "program": "Program",
+      "recipientName": "Name on the certificate",
+      "body": "Certificate text",
+      "issuerName": "Organization name in the emblem",
+      "sig1": "Signature 1",
+      "sig2": "Signature 2",
+      "nameField": "Name",
+      "roleField": "Role",
+      "preview": "Preview",
+      "refresh": "Refresh preview",
+      "download": "Download PDF",
+      "search": "Type a first or last name…",
+      "noMatch": "No matching participant",
+      "clear": "Clear",
+      "found": "results",
+      "single": "Single certificate",
+      "bulk": "Bulk issue",
+      "selected": "selected",
+      "selectAll": "Select all shown",
+      "clearAll": "Clear selection",
+      "bulkHint": "Everyone selected gets their own certificate with the same text. Type {token} in the body and it becomes each person's name.",
+      "exportMerged": "Download one PDF",
+      "exportZip": "ZIP (separate files)",
+      "exportingLabel": "Preparing…",
+      "expandList": "Open participant list",
+      "collapseList": "Close list",
+      "sendToAccounts": "Send to accounts",
+      "sendToAccount": "Send to account",
+      "needAccount": "Pick the name from the list to send — a manually typed name has no account behind it.",
+      "sendHint": "The certificate appears in the participant's own panel, where they can download it.",
+      "sending": "Sending…",
+      "sentOk": "certificates delivered",
+      "sentAlready": "already issued",
+      "sentFailed": "failed",
+      "rendering": "Rendering…",
+      "hint": "Type {token} in the text and it is replaced with the selected program.",
+      "empty": "Fill in a name and body text to preview.",
+      "exportFailed": "Export failed. Please try again in a moment.",
+      "previewFailed": "The preview could not be built. Please try again in a moment.",
+      "pageFormat": "A4 landscape",
+      "templates": {
+        "achievement": {
+          "name": "Certificate of Achievement",
+          "style": "Gold guilloche pattern"
+        },
+        "participation": {
+          "name": "Certificate of Participation",
+          "style": "Navy and gold"
+        },
+        "completion": {
+          "name": "Certificate of Completion",
+          "style": "Cream, with a wax seal"
+        }
+      }
+    },
+    "analytics": {
+      "title": "Analytics",
+      "downloadCsv": "Download CSV",
+      "csvNeedsProgram": "Select a programme to export CSV",
+      "csvFailed": "Export failed",
+      "csvQueued": "Export queued; it will download when ready",
+      "csvDownloaded": "CSV downloaded",
+      "loadFailed": "Could not load analytics",
+      "loadFailedHint": "Adjust the filters and try again.",
+      "cachedNote": "Cached result (may be up to an hour old)",
+      "liveNote": "Freshly computed",
+      "durationNote": "“Average days” is the span between first and last lesson completion — not time spent.",
+      "filters": {
+        "from": "From",
+        "to": "To",
+        "program": "Programme",
+        "course": "Course",
+        "allPrograms": "All programmes",
+        "allCourses": "All courses"
+      },
+      "kpi": {
+        "totalStudents": "Total students",
+        "active7": "Active (7 days)",
+        "active30": "Active (30 days)",
+        "enrolments": "Enrolments",
+        "completion": "Completion",
+        "certificates": "Certificates issued"
+      },
+      "charts": {
+        "activity": "Weekly activity",
+        "completion": "Weekly completion",
+        "activeStudents": "Active students",
+        "lessonsCompleted": "Lessons completed",
+        "coursesCompleted": "Courses completed"
+      },
+      "courses": {
+        "title": "Course breakdown",
+        "name": "Course",
+        "enrolled": "Enrolled",
+        "completed": "Completed",
+        "completionRate": "Completion",
+        "averageScore": "Average score",
+        "activeDays": "Average days",
+        "days": "{count} days"
+      },
+      "empty": {
+        "activity": "No activity in this period",
+        "activityHint": "Widen the date range or pick another programme.",
+        "courses": "No course data",
+        "coursesHint": "Courses appear here once your programmes include trainings.",
+        "completions": "No courses completed yet",
+        "completionsHint": "Appears here once students finish every lesson in a course."
+      }
+    },
+    "programBuilder": {
+      "maxReached": "You can select at most {count}",
+      "typeRequired": "Choose a programme type",
+      "basics": {
+        "title": "Basics",
+        "description": "The name, the description and how many people it takes.",
+        "namePlaceholder": "For example: Spring Entrepreneurship Programme 2026",
+        "descriptionPlaceholder": "What will participants learn in this programme?"
+      },
+      "type": {
+        "title": "Programme type",
+        "description": "What format does this programme run in? Pick one."
+      },
+      "timeline": {
+        "title": "Dates",
+        "description": "When registration is open, and how long the programme itself runs.",
+        "application": "Registration window",
+        "applicationHint": "Participants can apply between these dates.",
+        "programme": "Programme window",
+        "programmeHint": "Optional — you can set this later."
+      },
+      "modules": {
+        "simulationsDescription": "Business scenarios participants play through. Four at most.",
+        "trainingsDescription": "Video training modules included in the programme.",
+        "aiDescription": "AI tools participants can use."
+      },
+      "summary": {
+        "selected": "{count} modules selected",
+        "empty": "No modules selected yet"
+      },
+      "done": {
+        "title": "Programme created",
+        "description": "Share the link below — participants register through it."
+      }
+    },
+    "settingsDetail": {
+      "organization": {
+        "description": "These details appear on certificates and in emails sent to participants."
+      },
+      "certificates": {
+        "description": "Choose which kinds of certificate can be issued to participants.",
+        "participation": {
+          "title": "Participation certificate",
+          "description": "Can be issued to anyone who joined the programme."
+        },
+        "achievement": {
+          "title": "Achievement certificate",
+          "description": "For those who pass an exam or score highly."
+        },
+        "completion": {
+          "title": "Programme completion certificate",
+          "description": "For those who finish every stage of the programme."
+        }
+      },
+      "notifications": {
+        "description": "When the system sends email automatically.",
+        "pendingNotice": "Choices here are saved, but email delivery is not wired up yet — no notifications are sent at the moment.",
+        "pendingBadge": "Planned",
+        "invitation": {
+          "title": "Invitation email",
+          "description": "Send an invite when a participant is added to a programme."
+        },
+        "start": {
+          "title": "Programme start reminder",
+          "description": "Remind participants before the programme begins."
+        },
+        "end": {
+          "title": "Programme end reminder",
+          "description": "Warn when the programme deadline is approaching."
+        },
+        "certificate": {
+          "title": "Certificate notification",
+          "description": "Tell the holder when a certificate is issued."
+        },
+        "weekly": {
+          "title": "Weekly progress",
+          "description": "A weekly progress summary for participants."
+        }
+      }
     }
   },
   "participant": {
@@ -462,7 +737,9 @@
       "participation": "Certificate of Participation",
       "achievement": "Certificate of Achievement",
       "completion": "Certificate of Completion"
-    }
+    },
+    "downloadCertificate": "Download",
+    "certificateRevoked": "Revoked"
   },
   "landing": {
     "hero": "Start Your Entrepreneurship Journey",
@@ -610,6 +887,7 @@
       "decisionPrompt": "Make your decision",
       "outcomeLabel": "Outcome",
       "nextRound": "Next round",
+      "playAgain": "Play again",
       "completedTitle": "Simulation complete!",
       "scoreLabel": "Final score (out of 100)",
       "teacherPending": "Awaiting teacher review",
@@ -732,7 +1010,7 @@
       "choiceDetailPlaceholder": "Short hint — what's the trade-off? (optional)",
       "cashDelta": "Cash Δ",
       "satDelta": "Satisf. Δ",
-      "repDelta": "Reput. Δ",
+      "repDelta": "Reputation Δ",
       "variance": "Random ±",
       "choiceFeedbackPlaceholder": "Outcome text shown to the student after this choice...",
       "addChoice": "Add choice",
@@ -740,6 +1018,543 @@
       "save": "Save scenario",
       "saved": "Scenario saved",
       "validationHint": "To save: a name, at least 2 rounds, each with a title + description + at least 2 choices (each with a label and outcome text)."
+    }
+  },
+  "apply": {
+    "notFound": "Program not found",
+    "notFoundHint": "This invitation link is wrong or no longer valid.",
+    "loadFailed": "Could not load the program. Check your connection and try again.",
+    "registrationClosed": "Registration is closed for this program.",
+    "seatLimitReached": "The organization has run out of seats.",
+    "capacityReached": "The program is full.",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "password": "Password",
+    "passwordHint": "At least 8 characters",
+    "phone": "Phone (optional)",
+    "submit": "Register",
+    "submitting": "Submitting…",
+    "successToast": "Registration complete. You can sign in now.",
+    "seatLimitToast": "Registration is not possible: the organization has run out of seats.",
+    "failedToast": "Registration failed. Please try again in a moment."
+  },
+  "security": {
+    "title": "Two-factor authentication",
+    "subtitleRequired": "Admin accounts must turn on two-factor authentication before using the platform.",
+    "subtitleManage": "Manage your account security settings.",
+    "generateQr": "Generate QR code",
+    "qrAlt": "QR code for two-factor authentication",
+    "qrHint": "Scan the code with Google Authenticator or a similar app, then type the six digits it shows below.",
+    "verificationCode": "Verification code",
+    "enable": "Enable",
+    "working": "Working…",
+    "recoveryTitle": "Store these recovery codes somewhere safe:",
+    "recoveryHint": "If you lose your phone, these codes are the only way back into your account. Each one works once.",
+    "continue": "Continue",
+    "setupFailed": "Setup could not be started. Please try again in a moment.",
+    "invalidCode": "That code is wrong. Check the current code in your app.",
+    "enabledToast": "Two-factor authentication enabled",
+    "tooManyAttempts": "Too many attempts. Wait about a minute and try again."
+  },
+  "errors": {
+    "generic": "That did not go through. Please try again in a moment.",
+    "SEAT_LIMIT_REACHED": "The organization has run out of seats. Extend the plan to add more participants.",
+    "TENANT_NOT_ACTIVE": "This organization account is not active.",
+    "PROGRAM_CAPACITY_REACHED": "The program is full.",
+    "REGISTRATION_CLOSED": "Registration is closed for this program.",
+    "DUPLICATE_REGISTRATION": "This person is already registered for the program.",
+    "EMAIL_ALREADY_REGISTERED": "That email is already registered in this organization.",
+    "CERTIFICATE_DISABLED": "This certificate type is switched off in the organization settings.",
+    "CERTIFICATE_ALREADY_ISSUED": "This certificate has already been issued to that person.",
+    "CERTIFICATE_PARTICIPANT_NOT_FOUND": "That person is not a participant in this organization.",
+    "PROGRAM_NOT_FOUND": "Program not found.",
+    "TRAINING_NOT_ASSIGNED": "This training is not part of any of your programs.",
+    "MODULE_NOT_ENABLED": "This module is not enabled for your organization.",
+    "WRONG_CURRENT_PASSWORD": "That is not your current password.",
+    "INVALID_APPLICATION_TOKEN": "This invitation link is invalid or has expired.",
+    "PAYMENT_UNAVAILABLE": "The payment system is unavailable right now. Please try again in a moment.",
+    "PAYMENT_VERIFICATION_FAILED": "The payment could not be verified."
+  },
+  "marketing": {
+    "nav": {
+      "features": "Features",
+      "pricing": "Pricing",
+      "contact": "Contact",
+      "signIn": "Sign in",
+      "requestDemo": "Request a demo",
+      "toggleMenu": "Open or close the menu"
+    },
+    "footer": {
+      "tagline": "The platform that turns entrepreneurship education into a measurable programme for technoparks, universities and accelerators.",
+      "product": "Product",
+      "company": "Company",
+      "legal": "Legal",
+      "privacy": "Privacy policy",
+      "terms": "Terms of service",
+      "copyright": "© {year} BizSim. All rights reserved."
+    },
+    "seo": {
+      "home": {
+        "title": "BizSim — Entrepreneurship education platform",
+        "description": "Run entrepreneurship programmes end to end: video training, exams, business simulations, hackathons and certificates for technoparks and universities."
+      },
+      "features": {
+        "title": "Features — BizSim platform",
+        "description": "Six modules from video training to hackathon judging: lesson tracking, server-side exams, business simulations, certificates and tenant analytics."
+      },
+      "pricing": {
+        "title": "Pricing — BizSim",
+        "description": "Transparent per-seat monthly pricing. Three plans, no hidden fees. Compare the plans and pick the one that fits your organisation."
+      },
+      "contact": {
+        "title": "Request a demo — BizSim",
+        "description": "See the platform on your own scenario in a 15-minute live demo. We reply within one business day."
+      },
+      "privacy": {
+        "title": "Privacy policy — BizSim",
+        "description": "How personal data is collected, processed, stored and protected on the BizSim platform."
+      },
+      "terms": {
+        "title": "Terms of service — BizSim",
+        "description": "Terms for using the BizSim platform: accounts, licensing, payments, liability and termination."
+      }
+    },
+    "home": {
+      "hero": {
+        "eyebrow": "For technoparks and universities",
+        "headline": "Turn your entrepreneurship programme into a measurable result",
+        "problem": "Programmes run on spreadsheets, email and paper judging forms — and nobody can measure what was actually learned.",
+        "solution": "BizSim brings training, exams, business simulations, hackathons and certificates into one platform. Every participant's progress is recorded automatically, and every jury score stays transparent per criterion.",
+        "primaryCta": "Request a demo",
+        "secondaryCta": "Features",
+        "reassurance": "No installation · Under your own brand · AZ / TR / EN",
+        "screenshot": "Tenant admin dashboard: active programmes, participant counts and the weekly progress chart"
+      },
+      "proof": {
+        "title": "Who it is built for",
+        "logos": {
+          "a": "Example Technopark",
+          "b": "Example University",
+          "c": "Example Accelerator",
+          "d": "Example Innovation Centre"
+        },
+        "quote": "“Collecting the results of one hackathon used to take two weeks. Now jury scores appear per criterion immediately, and participants get their feedback the same day.”",
+        "attribution": "Programme director · sample text, to be replaced with a real customer quote"
+      },
+      "features": {
+        "eyebrow": "What is inside",
+        "title": "Every stage of the programme in one place",
+        "description": "From registration to certificate, without stitching separate tools together.",
+        "items": {
+          "a": {
+            "title": "Video training and exams",
+            "body": "Lessons play as a playlist and each completion is recorded separately. Exams are graded on the server — correct answers never reach the browser.",
+            "screenshot": "Participant training screen: video player, lesson playlist and progress bar"
+          },
+          "b": {
+            "title": "Business simulation",
+            "body": "Participants decide round by round while cash, customer satisfaction and reputation move in real time. Scenarios are pure data, so a new one needs no code.",
+            "screenshot": "Simulation play screen: round context, decision options and the metric gauges"
+          },
+          "c": {
+            "title": "Hackathon and judging",
+            "body": "Teams form, submit a project PDF, and jurors score and comment against each criterion. Results stay sealed until you reveal them, then each team sees anonymous feedback.",
+            "screenshot": "Jury scoring screen: PDF preview and per-criterion score sliders"
+          },
+          "d": {
+            "title": "Certificates and analytics",
+            "body": "Certificates are issued as PDFs with a serial number and a verification code. The analytics dashboard shows completion per course, average scores and weekly activity.",
+            "screenshot": "Analytics dashboard: KPI cards, the weekly activity chart and the course table"
+          }
+        }
+      },
+      "steps": {
+        "title": "How it works",
+        "description": "Once your account is open you run the programme yourself — we never touch your content.",
+        "items": {
+          "one": {
+            "title": "Receive your account",
+            "body": "We open an account with your seat limit and email the admin credentials. Two-factor authentication is set up on first sign-in."
+          },
+          "two": {
+            "title": "Set up your programme",
+            "body": "Pick the training, simulation and hackathon modules you need, define the judging criteria, and invite participants by QR code or invite link."
+          },
+          "three": {
+            "title": "Measure the results",
+            "body": "Who finished what, what the average score is, which team scored what on which criterion — it all lands in the dashboard and exports to CSV."
+          }
+        }
+      },
+      "pricingPreview": {
+        "title": "Transparent pricing",
+        "description": "You pay per seat per month. No hidden setup fee.",
+        "cta": "See all plans"
+      },
+      "cta": {
+        "title": "See the platform on your own scenario",
+        "body": "Let us show you how your programme would be set up, in a 15-minute demo. We reply within one business day.",
+        "bullets": {
+          "a": "No commitment",
+          "b": "With your own data",
+          "c": "AZ / TR / EN"
+        },
+        "button": "Request a demo"
+      }
+    },
+    "features": {
+      "eyebrow": "Modules",
+      "title": "Six modules, one platform",
+      "description": "Each module can be switched on or off, so you do not pay for what your organisation does not use.",
+      "items": {
+        "trainings": {
+          "eyebrow": "Training",
+          "title": "Video training with lesson tracking",
+          "body": "A training is a playlist of lessons, and every completion is recorded on its own. Progress is therefore computed from real events rather than estimated. Content is stored in three languages and shown in the participant's own.",
+          "bullets": {
+            "a": "Per-lesson progress",
+            "b": "YouTube video integration",
+            "c": "Content in three languages"
+          },
+          "screenshot": "Training detail: video player, lesson playlist on the right, progress bar below"
+        },
+        "exams": {
+          "eyebrow": "Exams",
+          "title": "Exams graded on the server",
+          "body": "Questions are served one at a time and answers are checked on the server — the correct answers never reach the browser, so a result cannot be tampered with from the client. The result screen shows the given answer, the correct one and an explanation for every question.",
+          "bullets": {
+            "a": "Results cannot be tampered with",
+            "b": "The best attempt is kept",
+            "c": "An explanation for every question"
+          },
+          "screenshot": "Exam result screen: score, pass state and the per-question explanation list"
+        },
+        "simulations": {
+          "eyebrow": "Simulation",
+          "title": "Data-driven business simulation",
+          "body": "Participants decide round by round, and each choice moves cash, customer satisfaction and reputation. A small amount of market noise is applied, so the same strategy does not produce an identical run twice. A teacher can also grade the run by hand.",
+          "bullets": {
+            "a": "A new scenario needs no code",
+            "b": "Teacher grading",
+            "c": "Scored across three metrics"
+          },
+          "screenshot": "Scenario editor: rounds, choices and the metric effects of each choice"
+        },
+        "hackathon": {
+          "eyebrow": "Hackathon",
+          "title": "Hackathons with transparent judging",
+          "body": "Participants form teams and upload a project PDF; jurors score and comment against each criterion. Rankings use a weighted average, so who scored what on which criterion stays auditable afterwards. Results stay sealed until you reveal them.",
+          "bullets": {
+            "a": "Weighted ranking per criterion",
+            "b": "Scheduled results reveal",
+            "c": "Anonymous jury feedback for teams"
+          },
+          "screenshot": "Live ranking table: teams, weighted score and the per-criterion breakdown"
+        },
+        "certificates": {
+          "eyebrow": "Certificates",
+          "title": "Verifiable certificates",
+          "body": "Participation, achievement and completion certificates are issued as PDFs. Each carries a per-organisation sequential serial and a random verification code, and is frozen with the name and title held at issue time — renaming someone later does not alter the document.",
+          "bullets": {
+            "a": "Sequential serial numbers",
+            "b": "Bulk issuing and ZIP export",
+            "c": "Your own signature and template"
+          },
+          "screenshot": "Certificate template preview: serial number, signature fields and verification code"
+        },
+        "analytics": {
+          "eyebrow": "Analytics",
+          "title": "See the state of the programme in numbers",
+          "body": "The analytics dashboard shows total and active participants, enrolments, average completion and certificates issued. The course table carries enrolled, completed, average score and average duration, and the weekly chart tracks the last twelve weeks.",
+          "bullets": {
+            "a": "Completion and average score per course",
+            "b": "Twelve weeks of activity",
+            "c": "One-click CSV export"
+          },
+          "screenshot": "Analytics dashboard: KPI cards, the weekly activity line and the sortable course table"
+        }
+      },
+      "cta": {
+        "title": "Which modules do you need?",
+        "body": "In the demo we will build your organisation's scenario together and switch on only the modules you need.",
+        "primary": "Request a demo",
+        "secondary": "Pricing"
+      }
+    },
+    "pricing": {
+      "title": "Choose the plan that fits your organisation",
+      "subtitle": "You pay per seat per month. No setup fee, and you can change plan at any time.",
+      "perSeatMonth": "per seat / month",
+      "minSeats": "Minimum {count} seats",
+      "trialDays": "{count}-day free trial",
+      "cta": "Request a demo",
+      "popular": "Most popular",
+      "noPlans": "No active plans yet",
+      "noPlansHint": "Plans appear here once they are added to the billing module.",
+      "plans": {
+        "default": {
+          "tagline": "A plan tailored to your organisation",
+          "bullets": {
+            "a": "Video training and exams",
+            "b": "Business simulation",
+            "c": "Certificate issuing",
+            "d": "Email support"
+          }
+        },
+        "starter": {
+          "tagline": "For small programmes and pilots",
+          "bullets": {
+            "a": "Video training and exams",
+            "b": "3 simulation scenarios",
+            "c": "Certificate issuing",
+            "d": "Email support"
+          }
+        },
+        "professional": {
+          "tagline": "For technoparks and universities running full programmes",
+          "bullets": {
+            "a": "Everything in Starter",
+            "b": "Hackathon and judging module",
+            "c": "AI tools",
+            "d": "Full analytics and CSV export"
+          }
+        },
+        "enterprise": {
+          "tagline": "For large organisations running many programmes",
+          "bullets": {
+            "a": "Everything in Professional",
+            "b": "Unlimited simulation scenarios",
+            "c": "Custom scenario authoring",
+            "d": "A dedicated account manager"
+          }
+        }
+      },
+      "comparison": {
+        "title": "Plan comparison",
+        "feature": "Feature",
+        "included": "Included",
+        "notIncluded": "Not included",
+        "rows": {
+          "trainings": "Video training and lessons",
+          "exams": "Exams and grading",
+          "simulations": "Business simulation",
+          "hackathon": "Hackathon and judging",
+          "certificates": "Certificates",
+          "analytics": "Analytics dashboard",
+          "aiTools": "AI tools",
+          "support": "Support",
+          "gamification": "Gamification (badges, coins, leaderboard)"
+        },
+        "values": {
+          "starter": {
+            "trainings": "yes",
+            "exams": "yes",
+            "simulations": "3 scenarios",
+            "hackathon": "no",
+            "certificates": "yes",
+            "analytics": "Basic",
+            "aiTools": "no",
+            "gamification": "yes",
+            "support": "Email"
+          },
+          "professional": {
+            "trainings": "yes",
+            "exams": "yes",
+            "simulations": "All scenarios",
+            "hackathon": "yes",
+            "certificates": "yes",
+            "analytics": "Full",
+            "aiTools": "yes",
+            "gamification": "yes",
+            "support": "Email and phone"
+          },
+          "enterprise": {
+            "trainings": "yes",
+            "exams": "yes",
+            "simulations": "Unlimited + custom",
+            "hackathon": "yes",
+            "certificates": "yes",
+            "analytics": "Full + CSV export",
+            "aiTools": "yes",
+            "gamification": "yes",
+            "support": "Dedicated manager"
+          }
+        }
+      },
+      "faq": {
+        "title": "Frequently asked questions",
+        "items": {
+          "a": {
+            "question": "What is a seat and how is it counted?",
+            "answer": "One seat is one participant with an account. A seat is taken at registration and released when the participant is removed. Admin, teacher and jury accounts do not consume seats."
+          },
+          "b": {
+            "question": "How does billing work?",
+            "answer": "Subscriptions are monthly and billed on the seat count. You can pay by card online, or by invoiced bank transfer for institutions."
+          },
+          "c": {
+            "question": "Can I change plan mid-term?",
+            "answer": "Yes. You can raise your plan or seat count at any time and the difference is prorated for the current period. Reductions take effect from the next period."
+          },
+          "d": {
+            "question": "Where is our data stored?",
+            "answer": "Each organisation's data is isolated and enforced at the database level. Certificates and project files are held in encrypted object storage. Details are in the privacy policy."
+          },
+          "e": {
+            "question": "Do you provide a contract and invoices?",
+            "answer": "Yes. We sign a written contract with institutions and issue an invoice for each period. We also provide the documents procurement and tender processes require."
+          }
+        }
+      },
+      "bottomCta": {
+        "title": "Let us work out which plan fits",
+        "body": "Tell us your participant count and programme format, and we will send the right plan and an estimated budget within one business day.",
+        "button": "Request a demo"
+      }
+    },
+    "contact": {
+      "title": "Request a demo",
+      "description": "Fill in the form and we will arrange a 15-minute live demo built on your own scenario.",
+      "assurances": {
+        "response": {
+          "title": "A reply within one business day",
+          "body": "Your request reaches our sales team immediately and we get in touch within one business day."
+        },
+        "privacy": {
+          "title": "Your data, only for this",
+          "body": "What you send is used only to arrange the demo and prepare a quote, and is never shared with third parties."
+        },
+        "noSpam": {
+          "title": "No marketing list",
+          "body": "We will not add you to a newsletter. We write only about this request."
+        }
+      },
+      "form": {
+        "name": "Full name",
+        "company": "Company or institution",
+        "email": "Email",
+        "phone": "Phone",
+        "seatCount": "Estimated number of students",
+        "seatCountHint": "For example: 50-100",
+        "message": "Message",
+        "submit": "Request a demo",
+        "successTitle": "We have your request",
+        "failed": "Could not send. Please try again shortly.",
+        "rateLimited": "Too many requests. Please try again in an hour.",
+        "successBody": "Your request has gone to our sales team. We will be in touch within one business day.",
+        "consent": "By submitting this form you agree that your details may be processed to arrange a demo and prepare a quote. See the privacy policy for details."
+      }
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "updated": "Last updated: 6 September 2026",
+      "draftNotice": "DRAFT — this text has not been through legal review and is not binding.",
+      "sections": {
+        "controller": {
+          "heading": "Data controller",
+          "body": "The organisation using the platform is the controller for its participants' data and BizSim is the processor. For data sent to us directly through the marketing site, BizSim is the controller."
+        },
+        "dataCollected": {
+          "heading": "Data we collect",
+          "body": "Account details (name, email, phone, role), academic profile (university, faculty, specialty, year), usage events (lesson completions, exam attempts, sign-in records) and uploaded files (project PDFs, avatars).\n\nThrough the demo form: name, company, email, phone, estimated participant count and message."
+        },
+        "purposes": {
+          "heading": "Purposes",
+          "body": "Delivering the service, tracking participant progress, issuing and verifying certificates, investigating security incidents, billing and support."
+        },
+        "legalBasis": {
+          "heading": "Legal basis",
+          "body": "Performance of a contract (delivering the service), legitimate interest (security and abuse prevention), legal obligation (accounting) and consent (the marketing form)."
+        },
+        "sharing": {
+          "heading": "Sharing with third parties",
+          "body": "We do not sell data. It is shared only with the processors the service needs: cloud infrastructure, email delivery and the payment provider. A data processing agreement is in place with each."
+        },
+        "transfers": {
+          "heading": "International transfers",
+          "body": "Processing takes place primarily on servers in the European region. Where a transfer outside that region occurs, legal mechanisms such as standard contractual clauses apply."
+        },
+        "retention": {
+          "heading": "Retention",
+          "body": "Account data is kept for the life of the subscription and for as long as the law requires afterwards. Issued certificates are kept longer so they remain verifiable. Demo form submissions are deleted once the sales process ends."
+        },
+        "security": {
+          "heading": "Security measures",
+          "body": "Encrypted connections, hashed passwords, mandatory two-factor authentication for admin roles, role-based authorisation, organisation isolation enforced at the database level, and an audit log."
+        },
+        "rights": {
+          "heading": "Your rights",
+          "body": "You have the right to access, rectify, erase, restrict, port and object to the processing of your data. See the contact section below to make a request.\n\nNote: for data held by an organisation you participate in, address the request to that organisation first."
+        },
+        "cookies": {
+          "heading": "Cookies",
+          "body": "Only cookies the service needs are used: session, language preference and interface theme. No advertising or tracking cookies are set."
+        },
+        "changes": {
+          "heading": "Changes to this policy",
+          "body": "When this document is updated the date above changes. Significant changes are announced to organisation admins by email."
+        },
+        "contact": {
+          "heading": "Contact",
+          "body": "For privacy questions and data requests, use the form on the contact page and mention “Privacy” in your message."
+        }
+      }
+    },
+    "terms": {
+      "title": "Terms of service",
+      "updated": "Last updated: 6 September 2026",
+      "draftNotice": "DRAFT — this text has not been through legal review and is not binding.",
+      "sections": {
+        "acceptance": {
+          "heading": "Acceptance",
+          "body": "By using the platform you accept these terms. Where a separate agreement has been signed on behalf of an organisation, that agreement prevails in case of conflict."
+        },
+        "service": {
+          "heading": "The service",
+          "body": "BizSim is a multi-tenant software service covering training, exams, simulations, hackathons, certificates and analytics. Which modules are active depends on the subscription plan."
+        },
+        "accounts": {
+          "heading": "Accounts and security",
+          "body": "Users are responsible for the security of their account. Two-factor authentication is mandatory for admin roles. Sharing credentials is prohibited."
+        },
+        "seats": {
+          "heading": "Seat licensing",
+          "body": "A subscription is capped by its seat count. When the cap is reached no further participant can register. The seat count can be raised at any time."
+        },
+        "acceptableUse": {
+          "heading": "Acceptable use",
+          "body": "The platform may not be used for unlawful purposes, to infringe the rights of others, to attempt unauthorised access, or for automated bulk requests."
+        },
+        "content": {
+          "heading": "Content and ownership",
+          "body": "Content an organisation uploads (programmes, scenarios, projects) belongs to that organisation. The platform itself, its code and its design belong to BizSim."
+        },
+        "availability": {
+          "heading": "Availability",
+          "body": "We aim for uninterrupted service, but planned maintenance and provider-side outages can occur. Planned work is announced in advance."
+        },
+        "fees": {
+          "heading": "Fees",
+          "body": "Fees are billed monthly on the seat count. Service may be suspended if payment is late. Price changes are announced at least one billing period in advance."
+        },
+        "termination": {
+          "heading": "Termination",
+          "body": "A subscription can be cancelled at the end of the current period. Serious breach of these terms may lead to immediate suspension. A reasonable window for data export is given after cancellation."
+        },
+        "liability": {
+          "heading": "Limitation of liability",
+          "body": "To the extent permitted by law, we are not liable for indirect damages. Total liability is limited to the subscription fees paid in the preceding twelve months."
+        },
+        "governingLaw": {
+          "heading": "Governing law",
+          "body": "These terms are governed by the law of the country in which the provider is registered. Disputes are heard by the competent courts of that jurisdiction."
+        },
+        "contact": {
+          "heading": "Contact",
+          "body": "For questions about these terms, use the form on the contact page."
+        }
+      }
     }
   }
 }

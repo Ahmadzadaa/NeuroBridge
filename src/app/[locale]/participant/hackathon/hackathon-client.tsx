@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { useApiErrorMessage } from "@/lib/api/api-error";
 import { motion, useReducedMotion } from "framer-motion";
 import confetti from "canvas-confetti";
 import {
@@ -167,6 +168,7 @@ export function HackathonClient({
 }: HackathonClientProps) {
   const t = useTranslations("hackathon");
   const tc = useTranslations("common");
+  const apiError = useApiErrorMessage();
   const router = useRouter();
   const reducedMotion = useReducedMotion();
 
@@ -245,7 +247,7 @@ export function HackathonClient({
         const data = (await res.json().catch(() => null)) as {
           error?: string;
         } | null;
-        toast.error(data?.error ?? tc("error"));
+        toast.error(apiError(data));
         return;
       }
       toast.success(t("submission.uploaded"));

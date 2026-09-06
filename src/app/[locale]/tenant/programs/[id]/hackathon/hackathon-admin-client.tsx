@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { useApiErrorMessage } from "@/lib/api/api-error";
 import {
   ArrowLeft,
   Copy,
@@ -62,6 +63,7 @@ export function HackathonAdminClient({
   juries,
 }: HackathonAdminClientProps) {
   const t = useTranslations("hackathon");
+  const apiError = useApiErrorMessage();
   const tc = useTranslations("common");
   const router = useRouter();
 
@@ -146,7 +148,7 @@ export function HackathonAdminClient({
         error?: string;
       } | null;
       if (!res.ok) {
-        toast.error(data?.error ?? tc("error"));
+        toast.error(apiError(data));
         return;
       }
       if (data?.tempPassword) setTempPassword(data.tempPassword);
@@ -174,7 +176,7 @@ export function HackathonAdminClient({
         error?: string;
       } | null;
       if (!res.ok) {
-        toast.error(data?.error ?? tc("error"));
+        toast.error(apiError(data));
         return;
       }
       if (revealAt === "now") {

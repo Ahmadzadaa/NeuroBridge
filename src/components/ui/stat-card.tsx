@@ -68,12 +68,15 @@ export function StatCard({
   const numericValue = typeof value === "number" ? value : null;
 
   return (
+    // The entry fade moved to CSS (`.animate-enter`). As a framer-motion
+    // `initial`/`animate` pair it left the card at `opacity: 0` whenever the
+    // document was hidden at mount, because `requestAnimationFrame` does not
+    // run then — a dashboard opened in a background tab showed empty space
+    // where its numbers should be. `whileHover` stays here: it is a response
+    // to input, so it can only run when there is someone to see it.
     <motion.div
-      initial={reducedMotion ? false : { opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
       whileHover={reducedMotion ? undefined : { y: -3, transition: { duration: 0.25 } }}
-      className="h-full"
+      className="animate-enter h-full"
     >
       <div
         className={cn(
@@ -86,7 +89,12 @@ export function StatCard({
         <div className={cn("h-1 w-full", styles.bar)} aria-hidden="true" />
 
         <div className="p-5">
-          <div className="flex items-center justify-between gap-3">
+          {/* The title used to be right-aligned and pushed to the far edge by
+              `justify-between`. On a narrow card a two-word label wrapped and
+              then sat flush against the border with no breathing room, so it
+              reads from the left next to the icon instead. `min-w-0` lets it
+              wrap inside the row rather than forcing the row wider. */}
+          <div className="flex items-start gap-3">
             <div
               className={cn(
                 "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl",
@@ -95,7 +103,9 @@ export function StatCard({
             >
               <Icon className={cn("h-5 w-5", styles.icon)} />
             </div>
-            <Label className="text-right">{title}</Label>
+            <Label className="min-w-0 flex-1 pt-0.5 text-left leading-snug text-pretty break-words">
+              {title}
+            </Label>
           </div>
 
           <div className="mt-4 text-[36px] font-bold leading-[1.1] tracking-[-0.5px] text-foreground">

@@ -3,6 +3,9 @@ import { withAuthorizedHandler } from "@/lib/auth/authorize";
 import { assertFeatureEnabled } from "@/lib/tenant/features";
 import { examAttemptSchema, parseBody } from "@/lib/validation/schemas";
 import { prisma } from "@/lib/prisma";
+import {
+  assertTrainingAccess,
+} from "@/lib/programs/training-access";
 
 const EXAM_PASS_COIN_REWARD = 50;
 
@@ -18,12 +21,23 @@ export async function POST(
 
     const exam = await prisma.exam.findUnique({
       where: { id },
-      include: { questions: { orderBy: { order: "asc" } } },
+      include: {
+        questions: { orderBy: { order: "asc" } },
+        training: { select: { key: true } },
+      },
     });
 
     if (!exam || exam.questions.length === 0) {
       return NextResponse.json({ error: "Exam not found" }, { status: 404 });
     }
+
+    // The exam id alone proves nothing: without this the holder of any exam id
+    // could sit another tenant's exam and collect the coin reward.
+    await assertTrainingAccess({
+      userId: session.id,
+      tenantId: session.tenantId,
+      trainingKey: exam.training.key,
+    });
 
     const results = exam.questions.map((q) => {
       const answer = body.answers[q.id] ?? null;

@@ -18,8 +18,93 @@ import type { PaytrCallbackPayload } from "@/lib/payment/paytr/paytr.types";
 export interface CallbackResult {
   handled: boolean;
   duplicate: boolean;
+  /** Another delivery of the same notification is mid-flight. */
+  inFlight?: boolean;
   invoiceId?: string;
   seatsApplied?: boolean;
+}
+
+/**
+ * How long a claimed-but-unfinished notification blocks a redelivery.
+ *
+ * PayTR retries aggressively, so two deliveries of the same order can overlap.
+ * Without a claim both would pass the "already processed?" check and both would
+ * grant seats. A claim that is never completed — the process died mid-write —
+ * must not block the order forever either, hence the expiry.
+ */
+const CLAIM_STALE_MS = 5 * 60 * 1000;
+
+type ClaimResult = "claimed" | "duplicate" | "in_flight";
+
+function isUniqueViolation(error: unknown): boolean {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    (error as { code?: string }).code === "P2002"
+  );
+}
+
+/**
+ * Takes exclusive ownership of one merchant_oid.
+ *
+ * The unique index on `(provider, externalEventId)` is what actually
+ * serialises this: two concurrent deliveries both attempt the insert and
+ * exactly one succeeds, whatever the database's isolation level.
+ */
+async function claimCallback(merchantOid: string): Promise<ClaimResult> {
+  const key = {
+    provider_externalEventId: {
+      provider: "PAYTR",
+      externalEventId: merchantOid,
+    },
+  };
+
+  try {
+    await prisma.webhookEvent.create({
+      data: {
+        provider: "PAYTR",
+        externalEventId: merchantOid,
+        eventType: "paytr.received",
+        status: "PROCESSING",
+        signatureValid: true,
+      },
+    });
+    return "claimed";
+  } catch (error) {
+    if (!isUniqueViolation(error)) throw error;
+  }
+
+  const existing = await prisma.webhookEvent.findUnique({ where: key });
+  // Deleted between the insert and this read: nothing owns it, so take it.
+  if (!existing) return "claimed";
+  if (existing.status === "PROCESSED") return "duplicate";
+
+  const age = Date.now() - existing.createdAt.getTime();
+  if (existing.status === "PROCESSING" && age < CLAIM_STALE_MS) {
+    return "in_flight";
+  }
+
+  // A previous attempt failed, or died holding the claim. Retake it.
+  await prisma.webhookEvent.update({
+    where: key,
+    data: { status: "PROCESSING", errorMessage: null },
+  });
+  return "claimed";
+}
+
+/** Releases a claim so a later delivery can retry, without marking success. */
+async function releaseClaim(merchantOid: string, reason: string): Promise<void> {
+  await prisma.webhookEvent
+    .update({
+      where: {
+        provider_externalEventId: {
+          provider: "PAYTR",
+          externalEventId: merchantOid,
+        },
+      },
+      data: { status: "FAILED", errorMessage: reason },
+    })
+    .catch(() => undefined);
 }
 
 export async function processPaytrCallback(
@@ -27,23 +112,21 @@ export async function processPaytrCallback(
 ): Promise<CallbackResult> {
   const merchantOid = payload.merchant_oid;
 
-  const existing = await prisma.webhookEvent.findUnique({
-    where: {
-      provider_externalEventId: {
-        provider: "PAYTR",
-        externalEventId: merchantOid,
-      },
-    },
-  });
-
-  if (existing?.status === "PROCESSED") {
+  const claim = await claimCallback(merchantOid);
+  if (claim === "duplicate") {
     return { handled: true, duplicate: true };
+  }
+  if (claim === "in_flight") {
+    return { handled: false, duplicate: true, inFlight: true };
   }
 
   const invoice = await findInvoiceByMerchantOid(merchantOid);
   if (!invoice) {
-    // Not ours (or not yet written). Surface it so the caller can ask PayTR to
-    // retry rather than silently acknowledging a payment we cannot match.
+    // Not ours (or not yet written). Release the claim first, otherwise the
+    // redelivery that arrives once the invoice exists would be turned away as
+    // in-flight. Then surface it so the caller can ask PayTR to retry rather
+    // than silently acknowledging a payment we cannot match.
+    await releaseClaim(merchantOid, `No invoice for merchant_oid ${merchantOid}`);
     throw new Error(`No invoice for merchant_oid ${merchantOid}`);
   }
 

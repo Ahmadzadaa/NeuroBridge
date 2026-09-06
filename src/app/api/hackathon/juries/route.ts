@@ -1,3 +1,5 @@
+import { localeUrl } from "@/lib/app-url";
+import { routing } from "@/i18n/routing";
 import { randomBytes } from "crypto";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
@@ -71,6 +73,7 @@ export async function POST(request: Request) {
             firstName: body.firstName,
             lastName: body.lastName,
             role: "JURY",
+            language: session.language ?? routing.defaultLocale,
           },
         });
         juryUserId = user.id;
@@ -100,7 +103,8 @@ export async function POST(request: Request) {
           ...juryCredentialsEmail({
             email: body.email,
             tempPassword,
-            loginUrl: `${origin}/az/login`,
+            loginUrl: localeUrl(origin, "/login", session.language),
+            language: session.language,
           }),
         });
       }

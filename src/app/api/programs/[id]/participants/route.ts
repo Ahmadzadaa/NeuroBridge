@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { withAuthorizedHandler } from "@/lib/auth/authorize";
 import { parsePagination } from "@/lib/pagination";
-import { listProgramParticipants, ProgramNotFoundError } from "@/lib/participants/participant-service";
+import { listProgramParticipants } from "@/lib/participants/participant-service";
 import { enforceRateLimit, getClientIdentifier } from "@/lib/security/rate-limit";
 
 export async function GET(
@@ -27,19 +27,14 @@ export async function GET(
         return NextResponse.json({ error: "Tenant required" }, { status: 400 });
       }
 
-      try {
-        return await listProgramParticipants(
-          tenantContext,
-          programId,
-          session.tenantId,
-          pagination
-        );
-      } catch (error) {
-        if (error instanceof ProgramNotFoundError) {
-          return NextResponse.json({ error: error.message }, { status: 404 });
-        }
-        throw error;
-      }
+      // A missing programme throws ProgramNotFoundError, which carries its own
+      // 404 and code for the shared error mapper.
+      return listProgramParticipants(
+        tenantContext,
+        programId,
+        session.tenantId,
+        pagination
+      );
     },
     { requireTenant: true }
   );

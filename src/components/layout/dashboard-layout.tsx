@@ -154,7 +154,7 @@ export function DashboardLayout({
         <button
           type="button"
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+          aria-label={sidebarOpen ? t("collapseSidebar") : t("expandSidebar")}
           className={cn(
             "absolute -right-3 top-20 z-50 flex h-6 w-6 items-center justify-center rounded-full",
             "border border-border bg-card text-muted-foreground shadow-sm",
@@ -173,7 +173,7 @@ export function DashboardLayout({
       {/* ── Main column ─────────────────────────────────────────── */}
       <div
         className={cn(
-          "flex min-h-screen flex-col transition-[margin] duration-[250ms] ease-[cubic-bezier(0.4,0,0.2,1)]",
+          "flex min-h-screen min-w-0 flex-col transition-[margin] duration-[250ms] ease-[cubic-bezier(0.4,0,0.2,1)]",
           sidebarOpen ? "lg:ml-60" : "lg:ml-16"
         )}
       >
@@ -191,7 +191,7 @@ export function DashboardLayout({
               variant="ghost"
               size="icon"
               className="rounded-xl"
-              aria-label="Notifications"
+              aria-label={t("notifications")}
             >
               <Bell className="h-5 w-5" />
             </Button>
@@ -218,8 +218,8 @@ export function DashboardLayout({
         </header>
 
         {/* Page content — capped at 1400px so ultra-wide screens stay composed */}
-        <main className="flex-1 p-4 pb-24 lg:p-6 lg:pb-6">
-          <div className="mx-auto w-full max-w-[1400px]">
+        <main className="min-w-0 flex-1 p-4 pb-24 lg:p-6 lg:pb-6">
+          <div className="mx-auto w-full min-w-0 max-w-[1400px]">
             <PageTransition>{children}</PageTransition>
           </div>
         </main>

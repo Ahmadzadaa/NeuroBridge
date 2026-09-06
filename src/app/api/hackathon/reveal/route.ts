@@ -3,6 +3,7 @@ import { withAuthorizedHandler } from "@/lib/auth/authorize";
 import { assertFeatureEnabled } from "@/lib/tenant/features";
 import { revealSchema, parseBody } from "@/lib/validation/schemas";
 import { prisma } from "@/lib/prisma";
+import { localeUrl } from "@/lib/app-url";
 import { computeRankings } from "@/lib/hackathon/ranking";
 import { resultsVisible } from "@/lib/hackathon/reveal";
 import { sendEmail } from "@/lib/email/email-service";
@@ -53,12 +54,15 @@ export async function PATCH(request: Request) {
           prisma.hackathonTeam.findMany({
             where: { programId: program.id },
             include: {
-              members: { include: { user: { select: { email: true } } } },
+              members: {
+                include: {
+                  user: { select: { email: true, language: true } },
+                },
+              },
             },
           }),
         ]);
         const rankByTeam = new Map(rankings.map((r) => [r.teamId, r]));
-        const resultsUrl = `${appBaseUrl(request)}/az/participant/hackathon`;
 
         await Promise.all(
           teams.flatMap((team) => {
@@ -70,7 +74,12 @@ export async function PATCH(request: Request) {
                 teamName: team.name,
                 rank: ranking.rank,
                 total: ranking.total,
-                resultsUrl,
+                resultsUrl: localeUrl(
+                  appBaseUrl(request),
+                  "/participant/hackathon",
+                  member.user.language
+                ),
+                language: member.user.language,
               });
               const result = await sendEmail({ to: member.user.email, ...mail });
               if (result.sent) emailed += 1;

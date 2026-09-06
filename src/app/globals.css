@@ -40,6 +40,7 @@
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
+  --color-primary-text: var(--primary-text);
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
@@ -94,23 +95,24 @@
 
 :root {
   /* Backgrounds */
-  --background: #f7f8fc;
-  --foreground: #111827;
+  --background: #eef1f8;
+  --foreground: #1b2436;
   --card: #ffffff;
-  --card-foreground: #111827;
+  --card-foreground: #1b2436;
   --popover: #ffffff;
-  --popover-foreground: #111827;
-  --subtle: #f0f2f8;
+  --popover-foreground: #1b2436;
+  --subtle: #e3e9f4;
   --elevated: #ffffff;
 
   /* Brand */
   --primary: #4f46e5;
   --primary-foreground: #ffffff;
-  --secondary: #f0f2f8;
-  --secondary-foreground: #111827;
-  --muted: #f0f2f8;
-  --muted-foreground: #4b5563;
-  --tertiary: #9ca3af;
+  --primary-text: #4338ca;
+  --secondary: #e8ecf6;
+  --secondary-foreground: #1b2436;
+  --muted: #e8ecf6;
+  --muted-foreground: #59637a;
+  --tertiary: #848da2;
   --accent: #eef2ff;
   --accent-foreground: #3730a3;
 
@@ -132,8 +134,8 @@
   --coin-dark: #92400e;
 
   /* Chrome */
-  --border: #e5e7eb;
-  --input: #e5e7eb;
+  --border: #d9dfeb;
+  --input: #ccd4e4;
   --ring: #4f46e5;
   --radius: 0.75rem;
 
@@ -146,13 +148,19 @@
 
   /* Sidebar */
   --sidebar: #ffffff;
-  --sidebar-foreground: #111827;
+  --sidebar-foreground: #1b2436;
   --sidebar-primary: #4f46e5;
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #eef2ff;
   --sidebar-accent-foreground: #3730a3;
-  --sidebar-border: #e5e7eb;
+  --sidebar-border: #d9dfeb;
   --sidebar-ring: #4f46e5;
+
+  /* Elevation — slate-tinted so it reads as lift on a light page. */
+  --shadow-sm: 0 1px 2px rgba(27, 36, 54, 0.06), 0 2px 8px rgba(27, 36, 54, 0.05);
+  --shadow-md: 0 4px 12px rgba(27, 36, 54, 0.08), 0 2px 6px rgba(27, 36, 54, 0.05);
+  --shadow-lg: 0 10px 28px rgba(27, 36, 54, 0.1), 0 4px 10px rgba(27, 36, 54, 0.06);
+  --shadow-hover: 0 14px 34px rgba(27, 36, 54, 0.12), 0 5px 12px rgba(27, 36, 54, 0.07);
 }
 
 .dark {
@@ -166,13 +174,15 @@
   --subtle: #1e1e30;
   --elevated: #1a1a2e;
 
-  /* Brand — lighter indigo for contrast on dark */
-  --primary: #6366f1;
+  /* Brand — lighter indigo for contrast on dark. Nudged two shades
+     darker than indigo-500 so white button labels clear AA (4.6:1). */
+  --primary: #6062ee;
   --primary-foreground: #ffffff;
+  --primary-text: #a5b0ff;
   --secondary: #1e1e30;
   --secondary-foreground: #f9fafb;
   --muted: #1e1e30;
-  --muted-foreground: #9ca3af;
+  --muted-foreground: #a3adc0;
   --tertiary: #6b7280;
   --accent: #1e1e30;
   --accent-foreground: #c7d2fe;
@@ -195,8 +205,8 @@
   --coin-dark: #fcd34d;
 
   /* Chrome */
-  --border: #1f2937;
-  --input: #1f2937;
+  --border: #262e3e;
+  --input: #2b3446;
   --ring: #6366f1;
 
   /* Charts */
@@ -213,8 +223,15 @@
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #1e1e30;
   --sidebar-accent-foreground: #c7d2fe;
-  --sidebar-border: #1f2937;
+  --sidebar-border: #262e3e;
   --sidebar-ring: #6366f1;
+
+  /* Elevation — a black drop is invisible on a dark page, so it only
+     softens the edge; the card/background tonal step does the lifting. */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --shadow-hover: 0 14px 36px rgba(0, 0, 0, 0.55);
 }
 
 @layer base {
@@ -357,6 +374,32 @@
     opacity: 0;
     transform: translateY(-18px);
   }
+}
+
+/* Entry animation whose RESTING state is the visible one.
+ *
+ * Written in CSS rather than with framer-motion on purpose. A JS entry
+ * animation sets the element to `opacity: 0` and depends on an animation frame
+ * to bring it back — and `requestAnimationFrame` does not run while a document
+ * is hidden. A page opened in a background tab, or switched away from while it
+ * loaded, therefore stayed invisible: the markup was all present, at zero
+ * opacity, with nothing in the console to explain it.
+ *
+ * Here the element's own style IS the resting state and the keyframe only
+ * describes where the animation starts from. There is deliberately no `to`
+ * block and no `animation-fill-mode`: if the animation never runs, is
+ * interrupted, or is stripped by the reduced-motion rule below, the element is
+ * simply visible. Content is never gated on an animation completing.
+ */
+@keyframes enter-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.animate-enter {
+  animation: enter-rise 220ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Accessibility: respect reduced motion everywhere */

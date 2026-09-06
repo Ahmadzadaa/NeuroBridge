@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { useApiErrorMessage } from "@/lib/api/api-error";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   Award,
@@ -68,6 +69,7 @@ const LANGUAGES = [
 
 export function ProfileClient({ locale, profile }: ProfileClientProps) {
   const t = useTranslations("participant.profilePage");
+  const apiError = useApiErrorMessage();
   const tc = useTranslations("common");
   const router = useRouter();
   const reducedMotion = useReducedMotion();
@@ -166,7 +168,7 @@ export function ProfileClient({ locale, profile }: ProfileClientProps) {
       } | null;
 
       if (!res.ok) {
-        toast.error(data?.error ?? tc("error"));
+        toast.error(apiError(data));
         return;
       }
 
@@ -208,14 +210,8 @@ export function ProfileClient({ locale, profile }: ProfileClientProps) {
         body: JSON.stringify({ currentPassword, newPassword }),
       });
       if (res.status === 400) {
-        const data = (await res.json().catch(() => null)) as {
-          error?: string;
-        } | null;
-        toast.error(
-          data?.error?.includes("incorrect")
-            ? t("wrongCurrentPassword")
-            : data?.error ?? tc("error")
-        );
+        const data = await res.json().catch(() => null);
+        toast.error(apiError(data));
         return;
       }
       if (!res.ok) throw new Error();

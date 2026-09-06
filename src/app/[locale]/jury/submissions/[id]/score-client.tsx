@@ -120,6 +120,7 @@ export function ScoreSubmissionClient({
               variant="outline"
               size="sm"
               className="rounded-lg"
+              nativeButton={false}
               render={<a href={fileUrl} target="_blank" rel="noreferrer" />}
             >
               <ExternalLink className="h-4 w-4" aria-hidden="true" />

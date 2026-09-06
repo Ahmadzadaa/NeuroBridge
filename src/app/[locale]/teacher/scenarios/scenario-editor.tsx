@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { useApiErrorMessage } from "@/lib/api/api-error";
 import {
   ArrowLeft,
   ChevronDown,
@@ -20,54 +21,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-
-export interface ChoiceDraft {
-  label: string;
-  detail: string;
-  cashDelta: number;
-  satisfactionDelta: number;
-  reputationDelta: number;
-  variance: number;
-  feedback: string;
-}
-
-export interface RoundDraft {
-  title: string;
-  context: string;
-  choices: ChoiceDraft[];
-}
-
-export interface ScenarioDraft {
-  name: string;
-  description: string;
-  startCash: number;
-  targetCash: number;
-  rounds: RoundDraft[];
-}
-
-const emptyChoice = (): ChoiceDraft => ({
-  label: "",
-  detail: "",
-  cashDelta: 0,
-  satisfactionDelta: 0,
-  reputationDelta: 0,
-  variance: 0,
-  feedback: "",
-});
-
-const emptyRound = (): RoundDraft => ({
-  title: "",
-  context: "",
-  choices: [emptyChoice(), emptyChoice()],
-});
-
-export const emptyScenario = (): ScenarioDraft => ({
-  name: "",
-  description: "",
-  startCash: 5000,
-  targetCash: 20000,
-  rounds: [emptyRound(), emptyRound(), emptyRound()],
-});
+import {
+  emptyChoice,
+  emptyRound,
+  type ChoiceDraft,
+  type RoundDraft,
+  type ScenarioDraft,
+} from "./scenario-draft";
 
 interface ScenarioEditorProps {
   locale: string;
@@ -86,6 +46,7 @@ export function ScenarioEditor({
   hasRuns,
 }: ScenarioEditorProps) {
   const t = useTranslations("teacher.editor");
+  const apiError = useApiErrorMessage();
   const tc = useTranslations("common");
   const router = useRouter();
 
@@ -172,7 +133,7 @@ export function ScenarioEditor({
         const data = (await res.json().catch(() => null)) as {
           error?: string;
         } | null;
-        toast.error(data?.error ?? tc("error"));
+        toast.error(apiError(data));
         return;
       }
       toast.success(t("saved"));

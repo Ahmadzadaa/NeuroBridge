@@ -395,6 +395,7 @@ export function ExamClient({
                   <Button
                     variant="outline"
                     className="rounded-xl"
+                    nativeButton={false}
                     render={<Link href={backHref} />}
                   >
                     {t("backToTraining")}

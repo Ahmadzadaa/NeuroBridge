@@ -47,3 +47,16 @@ next-env.d.ts
 
 # Hackathon project uploads
 /uploads
+prisma/schema.postgres.prisma
+
+# Scratch files left behind by local debugging and platform moves. These are
+# listed by name rather than by pattern so a real file is never hidden by
+# accident.
+.writetest
+.mac-ready
+_probe.mjs
+_cert_assets.tgz
+*.bak
+
+# Unrelated document that happened to be saved into the project root.
+DaCy_Azerbaijan.pdf

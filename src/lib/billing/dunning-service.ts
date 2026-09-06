@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { localeUrl } from "@/lib/app-url";
 import { recordAudit } from "@/lib/audit/audit-service";
 import { AUDIT_ACTIONS } from "@/lib/audit/actions";
 import { sendEmail } from "@/lib/email/email-service";
@@ -210,7 +211,7 @@ export async function expireSubscription(
   });
   const admin = await prisma.user.findFirst({
     where: { tenantId, role: "TENANT_ADMIN" },
-    select: { email: true },
+    select: { email: true, language: true },
   });
 
   const recipient = admin?.email ?? tenant?.email;
@@ -221,7 +222,9 @@ export async function expireSubscription(
     to: recipient,
     ...subscriptionExpiredEmail({
       organizationName: tenant.name,
-      paymentUrl: `${appUrl}/tenant/billing`,
+      // Every route is locale-prefixed, so a bare path does not resolve.
+      paymentUrl: localeUrl(appUrl, "/tenant/billing", admin?.language),
+      language: admin?.language,
     }),
   });
 }
@@ -240,7 +243,7 @@ async function notifyPaymentFailed(
     }),
     prisma.user.findFirst({
       where: { tenantId, role: "TENANT_ADMIN" },
-      select: { email: true },
+      select: { email: true, language: true },
     }),
   ]);
 
@@ -258,7 +261,8 @@ async function notifyPaymentFailed(
       attemptNo,
       nextRetryAt: nextRetryAfter(pastDueSince, attemptNo),
       expiresAt: expiryDeadline(pastDueSince),
-      paymentUrl: `${appUrl}/tenant/billing`,
+      paymentUrl: localeUrl(appUrl, "/tenant/billing", admin?.language),
+      language: admin?.language,
     }),
   });
 }
