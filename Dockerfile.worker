@@ -5,7 +5,8 @@ WORKDIR /app
 
 FROM base AS deps
 COPY package.json package-lock.json ./
-RUN npm ci
+# prisma generate (postinstall) runs later, once the schema is copied in.
+RUN npm ci --ignore-scripts
 
 FROM base AS runner
 ENV NODE_ENV=production
@@ -15,6 +16,8 @@ COPY package.json package-lock.json ./
 COPY prisma ./prisma
 COPY src ./src
 COPY scripts ./scripts
+# Seeds read display names (e.g. training titles) from the message catalogues.
+COPY messages ./messages
 COPY tsconfig.json ./
 
 # Production is PostgreSQL; the default schema is pinned to SQLite for local dev.

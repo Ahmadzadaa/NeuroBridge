@@ -1,0 +1,1226 @@
+{
+  "universities": [
+    {
+      "name": "Adana Alparslan Türkeş Bilim ve Teknoloji Üniversitesi",
+      "extra": "Adana"
+    },
+    {
+      "name": "Çukurova Üniversitesi",
+      "extra": "Adana"
+    },
+    {
+      "name": "Adıyaman Üniversitesi",
+      "extra": "Adıyaman"
+    },
+    {
+      "name": "Afyon Kocatepe Üniversitesi",
+      "extra": "Afyonkarahisar"
+    },
+    {
+      "name": "Afyonkarahisar Sağlık Bilimleri Üniversitesi",
+      "extra": "Afyonkarahisar"
+    },
+    {
+      "name": "Aksaray Üniversitesi",
+      "extra": "Aksaray"
+    },
+    {
+      "name": "Amasya Üniversitesi",
+      "extra": "Amasya"
+    },
+    {
+      "name": "Ankara Bilim Üniversitesi",
+      "extra": "Ankara"
+    },
+    {
+      "name": "Ankara Hacı Bayram Veli Üniversitesi",
+      "extra": "Ankara"
+    },
+    {
+      "name": "Ankara Medipol Üniversitesi",
+      "extra": "Ankara"
+    },
+    {
+      "name": "Ankara Müzik ve Güzel Sanatlar Üniversitesi",
+      "extra": "Ankara"
+    },
+    {
+      "name": "Ankara Sosyal Bilimler Üniversitesi",
+      "extra": "Ankara"
+    },
+    {
+      "name": "Ankara Yıldırım Beyazıt Üniversitesi",
+      "extra": "Ankara"
+    },
+    {
+      "name": "Ankara Üniversitesi",
+      "extra": "Ankara"
+    },
+    {
+      "name": "Atılım Üniversitesi",
+      "extra": "Ankara"
+    },
+    {
+      "name": "Başkent Üniversitesi",
+      "extra": "Ankara"
+    },
+    {
+      "name": "Gazi Üniversitesi",
+      "extra": "Ankara"
+    },
+    {
+      "name": "Hacettepe Üniversitesi",
+      "extra": "Ankara"
+    },
+    {
+      "name": "Lokman Hekim Üniversitesi",
+      "extra": "Ankara"
+    },
+    {
+      "name": "OSTİM Teknik Üniversitesi",
+      "extra": "Ankara"
+    },
+    {
+      "name": "Orta Doğu Teknik Üniversitesi",
+      "extra": "Ankara"
+    },
+    {
+      "name": "TED Üniversitesi",
+      "extra": "Ankara"
+    },
+    {
+      "name": "TOBB Ekonomi ve Teknoloji Üniversitesi",
+      "extra": "Ankara"
+    },
+    {
+      "name": "Türk Hava Kurumu Üniversitesi",
+      "extra": "Ankara"
+    },
+    {
+      "name": "Ufuk Üniversitesi",
+      "extra": "Ankara"
+    },
+    {
+      "name": "Yüksek İhtisas Üniversitesi",
+      "extra": "Ankara"
+    },
+    {
+      "name": "Çankaya Üniversitesi",
+      "extra": "Ankara"
+    },
+    {
+      "name": "İhsan Doğramacı Bilkent Üniversitesi",
+      "extra": "Ankara"
+    },
+    {
+      "name": "Akdeniz Üniversitesi",
+      "extra": "Antalya"
+    },
+    {
+      "name": "Alanya Alaaddin Keykubat Üniversitesi",
+      "extra": "Antalya"
+    },
+    {
+      "name": "Alanya Üniversitesi",
+      "extra": "Antalya"
+    },
+    {
+      "name": "Antalya Belek Üniversitesi",
+      "extra": "Antalya"
+    },
+    {
+      "name": "Antalya Bilim Üniversitesi",
+      "extra": "Antalya"
+    },
+    {
+      "name": "Ardahan Üniversitesi",
+      "extra": "Ardahan"
+    },
+    {
+      "name": "Artvin Çoruh Üniversitesi",
+      "extra": "Artvin"
+    },
+    {
+      "name": "Aydın Adnan Menderes Üniversitesi",
+      "extra": "Aydın"
+    },
+    {
+      "name": "Ağrı İbrahim Çeçen Üniversitesi",
+      "extra": "Ağrı"
+    },
+    {
+      "name": "Balıkesir Üniversitesi",
+      "extra": "Balıkesir"
+    },
+    {
+      "name": "Bandırma Onyedi Eylül Üniversitesi",
+      "extra": "Balıkesir"
+    },
+    {
+      "name": "Bartın Üniversitesi",
+      "extra": "Bartın"
+    },
+    {
+      "name": "Batman Üniversitesi",
+      "extra": "Batman"
+    },
+    {
+      "name": "Bayburt Üniversitesi",
+      "extra": "Bayburt"
+    },
+    {
+      "name": "Bilecik Şeyh Edebali Üniversitesi",
+      "extra": "Bilecik"
+    },
+    {
+      "name": "Bingöl Üniversitesi",
+      "extra": "Bingöl"
+    },
+    {
+      "name": "Bitlis Eren Üniversitesi",
+      "extra": "Bitlis"
+    },
+    {
+      "name": "Bolu Abant İzzet Baysal Üniversitesi",
+      "extra": "Bolu"
+    },
+    {
+      "name": "Burdur Mehmet Akif Ersoy Üniversitesi",
+      "extra": "Burdur"
+    },
+    {
+      "name": "Bursa Teknik Üniversitesi",
+      "extra": "Bursa"
+    },
+    {
+      "name": "Bursa Uludağ Üniversitesi",
+      "extra": "Bursa"
+    },
+    {
+      "name": "Mudanya Üniversitesi",
+      "extra": "Bursa"
+    },
+    {
+      "name": "Pamukkale Üniversitesi",
+      "extra": "Denizli"
+    },
+    {
+      "name": "Dicle Üniversitesi",
+      "extra": "Diyarbakır"
+    },
+    {
+      "name": "Düzce Üniversitesi",
+      "extra": "Düzce"
+    },
+    {
+      "name": "Trakya Üniversitesi",
+      "extra": "Edirne"
+    },
+    {
+      "name": "Fırat Üniversitesi",
+      "extra": "Elazığ"
+    },
+    {
+      "name": "Erzincan Binali Yıldırım Üniversitesi",
+      "extra": "Erzincan"
+    },
+    {
+      "name": "Atatürk Üniversitesi",
+      "extra": "Erzurum"
+    },
+    {
+      "name": "Erzurum Teknik Üniversitesi",
+      "extra": "Erzurum"
+    },
+    {
+      "name": "Anadolu Üniversitesi",
+      "extra": "Eskişehir"
+    },
+    {
+      "name": "Eskişehir Osmangazi Üniversitesi",
+      "extra": "Eskişehir"
+    },
+    {
+      "name": "Eskişehir Teknik Üniversitesi",
+      "extra": "Eskişehir"
+    },
+    {
+      "name": "Gaziantep Üniversitesi",
+      "extra": "Gaziantep"
+    },
+    {
+      "name": "Gaziantep İslam Bilim ve Teknoloji Üniversitesi",
+      "extra": "Gaziantep"
+    },
+    {
+      "name": "Hasan Kalyoncu Üniversitesi",
+      "extra": "Gaziantep"
+    },
+    {
+      "name": "Sanko Üniversitesi",
+      "extra": "Gaziantep"
+    },
+    {
+      "name": "Giresun Üniversitesi",
+      "extra": "Giresun"
+    },
+    {
+      "name": "Gümüşhane Üniversitesi",
+      "extra": "Gümüşhane"
+    },
+    {
+      "name": "Hakkari Üniversitesi",
+      "extra": "Hakkari"
+    },
+    {
+      "name": "Hatay Mustafa Kemal Üniversitesi",
+      "extra": "Hatay"
+    },
+    {
+      "name": "İskenderun Teknik Üniversitesi",
+      "extra": "Hatay"
+    },
+    {
+      "name": "Isparta Uygulamalı Bilimler Üniversitesi",
+      "extra": "Isparta"
+    },
+    {
+      "name": "Süleyman Demirel Üniversitesi",
+      "extra": "Isparta"
+    },
+    {
+      "name": "Iğdır Üniversitesi",
+      "extra": "Iğdır"
+    },
+    {
+      "name": "Kahramanmaraş Sütçü İmam Üniversitesi",
+      "extra": "Kahramanmaraş"
+    },
+    {
+      "name": "Kahramanmaraş İstiklal Üniversitesi",
+      "extra": "Kahramanmaraş"
+    },
+    {
+      "name": "Karabük Üniversitesi",
+      "extra": "Karabük"
+    },
+    {
+      "name": "Karamanoğlu Mehmetbey Üniversitesi",
+      "extra": "Karaman"
+    },
+    {
+      "name": "Kafkas Üniversitesi",
+      "extra": "Kars"
+    },
+    {
+      "name": "Kastamonu Üniversitesi",
+      "extra": "Kastamonu"
+    },
+    {
+      "name": "Abdullah Gül Üniversitesi",
+      "extra": "Kayseri"
+    },
+    {
+      "name": "Erciyes Üniversitesi",
+      "extra": "Kayseri"
+    },
+    {
+      "name": "Kayseri Üniversitesi",
+      "extra": "Kayseri"
+    },
+    {
+      "name": "Nuh Naci Yazgan Üniversitesi",
+      "extra": "Kayseri"
+    },
+    {
+      "name": "Kilis 7 Aralık Üniversitesi",
+      "extra": "Kilis"
+    },
+    {
+      "name": "Gebze Teknik Üniversitesi",
+      "extra": "Kocaeli"
+    },
+    {
+      "name": "Kocaeli Sağlık ve Teknoloji Üniversitesi",
+      "extra": "Kocaeli"
+    },
+    {
+      "name": "Kocaeli Üniversitesi",
+      "extra": "Kocaeli"
+    },
+    {
+      "name": "KTO Karatay Üniversitesi",
+      "extra": "Konya"
+    },
+    {
+      "name": "Konya Gıda ve Tarım Üniversitesi",
+      "extra": "Konya"
+    },
+    {
+      "name": "Konya Teknik Üniversitesi",
+      "extra": "Konya"
+    },
+    {
+      "name": "Necmettin Erbakan Üniversitesi",
+      "extra": "Konya"
+    },
+    {
+      "name": "Selçuk Üniversitesi",
+      "extra": "Konya"
+    },
+    {
+      "name": "Kütahya Dumlupınar Üniversitesi",
+      "extra": "Kütahya"
+    },
+    {
+      "name": "Kütahya Sağlık Bilimleri Üniversitesi",
+      "extra": "Kütahya"
+    },
+    {
+      "name": "Kırklareli Üniversitesi",
+      "extra": "Kırklareli"
+    },
+    {
+      "name": "Kırıkkale Üniversitesi",
+      "extra": "Kırıkkale"
+    },
+    {
+      "name": "Kırşehir Ahi Evran Üniversitesi",
+      "extra": "Kırşehir"
+    },
+    {
+      "name": "Malatya Turgut Özal Üniversitesi",
+      "extra": "Malatya"
+    },
+    {
+      "name": "İnönü Üniversitesi",
+      "extra": "Malatya"
+    },
+    {
+      "name": "Manisa Celal Bayar Üniversitesi",
+      "extra": "Manisa"
+    },
+    {
+      "name": "Mardin Artuklu Üniversitesi",
+      "extra": "Mardin"
+    },
+    {
+      "name": "Mersin Üniversitesi",
+      "extra": "Mersin"
+    },
+    {
+      "name": "Tarsus Üniversitesi",
+      "extra": "Mersin"
+    },
+    {
+      "name": "Toros Üniversitesi",
+      "extra": "Mersin"
+    },
+    {
+      "name": "Çağ Üniversitesi",
+      "extra": "Mersin"
+    },
+    {
+      "name": "Muğla Sıtkı Koçman Üniversitesi",
+      "extra": "Muğla"
+    },
+    {
+      "name": "Muş Alparslan Üniversitesi",
+      "extra": "Muş"
+    },
+    {
+      "name": "Kapadokya Üniversitesi",
+      "extra": "Nevşehir"
+    },
+    {
+      "name": "Nevşehir Hacı Bektaş Veli Üniversitesi",
+      "extra": "Nevşehir"
+    },
+    {
+      "name": "Niğde Ömer Halisdemir Üniversitesi",
+      "extra": "Niğde"
+    },
+    {
+      "name": "Ordu Üniversitesi",
+      "extra": "Ordu"
+    },
+    {
+      "name": "Osmaniye Korkut Ata Üniversitesi",
+      "extra": "Osmaniye"
+    },
+    {
+      "name": "Recep Tayyip Erdoğan Üniversitesi",
+      "extra": "Rize"
+    },
+    {
+      "name": "Sakarya Uygulamalı Bilimler Üniversitesi",
+      "extra": "Sakarya"
+    },
+    {
+      "name": "Sakarya Üniversitesi",
+      "extra": "Sakarya"
+    },
+    {
+      "name": "Ondokuz Mayıs Üniversitesi",
+      "extra": "Samsun"
+    },
+    {
+      "name": "Samsun Üniversitesi",
+      "extra": "Samsun"
+    },
+    {
+      "name": "Siirt Üniversitesi",
+      "extra": "Siirt"
+    },
+    {
+      "name": "Sinop Üniversitesi",
+      "extra": "Sinop"
+    },
+    {
+      "name": "Sivas Bilim ve Teknoloji Üniversitesi",
+      "extra": "Sivas"
+    },
+    {
+      "name": "Sivas Cumhuriyet Üniversitesi",
+      "extra": "Sivas"
+    },
+    {
+      "name": "Tekirdağ Namık Kemal Üniversitesi",
+      "extra": "Tekirdağ"
+    },
+    {
+      "name": "Tokat Gaziosmanpaşa Üniversitesi",
+      "extra": "Tokat"
+    },
+    {
+      "name": "Avrasya Üniversitesi",
+      "extra": "Trabzon"
+    },
+    {
+      "name": "Karadeniz Teknik Üniversitesi",
+      "extra": "Trabzon"
+    },
+    {
+      "name": "Trabzon Üniversitesi",
+      "extra": "Trabzon"
+    },
+    {
+      "name": "Munzur Üniversitesi",
+      "extra": "Tunceli"
+    },
+    {
+      "name": "Uşak Üniversitesi",
+      "extra": "Uşak"
+    },
+    {
+      "name": "Van Yüzüncü Yıl Üniversitesi",
+      "extra": "Van"
+    },
+    {
+      "name": "Yalova Üniversitesi",
+      "extra": "Yalova"
+    },
+    {
+      "name": "Yozgat Bozok Üniversitesi",
+      "extra": "Yozgat"
+    },
+    {
+      "name": "Zonguldak Bülent Ecevit Üniversitesi",
+      "extra": "Zonguldak"
+    },
+    {
+      "name": "Çanakkale Onsekiz Mart Üniversitesi",
+      "extra": "Çanakkale"
+    },
+    {
+      "name": "Çankırı Karatekin Üniversitesi",
+      "extra": "Çankırı"
+    },
+    {
+      "name": "Hitit Üniversitesi",
+      "extra": "Çorum"
+    },
+    {
+      "name": "Acıbadem Mehmet Ali Aydınlar Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Altınbaş Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Ataşehir Adıgüzel Meslek Yüksekokulu",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Bahçeşehir Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Beykoz Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Bezm-i Âlem Vakıf Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Biruni Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Boğaziçi Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Demiroğlu Bilim Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Doğuş Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Fatih Sultan Mehmet Vakıf Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Fenerbahçe Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Galatasaray Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Haliç Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Işık Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Kadir Has Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Koç Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "MEF Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Maltepe Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Marmara Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Mimar Sinan Güzel Sanatlar Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Piri Reis Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Sabancı Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Sağlık Bilimleri Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Türk-Alman Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Türk-Japon Bilim ve Teknoloji Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Yeditepe Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Yıldız Teknik Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Özyeğin Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Üsküdar Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İbn Haldun Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul 29 Mayıs Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul Arel Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul Atlas Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul Aydın Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul Beykent Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul Bilgi Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul Esenyurt Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul Galata Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul Gedik Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul Gelişim Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul Kent Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul Kültür Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul Medeniyet Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul Medipol Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul Nişantaşı Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul Okan Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul Rumeli Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul Sabahattin Zaim Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul Sağlık ve Sosyal Bilimler Meslek Yüksekokulu",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul Sağlık ve Teknoloji Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul Teknik Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul Ticaret Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul Topkapı Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul Yeni Yüzyıl Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul Üniversitesi-Cerrahpaşa",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstanbul Şişli Meslek Yüksekokulu",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "İstinye Üniversitesi",
+      "extra": "İstanbul"
+    },
+    {
+      "name": "Dokuz Eylül Üniversitesi",
+      "extra": "İzmir"
+    },
+    {
+      "name": "Ege Üniversitesi",
+      "extra": "İzmir"
+    },
+    {
+      "name": "Yaşar Üniversitesi",
+      "extra": "İzmir"
+    },
+    {
+      "name": "İzmir Bakırçay Üniversitesi",
+      "extra": "İzmir"
+    },
+    {
+      "name": "İzmir Demokrasi Üniversitesi",
+      "extra": "İzmir"
+    },
+    {
+      "name": "İzmir Ekonomi Üniversitesi",
+      "extra": "İzmir"
+    },
+    {
+      "name": "İzmir Kavram Meslek Yüksekokulu",
+      "extra": "İzmir"
+    },
+    {
+      "name": "İzmir Kâtip Çelebi Üniversitesi",
+      "extra": "İzmir"
+    },
+    {
+      "name": "İzmir Tınaztepe Üniversitesi",
+      "extra": "İzmir"
+    },
+    {
+      "name": "İzmir Yüksek Teknoloji Enstitüsü",
+      "extra": "İzmir"
+    },
+    {
+      "name": "Harran Üniversitesi",
+      "extra": "Şanlıurfa"
+    },
+    {
+      "name": "Şırnak Üniversitesi",
+      "extra": "Şırnak"
+    }
+  ],
+  "departments": [
+    {
+      "name": "Fen Bilgisi Öğretmenliği",
+      "extra": "Eğitim"
+    },
+    {
+      "name": "Matematik Öğretmenliği",
+      "extra": "Eğitim"
+    },
+    {
+      "name": "Okul Öncesi Öğretmenliği",
+      "extra": "Eğitim"
+    },
+    {
+      "name": "Rehberlik ve Psikolojik Danışmanlık",
+      "extra": "Eğitim"
+    },
+    {
+      "name": "Sosyal Bilgiler Öğretmenliği",
+      "extra": "Eğitim"
+    },
+    {
+      "name": "Sınıf Öğretmenliği",
+      "extra": "Eğitim"
+    },
+    {
+      "name": "Türkçe Öğretmenliği",
+      "extra": "Eğitim"
+    },
+    {
+      "name": "Özel Eğitim Öğretmenliği",
+      "extra": "Eğitim"
+    },
+    {
+      "name": "İngilizce Öğretmenliği",
+      "extra": "Eğitim"
+    },
+    {
+      "name": "Bilgisayar Bilimleri",
+      "extra": "Fen Bilimleri"
+    },
+    {
+      "name": "Biyoloji",
+      "extra": "Fen Bilimleri"
+    },
+    {
+      "name": "Fizik",
+      "extra": "Fen Bilimleri"
+    },
+    {
+      "name": "Kimya",
+      "extra": "Fen Bilimleri"
+    },
+    {
+      "name": "Matematik",
+      "extra": "Fen Bilimleri"
+    },
+    {
+      "name": "Moleküler Biyoloji ve Genetik",
+      "extra": "Fen Bilimleri"
+    },
+    {
+      "name": "İstatistik",
+      "extra": "Fen Bilimleri"
+    },
+    {
+      "name": "Hukuk",
+      "extra": "Hukuk ve Kamu"
+    },
+    {
+      "name": "Kamu Yönetimi",
+      "extra": "Hukuk ve Kamu"
+    },
+    {
+      "name": "Siyaset Bilimi ve Kamu Yönetimi",
+      "extra": "Hukuk ve Kamu"
+    },
+    {
+      "name": "Uluslararası İlişkiler",
+      "extra": "Hukuk ve Kamu"
+    },
+    {
+      "name": "Yerel Yönetimler",
+      "extra": "Hukuk ve Kamu"
+    },
+    {
+      "name": "Endüstriyel Tasarım",
+      "extra": "Mimarlık ve Tasarım"
+    },
+    {
+      "name": "Mimarlık",
+      "extra": "Mimarlık ve Tasarım"
+    },
+    {
+      "name": "Peyzaj Mimarlığı",
+      "extra": "Mimarlık ve Tasarım"
+    },
+    {
+      "name": "İç Mimarlık",
+      "extra": "Mimarlık ve Tasarım"
+    },
+    {
+      "name": "Bilgisayar Mühendisliği",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "Biyomedikal Mühendisliği",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "Biyomühendislik",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "Biyosistem Mühendisliği",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "Elektrik-Elektronik Mühendisliği",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "Elektronik ve Haberleşme Mühendisliği",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "Endüstri Mühendisliği",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "Enerji Sistemleri Mühendisliği",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "Genetik ve Biyomühendislik",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "Gıda Mühendisliği",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "Harita Mühendisliği",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "Jeofizik Mühendisliği",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "Jeoloji Mühendisliği",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "Kimya Mühendisliği",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "Maden Mühendisliği",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "Makine Mühendisliği",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "Mekatronik Mühendisliği",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "Metalurji ve Malzeme Mühendisliği",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "Tekstil Mühendisliği",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "Uzay Mühendisliği",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "Uçak Mühendisliği",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "Yapay Zekâ Mühendisliği",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "Yapay Zekâ ve Veri Mühendisliği",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "Yazılım Mühendisliği",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "Yönetim Bilişim Sistemleri",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "Çevre Mühendisliği",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "İnşaat Mühendisliği",
+      "extra": "Mühendislik"
+    },
+    {
+      "name": "Arkeoloji",
+      "extra": "Sosyal Bilimler"
+    },
+    {
+      "name": "Felsefe",
+      "extra": "Sosyal Bilimler"
+    },
+    {
+      "name": "Psikoloji",
+      "extra": "Sosyal Bilimler"
+    },
+    {
+      "name": "Sanat Tarihi",
+      "extra": "Sosyal Bilimler"
+    },
+    {
+      "name": "Sosyoloji",
+      "extra": "Sosyal Bilimler"
+    },
+    {
+      "name": "Tarih",
+      "extra": "Sosyal Bilimler"
+    },
+    {
+      "name": "Türk Dili ve Edebiyatı",
+      "extra": "Sosyal Bilimler"
+    },
+    {
+      "name": "Orman Mühendisliği",
+      "extra": "Tarım, Orman ve Hayvancılık"
+    },
+    {
+      "name": "Su Ürünleri Mühendisliği",
+      "extra": "Tarım, Orman ve Hayvancılık"
+    },
+    {
+      "name": "Tarım Ekonomisi",
+      "extra": "Tarım, Orman ve Hayvancılık"
+    },
+    {
+      "name": "Veterinerlik",
+      "extra": "Tarım, Orman ve Hayvancılık"
+    },
+    {
+      "name": "Ziraat Mühendisliği",
+      "extra": "Tarım, Orman ve Hayvancılık"
+    },
+    {
+      "name": "Gastronomi ve Mutfak Sanatları",
+      "extra": "Turizm ve Hizmet"
+    },
+    {
+      "name": "Havacılık Yönetimi",
+      "extra": "Turizm ve Hizmet"
+    },
+    {
+      "name": "Spor Yöneticiliği",
+      "extra": "Turizm ve Hizmet"
+    },
+    {
+      "name": "Turizm Rehberliği",
+      "extra": "Turizm ve Hizmet"
+    },
+    {
+      "name": "Turizm İşletmeciliği",
+      "extra": "Turizm ve Hizmet"
+    },
+    {
+      "name": "Beslenme ve Diyetetik",
+      "extra": "Tıp ve Sağlık"
+    },
+    {
+      "name": "Dil ve Konuşma Terapisi",
+      "extra": "Tıp ve Sağlık"
+    },
+    {
+      "name": "Diş Hekimliği",
+      "extra": "Tıp ve Sağlık"
+    },
+    {
+      "name": "Ebelik",
+      "extra": "Tıp ve Sağlık"
+    },
+    {
+      "name": "Eczacılık",
+      "extra": "Tıp ve Sağlık"
+    },
+    {
+      "name": "Ergoterapi",
+      "extra": "Tıp ve Sağlık"
+    },
+    {
+      "name": "Fizyoterapi ve Rehabilitasyon",
+      "extra": "Tıp ve Sağlık"
+    },
+    {
+      "name": "Hemşirelik",
+      "extra": "Tıp ve Sağlık"
+    },
+    {
+      "name": "Odyoloji",
+      "extra": "Tıp ve Sağlık"
+    },
+    {
+      "name": "Sağlık Yönetimi",
+      "extra": "Tıp ve Sağlık"
+    },
+    {
+      "name": "Sosyal Hizmet",
+      "extra": "Tıp ve Sağlık"
+    },
+    {
+      "name": "Tıp",
+      "extra": "Tıp ve Sağlık"
+    },
+    {
+      "name": "Çocuk Gelişimi",
+      "extra": "Tıp ve Sağlık"
+    },
+    {
+      "name": "Gazetecilik",
+      "extra": "İletişim ve Medya"
+    },
+    {
+      "name": "Görsel İletişim Tasarımı",
+      "extra": "İletişim ve Medya"
+    },
+    {
+      "name": "Halkla İlişkiler ve Tanıtım",
+      "extra": "İletişim ve Medya"
+    },
+    {
+      "name": "Radyo, Televizyon ve Sinema",
+      "extra": "İletişim ve Medya"
+    },
+    {
+      "name": "Reklamcılık",
+      "extra": "İletişim ve Medya"
+    },
+    {
+      "name": "Yeni Medya ve İletişim",
+      "extra": "İletişim ve Medya"
+    },
+    {
+      "name": "Ekonomi",
+      "extra": "İşletme ve Ekonomi"
+    },
+    {
+      "name": "Ekonomi ve Finans",
+      "extra": "İşletme ve Ekonomi"
+    },
+    {
+      "name": "Finans ve Bankacılık",
+      "extra": "İşletme ve Ekonomi"
+    },
+    {
+      "name": "Girişimcilik",
+      "extra": "İşletme ve Ekonomi"
+    },
+    {
+      "name": "Lojistik Yönetimi",
+      "extra": "İşletme ve Ekonomi"
+    },
+    {
+      "name": "Muhasebe ve Finans Yönetimi",
+      "extra": "İşletme ve Ekonomi"
+    },
+    {
+      "name": "Pazarlama",
+      "extra": "İşletme ve Ekonomi"
+    },
+    {
+      "name": "Uluslararası Ticaret",
+      "extra": "İşletme ve Ekonomi"
+    },
+    {
+      "name": "Uluslararası Ticaret ve Lojistik",
+      "extra": "İşletme ve Ekonomi"
+    },
+    {
+      "name": "İktisat",
+      "extra": "İşletme ve Ekonomi"
+    },
+    {
+      "name": "İşletme",
+      "extra": "İşletme ve Ekonomi"
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-import { existsSync } from "fs";
+import { existsSync, readFileSync, writeFileSync } from "fs";
 import { PrismaClient } from "@prisma/client";
 import { readFirstSheet } from "./lib/office-zip";
 
@@ -58,8 +58,35 @@ function readRows(file: string, namePatterns: RegExp[], extraPatterns: RegExp[])
   return { rows, skipped };
 }
 
-async function importUniversities() {
-  const { rows, skipped } = readRows(UNIVERSITY_FILE, [/universite/, /university/], [/^il$/, /sehir/, /city/]);
+/**
+ * The spec spreadsheets live outside the repo (docs/spec). Each import from
+ * them refreshes a JSON snapshot that is committed, so a server — which has
+ * no spreadsheets — imports the same lists from the snapshot.
+ */
+const SNAPSHOT = "prisma/seed-data/academic-lists.json";
+type Lists = { universities: { rows: Row[]; skipped: number }; departments: { rows: Row[]; skipped: number } };
+
+function loadLists(): Lists {
+  if (existsSync(UNIVERSITY_FILE) && existsSync(DEPARTMENT_FILE)) {
+    const lists = {
+      universities: readRows(UNIVERSITY_FILE, [/universite/, /university/], [/^il$/, /sehir/, /city/]),
+      departments: readRows(DEPARTMENT_FILE, [/bolum/, /department/], [/^alan$/, /field/]),
+    };
+    writeFileSync(
+      SNAPSHOT,
+      JSON.stringify({ universities: lists.universities.rows, departments: lists.departments.rows }, null, 2) + "\n"
+    );
+    return lists;
+  }
+  if (!existsSync(SNAPSHOT)) throw new Error(`Neither the spec files nor ${SNAPSHOT} were found`);
+  const snapshot = JSON.parse(readFileSync(SNAPSHOT, "utf8")) as { universities: Row[]; departments: Row[] };
+  return {
+    universities: { rows: snapshot.universities, skipped: 0 },
+    departments: { rows: snapshot.departments, skipped: 0 },
+  };
+}
+
+async function importUniversities({ rows, skipped }: Lists["universities"]) {
   const existing = await prisma.university.findMany({ where: { tenantId: null } });
   const byKey = new Map(existing.map((u) => [normalize(u.name), u]));
 
@@ -78,8 +105,7 @@ async function importUniversities() {
   return { read: rows.length, created, updated, skipped };
 }
 
-async function importDepartments() {
-  const { rows, skipped } = readRows(DEPARTMENT_FILE, [/bolum/, /department/], [/^alan$/, /field/]);
+async function importDepartments({ rows, skipped }: Lists["departments"]) {
   const existing = await prisma.department.findMany({ where: { tenantId: null } });
   const byKey = new Map(existing.map((d) => [normalize(d.name), d]));
 
@@ -99,8 +125,9 @@ async function importDepartments() {
 }
 
 async function main() {
-  const universities = await importUniversities();
-  const departments = await importDepartments();
+  const lists = loadLists();
+  const universities = await importUniversities(lists.universities);
+  const departments = await importDepartments(lists.departments);
   console.log("universities:", universities);
   console.log("departments: ", departments);
 }

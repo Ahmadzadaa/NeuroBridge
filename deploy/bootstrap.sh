@@ -57,6 +57,8 @@ AUTH_SECRET=$(secret)
 TOTP_ENCRYPTION_KEY=$(secret)
 TWO_FACTOR_ENABLED=false
 APP_BASE_URL=${PUBLIC_URL}
+# Auth.js builds its redirects from this; behind the proxy it would otherwise use 0.0.0.0:3000.
+AUTH_URL=${PUBLIC_URL}
 NEXT_PUBLIC_APP_URL=${PUBLIC_URL}
 # One server: in-memory rate limiting is fine (no Redis needed).
 ALLOW_IN_MEMORY_RATE_LIMIT=true

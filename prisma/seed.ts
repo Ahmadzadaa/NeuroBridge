@@ -104,7 +104,15 @@ async function main() {
     });
   }
 
-  const passwordHash = await bcrypt.hash("Admin123!", 12);
+  // Production: the super admin password comes from SEED_ADMIN_PASSWORD, and a
+  // re-run never resets existing accounts or prices edited in the admin panel.
+  const isProduction = process.env.NODE_ENV === "production";
+  const adminPassword = process.env.SEED_ADMIN_PASSWORD ?? (isProduction ? "" : "Admin123!");
+  const adminExists = await prisma.user.findFirst({ where: { role: "SUPER_ADMIN" }, select: { id: true } });
+  if (isProduction && !adminExists && adminPassword.length < 12) {
+    throw new Error("Set SEED_ADMIN_PASSWORD (at least 12 characters) to seed a production database");
+  }
+  const passwordHash = await bcrypt.hash(adminPassword || "unused-existing-admin", 12);
 
   async function resetDemoUser2FA(userId: string) {
     await prisma.userRecoveryCode.deleteMany({ where: { userId } });
@@ -132,6 +140,7 @@ async function main() {
       where: { email: data.email, tenantId: data.tenantId },
     });
 
+    if (existing && isProduction) return existing;
     if (existing) {
       await resetDemoUser2FA(existing.id);
       return prisma.user.update({
@@ -175,6 +184,7 @@ async function main() {
     { code: "AI_TOOLS", name: "AI Mentor", tiers: [[1, 50, 1200], [51, 100, 1000], [101, null, 800]] },
   ];
   for (const s of services) {
+    if (isProduction && (await prisma.service.findUnique({ where: { code: s.code } }))) continue;
     const service = await prisma.service.upsert({
       where: { code: s.code },
       update: { name: s.name },
