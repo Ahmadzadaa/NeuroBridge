@@ -1,0 +1,23 @@
+# The repository was moved from Windows to macOS, which rewrote every file's
+# line endings and made `git status` report ~220 changed files that contain no
+# real change. Normalising here means the checkout is LF everywhere and the
+# diff shows only the work.
+* text=auto eol=lf
+
+# Binary assets must never be touched.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.pdf   binary
+*.ttf   binary
+*.otf   binary
+*.woff  binary
+*.woff2 binary
+*.db    binary
+*.zip   binary
+
+# Windows-only scripts still need CRLF to run.
+*.bat text eol=crlf
+*.cmd text eol=crlf

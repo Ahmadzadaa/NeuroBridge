@@ -53,7 +53,19 @@
       "jury": "Jüri",
       "teacher": "Müəllim"
     },
-    "error": "Xəta baş verdi"
+    "error": "Xəta baş verdi",
+    "previous": "Əvvəlki",
+    "notifications": "Bildirişlər",
+    "close": "Bağla",
+    "toggleSidebar": "Yan paneli aç/bağla",
+    "changeLanguage": "Dili dəyiş",
+    "toggleTheme": "Mövzunu dəyiş",
+    "rowsPerPage": "Səhifədə sətir",
+    "nextPage": "Növbəti səhifə",
+    "previousPage": "Əvvəlki səhifə",
+    "pageNumber": "Səhifə {number}",
+    "collapseSidebar": "Yan paneli yığ",
+    "expandSidebar": "Yan paneli aç"
   },
   "auth": {
     "login": "Daxil ol",
@@ -65,7 +77,7 @@
     "accountLocked": "Hesabınız müvəqqəti olaraq bloklanıb. Zəhmət olmasa sonra yenidən cəhd edin.",
     "twoFactorRequired": "Doğrulama kodu tələb olunur. Authenticator tətbiqindəki 6 rəqəmli kodu daxil edin.",
     "totpCode": "Doğrulama kodu",
-    "recoveryCode": "Bərpa kodu (isteğe bağlı)",
+    "recoveryCode": "Bərpa kodu (istəyə bağlı)",
     "featureSimulations": "Simulyasiya əsaslı öyrənmə",
     "featureTracking": "Real vaxt irəliləyiş izləmə",
     "featureAI": "AI dəstəkli mentorluq",
@@ -96,7 +108,9 @@
       "billing": "Ödənişlər",
       "simulations": "Simulyasiyalar",
       "teachers": "Müəllimlər",
-      "assessments": "Başlanğıc testləri"
+      "assessments": "Başlanğıc testləri",
+      "certificates": "Sertifikatlar",
+      "analytics": "Analitika"
     },
     "participant": {
       "dashboard": "Panel",
@@ -226,7 +240,43 @@
       "inUse": "Bu xidmətin sifarişləri və ya qurumları var. Silmək əvəzinə deaktiv edin.",
       "codeTaken": "Bu kodla xidmət artıq mövcuddur.",
       "tierOverlap": "Qiymət aralıqları üst-üstə düşür. Hər iştirakçı sayı yalnız bir aralığa aid olmalıdır.",
-      "tierRange": "Aralıq başlamadan bitir. Maks, Min-dən kiçik ola bilməz."
+      "tierRange": "Aralıq başlamadan bitir. Maks, Min-dən kiçik ola bilməz.",
+      "codePlaceholder": "məs. HACKATHON"
+    },
+    "audit": {
+      "filterByAction": "Əməliyyata görə süz",
+      "allActions": "Bütün əməliyyatlar",
+      "searchDetails": "Təfərrüatlarda axtar",
+      "timestamp": "Vaxt",
+      "action": "Əməliyyat",
+      "user": "İstifadəçi",
+      "tenant": "Təşkilat",
+      "ip": "IP ünvanı",
+      "details": "Təfərrüat",
+      "empty": "Audit qeydi tapılmadı.",
+      "totalEntries": "{count} qeyd"
+    },
+    "growthChart": "Gəlir və təşkilat artımı",
+    "trends": {
+      "newTenants": "bu ay +4",
+      "userGrowth": "+12% artım",
+      "revenueVsLastMonth": "keçən aya nisbətən +18%",
+      "monthlyGrowth": "Aylıq artım sürəti"
+    },
+    "system": {
+      "registrations24h": "Qeydiyyatlar (24 saat)",
+      "paymentFailures24h": "Uğursuz ödənişlər (24 saat)",
+      "aiUsage24h": "AI istifadəsi (24 saat)",
+      "seatUtilization": "Yer istifadəsi",
+      "health": "Sistemin vəziyyəti",
+      "statusLabel": "Vəziyyət",
+      "databaseLabel": "Baza",
+      "uptimeLabel": "İşləmə müddəti",
+      "metricsUpdated": "Göstəricilər yeniləndi",
+      "unknown": "məlum deyil",
+      "registrationRate7d": "Qeydiyyat sürəti (7 gün)",
+      "aiUsage7d": "AI istifadəsi (7 gün)",
+      "seatByTenant": "Təşkilatlar üzrə yer istifadəsi"
     }
   },
   "tenant": {
@@ -260,14 +310,16 @@
       "scheduleHint": "6 həftəlik plan bu tarixlərdən yaradılır. Jüri təqdimatları həmişə iş günlərinə qoyulur və sonradan dəyişdirilə bilər.",
       "certificateName": "Sertifikatın adı",
       "finalistCount": "Finalçıların sayı",
-      "juryEnabled": "Finalçılar üçün jüri qiymətləndirməsi"
+      "juryEnabled": "Finalçılar üçün jüri qiymətləndirməsi",
+      "created": "Proqram yaradıldı",
+      "createFailed": "Proqram yaradılmadı. Bir az sonra yenidən cəhd edin."
     },
     "projectTypes": {
       "entrepreneurship_training": "Sahibkarlıq Təlimi",
       "business_idea_development": "Biznes Fikri İnkişaf Proqramı",
-      "startup_challenge": "Startup Yarışması",
-      "hackathon": "Hackathon",
-      "competition": "Yarışma",
+      "startup_challenge": "Startap Müsabiqəsi",
+      "hackathon": "Hakaton",
+      "competition": "Müsabiqə",
       "innovation_program": "İnnovasiya Proqramı",
       "other": "Digər"
     },
@@ -305,7 +357,11 @@
       "registrationDate": "Qeydiyyat Tarixi",
       "lastLogin": "Son Giriş",
       "exportExcel": "Excel-ə İxrac",
-      "allPrograms": "Bütün proqramlar"
+      "allPrograms": "Bütün proqramlar",
+      "university": "Universitet",
+      "studyYear": "Kurs",
+      "profile": "Profil",
+      "noProfile": "Məlumat yoxdur"
     },
     "reports": {
       "title": "Hesabatlar",
@@ -342,7 +398,11 @@
         "result": "Nəticə",
         "certificatesEarned": "Qazanılan Sertifikatlar",
         "lastCertificateDate": "Son Sertifikat Tarixi"
-      }
+      },
+      "noPrograms": "Proqram yoxdur",
+      "exported": "Hesabat hazırdır",
+      "exportQueued": "Böyük ixrac növbəyə alındı — fayl hazırlanır…",
+      "exportFailed": "İxrac alınmadı. Bir az sonra yenidən cəhd edin."
     },
     "settings": {
       "title": "Parametrlər",
@@ -374,7 +434,9 @@
       "security": "Təhlükəsizlik Parametrləri",
       "changePassword": "Şifrə Dəyiş",
       "twoFactor": "İki Faktorlu Doğrulama",
-      "sessionTimeout": "Sessiya Vaxtı"
+      "sessionTimeout": "Sessiya Vaxtı",
+      "saved": "Parametrlər yadda saxlanıldı",
+      "saveFailed": "Parametrlər yadda saxlanılmadı. Bir az sonra yenidən cəhd edin."
     },
     "qrInvite": {
       "invite": "QR Dəvət",
@@ -385,6 +447,225 @@
       "linkCopied": "Link kopyalandı",
       "copyLink": "Linki kopyala",
       "downloadPng": "PNG endir"
+    },
+    "billing": {
+      "paymentHistory": "Ödəniş tarixçəsi",
+      "noPayments": "Hələ ödəniş yoxdur.",
+      "seatsUnit": "yer",
+      "perSeat": "hər yer üçün",
+      "totalLabel": "Cəmi",
+      "purchase": "Satın al",
+      "purchasing": "Gözləyin…",
+      "checkoutFailed": "Ödəniş səhifəsi açılmadı. Bir az sonra yenidən cəhd edin.",
+      "statuses": {
+        "PENDING": "Gözləyir",
+        "COMPLETED": "Ödənilib",
+        "FAILED": "Alınmadı",
+        "REFUNDED": "Geri qaytarılıb"
+      },
+      "types": {
+        "INITIAL": "İlk alış",
+        "UPGRADE": "Genişləndirmə"
+      }
+    },
+    "certificates": {
+      "title": "Sertifikatlar",
+      "subtitle": "Şablonu seçin, mətnləri dəyişin, önizləməyə baxın və sertifikatı verin.",
+      "template": "Şablon",
+      "participant": "İştirakçı",
+      "program": "Proqram",
+      "recipientName": "Sertifikatdakı ad",
+      "body": "Sertifikat mətni",
+      "issuerName": "Emblemdəki təşkilat adı",
+      "sig1": "1-ci imza",
+      "sig2": "2-ci imza",
+      "nameField": "Ad",
+      "roleField": "Vəzifə",
+      "preview": "Önizləmə",
+      "refresh": "Önizləməni yenilə",
+      "download": "PDF endir",
+      "search": "Ad və ya soyad yazın…",
+      "noMatch": "Uyğun iştirakçı tapılmadı",
+      "clear": "Təmizlə",
+      "found": "nəticə",
+      "single": "Tək sertifikat",
+      "bulk": "Toplu verilmə",
+      "selected": "seçildi",
+      "selectAll": "Görünənlərin hamısını seç",
+      "clearAll": "Seçimi ləğv et",
+      "bulkHint": "Seçilmiş hər kəs üçün eyni mətnlə ayrıca sertifikat yaranır. Mətndə {token} yazsanız, hər sertifikatda o şəxsin adı ilə əvəzlənir.",
+      "exportMerged": "Tək PDF-də endir",
+      "exportZip": "ZIP (ayrı-ayrı fayllar)",
+      "exportingLabel": "Hazırlanır…",
+      "expandList": "İştirakçı siyahısını aç",
+      "collapseList": "Siyahını bağla",
+      "sendToAccounts": "Hesablarına göndər",
+      "sendToAccount": "Hesabına göndər",
+      "needAccount": "Göndərmək üçün adı siyahıdan seçin — əl ilə yazılan ada uyğun hesab yoxdur.",
+      "sendHint": "Sertifikat iştirakçının öz panelində görünəcək və oradan endirə biləcək.",
+      "sending": "Göndərilir…",
+      "sentOk": "sertifikat hesablara göndərildi",
+      "sentAlready": "artıq verilmişdi",
+      "sentFailed": "alınmadı",
+      "rendering": "Hazırlanır…",
+      "hint": "Mətnə {token} yazsanız, seçilmiş proqramın adı ilə əvəzlənir.",
+      "empty": "Önizləmə üçün ad və mətn doldurun.",
+      "exportFailed": "İxrac alınmadı. Bir az sonra yenidən cəhd edin.",
+      "previewFailed": "Önizləmə yaradılmadı. Bir az sonra yenidən cəhd edin.",
+      "pageFormat": "A4 landşaft",
+      "templates": {
+        "achievement": {
+          "name": "Uğur Sertifikatı",
+          "style": "Qızılı guilloche naxış"
+        },
+        "participation": {
+          "name": "İştirak Sertifikatı",
+          "style": "Tünd göy və qızılı"
+        },
+        "completion": {
+          "name": "Təlim Sertifikatı",
+          "style": "Krem rəngli, mum möhürlü"
+        }
+      }
+    },
+    "analytics": {
+      "title": "Analitika",
+      "downloadCsv": "CSV yüklə",
+      "csvNeedsProgram": "CSV ixracı üçün bir proqram seçin",
+      "csvFailed": "İxrac alınmadı",
+      "csvQueued": "İxrac növbəyə alındı, hazır olanda endiriləcək",
+      "csvDownloaded": "CSV endirildi",
+      "loadFailed": "Analitika yüklənmədi",
+      "loadFailedHint": "Filtrləri dəyişib yenidən cəhd edin.",
+      "cachedNote": "Keşlənmiş nəticə (1 saata qədər köhnə ola bilər)",
+      "liveNote": "Cari hesablama",
+      "durationNote": "«Orta gün» ilk və son dərs tamamlanması arasındakı müddətdir — sərf olunan vaxt deyil.",
+      "filters": {
+        "from": "Başlanğıc",
+        "to": "Son",
+        "program": "Proqram",
+        "course": "Kurs",
+        "allPrograms": "Bütün proqramlar",
+        "allCourses": "Bütün kurslar"
+      },
+      "kpi": {
+        "totalStudents": "Ümumi tələbə",
+        "active7": "Aktiv (7 gün)",
+        "active30": "Aktiv (30 gün)",
+        "enrolments": "Yazılma",
+        "completion": "Tamamlanma",
+        "certificates": "Verilmiş sertifikat"
+      },
+      "charts": {
+        "activity": "Həftəlik aktivlik",
+        "completion": "Həftəlik tamamlanma",
+        "activeStudents": "Aktiv tələbə",
+        "lessonsCompleted": "Tamamlanan dərs",
+        "coursesCompleted": "Tamamlanan kurs"
+      },
+      "courses": {
+        "title": "Kurs üzrə göstəricilər",
+        "name": "Kurs",
+        "enrolled": "Yazılan",
+        "completed": "Tamamlayan",
+        "completionRate": "Tamamlanma",
+        "averageScore": "Orta bal",
+        "activeDays": "Orta gün",
+        "days": "{count} gün"
+      },
+      "empty": {
+        "activity": "Bu dövrdə aktivlik yoxdur",
+        "activityHint": "Tarix aralığını genişləndirin və ya başqa proqram seçin.",
+        "courses": "Kurs məlumatı yoxdur",
+        "coursesHint": "Proqramlarınıza təlim əlavə edildikdən sonra burada görünəcək.",
+        "completions": "Hələ tamamlanmış kurs yoxdur",
+        "completionsHint": "Tələbələr kursun bütün dərslərini bitirdikdə burada görünəcək."
+      }
+    },
+    "programBuilder": {
+      "maxReached": "Ən çox {count} seçim edə bilərsiniz",
+      "typeRequired": "Proqram növünü seçin",
+      "basics": {
+        "title": "Əsas məlumatlar",
+        "description": "Proqramın adı, təsviri və neçə nəfər qəbul edəcəyi.",
+        "namePlaceholder": "Məsələn: Yaz Sahibkarlıq Proqramı 2026",
+        "descriptionPlaceholder": "İştirakçılar bu proqramda nə öyrənəcək?"
+      },
+      "type": {
+        "title": "Proqram növü",
+        "description": "Bu proqram hansı formatda keçiriləcək? Birini seçin."
+      },
+      "timeline": {
+        "title": "Tarixlər",
+        "description": "Qeydiyyatın açıq olduğu dövr və proqramın özünün müddəti.",
+        "application": "Qeydiyyat dövrü",
+        "applicationHint": "İştirakçılar bu aralıqda müraciət edə bilər.",
+        "programme": "Proqram dövrü",
+        "programmeHint": "Məcburi deyil — sonradan da təyin edilə bilər."
+      },
+      "modules": {
+        "simulationsDescription": "İştirakçıların oynayacağı biznes ssenariləri. Ən çoxu dörd.",
+        "trainingsDescription": "Proqrama daxil ediləcək video təlim modulları.",
+        "aiDescription": "İştirakçıların istifadə edə biləcəyi AI alətləri."
+      },
+      "summary": {
+        "selected": "{count} modul seçildi",
+        "empty": "Hələ modul seçilməyib"
+      },
+      "done": {
+        "title": "Proqram yaradıldı",
+        "description": "Aşağıdakı linki paylaşın — iştirakçılar onunla qeydiyyatdan keçəcək."
+      },
+      "calendar": {
+        "title": "Proqram təqvimi və final",
+        "description": "6 həftəlik tələbə təqvimi bu tarixlərdən qurulur. Jüri günü həftəsonuna düşmür.",
+        "window": "Proqram dövrü"
+      }
+    },
+    "settingsDetail": {
+      "organization": {
+        "description": "Bu məlumatlar sertifikatlarda və iştirakçılara gedən e-poçtlarda görünür."
+      },
+      "certificates": {
+        "description": "İştirakçılara hansı sertifikat növlərinin verilə biləcəyini seçin.",
+        "participation": {
+          "title": "İştirak sertifikatı",
+          "description": "Proqrama qatılan hər kəsə verilə bilər."
+        },
+        "achievement": {
+          "title": "Uğur sertifikatı",
+          "description": "İmtahandan keçən və ya yüksək nəticə göstərənlərə."
+        },
+        "completion": {
+          "title": "Proqram tamamlama sertifikatı",
+          "description": "Proqramın bütün mərhələlərini bitirənlərə."
+        }
+      },
+      "notifications": {
+        "description": "Sistemin hansı hallarda avtomatik e-poçt göndərəcəyi.",
+        "pendingNotice": "Bu bölmədəki seçimlər saxlanılır, lakin e-poçt göndərmə hələ qoşulmayıb — hazırda heç bir bildiriş getmir.",
+        "pendingBadge": "Planlaşdırılır",
+        "invitation": {
+          "title": "Dəvət e-poçtu",
+          "description": "İştirakçı proqrama əlavə ediləndə dəvət göndərilsin."
+        },
+        "start": {
+          "title": "Proqram başlanğıcı xatırlatması",
+          "description": "Proqram başlamazdan əvvəl iştirakçılara xatırlatma."
+        },
+        "end": {
+          "title": "Proqram bitişi xatırlatması",
+          "description": "Proqramın son tarixi yaxınlaşanda xəbərdarlıq."
+        },
+        "certificate": {
+          "title": "Sertifikat bildirişi",
+          "description": "Sertifikat veriləndə sahibinə məlumat verilsin."
+        },
+        "weekly": {
+          "title": "Həftəlik irəliləyiş",
+          "description": "İştirakçılara həftədə bir dəfə irəliləyiş xülasəsi."
+        }
+      }
     }
   },
   "participant": {
@@ -524,7 +805,9 @@
       "participation": "İştirak Sertifikatı",
       "achievement": "Uğur Sertifikatı",
       "completion": "Proqram Tamamlama Sertifikatı"
-    }
+    },
+    "downloadCertificate": "Endir",
+    "certificateRevoked": "Ləğv edilib"
   },
   "landing": {
     "hero": "Sahibkarlıq Səyahətiniz Başlasın",
@@ -672,6 +955,7 @@
       "decisionPrompt": "Qərarınızı verin",
       "outcomeLabel": "Nəticə",
       "nextRound": "Növbəti raund",
+      "playAgain": "Yenidən oyna",
       "completedTitle": "Simulyasiya tamamlandı!",
       "scoreLabel": "Yekun bal (100 üzərindən)",
       "teacherPending": "Müəllim qiymətləndirməsi gözlənilir",
@@ -794,7 +1078,7 @@
       "choiceDetailPlaceholder": "Qısa ipucu — trade-off nədir? (istəyə bağlı)",
       "cashDelta": "Kapital Δ",
       "satDelta": "Məmnun. Δ",
-      "repDelta": "Reput. Δ",
+      "repDelta": "Reputasiya Δ",
       "variance": "Təsadüf ±",
       "choiceFeedbackPlaceholder": "Bu seçimdən sonra tələbəyə göstəriləcək nəticə mətni...",
       "addChoice": "Seçim əlavə et",
@@ -907,7 +1191,15 @@
       "consentRequired": "Davam etmək üçün məlumatlandırma mətnini təsdiqləməlisən.",
       "invalid": "Bəzi məlumatlar yanlışdır. Sahələri yoxla.",
       "generic": "Xəta baş verdi. Yenidən cəhd et."
-    }
+    },
+    "notFoundHint": "Dəvət linki səhv və ya artıq etibarsızdır.",
+    "loadFailed": "Proqram məlumatı yüklənmədi. İnternet bağlantınızı yoxlayıb yenidən cəhd edin.",
+    "registrationClosed": "Bu proqrama qeydiyyat bağlıdır.",
+    "seatLimitReached": "Təşkilatın yer limiti dolub.",
+    "capacityReached": "Proqramın iştirakçı limiti dolub.",
+    "successToast": "Qeydiyyat tamamlandı. İndi hesabınıza daxil ola bilərsiniz.",
+    "seatLimitToast": "Təşkilatın yer limiti dolduğu üçün qeydiyyat mümkün deyil.",
+    "failedToast": "Qeydiyyat alınmadı. Bir az sonra yenidən cəhd edin."
   },
   "programSchedule": {
     "caption": "6 həftəlik proqram təqvimi",
@@ -1036,5 +1328,523 @@
     "startTest": "Testə başla",
     "retakeTest": "Testi yenidən həll et",
     "error": "Xəta baş verdi. Yenidən cəhd et."
+  },
+  "security": {
+    "title": "İki mərhələli doğrulama",
+    "subtitleRequired": "Admin hesabları platformadan istifadə etməzdən əvvəl iki mərhələli doğrulamanı aktivləşdirməlidir.",
+    "subtitleManage": "Hesabınızın təhlükəsizlik parametrlərini idarə edin.",
+    "generateQr": "QR kod yarat",
+    "qrAlt": "İki mərhələli doğrulama üçün QR kod",
+    "qrHint": "Kodu Google Authenticator və ya oxşar tətbiqlə oxudun, sonra ekranda görünən 6 rəqəmi aşağıya yazın.",
+    "verificationCode": "Doğrulama kodu",
+    "enable": "Aktivləşdir",
+    "working": "Gözləyin…",
+    "recoveryTitle": "Bu bərpa kodlarını təhlükəsiz yerdə saxlayın:",
+    "recoveryHint": "Telefonunuzu itirsəniz, hesaba yalnız bu kodlarla girə biləcəksiniz. Hər kod bir dəfə işləyir.",
+    "continue": "Davam et",
+    "setupFailed": "Quraşdırma başlamadı. Bir az sonra yenidən cəhd edin.",
+    "invalidCode": "Kod yanlışdır. Tətbiqdəki cari kodu yoxlayın.",
+    "enabledToast": "İki mərhələli doğrulama aktivləşdirildi",
+    "tooManyAttempts": "Çox sayda cəhd edildi. Təxminən bir dəqiqə gözləyib yenidən yoxlayın."
+  },
+  "errors": {
+    "generic": "Əməliyyat alınmadı. Bir az sonra yenidən cəhd edin.",
+    "SEAT_LIMIT_REACHED": "Təşkilatın yer limiti dolub. Yeni iştirakçı əlavə etmək üçün paketi genişləndirin.",
+    "TENANT_NOT_ACTIVE": "Təşkilat hesabı aktiv deyil.",
+    "PROGRAM_CAPACITY_REACHED": "Proqramın iştirakçı limiti dolub.",
+    "REGISTRATION_CLOSED": "Bu proqrama qeydiyyat bağlıdır.",
+    "DUPLICATE_REGISTRATION": "Bu şəxs artıq həmin proqrama qeydiyyatdan keçib.",
+    "EMAIL_ALREADY_REGISTERED": "Bu e-poçt təşkilatda artıq qeydiyyatdadır.",
+    "CERTIFICATE_DISABLED": "Bu sertifikat növü təşkilat parametrlərində söndürülüb.",
+    "CERTIFICATE_ALREADY_ISSUED": "Bu sertifikat həmin şəxsə artıq verilib.",
+    "CERTIFICATE_PARTICIPANT_NOT_FOUND": "Bu şəxs təşkilatın iştirakçısı deyil.",
+    "PROGRAM_NOT_FOUND": "Proqram tapılmadı.",
+    "TRAINING_NOT_ASSIGNED": "Bu təlim sizin proqramlarınıza daxil deyil.",
+    "MODULE_NOT_ENABLED": "Bu modul təşkilatınız üçün aktiv deyil.",
+    "WRONG_CURRENT_PASSWORD": "Cari şifrə yanlışdır.",
+    "INVALID_APPLICATION_TOKEN": "Dəvət linki etibarsızdır və ya müddəti bitib.",
+    "PAYMENT_UNAVAILABLE": "Ödəniş sistemi hazırda əlçatan deyil. Bir az sonra yenidən cəhd edin.",
+    "PAYMENT_VERIFICATION_FAILED": "Ödəniş təsdiqlənmədi."
+  },
+  "marketing": {
+    "nav": {
+      "features": "Funksiyalar",
+      "pricing": "Qiymətlər",
+      "contact": "Əlaqə",
+      "signIn": "Daxil ol",
+      "requestDemo": "Demo tələb et",
+      "toggleMenu": "Menyunu aç və ya bağla"
+    },
+    "footer": {
+      "tagline": "Texnoparklar, universitetlər və akseleratorlar üçün sahibkarlıq təhsilini ölçülə bilən proqrama çevirən platforma.",
+      "product": "Məhsul",
+      "company": "Şirkət",
+      "legal": "Hüquqi",
+      "privacy": "Məxfilik siyasəti",
+      "terms": "İstifadə şərtləri",
+      "copyright": "© {year} BizSim. Bütün hüquqlar qorunur."
+    },
+    "seo": {
+      "home": {
+        "title": "BizSim — Sahibkarlıq təhsili platforması",
+        "description": "Texnopark və universitetlər üçün sahibkarlıq proqramlarını rəqəmsallaşdırın: video təlim, imtahan, biznes simulyasiyası, hakaton və sertifikat — bir platformada."
+      },
+      "features": {
+        "title": "Funksiyalar — BizSim platforması",
+        "description": "Video təlimdən hakaton jürisinə qədər altı modul: dərs izləmə, server-tərəf imtahan, biznes simulyasiyası, sertifikat və tenant analitikası."
+      },
+      "pricing": {
+        "title": "Qiymətlər — BizSim",
+        "description": "İştirakçı başına aylıq şəffaf qiymət. Üç plan, gizli ödəniş yoxdur. Planları müqayisə edin və təşkilatınıza uyğun olanı seçin."
+      },
+      "contact": {
+        "title": "Demo tələb edin — BizSim",
+        "description": "15 dəqiqəlik canlı demo ilə platformanı təşkilatınızın ssenarisi üzərində görün. Bir iş günü ərzində cavab veririk."
+      },
+      "privacy": {
+        "title": "Məxfilik siyasəti — BizSim",
+        "description": "BizSim platformasında şəxsi məlumatların necə toplandığı, işləndiyi, saxlandığı və qorunduğu barədə məlumat."
+      },
+      "terms": {
+        "title": "İstifadə şərtləri — BizSim",
+        "description": "BizSim platformasından istifadə şərtləri: hesablar, lisenziya, ödənişlər, məsuliyyət və xidmətin dayandırılması."
+      }
+    },
+    "home": {
+      "hero": {
+        "eyebrow": "Texnoparklar və universitetlər üçün",
+        "headline": "Sahibkarlıq proqramınızı ölçülə bilən nəticəyə çevirin",
+        "problem": "Proqramlar Excel, e-poçt və kağız jüri vərəqələri ilə idarə olunur — kimin nəyi öyrəndiyi ölçülmür.",
+        "solution": "BizSim təlimi, imtahanı, biznes simulyasiyasını, hakatonu və sertifikatı bir platformada birləşdirir. Hər iştirakçının irəliləyişi avtomatik yazılır, hər jüri balı meyar üzrə şəffaf qalır.",
+        "primaryCta": "Demo tələb et",
+        "secondaryCta": "Funksiyalar",
+        "reassurance": "Quraşdırma tələb olunmur · Öz brendiniz altında · AZ / TR / EN",
+        "screenshot": "Tenant admin paneli: aktiv proqramlar, iştirakçı sayı və həftəlik irəliləyiş qrafiki"
+      },
+      "proof": {
+        "title": "Kimlər üçün qurulub",
+        "logos": {
+          "a": "Nümunə Texnoparkı",
+          "b": "Nümunə Universiteti",
+          "c": "Nümunə Akseleratoru",
+          "d": "Nümunə İnnovasiya Mərkəzi"
+        },
+        "quote": "«Əvvəl bir hakatonun nəticələrini toplamağa iki həftə gedirdi. İndi jüri balları meyar üzrə dərhal görünür və iştirakçı öz rəyini eyni gün alır.»",
+        "attribution": "Proqram direktoru · nümunə mətn, real müştəri rəyi ilə əvəz edilməlidir"
+      },
+      "features": {
+        "eyebrow": "Platformada nə var",
+        "title": "Proqramın hər mərhələsi bir yerdə",
+        "description": "Qeydiyyatdan sertifikata qədər ayrı-ayrı alətlərə ehtiyac qalmır.",
+        "items": {
+          "a": {
+            "title": "Video təlim və imtahan",
+            "body": "Dərslər playlist şəklində, hər dərsin tamamlanması ayrıca yazılır. İmtahan server tərəfdə qiymətləndirilir — düzgün cavablar heç vaxt brauzerə göndərilmir.",
+            "screenshot": "İştirakçı təlim ekranı: video pleyer, dərs playlisti və irəliləyiş zolağı"
+          },
+          "b": {
+            "title": "Biznes simulyasiyası",
+            "body": "İştirakçı raund-raund qərar verir, nağd pul, müştəri məmnuniyyəti və reputasiya real vaxtda dəyişir. Ssenarilər data ilə qurulur — yenisi üçün kod yazmaq lazım deyil.",
+            "screenshot": "Simulyasiya oynanış ekranı: raund konteksti, seçim variantları və metrik göstəriciləri"
+          },
+          "c": {
+            "title": "Hakaton və jüri",
+            "body": "Komanda qurulur, layihə PDF-i yüklənir, jüri hər meyar üzrə bal və şərh verir. Nəticələr siz açıqlayana qədər gizli qalır, sonra hər komanda anonim rəyini görür.",
+            "screenshot": "Jüri qiymətləndirmə ekranı: PDF önizləmə və meyar üzrə bal sürgüləri"
+          },
+          "d": {
+            "title": "Sertifikat və analitika",
+            "body": "Sertifikatlar seriya nömrəsi və doğrulama kodu ilə PDF kimi verilir. Analitika paneli kurs üzrə tamamlanma, orta bal və həftəlik aktivliyi göstərir.",
+            "screenshot": "Analitika paneli: KPI kartları, həftəlik aktivlik qrafiki və kurs cədvəli"
+          }
+        }
+      },
+      "steps": {
+        "title": "Necə işləyir",
+        "description": "Hesabınız açıldıqdan sonra proqramı özünüz idarə edirsiniz — bizim məzmununuza müdaxiləmiz olmur.",
+        "items": {
+          "one": {
+            "title": "Hesabınızı təhvil alın",
+            "body": "Təşkilatınız üçün oturacaq limiti ilə hesab açılır və admin girişi e-poçtla göndərilir. İlk girişdə iki mərhələli doğrulama qurulur."
+          },
+          "two": {
+            "title": "Proqramınızı qurun",
+            "body": "Təlim, simulyasiya və hakaton modullarından lazım olanı seçin, jüri meyarlarını təyin edin, iştirakçıları QR kod və ya dəvət linki ilə çağırın."
+          },
+          "three": {
+            "title": "Nəticələri ölçün",
+            "body": "Kim nəyi tamamladı, orta bal nədir, hansı komanda hansı meyardan neçə aldı — hamısı panelə düşür və CSV kimi ixrac olunur."
+          }
+        }
+      },
+      "pricingPreview": {
+        "title": "Şəffaf qiymət",
+        "description": "İştirakçı başına aylıq ödəyirsiniz. Gizli quraşdırma haqqı yoxdur.",
+        "cta": "Bütün planlara bax"
+      },
+      "cta": {
+        "title": "Platformanı öz ssenarinizdə görün",
+        "body": "15 dəqiqəlik demo ilə proqramınızın necə quraşdırılacağını göstərək. Bir iş günü ərzində cavab veririk.",
+        "bullets": {
+          "a": "Öhdəlik yoxdur",
+          "b": "Öz datanızla",
+          "c": "AZ / TR / EN"
+        },
+        "button": "Demo tələb et"
+      }
+    },
+    "features": {
+      "eyebrow": "Modullar",
+      "title": "Altı modul, bir platforma",
+      "description": "Hər modul ayrıca açılıb bağlana bilər — təşkilatınıza lazım olmayanı ödəmirsiniz.",
+      "items": {
+        "trainings": {
+          "eyebrow": "Təlim",
+          "title": "Video təlim və dərs izləməsi",
+          "body": "Təlimlər dərslərdən ibarət playlist kimi qurulur. Hər dərsin tamamlanması ayrıca yazılır, ona görə irəliləyiş faizi təxmin deyil — real hadisələrdən hesablanır. Məzmun üç dildə saxlanılır və iştirakçı öz dilində görür.",
+          "bullets": {
+            "a": "Dərs-dərs irəliləyiş",
+            "b": "YouTube video inteqrasiyası",
+            "c": "Üç dildə məzmun"
+          },
+          "screenshot": "Təlim detalı: video pleyer, sağda dərs playlisti, altda irəliləyiş zolağı"
+        },
+        "exams": {
+          "eyebrow": "İmtahan",
+          "title": "Server tərəfdə qiymətləndirilən imtahan",
+          "body": "Suallar bir-bir verilir, cavablar server tərəfdə yoxlanılır — düzgün cavablar heç vaxt brauzerə göndərilmir, ona görə nəticəni brauzerdən dəyişmək mümkün deyil. Nəticə ekranında hər sual üçün iştirakçının cavabı, düzgün cavab və izahat göstərilir.",
+          "bullets": {
+            "a": "Nəticə brauzerdən dəyişdirilə bilmir",
+            "b": "Ən yaxşı nəticə saxlanılır",
+            "c": "Hər sual üçün izahat"
+          },
+          "screenshot": "İmtahan nəticə ekranı: bal, keçid statusu və sual-sual izahat siyahısı"
+        },
+        "simulations": {
+          "eyebrow": "Simulyasiya",
+          "title": "Data ilə qurulan biznes simulyasiyası",
+          "body": "İştirakçı raund-raund qərar verir; hər seçim nağd pula, müştəri məmnuniyyətinə və reputasiyaya təsir edir. Bazar dalğalanması üçün nəticəyə kiçik təsadüfilik əlavə olunur, ona görə eyni strategiya hər dəfə eyni rəqəmi vermir. Müəllim nəticəni əl ilə də qiymətləndirə bilər.",
+          "bullets": {
+            "a": "Yeni ssenari üçün kod lazım deyil",
+            "b": "Müəllim qiymətləndirməsi",
+            "c": "Üç metrik üzrə nəticə"
+          },
+          "screenshot": "Ssenari redaktoru: raundlar, seçimlər və hər seçimin metrik təsirləri"
+        },
+        "hackathon": {
+          "eyebrow": "Hakaton",
+          "title": "Hakaton və şəffaf jüri qiymətləndirməsi",
+          "body": "İştirakçılar komanda qurur, layihə PDF-ini yükləyir; jüri hər meyar üzrə bal və şərh verir. Sıralama çəkili orta ilə hesablanır, ona görə kimin hansı meyardan neçə aldığı sonradan da izlənilə bilir. Nəticələr siz açıqlayana qədər gizli qalır.",
+          "bullets": {
+            "a": "Meyar üzrə çəkili sıralama",
+            "b": "Planlanan nəticə açıqlanması",
+            "c": "Komandalara anonim jüri rəyi"
+          },
+          "screenshot": "Canlı sıralama cədvəli: komandalar, çəkili bal və meyar üzrə açılış"
+        },
+        "certificates": {
+          "eyebrow": "Sertifikat",
+          "title": "Doğrulana bilən sertifikatlar",
+          "body": "İştirak, uğur və proqram tamamlama sertifikatları PDF kimi verilir. Hər sertifikatın təşkilat üzrə ardıcıl seriya nömrəsi və təsadüfi doğrulama kodu olur, sənəd verildiyi andakı adla və başlıqla dondurulur — sonradan ad dəyişsə belə sənəd dəyişmir.",
+          "bullets": {
+            "a": "Ardıcıl seriya nömrəsi",
+            "b": "Kütləvi verilmə və ZIP ixracı",
+            "c": "Öz imza və şablonunuz"
+          },
+          "screenshot": "Sertifikat şablonu önizləməsi: seriya nömrəsi, imza sahələri və doğrulama kodu"
+        },
+        "analytics": {
+          "eyebrow": "Analitika",
+          "title": "Proqramın vəziyyətini rəqəmlə görün",
+          "body": "Analitika paneli ümumi və aktiv iştirakçı sayını, yazılmaları, orta tamamlanma faizini və verilmiş sertifikatları göstərir. Kurs üzrə cədvəldə yazılan, tamamlayan, orta bal və orta müddət var; həftəlik qrafik son 12 həftənin aktivliyini izləyir.",
+          "bullets": {
+            "a": "Kurs üzrə tamamlanma və orta bal",
+            "b": "Son 12 həftənin aktivliyi",
+            "c": "Bir kliklə CSV ixracı"
+          },
+          "screenshot": "Analitika paneli: KPI kartları, həftəlik aktivlik xətti və sıralanan kurs cədvəli"
+        }
+      },
+      "cta": {
+        "title": "Hansı modullar sizə lazımdır?",
+        "body": "Demo zamanı təşkilatınızın ssenarisini birlikdə quraq və yalnız lazım olan modulları açaq.",
+        "primary": "Demo tələb et",
+        "secondary": "Qiymətlər"
+      }
+    },
+    "pricing": {
+      "title": "Təşkilatınıza uyğun plan seçin",
+      "subtitle": "İştirakçı başına aylıq ödəyirsiniz. Quraşdırma haqqı yoxdur, planı istənilən vaxt dəyişə bilərsiniz.",
+      "perSeatMonth": "hər iştirakçı / ay",
+      "minSeats": "Minimum {count} iştirakçı",
+      "trialDays": "{count} gün pulsuz sınaq",
+      "cta": "Demo tələb et",
+      "popular": "Ən çox seçilən",
+      "noPlans": "Hazırda aktiv plan yoxdur",
+      "noPlansHint": "Qiymət planları billing modulunda əlavə edildikdən sonra burada görünəcək.",
+      "plans": {
+        "default": {
+          "tagline": "Təşkilatınız üçün uyğunlaşdırılmış plan",
+          "bullets": {
+            "a": "Video təlim və imtahan",
+            "b": "Biznes simulyasiyası",
+            "c": "Sertifikat verilməsi",
+            "d": "E-poçt dəstəyi"
+          }
+        },
+        "starter": {
+          "tagline": "Kiçik proqramlar və pilot layihələr üçün",
+          "bullets": {
+            "a": "Video təlim və imtahan",
+            "b": "3 simulyasiya ssenarisi",
+            "c": "Sertifikat verilməsi",
+            "d": "E-poçt dəstəyi"
+          }
+        },
+        "professional": {
+          "tagline": "Tam proqram keçirən texnopark və universitetlər üçün",
+          "bullets": {
+            "a": "Starter-dəki hər şey",
+            "b": "Hakaton və jüri modulu",
+            "c": "AI alətləri",
+            "d": "Tam analitika və CSV ixracı"
+          }
+        },
+        "enterprise": {
+          "tagline": "Çoxsaylı proqram idarə edən böyük təşkilatlar üçün",
+          "bullets": {
+            "a": "Professional-dakı hər şey",
+            "b": "Limitsiz simulyasiya ssenarisi",
+            "c": "Özəl ssenari hazırlanması",
+            "d": "Ayrılmış hesab meneceri"
+          }
+        }
+      },
+      "comparison": {
+        "title": "Planların müqayisəsi",
+        "feature": "Funksiya",
+        "included": "Daxildir",
+        "notIncluded": "Daxil deyil",
+        "rows": {
+          "trainings": "Video təlim və dərslər",
+          "exams": "İmtahan və qiymətləndirmə",
+          "simulations": "Biznes simulyasiyası",
+          "hackathon": "Hakaton və jüri",
+          "certificates": "Sertifikatlar",
+          "analytics": "Analitika paneli",
+          "aiTools": "AI alətləri",
+          "support": "Dəstək",
+          "gamification": "Gamifikasiya (rozet, coin, liderlik)"
+        },
+        "values": {
+          "starter": {
+            "trainings": "yes",
+            "exams": "yes",
+            "simulations": "3 ssenari",
+            "hackathon": "no",
+            "certificates": "yes",
+            "analytics": "Əsas",
+            "aiTools": "no",
+            "gamification": "yes",
+            "support": "E-poçt"
+          },
+          "professional": {
+            "trainings": "yes",
+            "exams": "yes",
+            "simulations": "Bütün ssenarilər",
+            "hackathon": "yes",
+            "certificates": "yes",
+            "analytics": "Tam",
+            "aiTools": "yes",
+            "gamification": "yes",
+            "support": "E-poçt və telefon"
+          },
+          "enterprise": {
+            "trainings": "yes",
+            "exams": "yes",
+            "simulations": "Limitsiz + özəl",
+            "hackathon": "yes",
+            "certificates": "yes",
+            "analytics": "Tam + CSV ixracı",
+            "aiTools": "yes",
+            "gamification": "yes",
+            "support": "Ayrılmış menecer"
+          }
+        }
+      },
+      "faq": {
+        "title": "Tez-tez verilən suallar",
+        "items": {
+          "a": {
+            "question": "Oturacaq (seat) nədir və necə sayılır?",
+            "answer": "Bir oturacaq platformada hesabı olan bir iştirakçıya bərabərdir. Qeydiyyat zamanı oturacaq tutulur, iştirakçı silindikdə isə azad olur. Admin, müəllim və jüri hesabları oturacaq saymır."
+          },
+          "b": {
+            "question": "Ödəniş necə aparılır?",
+            "answer": "Abunəlik aylıqdır və oturacaq sayına görə hesablanır. Ödəniş kart ilə onlayn və ya təşkilatlar üçün fakturalı köçürmə ilə aparıla bilər."
+          },
+          "c": {
+            "question": "İl ortasında plan dəyişə bilərəmmi?",
+            "answer": "Bəli. Planı və oturacaq sayını istənilən vaxt artıra bilərsiniz; fərq cari dövr üçün nisbətdə hesablanır. Azaltma növbəti dövrdən qüvvəyə minir."
+          },
+          "d": {
+            "question": "Datamız harada saxlanılır?",
+            "answer": "Hər təşkilatın datası ayrıca izolyasiya olunur və verilənlər bazası səviyyəsində qorunur. Sertifikat və layihə faylları şifrələnmiş obyekt anbarında saxlanılır. Detallar məxfilik siyasətindədir."
+          },
+          "e": {
+            "question": "Müqavilə və faktura verilirmi?",
+            "answer": "Bəli. Təşkilatlar üçün yazılı müqavilə bağlanır və hər dövr üçün faktura verilir. Tender və satınalma prosedurları üçün lazımi sənədləri təqdim edirik."
+          }
+        }
+      },
+      "bottomCta": {
+        "title": "Hansı plan uyğundur, birlikdə baxaq",
+        "body": "İştirakçı sayınızı və proqram formatınızı deyin — uyğun planı və təxmini büdcəni bir iş günü ərzində göndərək.",
+        "button": "Demo tələb et"
+      }
+    },
+    "contact": {
+      "title": "Demo tələb edin",
+      "description": "Formu doldurun — təşkilatınızın ssenarisi üzərində 15 dəqiqəlik canlı demo təşkil edək.",
+      "assurances": {
+        "response": {
+          "title": "Bir iş günü ərzində cavab",
+          "body": "Tələbiniz satış komandamıza dərhal çatır və bir iş günü ərzində sizinlə əlaqə saxlayırıq."
+        },
+        "privacy": {
+          "title": "Datanız yalnız bu məqsədlə",
+          "body": "Verdiyiniz məlumatlar yalnız demo təşkili və təklif hazırlanması üçün istifadə olunur, üçüncü tərəflə paylaşılmır."
+        },
+        "noSpam": {
+          "title": "Reklam siyahısına düşmürsünüz",
+          "body": "Sizi bülleten siyahısına əlavə etmirik. Yalnız bu tələbə görə yazırıq."
+        }
+      },
+      "form": {
+        "name": "Ad, soyad",
+        "company": "Şirkət və ya təşkilat",
+        "email": "E-poçt",
+        "phone": "Telefon",
+        "seatCount": "Təxmini tələbə sayı",
+        "seatCountHint": "Məsələn: 50-100",
+        "message": "Mesaj",
+        "submit": "Demo tələb et",
+        "successTitle": "Tələbiniz alındı",
+        "failed": "Göndərilmədi. Bir az sonra yenidən cəhd edin.",
+        "rateLimited": "Çox sayda tələb göndərildi. Bir saat sonra yenidən cəhd edin.",
+        "successBody": "Tələbiniz satış komandamıza göndərildi. Bir iş günü ərzində sizinlə əlaqə saxlayacağıq.",
+        "consent": "Formu göndərməklə məlumatlarınızın demo təşkili və təklif hazırlanması məqsədilə işlənməsinə razılıq vermiş olursunuz. Ətraflı: məxfilik siyasəti."
+      }
+    },
+    "privacy": {
+      "title": "Məxfilik siyasəti",
+      "updated": "Son yenilənmə: 6 sentyabr 2026",
+      "draftNotice": "QARALAMA — bu sənədin mətni hüquqi baxışdan keçməyib və hüquqi qüvvəyə malik deyil.",
+      "sections": {
+        "controller": {
+          "heading": "Data nəzarətçisi",
+          "body": "Platformanı istifadə edən təşkilat öz iştirakçılarının məlumatları üçün data nəzarətçisi, BizSim isə data emalçısı kimi çıxış edir. Marketinq saytı vasitəsilə birbaşa bizə göndərilən məlumatlar üçün nəzarətçi BizSim-dir."
+        },
+        "dataCollected": {
+          "heading": "Toplanan məlumatlar",
+          "body": "Hesab məlumatları (ad, e-poçt, telefon, rol), akademik profil (universitet, fakültə, ixtisas, kurs), istifadə hadisələri (dərs tamamlanması, imtahan cəhdi, giriş jurnalı) və yüklənən fayllar (layihə PDF-ləri, avatar).\n\nDemo formu vasitəsilə: ad, şirkət, e-poçt, telefon, təxmini iştirakçı sayı və mesaj."
+        },
+        "purposes": {
+          "heading": "İstifadə məqsədləri",
+          "body": "Xidmətin göstərilməsi, iştirakçı irəliləyişinin izlənməsi, sertifikatların verilməsi və doğrulanması, təhlükəsizlik hadisələrinin araşdırılması, fakturalandırma və dəstək."
+        },
+        "legalBasis": {
+          "heading": "Hüquqi əsas",
+          "body": "Müqavilənin icrası (xidmətin göstərilməsi), qanuni maraq (təhlükəsizlik və sui-istifadənin qarşısının alınması), qanuni öhdəlik (mühasibat) və razılıq (marketinq formu)."
+        },
+        "sharing": {
+          "heading": "Üçüncü tərəflərlə paylaşım",
+          "body": "Məlumatlar satılmır. Yalnız xidmətin işləməsi üçün zəruri olan emalçılarla paylaşılır: bulud infrastrukturu, e-poçt göndərilməsi və ödəniş provayderi. Hər biri ilə data emalı müqaviləsi bağlanır."
+        },
+        "transfers": {
+          "heading": "Beynəlxalq ötürmələr",
+          "body": "Data emalı əsasən Avropa regionundakı serverlərdə aparılır. Region xaricinə ötürmə baş verdikdə standart müqavilə şərtləri kimi hüquqi mexanizmlər tətbiq olunur."
+        },
+        "retention": {
+          "heading": "Saxlanma müddəti",
+          "body": "Hesab məlumatları abunəlik müddətində və ondan sonra qanunla tələb olunan müddətdə saxlanılır. Verilmiş sertifikatlar doğrulama məqsədilə daha uzun saxlanılır. Demo formu məlumatları satış prosesi bitdikdən sonra silinir."
+        },
+        "security": {
+          "heading": "Təhlükəsizlik tədbirləri",
+          "body": "Şifrələnmiş bağlantı, şifrələrin hash-lənməsi, admin rolları üçün məcburi iki mərhələli doğrulama, rol əsaslı icazə sistemi, verilənlər bazası səviyyəsində təşkilat izolyasiyası və audit jurnalı."
+        },
+        "rights": {
+          "heading": "Şəxsin hüquqları",
+          "body": "Məlumatlarınıza çıxış, düzəliş, silinmə, emalın məhdudlaşdırılması, köçürülmə və etiraz hüququnuz var. Müraciət üçün aşağıdakı əlaqə bölməsinə baxın.\n\nQeyd: iştirakçısı olduğunuz təşkilatın datası üçün müraciəti əvvəlcə həmin təşkilata ünvanlamaq lazımdır."
+        },
+        "cookies": {
+          "heading": "Kukilər",
+          "body": "Yalnız xidmətin işləməsi üçün zəruri kukilər istifadə olunur: sessiya, dil seçimi və interfeys mövzusu. Reklam və izləmə kukiləri istifadə edilmir."
+        },
+        "changes": {
+          "heading": "Siyasətdə dəyişikliklər",
+          "body": "Bu sənəd yeniləndikdə yuxarıdakı tarix dəyişir. Əhəmiyyətli dəyişikliklər barədə təşkilat adminlərinə e-poçtla məlumat verilir."
+        },
+        "contact": {
+          "heading": "Əlaqə",
+          "body": "Məxfiliklə bağlı suallar və data müraciətləri üçün əlaqə səhifəsindəki formdan istifadə edin və mövzuda «Məxfilik» qeyd edin."
+        }
+      }
+    },
+    "terms": {
+      "title": "İstifadə şərtləri",
+      "updated": "Son yenilənmə: 6 sentyabr 2026",
+      "draftNotice": "QARALAMA — bu sənədin mətni hüquqi baxışdan keçməyib və hüquqi qüvvəyə malik deyil.",
+      "sections": {
+        "acceptance": {
+          "heading": "Şərtlərin qəbulu",
+          "body": "Platformadan istifadə etməklə bu şərtləri qəbul etmiş olursunuz. Təşkilat adına imzalanan ayrıca müqavilə olduqda, ziddiyyət halında həmin müqavilə üstünlük təşkil edir."
+        },
+        "service": {
+          "heading": "Xidmətin təsviri",
+          "body": "BizSim çox-kirayəçili proqram təminatı xidmətidir: təlim, imtahan, simulyasiya, hakaton, sertifikat və analitika modullarını əhatə edir. Modulların hansının aktiv olduğu abunə planından asılıdır."
+        },
+        "accounts": {
+          "heading": "Hesablar və təhlükəsizlik",
+          "body": "Hesabın təhlükəsizliyinə görə istifadəçi məsuliyyət daşıyır. Admin rolları üçün iki mərhələli doğrulama məcburidir. Hesab məlumatlarının paylaşılması qadağandır."
+        },
+        "seats": {
+          "heading": "Oturacaq lisenziyası",
+          "body": "Abunəlik oturacaq sayı ilə məhdudlaşır. Limit dolduqda yeni iştirakçı qeydiyyatdan keçə bilmir. Oturacaq sayı istənilən vaxt artırıla bilər."
+        },
+        "acceptableUse": {
+          "heading": "Məqbul istifadə",
+          "body": "Platformadan qanunsuz məqsədlə, başqasının hüquqlarını pozmaqla, sistemə icazəsiz müdaxilə cəhdi ilə və ya avtomatlaşdırılmış kütləvi sorğularla istifadə qadağandır."
+        },
+        "content": {
+          "heading": "Məzmun və mülkiyyət",
+          "body": "Təşkilatın yüklədiyi məzmun (proqramlar, ssenarilər, layihələr) həmin təşkilata məxsusdur. Platformanın özü, kodu və dizaynı BizSim-ə məxsusdur."
+        },
+        "availability": {
+          "heading": "Əlçatanlıq",
+          "body": "Xidmətin fasiləsiz işləməsi hədəflənir, lakin planlı texniki işlər və provayder qaynaqlı kəsilmələr mümkündür. Planlı işlər barədə əvvəlcədən məlumat verilir."
+        },
+        "fees": {
+          "heading": "Ödənişlər",
+          "body": "Abunə haqqı aylıq olaraq oturacaq sayına görə hesablanır. Ödəniş gecikdikdə xidmət müvəqqəti dayandırıla bilər. Qiymət dəyişikliyi barədə ən azı bir dövr əvvəl məlumat verilir."
+        },
+        "termination": {
+          "heading": "Xidmətin dayandırılması",
+          "body": "Abunəlik cari dövrün sonunda ləğv edilə bilər. Şərtlərin ciddi pozulması halında xidmət dərhal dayandırıla bilər. Ləğvdən sonra data ixracı üçün ağlabatan müddət verilir."
+        },
+        "liability": {
+          "heading": "Məsuliyyətin məhdudlaşdırılması",
+          "body": "Qanunun icazə verdiyi həddə, dolayı zərərlərə görə məsuliyyət daşınmır. Ümumi məsuliyyət son 12 ayda ödənilmiş abunə haqqı ilə məhdudlaşır."
+        },
+        "governingLaw": {
+          "heading": "Tətbiq olunan hüquq",
+          "body": "Bu şərtlərə xidmət göstərənin qeydiyyatda olduğu ölkənin qanunvericiliyi tətbiq olunur. Mübahisələr həmin yurisdiksiyanın səlahiyyətli məhkəmələrində baxılır."
+        },
+        "contact": {
+          "heading": "Əlaqə",
+          "body": "Şərtlərlə bağlı suallar üçün əlaqə səhifəsindəki formdan istifadə edin."
+        }
+      }
+    }
   }
 }

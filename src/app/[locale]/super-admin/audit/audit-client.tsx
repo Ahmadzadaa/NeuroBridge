@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import {
   Table,
@@ -40,6 +41,8 @@ interface AuditClientProps {
 }
 
 export function AuditClient({ userName, title }: AuditClientProps) {
+  const t = useTranslations("superAdmin.audit");
+  const tc = useTranslations("common");
   const [items, setItems] = useState<AuditItem[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -91,10 +94,16 @@ export function AuditClient({ userName, title }: AuditClientProps) {
       <div className="mb-4 flex flex-wrap items-center gap-3">
         <Select value={action} onValueChange={(v) => changeAction(v ?? "all")}>
           <SelectTrigger className="w-56 rounded-xl">
-            <SelectValue placeholder="Filter by action" />
+            {/* Action names double as their own labels, but the "all" option
+                would otherwise render the literal word "all". */}
+            <SelectValue>
+              {(value: string) =>
+                !value || value === "all" ? t("allActions") : value
+              }
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All actions</SelectItem>
+            <SelectItem value="all">{t("allActions")}</SelectItem>
             {Object.values(AUDIT_ACTIONS).map((value) => (
               <SelectItem key={value} value={value}>
                 {value}
@@ -104,7 +113,7 @@ export function AuditClient({ userName, title }: AuditClientProps) {
         </Select>
         <Input
           className="max-w-xs rounded-xl"
-          placeholder="Search in details (client-side)"
+          placeholder={t("searchDetails")}
           disabled
         />
       </div>
@@ -113,25 +122,31 @@ export function AuditClient({ userName, title }: AuditClientProps) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Timestamp</TableHead>
-              <TableHead>Action</TableHead>
-              <TableHead>User</TableHead>
-              <TableHead>Tenant</TableHead>
-              <TableHead>IP</TableHead>
-              <TableHead>Details</TableHead>
+              <TableHead>{t("timestamp")}</TableHead>
+              <TableHead>{t("action")}</TableHead>
+              <TableHead>{t("user")}</TableHead>
+              <TableHead>{t("tenant")}</TableHead>
+              <TableHead>{t("ip")}</TableHead>
+              <TableHead>{t("details")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-muted-foreground">
-                  Loading...
+                <TableCell
+                  colSpan={6}
+                  className="text-center text-muted-foreground"
+                >
+                  {tc("loading")}
                 </TableCell>
               </TableRow>
             ) : items.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-muted-foreground">
-                  No audit entries found.
+                <TableCell
+                  colSpan={6}
+                  className="text-center text-muted-foreground"
+                >
+                  {t("empty")}
                 </TableCell>
               </TableRow>
             ) : (
@@ -140,12 +155,18 @@ export function AuditClient({ userName, title }: AuditClientProps) {
                   <TableCell className="whitespace-nowrap text-xs">
                     {new Date(item.createdAt).toLocaleString()}
                   </TableCell>
-                  <TableCell className="font-mono text-xs">{item.action}</TableCell>
+                  <TableCell className="font-mono text-xs">
+                    {item.action}
+                  </TableCell>
                   <TableCell className="text-xs">
                     {item.userName || item.userEmail || item.userId || "—"}
                   </TableCell>
-                  <TableCell className="text-xs">{item.tenantName || item.tenantId || "—"}</TableCell>
-                  <TableCell className="font-mono text-xs">{item.ip || "—"}</TableCell>
+                  <TableCell className="text-xs">
+                    {item.tenantName || item.tenantId || "—"}
+                  </TableCell>
+                  <TableCell className="font-mono text-xs">
+                    {item.ip || "—"}
+                  </TableCell>
                   <TableCell className="max-w-xs truncate text-xs text-muted-foreground">
                     {item.details || "—"}
                   </TableCell>
@@ -157,7 +178,9 @@ export function AuditClient({ userName, title }: AuditClientProps) {
       </div>
 
       <div className="mt-4 flex items-center justify-between">
-        <p className="text-sm text-muted-foreground">{total} total entries</p>
+        <p className="text-sm text-muted-foreground">
+          {t("totalEntries", { count: total })}
+        </p>
         <div className="flex gap-2">
           <Button
             variant="outline"
@@ -165,7 +188,7 @@ export function AuditClient({ userName, title }: AuditClientProps) {
             disabled={page <= 1}
             onClick={() => changePage(page - 1)}
           >
-            Previous
+            {tc("previous")}
           </Button>
           <Button
             variant="outline"
@@ -173,7 +196,7 @@ export function AuditClient({ userName, title }: AuditClientProps) {
             disabled={page >= totalPages}
             onClick={() => changePage(page + 1)}
           >
-            Next
+            {tc("next")}
           </Button>
         </div>
       </div>

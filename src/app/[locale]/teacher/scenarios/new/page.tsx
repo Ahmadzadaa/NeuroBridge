@@ -1,7 +1,8 @@
 import { setRequestLocale } from "next-intl/server";
 import { requireRole } from "@/lib/auth-utils";
 import { requireFeature } from "@/lib/tenant/require-feature";
-import { ScenarioEditor, emptyScenario } from "../scenario-editor";
+import { ScenarioEditor } from "../scenario-editor";
+import { emptyScenario } from "../scenario-draft";
 
 export default async function NewScenarioPage({
   params,

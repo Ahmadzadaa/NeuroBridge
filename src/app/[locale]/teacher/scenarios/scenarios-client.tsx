@@ -53,6 +53,7 @@ export function ScenariosListClient({
         </p>
         <Button
           className="rounded-xl"
+          nativeButton={false}
           render={<Link href={`/${locale}/teacher/scenarios/new`} />}
         >
           <Plus className="h-4 w-4" aria-hidden="true" />
@@ -81,6 +82,7 @@ export function ScenariosListClient({
                     size="icon-sm"
                     aria-label={tc("edit")}
                     className="rounded-lg"
+                    nativeButton={false}
                     render={
                       <Link
                         href={`/${locale}/teacher/scenarios/${scenario.id}`}

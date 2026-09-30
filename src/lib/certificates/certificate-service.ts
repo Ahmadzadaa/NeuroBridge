@@ -1,99 +1,68 @@
 import { prisma } from "@/lib/prisma";
-import { recordAudit } from "@/lib/audit/audit-service";
-import { AUDIT_ACTIONS } from "@/lib/audit/actions";
-import { getTenantSettings } from "@/lib/tenant/settings-service";
-import {
-  CertificateAlreadyIssuedError,
-  CertificateDisabledError,
-  CertificateParticipantNotFoundError,
-} from "@/lib/certificates/errors";
 
-export const CERTIFICATE_TYPES = [
-  "PARTICIPATION",
-  "ACHIEVEMENT",
-  "COMPLETION",
-] as const;
-
-export type CertificateType = (typeof CERTIFICATE_TYPES)[number];
-
-const SETTINGS_KEY: Record<
-  CertificateType,
-  "participationCertificate" | "achievementCertificate" | "completionCertificate"
-> = {
-  PARTICIPATION: "participationCertificate",
-  ACHIEVEMENT: "achievementCertificate",
-  COMPLETION: "completionCertificate",
-};
+export { CERTIFICATE_TYPES, type CertificateType } from "@/lib/certificates/issue-service";
 
 export interface CertificateRecord {
   id: string;
   type: string;
+  title: string;
+  serialNumber: string;
   issuedAt: Date;
-  pdfUrl: string | null;
+  revokedAt: Date | null;
+  /** Present once the PDF has been rendered and stored. */
+  hasPdf: boolean;
 }
 
+/**
+ * Certificates held by one user, newest first.
+ *
+ * `pdfPath` is deliberately not returned: it is a server-side storage location,
+ * and the file is served through the permissioned route so the path never has
+ * to reach the browser.
+ */
 export async function listUserCertificates(
   userId: string
 ): Promise<CertificateRecord[]> {
-  return prisma.certificate.findMany({
+  const rows = await prisma.certificate.findMany({
     where: { userId },
-    select: { id: true, type: true, issuedAt: true, pdfUrl: true },
+    select: {
+      id: true,
+      type: true,
+      title: true,
+      serialNumber: true,
+      issuedAt: true,
+      revokedAt: true,
+      pdfPath: true,
+    },
     orderBy: { issuedAt: "desc" },
   });
+
+  return rows.map(({ pdfPath, ...rest }) => ({ ...rest, hasPdf: Boolean(pdfPath) }));
 }
 
-export async function issueCertificate(input: {
-  userId: string;
-  tenantId: string;
-  type: CertificateType;
-  issuedByUserId?: string;
-}): Promise<CertificateRecord> {
-  const participant = await prisma.participant.findFirst({
-    where: {
-      userId: input.userId,
-      program: { tenantId: input.tenantId },
+/** Certificates issued by a tenant, for the admin overview. */
+export async function listTenantCertificates(
+  tenantId: string,
+  limit = 200
+): Promise<
+  Array<CertificateRecord & { recipientName: string; verifyCode: string }>
+> {
+  const rows = await prisma.certificate.findMany({
+    where: { tenantId },
+    select: {
+      id: true,
+      type: true,
+      title: true,
+      serialNumber: true,
+      verifyCode: true,
+      recipientName: true,
+      issuedAt: true,
+      revokedAt: true,
+      pdfPath: true,
     },
-    select: { id: true },
+    orderBy: { issuedAt: "desc" },
+    take: limit,
   });
 
-  if (!participant) {
-    throw new CertificateParticipantNotFoundError();
-  }
-
-  const settings = await getTenantSettings(input.tenantId);
-  const settingsKey = SETTINGS_KEY[input.type];
-  if (settings && settings[settingsKey] === false) {
-    throw new CertificateDisabledError(input.type);
-  }
-
-  const existing = await prisma.certificate.findFirst({
-    where: { userId: input.userId, type: input.type },
-    select: { id: true },
-  });
-
-  if (existing) {
-    throw new CertificateAlreadyIssuedError();
-  }
-
-  const certificate = await prisma.certificate.create({
-    data: {
-      userId: input.userId,
-      type: input.type,
-      pdfUrl: null,
-    },
-    select: { id: true, type: true, issuedAt: true, pdfUrl: true },
-  });
-
-  await recordAudit({
-    action: AUDIT_ACTIONS.CERTIFICATE_ISSUED,
-    userId: input.issuedByUserId,
-    tenantId: input.tenantId,
-    details: {
-      certificateId: certificate.id,
-      recipientUserId: input.userId,
-      type: input.type,
-    },
-  });
-
-  return certificate;
+  return rows.map(({ pdfPath, ...rest }) => ({ ...rest, hasPdf: Boolean(pdfPath) }));
 }

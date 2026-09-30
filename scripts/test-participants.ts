@@ -1,4 +1,3 @@
-import { withTenantContext } from "@/lib/db/tenant-context";
 import { buildTenantContext } from "@/lib/auth/session";
 import { listTenantParticipants } from "@/lib/participants/participant-service";
 import { parsePagination } from "@/lib/pagination";

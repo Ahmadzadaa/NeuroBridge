@@ -11,7 +11,12 @@ FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
-RUN npx prisma generate
+
+# prisma/schema.prisma is pinned to sqlite for local development. Generating
+# from it here would ship a SQLite client to a container whose DATABASE_URL is
+# PostgreSQL, and every query would fail on the first request.
+RUN node scripts/gen-postgres-schema.mjs
+RUN npx prisma generate --schema=prisma/schema.postgres.prisma
 RUN npm run build
 
 FROM base AS runner
@@ -27,6 +32,11 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder /app/prisma ./prisma
+
+# Certificate backgrounds and the embedded fonts are read at runtime from
+# `process.cwd()/assets`. Next's standalone tracing cannot see a path built at
+# runtime, so without this line certificate rendering fails in production.
+COPY --from=builder /app/assets ./assets
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder /app/package.json ./package.json

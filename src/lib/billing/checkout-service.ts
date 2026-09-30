@@ -14,6 +14,7 @@ import type {
   PaytrGetTokenRequest,
 } from "@/lib/payment/paytr/paytr.types";
 import { toMajorUnits } from "@/lib/billing/money";
+import { logPaytr } from "@/lib/payment/paytr/paytr-log";
 
 /**
  * Turns an invoice into a PayTR payment page.
@@ -113,8 +114,20 @@ export async function createSeatCheckout(
   input: SeatCheckoutInput
 ): Promise<SeatCheckoutResult> {
   const { invoice } = input;
+  const credentials = getPaytrCredentials();
   const appUrl =
     input.appUrl ?? process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+
+  const startedAt = Date.now();
+  logPaytr("info", "checkout.token_requested", {
+    merchantOid: invoice.merchantOid,
+    invoiceId: invoice.id,
+    tenantId: invoice.tenantId,
+    amount: invoice.amount,
+    currency: invoice.currency,
+    mode: credentials.mode,
+    testMode: credentials.testMode,
+  });
 
   try {
     const checkoutUrl = await requestPaytrCheckoutUrl({
@@ -126,6 +139,14 @@ export async function createSeatCheckout(
       userIp: input.userIp,
       okUrl: `${appUrl}/tenant/billing?payment=success`,
       failUrl: `${appUrl}/tenant/billing?payment=failed`,
+    });
+
+    logPaytr("info", "checkout.token_issued", {
+      merchantOid: invoice.merchantOid,
+      invoiceId: invoice.id,
+      tenantId: invoice.tenantId,
+      mode: credentials.mode,
+      durationMs: Date.now() - startedAt,
     });
 
     await prisma.paymentTransaction.create({
@@ -143,6 +164,15 @@ export async function createSeatCheckout(
   } catch (error) {
     // Record the failed handshake so a tenant reporting "it never opened" can
     // be traced, then let the caller surface the error.
+    logPaytr("error", "checkout.token_failed", {
+      merchantOid: invoice.merchantOid,
+      invoiceId: invoice.id,
+      tenantId: invoice.tenantId,
+      mode: credentials.mode,
+      reason: error instanceof Error ? error.message : "PayTR token request failed",
+      durationMs: Date.now() - startedAt,
+    });
+
     await prisma.paymentTransaction
       .create({
         data: {

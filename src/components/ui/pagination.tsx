@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -33,6 +34,7 @@ export function Pagination({
   itemLabel = "",
   className,
 }: PaginationProps) {
+  const t = useTranslations("common");
   const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
   const from = totalItems === 0 ? 0 : (page - 1) * pageSize + 1;
   const to = Math.min(page * pageSize, totalItems);
@@ -64,7 +66,7 @@ export function Pagination({
           size="icon-sm"
           onClick={() => onPageChange(page - 1)}
           disabled={page <= 1}
-          aria-label="Previous page"
+          aria-label={t("previousPage")}
         >
           <ChevronLeft className="h-4 w-4" />
         </Button>
@@ -80,7 +82,7 @@ export function Pagination({
               variant={p === page ? "default" : "ghost"}
               size="icon-sm"
               onClick={() => onPageChange(p)}
-              aria-label={`Page ${p}`}
+              aria-label={t("pageNumber", { number: p })}
               aria-current={p === page ? "page" : undefined}
             >
               {p}
@@ -93,7 +95,7 @@ export function Pagination({
           size="icon-sm"
           onClick={() => onPageChange(page + 1)}
           disabled={page >= totalPages}
-          aria-label="Next page"
+          aria-label={t("nextPage")}
         >
           <ChevronRight className="h-4 w-4" />
         </Button>
@@ -104,7 +106,7 @@ export function Pagination({
           value={String(pageSize)}
           onValueChange={(v) => v && onPageSizeChange(Number(v))}
         >
-          <SelectTrigger className="w-[72px]" aria-label="Rows per page">
+          <SelectTrigger className="w-[72px]" aria-label={t("rowsPerPage")}>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>

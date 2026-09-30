@@ -325,6 +325,7 @@ export function TrainingDetailClient({
               <Button
                 className="mt-4 w-full rounded-xl"
                 variant={exam.attempt?.passed ? "outline" : "default"}
+                nativeButton={false}
                 render={
                   <Link
                     href={`/${locale}/participant/trainings/${training.id}/exam`}

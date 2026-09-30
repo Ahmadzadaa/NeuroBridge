@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { participantProfile } from "./participant-profiles";
 
 const prisma = new PrismaClient();
 
@@ -1280,6 +1281,44 @@ function daysAgo(days: number): Date {
   return date;
 }
 
+/**
+ * A seeded certificate has to satisfy the same contract as one the app issues:
+ * a tenant, a unique serial, and the name/title snapshot taken at issue time.
+ * The `SEED` segment keeps these serials out of the tenant's real sequence.
+ */
+let seedCertSeq = 0;
+const SEED_TEMPLATE = {
+  PARTICIPATION: "participation",
+  ACHIEVEMENT: "achievement",
+  COMPLETION: "completion",
+} as const;
+
+async function seedCertificate(input: {
+  tenantId: string;
+  programId: string | null;
+  userId: string;
+  recipientName: string;
+  title: string;
+  type: keyof typeof SEED_TEMPLATE;
+}) {
+  seedCertSeq += 1;
+  const n = String(seedCertSeq).padStart(6, "0");
+  await prisma.certificate.create({
+    data: {
+      tenantId: input.tenantId,
+      userId: input.userId,
+      programId: input.programId,
+      type: input.type,
+      templateId: SEED_TEMPLATE[input.type],
+      serialNumber: `BIZ-${new Date().getFullYear()}-SEED-${n}`,
+      verifyCode: `DEMO${n}`,
+      recipientName: input.recipientName,
+      title: input.title,
+      locale: "az",
+    },
+  });
+}
+
 async function main() {
   const reset = process.argv.includes("--reset");
   
@@ -1638,13 +1677,16 @@ async function main() {
     });
 
     // Give all certificates
-    await prisma.certificate.createMany({
-      data: [
-        { userId: user.id, type: "participation" },
-        { userId: user.id, type: "achievement" },
-        { userId: user.id, type: "completion" }
-      ]
-    });
+    for (const certType of ["PARTICIPATION", "ACHIEVEMENT", "COMPLETION"] as const) {
+      await seedCertificate({
+        tenantId: tenant.id,
+        programId: program.id,
+        userId: user.id,
+        recipientName: name,
+        title: program.name,
+        type: certType,
+      });
+    }
 
     // Pass all exams with high scores
     const exams = await prisma.exam.findMany();
@@ -1723,14 +1765,16 @@ async function main() {
     });
 
     // Give 1-2 certificates
-    const certTypes = ["participation", "achievement", "completion"];
+    const certTypes = ["PARTICIPATION", "ACHIEVEMENT", "COMPLETION"] as const;
     const numCerts = 1 + Math.floor(Math.random() * 2);
     for (let j = 0; j < numCerts; j++) {
-      await prisma.certificate.create({
-        data: {
-          userId: user.id,
-          type: certTypes[j]
-        }
+      await seedCertificate({
+        tenantId: tenant.id,
+        programId: program.id,
+        userId: user.id,
+        recipientName: name,
+        title: program.name,
+        type: certTypes[j],
       });
     }
 
@@ -1814,11 +1858,13 @@ async function main() {
 
     // Maybe give 1 certificate
     if (Math.random() > 0.7) {
-      await prisma.certificate.create({
-        data: {
-          userId: user.id,
-          type: "participation"
-        }
+      await seedCertificate({
+        tenantId: tenant.id,
+        programId: program.id,
+        userId: user.id,
+        recipientName: name,
+        title: program.name,
+        type: "PARTICIPATION",
       });
     }
 
@@ -1997,6 +2043,22 @@ async function main() {
     where: { id: tenant.id },
     data: { seatsUsed: participantCount }
   });
+
+  // Every participant gets a contact number and an academic profile, so the
+  // admin directory, the Excel export and the profile screen all have
+  // something real to show.
+  console.log("🎓 Filling participant profiles...");
+  const demoParticipants = await prisma.user.findMany({
+    where: { tenantId: tenant.id, role: "PARTICIPANT" },
+    select: { id: true, language: true },
+    orderBy: { email: "asc" },
+  });
+  for (let i = 0; i < demoParticipants.length; i++) {
+    await prisma.user.update({
+      where: { id: demoParticipants[i].id },
+      data: participantProfile(i, demoParticipants[i].language ?? "az"),
+    });
+  }
 
   console.log(`✅ Demo data seeded successfully!`);
   console.log(`📊 Summary:`);

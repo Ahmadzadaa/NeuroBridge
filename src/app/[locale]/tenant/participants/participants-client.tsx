@@ -38,6 +38,11 @@ interface ParticipantItem {
     email: string;
     firstName: string | null;
     lastName: string | null;
+    phone: string | null;
+    university: string | null;
+    faculty: string | null;
+    specialty: string | null;
+    studyYear: number | null;
   };
 }
 
@@ -139,7 +144,15 @@ export function ParticipantsPageClient({
             onValueChange={(value) => changeProgramFilter(value ?? "all")}
           >
             <SelectTrigger className="w-full max-w-xs rounded-xl">
-              <SelectValue placeholder={t("title")} />
+              {/* Without a formatter the trigger showed the programme's cuid. */}
+              <SelectValue>
+                {(value: string) =>
+                  value === "all"
+                    ? t("allPrograms")
+                    : (programs.find((program) => program.id === value)?.name ??
+                      t("allPrograms"))
+                }
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">{t("allPrograms")}</SelectItem>
@@ -157,6 +170,8 @@ export function ParticipantsPageClient({
               <TableRow>
                 <TableHead>{t("fullName")}</TableHead>
                 <TableHead>{t("email")}</TableHead>
+                <TableHead className="hidden md:table-cell">{t("phone")}</TableHead>
+                <TableHead className="hidden lg:table-cell">{t("university")}</TableHead>
                 <TableHead>{t("registrationDate")}</TableHead>
                 <TableHead>{tc("status")}</TableHead>
               </TableRow>
@@ -167,13 +182,15 @@ export function ParticipantsPageClient({
                   <TableRow key={i} className="hover:bg-transparent hover:[&>td:first-child]:shadow-none">
                     <TableCell><Skeleton className="h-4 w-32" /></TableCell>
                     <TableCell><Skeleton className="h-4 w-44" /></TableCell>
+                    <TableCell className="hidden md:table-cell"><Skeleton className="h-4 w-28" /></TableCell>
+                    <TableCell className="hidden lg:table-cell"><Skeleton className="h-4 w-40" /></TableCell>
                     <TableCell><Skeleton className="h-4 w-24" /></TableCell>
                     <TableCell><Skeleton className="h-5 w-16 rounded-full" /></TableCell>
                   </TableRow>
                 ))
               ) : items.length === 0 ? (
                 <TableRow className="even:bg-transparent hover:bg-transparent hover:[&>td:first-child]:shadow-none">
-                  <TableCell colSpan={4} className="h-auto whitespace-normal">
+                  <TableCell colSpan={6} className="h-auto whitespace-normal">
                     <EmptyState title={tc("noData")} />
                   </TableCell>
                 </TableRow>
@@ -182,6 +199,23 @@ export function ParticipantsPageClient({
                   <TableRow key={item.id}>
                     <TableCell className="font-medium">{formatName(item.user)}</TableCell>
                     <TableCell className="text-muted-foreground">{item.user.email}</TableCell>
+                    <TableCell className="hidden whitespace-nowrap text-muted-foreground md:table-cell">
+                      {item.user.phone ?? "—"}
+                    </TableCell>
+                    <TableCell className="hidden lg:table-cell">
+                      {item.user.university ? (
+                        <span className="block max-w-[18rem]">
+                          <span className="block truncate text-sm">{item.user.university}</span>
+                          <span className="block truncate text-xs text-muted-foreground">
+                            {[item.user.faculty, item.user.studyYear ? `${item.user.studyYear}. ${t("studyYear")}` : null]
+                              .filter(Boolean)
+                              .join(" · ")}
+                          </span>
+                        </span>
+                      ) : (
+                        <span className="text-sm text-muted-foreground">{t("noProfile")}</span>
+                      )}
+                    </TableCell>
                     <TableCell>
                       {new Date(item.registrationDate).toLocaleDateString()}
                     </TableCell>

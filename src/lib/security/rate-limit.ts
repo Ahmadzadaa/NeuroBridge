@@ -1,4 +1,5 @@
 import { Ratelimit } from "@upstash/ratelimit";
+import { inMemoryRateLimitAllowed } from "@/lib/env-check";
 import { RateLimitError } from "@/lib/auth/permissions";
 import { getRedisClient, isRedisAvailable } from "@/lib/redis/client";
 
@@ -9,6 +10,7 @@ export type RateLimitBucket =
   | "export"
   | "ai"
   | "webhook"
+  | "leads"
   | "api";
 
 const WINDOW_SECONDS: Record<RateLimitBucket, number> = {
@@ -18,6 +20,9 @@ const WINDOW_SECONDS: Record<RateLimitBucket, number> = {
   export: 60,
   ai: 60,
   webhook: 60,
+  // An hour, not a minute: a demo form is filled in once, and a spammer
+  // throttled per minute can still post 60 times an hour.
+  leads: 3600,
   api: 60,
 };
 
@@ -28,6 +33,7 @@ const LIMITS: Record<RateLimitBucket, number> = {
   export: 5,
   ai: 20,
   webhook: 100,
+  leads: 5,
   api: 120,
 };
 
@@ -71,8 +77,13 @@ export async function enforceRateLimit(
   }
 
   if (!isRedisAvailable()) {
-    if (process.env.NODE_ENV === "production") {
-      throw new Error("Rate limiting requires Upstash Redis in production");
+    // Refusing to serve is the right default: silently degrading to a
+    // per-process counter in production would weaken the limit without anyone
+    // noticing. The operator can opt in explicitly for a single instance.
+    if (process.env.NODE_ENV === "production" && !inMemoryRateLimitAllowed()) {
+      throw new Error(
+        "Rate limiting requires Upstash Redis in production, or ALLOW_IN_MEMORY_RATE_LIMIT=true for a single-instance deployment"
+      );
     }
     await checkMemoryLimit(bucket, identifier);
     return;

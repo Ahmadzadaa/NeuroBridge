@@ -22,6 +22,7 @@ const CREDENTIALS: PaytrCredentials = {
   merchantKey: "test-merchant-key",
   merchantSalt: "test-merchant-salt",
   testMode: 1,
+  mode: "sandbox",
 };
 
 function callback(fields: Record<string, string>): Request {

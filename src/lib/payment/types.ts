@@ -39,6 +39,8 @@ export interface NormalizedWebhookPayload {
 export interface VerifiedWebhookEvent {
   eventId: string;
   eventType: string;
+  /** The notification body exactly as received, for the provider audit log. */
+  rawBody?: string;
   payload: NormalizedWebhookPayload;
 }
 
@@ -50,6 +52,7 @@ export interface PaymentProviderAdapter {
 
 export class PaymentConfigurationError extends Error {
   readonly statusCode = 503;
+  readonly code = "PAYMENT_UNAVAILABLE";
 
   constructor(message: string) {
     super(message);
@@ -59,6 +62,7 @@ export class PaymentConfigurationError extends Error {
 
 export class PaymentVerificationError extends Error {
   readonly statusCode = 400;
+  readonly code = "PAYMENT_VERIFICATION_FAILED";
 
   constructor(message: string) {
     super(message);

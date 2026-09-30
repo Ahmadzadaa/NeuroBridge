@@ -66,14 +66,15 @@ export function ReportsPageClient({ userName, programs }: ReportsPageClientProps
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
       await new Promise((resolve) => setTimeout(resolve, 2000));
       const statusRes = await fetch(`/api/jobs/${jobId}`);
+      // These messages never reach the screen — the caller catches and shows a
+      // translated toast — so they stay in English, for the console.
       if (!statusRes.ok) {
-        const data = await statusRes.json().catch(() => ({}));
-        throw new Error(data.error ?? "Failed to check export status");
+        throw new Error(`Export job status check failed: ${statusRes.status}`);
       }
 
       const status = await statusRes.json();
       if (status.status === "FAILED") {
-        throw new Error(status.error ?? "Export failed");
+        throw new Error("Export job failed");
       }
 
       if (status.status === "COMPLETED" && status.downloadUrl) {
@@ -109,16 +110,15 @@ export function ReportsPageClient({ userName, programs }: ReportsPageClientProps
       });
 
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        toast.error(data.error ?? "Export failed");
+        toast.error(t("exportFailed"));
         return;
       }
 
       if (res.status === 202) {
         const data = await res.json();
-        toast.message("Large export queued — preparing file…");
+        toast.message(t("exportQueued"));
         await pollExportJob(data.jobId);
-        toast.success("Report exported");
+        toast.success(t("exported"));
         return;
       }
 
@@ -127,9 +127,9 @@ export function ReportsPageClient({ userName, programs }: ReportsPageClientProps
       const filenameMatch = disposition?.match(/filename="(.+)"/);
       const filename = filenameMatch?.[1] ?? `report.${format}`;
       await downloadBlob(blob, filename);
-      toast.success("Report exported");
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Export failed");
+      toast.success(t("exported"));
+    } catch {
+      toast.error(t("exportFailed"));
     } finally {
       setExporting(false);
     }
@@ -140,12 +140,19 @@ export function ReportsPageClient({ userName, programs }: ReportsPageClientProps
       <div className="mb-6">
         <Select value={selectedProgram} onValueChange={(v) => setSelectedProgram(v ?? "")}>
           <SelectTrigger className="w-full max-w-sm rounded-xl">
-            <SelectValue placeholder={t("selectProgram")} />
+            {/* Base UI renders the raw value unless given a formatter, which
+                showed the programme's cuid in the trigger. */}
+            <SelectValue>
+              {(value: string) =>
+                programs.find((program) => program.id === value)?.name ??
+                t("selectProgram")
+              }
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             {programs.length === 0 ? (
               <SelectItem value="none" disabled>
-                No programs
+                {t("noPrograms")}
               </SelectItem>
             ) : (
               programs.map((program) => (
@@ -158,7 +165,10 @@ export function ReportsPageClient({ userName, programs }: ReportsPageClientProps
         </Select>
       </div>
 
-      <div className="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-6">
+      {/* Six across only on a genuinely wide screen: at 1280px each card is
+          narrow enough that a label like "Simulyasiya tamamlanması" breaks
+          mid-word across three lines. */}
+      <div className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-3 2xl:grid-cols-6">
         <StatCard title={t("kpi.totalParticipants")} value={0} icon={Users} accent="brand" />
         <StatCard title={t("kpi.simulationCompletion")} value={0} suffix="%" icon={Gamepad2} accent="success" />
         <StatCard title={t("kpi.trainingCompletion")} value={0} suffix="%" icon={GraduationCap} accent="success" />

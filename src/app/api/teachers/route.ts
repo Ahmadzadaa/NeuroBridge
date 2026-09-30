@@ -1,3 +1,5 @@
+import { localeUrl } from "@/lib/app-url";
+import { routing } from "@/i18n/routing";
 import { randomBytes, randomUUID } from "crypto";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
@@ -77,7 +79,9 @@ export async function POST(request: Request) {
             firstName: body.firstName,
             lastName: body.lastName,
             role: "TEACHER",
-            language: "az",
+            // The teacher has no preference yet; the admin creating the account
+            // is working in some language, and that is the best guess we have.
+            language: session.language ?? routing.defaultLocale,
             inviteToken: randomUUID(),
           },
         });
@@ -110,8 +114,9 @@ export async function POST(request: Request) {
           ...teacherCredentialsEmail({
             email: body.email,
             tempPassword,
-            loginUrl: `${origin}/az/login`,
+            loginUrl: localeUrl(origin, "/login", session.language),
             organizationName: tenant?.name,
+            language: session.language,
           }),
         });
       }

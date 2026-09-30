@@ -6,6 +6,7 @@ import { Award } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { listUserCertificates } from "@/lib/certificates/certificate-service";
+import { Download, ShieldOff } from "lucide-react";
 
 export default async function CertificatesPage({
   params,
@@ -49,15 +50,37 @@ export default async function CertificatesPage({
                       <Award className="h-5 w-5" aria-hidden="true" />
                     </span>
                     <div className="min-w-0">
-                      <p className="truncate font-medium">
-                        {typeLabel(cert.type)}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="truncate font-medium">{cert.title}</p>
+                      <p className="truncate text-sm text-muted-foreground">
+                        {typeLabel(cert.type)} ·{" "}
                         {new Date(cert.issuedAt).toLocaleDateString(locale)}
+                      </p>
+                      <p className="mt-0.5 font-mono text-[11px] text-muted-foreground">
+                        {cert.serialNumber}
                       </p>
                     </div>
                   </div>
-                  <Badge variant="secondary">{tc("earned")}</Badge>
+
+                  <div className="flex shrink-0 items-center gap-2">
+                    {cert.revokedAt ? (
+                      <Badge variant="destructive" className="gap-1">
+                        <ShieldOff className="h-3 w-3" aria-hidden="true" />
+                        {t("certificateRevoked")}
+                      </Badge>
+                    ) : cert.hasPdf ? (
+                      <a
+                        href={`/api/certificates/${cert.id}/file`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:brightness-110"
+                      >
+                        <Download className="h-3.5 w-3.5" aria-hidden="true" />
+                        {t("downloadCertificate")}
+                      </a>
+                    ) : (
+                      <Badge variant="secondary">{tc("earned")}</Badge>
+                    )}
+                  </div>
                 </li>
               ))}
             </ul>

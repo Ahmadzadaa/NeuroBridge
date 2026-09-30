@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { useApiErrorMessage } from "@/lib/api/api-error";
 import {
   Building2,
   Loader2,
@@ -77,6 +78,7 @@ export function TenantsPageClient({
   tenants,
 }: TenantsPageClientProps) {
   const t = useTranslations("superAdmin.tenants");
+  const apiError = useApiErrorMessage();
   const tc = useTranslations("common");
   const router = useRouter();
 
@@ -124,7 +126,7 @@ export function TenantsPageClient({
         error?: string;
       } | null;
       if (!res.ok) {
-        toast.error(data?.error ?? tc("error"));
+        toast.error(apiError(data));
         return;
       }
       setProvisioned({

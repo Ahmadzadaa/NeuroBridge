@@ -1,3 +1,4 @@
+import { routing, type Locale } from "@/i18n/routing";
 import { headers } from "next/headers";
 
 /**
@@ -27,4 +28,24 @@ export async function getAppOrigin(): Promise<string> {
       : "https");
 
   return `${proto}://${host}`;
+}
+
+/**
+ * Builds a locale-prefixed absolute link for an email.
+ *
+ * Every route in this app is locale-prefixed, so a link has to carry one. These
+ * links were previously hardcoded to `/az/`, which sent a Turkish technopark's
+ * admins to an Azerbaijani screen — and `az` is not even the app's default
+ * locale. When the recipient's language is unknown, fall back to the routing
+ * default rather than to any one language.
+ */
+export function localeUrl(
+  origin: string,
+  path: string,
+  language?: string | null
+): string {
+  const locale = routing.locales.includes(language as Locale)
+    ? (language as Locale)
+    : routing.defaultLocale;
+  return `${origin.replace(/\/+$/, "")}/${locale}${path}`;
 }

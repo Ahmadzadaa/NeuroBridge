@@ -8,17 +8,17 @@ datasource db {
 }
 
 model Tenant {
-  id         String   @id @default(cuid())
-  name       String
-  logoUrl    String?  @map("logo_url")
-  website    String?
-  phone      String?
-  email      String?
-  address    String?
-  status     String   @default("PENDING")
-  seatLimit  Int      @default(0) @map("seat_limit")
-  seatsUsed  Int      @default(0) @map("seats_used")
-  planType   String?  @map("plan_type")
+  id        String  @id @default(cuid())
+  name      String
+  logoUrl   String? @map("logo_url")
+  website   String?
+  phone     String?
+  email     String?
+  address   String?
+  status    String  @default("PENDING")
+  seatLimit Int     @default(0) @map("seat_limit")
+  seatsUsed Int     @default(0) @map("seats_used")
+  planType  String? @map("plan_type")
 
   /// UNIVERSITY | TECHNOPARK | FULL — a preset that seeds the flags below.
   /// It is only a starting point; each flag can be changed independently
@@ -27,19 +27,19 @@ model Tenant {
 
   /// Module entitlements, set by the platform owner. Default to true so
   /// organisations created before this existed keep everything they had.
-  teachersEnabled    Boolean @default(true) @map("teachers_enabled")
-  hackathonEnabled   Boolean @default(true) @map("hackathon_enabled")
-  simulationsEnabled Boolean @default(true) @map("simulations_enabled")
-  trainingsEnabled   Boolean @default(true) @map("trainings_enabled")
-  aiToolsEnabled     Boolean @default(true) @map("ai_tools_enabled")
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
+  teachersEnabled    Boolean  @default(true) @map("teachers_enabled")
+  hackathonEnabled   Boolean  @default(true) @map("hackathon_enabled")
+  simulationsEnabled Boolean  @default(true) @map("simulations_enabled")
+  trainingsEnabled   Boolean  @default(true) @map("trainings_enabled")
+  aiToolsEnabled     Boolean  @default(true) @map("ai_tools_enabled")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
 
-  users        User[]
-  programs     Program[]
-  payments     Payment[]
-  auditLogs    AuditLog[]
-  settings     TenantSettings?
+  users     User[]
+  programs  Program[]
+  payments  Payment[]
+  auditLogs AuditLog[]
+  settings  TenantSettings?
 
   subscription   Subscription?
   invoices       Invoice[]
@@ -49,9 +49,12 @@ model Tenant {
   services TenantService[]
   orders   Order[]
 
-  universities University[]
-  departments  Department[]
+  universities  University[]
+  departments   Department[]
   notifications TenantNotification[]
+
+  certificates         Certificate[]
+  certificateSequences CertificateSequence[]
 
   @@map("tenants")
 }
@@ -77,24 +80,24 @@ model TenantSettings {
 }
 
 model User {
-  id                  String    @id @default(cuid())
-  tenantId            String?   @map("tenant_id")
-  email               String
-  passwordHash        String    @map("password_hash")
-  firstName           String?   @map("first_name")
-  lastName            String?   @map("last_name")
-  phone               String?
-  role                String    @default("PARTICIPANT")
-  language            String    @default("tr")
-  coinBalance         Int       @default(0) @map("coin_balance")
+  id           String  @id @default(cuid())
+  tenantId     String? @map("tenant_id")
+  email        String
+  passwordHash String  @map("password_hash")
+  firstName    String? @map("first_name")
+  lastName     String? @map("last_name")
+  phone        String?
+  role         String  @default("PARTICIPANT")
+  language     String  @default("tr")
+  coinBalance  Int     @default(0) @map("coin_balance")
 
   // Academic profile, collected at registration for university participants.
   // Nullable because accounts created before this existed have none.
-  university String?
-  faculty    String?
-  specialty  String?
+  university   String?
+  faculty      String?
+  specialty    String?
   /// Year of study, 1–6.
-  studyYear  Int?    @map("study_year")
+  studyYear    Int?    @map("study_year")
   /// Picked from the reference lists; the free-text fields above stay as the
   /// fallback for anything not in them.
   universityId String? @map("university_id")
@@ -113,32 +116,33 @@ model User {
   createdAt           DateTime  @default(now()) @map("created_at")
   updatedAt           DateTime  @updatedAt @map("updated_at")
 
-  tenant           Tenant?           @relation(fields: [tenantId], references: [id])
-  participants     Participant[]
-  userBadges       UserBadge[]
-  certificates     Certificate[]
-  coinTransactions CoinTransaction[]
-  auditLogs        AuditLog[]
-  recoveryCodes    UserRecoveryCode[]
-  examAttempts     ExamAttempt[]
-  lessonProgress   LessonProgress[]
-  teamMemberships  TeamMember[]
-  juryScores       JuryScore[]
-  simulationRuns   SimulationRun[]
-  teacher          User?             @relation("TeacherStudents", fields: [teacherId], references: [id])
-  students         User[]            @relation("TeacherStudents")
-  authoredSimulations Simulation[]   @relation("AuthoredSimulations")
-  approvedInvoices Invoice[]         @relation("InvoiceApprover")
-  seatChanges      SeatChangeLog[]   @relation("SeatChangeActor")
-  activationTokens ActivationToken[]
-  consents         UserConsent[]
-  assessmentResults AssessmentResult[]
-  projectSubmissions LessonProjectSubmission[]
-  universityRef    University?       @relation(fields: [universityId], references: [id])
-  departmentRef    Department?       @relation(fields: [departmentId], references: [id])
+  tenant              Tenant?                   @relation(fields: [tenantId], references: [id])
+  participants        Participant[]
+  userBadges          UserBadge[]
+  certificates        Certificate[]
+  coinTransactions    CoinTransaction[]
+  auditLogs           AuditLog[]
+  recoveryCodes       UserRecoveryCode[]
+  examAttempts        ExamAttempt[]
+  lessonProgress      LessonProgress[]
+  teamMemberships     TeamMember[]
+  juryScores          JuryScore[]
+  simulationRuns      SimulationRun[]
+  teacher             User?                     @relation("TeacherStudents", fields: [teacherId], references: [id])
+  students            User[]                    @relation("TeacherStudents")
+  authoredSimulations Simulation[]              @relation("AuthoredSimulations")
+  approvedInvoices    Invoice[]                 @relation("InvoiceApprover")
+  seatChanges         SeatChangeLog[]           @relation("SeatChangeActor")
+  activationTokens    ActivationToken[]
+  consents            UserConsent[]
+  assessmentResults   AssessmentResult[]
+  projectSubmissions  LessonProjectSubmission[]
+  universityRef       University?               @relation(fields: [universityId], references: [id])
+  departmentRef       Department?               @relation(fields: [departmentId], references: [id])
 
   @@unique([tenantId, email])
   @@index([tenantId])
+  @@index([teacherId])
   @@index([email])
   @@map("users")
 }
@@ -179,7 +183,7 @@ model Program {
   createdAt        DateTime  @default(now()) @map("created_at")
   updatedAt        DateTime  @updatedAt @map("updated_at")
 
-  tenant             Tenant              @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tenant             Tenant                @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   participants       Participant[]
   programSimulations ProgramSimulation[]
   programTrainings   ProgramTraining[]
@@ -187,6 +191,8 @@ model Program {
   hackathonTeams     HackathonTeam[]
   scheduleItems      ProgramScheduleItem[]
   assessmentResults  AssessmentResult[]
+
+  certificates Certificate[]
 
   @@index([tenantId])
   @@map("programs")
@@ -239,29 +245,34 @@ model Participant {
   @@unique([programId, userId])
   @@index([programId])
   @@index([userId])
+  /// Enrolment counts filter on programme + ACTIVE status, and on the
+  /// registration date for the selected window.
+  @@index([programId, status])
+  @@index([registrationDate])
   @@map("participants")
 }
 
 model Simulation {
-  id          String           @id @default(cuid())
-  key         String           @unique
-  nameTr      String           @map("name_tr")
-  nameEn      String           @map("name_en")
-  nameAz      String           @map("name_az")
+  id          String            @id @default(cuid())
+  key         String            @unique
+  nameTr      String            @map("name_tr")
+  nameEn      String            @map("name_en")
+  nameAz      String            @map("name_az")
   category    String
   description String?
-  startCash   Int              @default(1000) @map("start_cash")
-  targetCash  Int              @default(3000) @map("target_cash")
+  startCash   Int               @default(1000) @map("start_cash")
+  targetCash  Int               @default(3000) @map("target_cash")
   // Platform scenarios have tenantId = null; teacher-authored scenarios
   // belong to a tenant and their creator.
-  tenantId    String?          @map("tenant_id")
-  createdById String?          @map("created_by_id")
-  createdBy   User?            @relation("AuthoredSimulations", fields: [createdById], references: [id])
+  tenantId    String?           @map("tenant_id")
+  createdById String?           @map("created_by_id")
+  createdBy   User?             @relation("AuthoredSimulations", fields: [createdById], references: [id])
   tasks       SimulationTask[]
   rounds      SimulationRound[]
   runs        SimulationRun[]
 
   @@index([tenantId])
+  @@index([createdById])
   @@map("simulations")
 }
 
@@ -345,18 +356,18 @@ model SimulationDecision {
 }
 
 model SimulationTask {
-  id              String   @id @default(cuid())
-  simulationId    String   @map("simulation_id")
-  title           String
-  titleTr         String   @map("title_tr")
-  titleEn         String   @map("title_en")
-  titleAz         String   @map("title_az")
-  scenarioText    String   @map("scenario_text")
-  submissionType  String   @map("submission_type")
-  linkedBadgeKey  String   @map("linked_badge_key")
-  coinReward      Int      @map("coin_reward")
-  order           Int
-  createdAt       DateTime @default(now()) @map("created_at")
+  id             String   @id @default(cuid())
+  simulationId   String   @map("simulation_id")
+  title          String
+  titleTr        String   @map("title_tr")
+  titleEn        String   @map("title_en")
+  titleAz        String   @map("title_az")
+  scenarioText   String   @map("scenario_text")
+  submissionType String   @map("submission_type")
+  linkedBadgeKey String   @map("linked_badge_key")
+  coinReward     Int      @map("coin_reward")
+  order          Int
+  createdAt      DateTime @default(now()) @map("created_at")
 
   simulation Simulation @relation(fields: [simulationId], references: [id], onDelete: Cascade)
 
@@ -365,18 +376,18 @@ model SimulationTask {
 }
 
 model Training {
-  id          String    @id @default(cuid())
-  key         String    @unique
-  titleTr     String    @map("title_tr")
-  titleEn     String    @map("title_en")
-  titleAz     String    @map("title_az")
-  description String?
-  descriptionTr String? @map("description_tr")
-  descriptionEn String? @map("description_en")
-  descriptionAz String? @map("description_az")
-  category    String?
-  lessons     Lesson[]
-  exams       Exam[]
+  id            String   @id @default(cuid())
+  key           String   @unique
+  titleTr       String   @map("title_tr")
+  titleEn       String   @map("title_en")
+  titleAz       String   @map("title_az")
+  description   String?
+  descriptionTr String?  @map("description_tr")
+  descriptionEn String?  @map("description_en")
+  descriptionAz String?  @map("description_az")
+  category      String?
+  lessons       Lesson[]
+  exams         Exam[]
 
   @@map("trainings")
 }
@@ -397,14 +408,14 @@ model Lesson {
   // Training-unit fields (video -> project -> test -> points). Null/0 on
   // ordinary lessons.
   /// Program-calendar activity this unit belongs to, e.g. CREATIVE_THINKING.
-  activity         String?
+  activity     String?
   /// JSON {"scenario": string, "tasks": string[]} — the unit's project brief.
-  projectBrief     String?  @map("project_brief")
+  projectBrief String? @map("project_brief")
   /// Coins awarded the first time the unit test is passed.
-  points           Int      @default(0)
+  points       Int     @default(0)
 
-  training Training @relation(fields: [trainingId], references: [id], onDelete: Cascade)
-  progress LessonProgress[]
+  training           Training                  @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+  progress           LessonProgress[]
   unitExams          Exam[]
   projectSubmissions LessonProjectSubmission[]
 
@@ -413,17 +424,17 @@ model Lesson {
 }
 
 model Exam {
-  id          String     @id @default(cuid())
-  trainingId  String     @map("training_id")
-  title       String
-  titleTr     String     @map("title_tr")
-  titleEn     String     @map("title_en")
-  titleAz     String     @map("title_az")
-  passingThreshold Int   @map("passing_threshold")
+  id               String        @id @default(cuid())
+  trainingId       String        @map("training_id")
+  title            String
+  titleTr          String        @map("title_tr")
+  titleEn          String        @map("title_en")
+  titleAz          String        @map("title_az")
+  passingThreshold Int           @map("passing_threshold")
   /// Set when this is a training unit's test; the unit's points are the reward.
-  lessonId    String?    @map("lesson_id")
-  questions   Question[]
-  attempts    ExamAttempt[]
+  lessonId         String?       @map("lesson_id")
+  questions        Question[]
+  attempts         ExamAttempt[]
 
   training Training @relation(fields: [trainingId], references: [id], onDelete: Cascade)
   lesson   Lesson?  @relation(fields: [lessonId], references: [id], onDelete: SetNull)
@@ -434,14 +445,14 @@ model Exam {
 }
 
 model Question {
-  id            String   @id @default(cuid())
-  examId        String   @map("exam_id")
-  questionText  String   @map("question_text")
-  optionA       String   @map("option_a")
-  optionB       String   @map("option_b")
-  optionC       String   @map("option_c")
-  optionD       String   @map("option_d")
-  correctOption String   @map("correct_option")
+  id            String @id @default(cuid())
+  examId        String @map("exam_id")
+  questionText  String @map("question_text")
+  optionA       String @map("option_a")
+  optionB       String @map("option_b")
+  optionC       String @map("option_c")
+  optionD       String @map("option_d")
+  correctOption String @map("correct_option")
   explanation   String
   order         Int
 
@@ -464,6 +475,8 @@ model ExamAttempt {
 
   @@unique([examId, userId])
   @@index([userId])
+  /// Average-score rollups filter by exam set; see lib/analytics.
+  @@index([examId, completedAt])
   @@map("exam_attempts")
 }
 
@@ -478,6 +491,10 @@ model LessonProgress {
 
   @@unique([lessonId, userId])
   @@index([userId])
+  /// Analytics reads progress by lesson set and by week; without these the
+  /// tenant dashboard degrades into a full scan of the table.
+  @@index([completedAt])
+  @@index([lessonId, completedAt])
   @@map("lesson_progress")
 }
 
@@ -488,7 +505,7 @@ model HackathonTeam {
   slogan    String?
   createdAt DateTime @default(now()) @map("created_at")
 
-  program     Program            @relation(fields: [programId], references: [id], onDelete: Cascade)
+  program     Program             @relation(fields: [programId], references: [id], onDelete: Cascade)
   members     TeamMember[]
   submissions ProjectSubmission[]
 
@@ -532,15 +549,15 @@ model ProjectSubmission {
 }
 
 model JuryCriterion {
-  id        String @id @default(cuid())
-  programId String @map("program_id")
+  id        String  @id @default(cuid())
+  programId String  @map("program_id")
   name      String
   nameTr    String? @map("name_tr")
   nameEn    String? @map("name_en")
   nameAz    String? @map("name_az")
-  maxScore  Int    @default(10) @map("max_score")
-  weight    Int    @default(1)
-  order     Int    @default(0)
+  maxScore  Int     @default(10) @map("max_score")
+  weight    Int     @default(1)
+  order     Int     @default(0)
 
   scores JuryScore[]
 
@@ -597,16 +614,67 @@ model UserBadge {
 }
 
 model Certificate {
-  id       String   @id @default(cuid())
-  userId   String   @map("user_id")
-  type     String
-  issuedAt DateTime @default(now()) @map("issued_at")
-  pdfUrl   String?  @map("pdf_url")
+  id        String  @id @default(cuid())
+  tenantId  String  @map("tenant_id")
+  userId    String  @map("user_id")
+  programId String? @map("program_id")
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /// PARTICIPATION | ACHIEVEMENT | COMPLETION
+  type       String
+  /// Which visual template rendered the PDF (see src/lib/certificates/templates.ts).
+  templateId String? @map("template_id")
 
+  /// Human-readable and sequential per tenant per year: BIZ-2026-DEM-000417.
+  serialNumber String @unique @map("serial_number")
+  /// Random public lookup key. Verification must never accept the serial —
+  /// a sequential id would let anyone enumerate every certificate issued.
+  verifyCode   String @unique @map("verify_code")
+
+  /// Snapshots taken at issue time. A certificate is an issued document: it
+  /// must not change when the holder renames themselves or an admin edits the
+  /// programme title afterwards.
+  recipientName String @map("recipient_name")
+  title         String
+  locale        String @default("az")
+
+  issuedAt      DateTime  @default(now()) @map("issued_at")
+  revokedAt     DateTime? @map("revoked_at")
+  revokedReason String?   @map("revoked_reason")
+
+  /// Path under uploads/certificates, plus a hash so a re-download can be
+  /// proven identical to what was issued.
+  pdfPath String? @map("pdf_path")
+  pdfHash String? @map("pdf_hash")
+
+  issuedByUserId String? @map("issued_by_user_id")
+
+  tenant  Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  program Program? @relation(fields: [programId], references: [id], onDelete: SetNull)
+
+  /// Scoped per programme, not globally per type. The previous userId+type
+  /// rule made a second PARTICIPATION certificate impossible for anyone who
+  /// joined a second programme.
+  @@unique([userId, type, programId])
   @@index([userId])
+  @@index([tenantId, issuedAt])
+  @@index([verifyCode])
   @@map("certificates")
+}
+
+/// Per-tenant, per-year counter behind the serial number. Incremented in the
+/// same transaction that creates the certificate so two concurrent bulk issues
+/// cannot mint the same serial.
+model CertificateSequence {
+  id        String @id @default(cuid())
+  tenantId  String @map("tenant_id")
+  year      Int
+  lastValue Int    @default(0) @map("last_value")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, year])
+  @@map("certificate_sequences")
 }
 
 model CoinTransaction {
@@ -695,7 +763,7 @@ model Subscription {
   /// TRIALING | ACTIVE | PAST_DUE | CANCELED | EXPIRED
   status String @default("TRIALING")
 
-  seats Int
+  seats        Int
   /// Seat reduction is deferred to the end of the current period.
   pendingSeats Int? @map("pending_seats")
 
@@ -761,7 +829,7 @@ model Invoice {
   currency String @default("TRY")
 
   /// SUBSCRIPTION | SEAT_UPGRADE
-  type String
+  type   String
   /// PENDING | PAID | FAILED | REFUNDED
   status String @default("PENDING")
   /// PAYTR | MANUAL — MANUAL is the offline "bank transfer" flow.
@@ -817,6 +885,50 @@ model PaymentTransaction {
   @@map("payment_transactions")
 }
 
+/// Append-only log of every PayTR notification, written before the payload is
+/// trusted and regardless of whether it is acted on.
+///
+/// `webhook_events` already enforces idempotency (one row per merchant_oid),
+/// which means it cannot answer "how many times did PayTR call us, and what
+/// did the second call say?" — exactly the question a disputed payment raises.
+/// This table is the other half: one row per HTTP request, duplicates and
+/// rejected hashes included.
+///
+/// `raw_payload` is stored with secrets masked (see paytr-log.ts): the hash and
+/// any card handle are replaced, because a stored signature can be replayed.
+model PaytrWebhookEvent {
+  id          String @id @default(cuid())
+  merchantOid String @map("merchant_oid")
+
+  /// As reported by PayTR: success | failed. Null when the body did not parse.
+  status      String?
+  hashValid   Boolean @map("hash_valid")
+  /// sandbox | live — which credential set verified (or failed to verify) this.
+  mode        String
+  totalAmount String? @map("total_amount")
+  paymentType String? @map("payment_type")
+
+  failedReasonCode String? @map("failed_reason_code")
+  failedReasonMsg  String? @map("failed_reason_msg")
+
+  /// PROCESSED | DUPLICATE | REJECTED | UNMATCHED | ERROR
+  outcome      String
+  errorMessage String? @map("error_message")
+
+  /// Recorded, never enforced on: PayTR's source IPs are not contractually
+  /// fixed, so this is evidence for building an allowlist, not a gate.
+  remoteIp   String? @map("remote_ip")
+  rawPayload String  @map("raw_payload")
+
+  receivedAt  DateTime  @default(now()) @map("received_at")
+  processedAt DateTime? @map("processed_at")
+
+  @@index([merchantOid])
+  @@index([receivedAt])
+  @@index([outcome])
+  @@map("paytr_webhook_events")
+}
+
 model SeatChangeLog {
   id        String  @id @default(cuid())
   tenantId  String  @map("tenant_id")
@@ -825,7 +937,7 @@ model SeatChangeLog {
   changedBy String? @map("changed_by")
   invoiceId String? @map("invoice_id")
   /// UPGRADE | DOWNGRADE_SCHEDULED | DOWNGRADE_APPLIED | ADMIN_OVERRIDE
-  reason String?
+  reason    String?
 
   createdAt DateTime @default(now()) @map("created_at")
 
@@ -852,7 +964,11 @@ model AuditLog {
 
   @@index([tenantId])
   @@index([action])
+  @@index([userId])
   @@index([createdAt])
+  /// Active-user counts scan one tenant's LOGIN_SUCCESS rows over a window;
+  /// the single-column indexes above force a merge that this avoids.
+  @@index([tenantId, action, createdAt])
   @@map("audit_logs")
 }
 
@@ -882,13 +998,13 @@ model Service {
 }
 
 model ServicePriceTier {
-  id                  String  @id @default(cuid())
-  serviceId           String  @map("service_id")
-  minParticipants     Int     @map("min_participants")
+  id                  String @id @default(cuid())
+  serviceId           String @map("service_id")
+  minParticipants     Int    @map("min_participants")
   /// Null means no upper bound.
-  maxParticipants     Int?    @map("max_participants")
-  pricePerParticipant Int     @map("price_per_participant")
-  currency            String  @default("TRY")
+  maxParticipants     Int?   @map("max_participants")
+  pricePerParticipant Int    @map("price_per_participant")
+  currency            String @default("TRY")
 
   service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
 
@@ -1033,14 +1149,14 @@ model UserConsent {
 /// One row of a program's 6-week plan. Generated from the program dates, then
 /// editable by the university (e.g. moving a jury presentation).
 model ProgramScheduleItem {
-  id        String   @id @default(cuid())
-  programId String   @map("program_id")
+  id        String    @id @default(cuid())
+  programId String    @map("program_id")
   week      Int
   /// See PROGRAM_ACTIVITIES in src/lib/programs/schedule.ts.
   activity  String
-  startsOn  DateTime @map("starts_on")
-  endsOn    DateTime @map("ends_on")
-  sortOrder Int      @map("sort_order")
+  startsOn  DateTime  @map("starts_on")
+  endsOn    DateTime  @map("ends_on")
+  sortOrder Int       @map("sort_order")
   /// Set when the university changed the generated dates.
   editedAt  DateTime? @map("edited_at")
 
@@ -1168,4 +1284,39 @@ model LessonProjectSubmission {
   @@unique([lessonId, userId])
   @@index([userId])
   @@map("lesson_project_submissions")
+}
+
+/// A demo request from the public marketing site.
+///
+/// Deliberately outside the tenant graph: a lead is someone who does not have
+/// an organisation on the platform yet, so there is no tenantId to scope it by
+/// and no user to attach it to. Sales staff read these; the marketing pages
+/// only ever write.
+model Lead {
+  id        String  @id @default(cuid())
+  name      String
+  company   String
+  email     String
+  phone     String?
+  /// Roughly how many seats they expect to need. Free text, because the
+  /// answer on a marketing form is a guess, not a commitment.
+  seatCount String?
+  message   String?
+
+  /// Which language the form was submitted in, so a reply goes out in it.
+  locale String  @default("az")
+  /// Marketing attribution, when the visitor arrived with parameters.
+  source String?
+
+  /// NEW | CONTACTED | QUALIFIED | CLOSED — moved by sales, not by the site.
+  status String @default("NEW")
+
+  ip        String?
+  userAgent String?  @map("user_agent")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([createdAt])
+  @@index([status, createdAt])
+  @@index([email])
+  @@map("leads")
 }

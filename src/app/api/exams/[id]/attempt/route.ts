@@ -3,6 +3,9 @@ import { withAuthorizedHandler } from "@/lib/auth/authorize";
 import { assertFeatureEnabled } from "@/lib/tenant/features";
 import { examAttemptSchema, parseBody } from "@/lib/validation/schemas";
 import { prisma } from "@/lib/prisma";
+import {
+  assertTrainingAccess,
+} from "@/lib/programs/training-access";
 
 const EXAM_PASS_COIN_REWARD = 50;
 
@@ -20,6 +23,7 @@ export async function POST(
       include: {
         questions: { orderBy: { order: "asc" } },
         lesson: { select: { points: true } },
+        training: { select: { key: true } },
       },
     });
 
@@ -29,6 +33,14 @@ export async function POST(
     // Unit tests belong to a simulation's training units; other exams to trainings.
     await assertFeatureEnabled(session.tenantId, exam.lessonId ? "simulations" : "trainings");
     const reward = exam.lesson?.points || EXAM_PASS_COIN_REWARD;
+
+    // The exam id alone proves nothing: without this the holder of any exam id
+    // could sit another tenant's exam and collect the coin reward.
+    await assertTrainingAccess({
+      userId: session.id,
+      tenantId: session.tenantId,
+      trainingKey: exam.training.key,
+    });
 
     const results = exam.questions.map((q) => {
       const answer = body.answers[q.id] ?? null;

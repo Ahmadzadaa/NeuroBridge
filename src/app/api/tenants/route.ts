@@ -1,3 +1,5 @@
+import { localeUrl } from "@/lib/app-url";
+import { routing } from "@/i18n/routing";
 import { NextResponse } from "next/server";
 import { withAuthorizedHandler } from "@/lib/auth/authorize";
 import { provisionTenantSchema, parseBody } from "@/lib/validation/schemas";
@@ -58,7 +60,9 @@ export async function POST(request: Request) {
           firstName: body.adminFirstName,
           lastName: body.adminLastName,
           role: "TENANT_ADMIN",
-          language: "az",
+          // No preference exists yet for a brand-new admin; the language the
+          // super admin is provisioning in is the closest available signal.
+          language: session.language ?? routing.defaultLocale,
         },
       });
 
@@ -86,8 +90,8 @@ export async function POST(request: Request) {
       to: body.adminEmail,
       ...activationEmail({
         organizationName: body.name,
-        activationUrl: `${origin}/az/activate/${token}`,
-        locale: "az",
+        activationUrl: localeUrl(origin, `/activate/${token}`, session.language),
+        locale: session.language,
       }),
     });
 

@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { motion, useReducedMotion } from "framer-motion";
 import { CheckCircle2, ChevronRight, Clock3, FileText, Users } from "lucide-react";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -34,22 +33,20 @@ export function JuryDashboardClient({
 }: JuryDashboardClientProps) {
   const t = useTranslations("hackathon.jury");
   const tc = useTranslations("common");
-  const reducedMotion = useReducedMotion();
 
   const pending = entries.filter((e) => !e.done);
   const completed = entries.filter((e) => e.done);
 
-  const renderCard = (entry: JuryEntry, i: number) => (
-    <motion.div
-      key={entry.submissionId}
-      initial={reducedMotion ? false : { opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: i * 0.05, duration: 0.3, ease: [0, 0, 0.2, 1] }}
-    >
+  // A staggered framer-motion fade used to wrap each card. It left every card
+  // at `opacity: 0` when the document was hidden at mount (a background tab),
+  // so the list looked empty and nothing could be clicked. The CSS animation
+  // rests in the visible state instead — see `.animate-enter`.
+  const renderCard = (entry: JuryEntry) => (
       <Link
+        key={entry.submissionId}
         href={`/${locale}/jury/submissions/${entry.submissionId}`}
         className={cn(
-          "group flex items-center gap-4 rounded-2xl bg-card p-5 shadow-sm ring-1 ring-transparent",
+          "animate-enter group flex items-center gap-4 rounded-2xl bg-card p-5 shadow-sm ring-1 ring-transparent",
           "transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:ring-primary/20"
         )}
       >
@@ -99,7 +96,6 @@ export function JuryDashboardClient({
           />
         </div>
       </Link>
-    </motion.div>
   );
 
   return (

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { useApiErrorMessage } from "@/lib/api/api-error";
 import {
   Copy,
   FileText,
@@ -50,6 +51,7 @@ export function TeachersPageClient({
   teachers,
 }: TeachersPageClientProps) {
   const t = useTranslations("teacher.manage");
+  const apiError = useApiErrorMessage();
   const tc = useTranslations("common");
   const router = useRouter();
 
@@ -82,7 +84,7 @@ export function TeachersPageClient({
         error?: string;
       } | null;
       if (!res.ok) {
-        toast.error(data?.error ?? tc("error"));
+        toast.error(apiError(data));
         return;
       }
       if (data?.tempPassword) setTempPassword(data.tempPassword);

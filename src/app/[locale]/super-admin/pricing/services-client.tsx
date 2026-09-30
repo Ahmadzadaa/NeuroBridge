@@ -212,7 +212,7 @@ export function ServicesClient({ userName, services }: { userName: string; servi
                     id="svc-code"
                     required
                     disabled={!!draft.id}
-                    placeholder="HACKATHON"
+                    placeholder={t("codePlaceholder")}
                     value={draft.code}
                     onChange={(e) => setDraft({ ...draft, code: e.target.value.toUpperCase() })}
                   />

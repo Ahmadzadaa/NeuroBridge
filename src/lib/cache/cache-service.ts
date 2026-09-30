@@ -33,6 +33,13 @@ export const CacheKeys = {
   tenantSettings: (tenantId: string) => `tenant:${tenantId}:settings`,
   businessMetrics: () => "metrics:business",
   programMeta: (programId: string) => `program:${programId}:meta`,
+  /**
+   * The filter set is part of the key: two admins looking at different date
+   * windows must not be served each other's numbers. `tenantId` leads so the
+   * whole tenant can be invalidated by prefix later if needed.
+   */
+  tenantAnalytics: (tenantId: string, fingerprint: string) =>
+    `tenant:${tenantId}:analytics:${fingerprint}`,
 } as const;
 
 export const CacheTTL = {
@@ -42,6 +49,13 @@ export const CacheTTL = {
   settings: 300,
   metrics: 120,
   programMeta: 120,
+  /**
+   * One hour. The dashboard answers "how is the cohort doing", not "what
+   * happened in the last minute", and the aggregation touches every progress
+   * row for the tenant — so serving a slightly stale figure is worth far more
+   * than recomputing it on every page load.
+   */
+  analytics: 3600,
 } as const;
 
 export async function invalidateTenantProgramCaches(tenantId: string): Promise<void> {

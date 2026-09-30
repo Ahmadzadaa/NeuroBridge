@@ -23,7 +23,8 @@ export async function POST(
     if (!team) {
       return NextResponse.json({ error: "Team not found" }, { status: 404 });
     }
-    if (session.tenantId && team.program.tenantId !== session.tenantId) {
+    // Fail closed: a tenant-less session must be refused, not waved through.
+    if (team.program.tenantId !== session.tenantId) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
     if (team._count.members >= MAX_TEAM_SIZE) {

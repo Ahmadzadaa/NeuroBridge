@@ -14,6 +14,7 @@ import {
 import type { PaytrCredentials } from "@/lib/payment/paytr/paytr.types";
 
 const CREDENTIALS: PaytrCredentials = {
+  mode: "sandbox",
   merchantId: "123456",
   merchantKey: "merchant-key",
   merchantSalt: "merchant-salt",

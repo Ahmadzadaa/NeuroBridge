@@ -66,7 +66,12 @@ export async function updateTenantSettings(tenantId: string, input: SettingsInpu
     address,
   } = input;
 
-  return prisma.$transaction(async (tx) => {
+  // `await`, not `return`: returning the transaction here made the two lines
+  // after it unreachable, so the function resolved to undefined. The route
+  // then called Response.json(undefined), which throws — every save reported
+  // failure even though the write had already committed, and the settings
+  // cache was never invalidated.
+  await prisma.$transaction(async (tx) => {
     await tx.tenant.update({
       where: { id: tenantId },
       data: {

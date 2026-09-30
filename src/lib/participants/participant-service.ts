@@ -15,11 +15,30 @@ export interface ParticipantListItem {
     email: string;
     firstName: string | null;
     lastName: string | null;
+    phone: string | null;
+    university: string | null;
+    faculty: string | null;
+    specialty: string | null;
+    studyYear: number | null;
   };
 }
 
+/** One definition, so the two listings can never drift apart. */
+const PARTICIPANT_USER_SELECT = {
+  id: true,
+  email: true,
+  firstName: true,
+  lastName: true,
+  phone: true,
+  university: true,
+  faculty: true,
+  specialty: true,
+  studyYear: true,
+} as const;
+
 export class ProgramNotFoundError extends Error {
   readonly statusCode = 404;
+  readonly code = "PROGRAM_NOT_FOUND";
 
   constructor() {
     super("Program not found");
@@ -52,14 +71,7 @@ export async function listProgramParticipants(
           id: true,
           status: true,
           registrationDate: true,
-          user: {
-            select: {
-              id: true,
-              email: true,
-              firstName: true,
-              lastName: true,
-            },
-          },
+          user: { select: PARTICIPANT_USER_SELECT },
         },
         orderBy: { registrationDate: "desc" },
         skip: pagination.skip,
@@ -90,14 +102,7 @@ export async function listTenantParticipants(
           id: true,
           status: true,
           registrationDate: true,
-          user: {
-            select: {
-              id: true,
-              email: true,
-              firstName: true,
-              lastName: true,
-            },
-          },
+          user: { select: PARTICIPANT_USER_SELECT },
         },
         orderBy: { registrationDate: "desc" },
         skip: pagination.skip,

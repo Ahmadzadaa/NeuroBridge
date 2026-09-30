@@ -12,6 +12,7 @@ import {
 import {
   buildIframeToken,
   encodeBasket,
+  isValidMerchantOid,
   verifyCallbackHash,
 } from "@/lib/payment/paytr/paytr.hash";
 import {
@@ -20,6 +21,7 @@ import {
 } from "@/lib/payment/paytr/paytr.client";
 import type {
   PaytrCallbackPayload,
+  PaytrCredentials,
   PaytrGetTokenRequest,
 } from "@/lib/payment/paytr/paytr.types";
 
@@ -111,46 +113,87 @@ export function createPaytrProvider(): PaymentProviderAdapter {
     },
 
     /**
-     * PayTR posts the notification as form-encoded fields and expects the
-     * literal body "OK" in return. The hash is verified before the caller is
-     * allowed to touch the database.
+     * Adapter-contract entry point. The PayTR callback route does not use it —
+     * it needs the raw body for the audit log and so reads the request itself
+     * (see `readPaytrCallback`). Both paths share the same verification.
      */
     async verifyWebhook(request: Request): Promise<VerifiedWebhookEvent> {
       const credentials = getPaytrCredentials();
+      const { rawBody, fields } = await readPaytrCallback(request);
+      return verifyPaytrCallback(credentials, fields, rawBody);
+    },
+  };
+}
 
-      const form = await request.formData();
-      const payload = Object.fromEntries(
-        Array.from(form.entries()).map(([key, value]) => [key, String(value)])
-      ) as unknown as PaytrCallbackPayload;
+export interface PaytrCallbackFields extends Record<string, string> {
+  merchant_oid: string;
+  status: string;
+  total_amount: string;
+  hash: string;
+}
 
-      const { merchant_oid: merchantOid, status, total_amount: totalAmount, hash } =
-        payload;
+/**
+ * Reads the notification body **as raw text** and parses it separately.
+ *
+ * `request.formData()` would be shorter, but it consumes the stream and hands
+ * back only a parsed view. Two things need the bytes as they arrived: the
+ * signature is computed over values exactly as PayTR sent them, and a callback
+ * that fails to verify has to be stored verbatim (minus secrets) or there is
+ * nothing to take to PayTR support. A body can only be read once, so it is
+ * read as text first and parsed from the string.
+ */
+export async function readPaytrCallback(
+  request: Request
+): Promise<{ rawBody: string; fields: Record<string, string> }> {
+  const rawBody = await request.text();
+  const fields = Object.fromEntries(new URLSearchParams(rawBody).entries());
+  return { rawBody, fields };
+}
 
-      if (!merchantOid || !status || !totalAmount || !hash) {
-        throw new PaymentVerificationError("PayTR callback is missing required fields");
-      }
+/**
+ * Verifies an already-read callback. Throws `PaymentVerificationError` when the
+ * body is incomplete or the hash does not match — in both cases the request did
+ * not come from PayTR (or did not survive the wire) and must not be acted on.
+ */
+export function verifyPaytrCallback(
+  credentials: PaytrCredentials,
+  fields: Record<string, string>,
+  rawBody: string
+): VerifiedWebhookEvent {
+  const payload = fields as unknown as PaytrCallbackPayload;
+  const { merchant_oid: merchantOid, status, total_amount: totalAmount, hash } =
+    payload;
 
-      const valid = verifyCallbackHash(
-        credentials,
-        { merchantOid, status, totalAmount },
-        hash
-      );
+  if (!merchantOid || !status || !totalAmount || !hash) {
+    throw new PaymentVerificationError("PayTR callback is missing required fields");
+  }
 
-      if (!valid) {
-        throw new PaymentVerificationError("PayTR callback hash mismatch");
-      }
+  if (!isValidMerchantOid(merchantOid)) {
+    // PayTR only ever issues alphanumeric order ids. Anything else is either a
+    // probe or a corrupted body, and it must not reach a database query.
+    throw new PaymentVerificationError("PayTR callback merchant_oid is malformed");
+  }
 
-      return {
-        eventId: merchantOid,
-        eventType: status === "success" ? "paytr.success" : "paytr.failed",
-        payload: {
-          eventType: status === "success" ? "payment.completed" : "payment.failed",
-          providerRef: merchantOid,
-          amount: Number(totalAmount) / 100,
-          currency: payload.currency ?? "TRY",
-          raw: payload,
-        },
-      };
+  const valid = verifyCallbackHash(
+    credentials,
+    { merchantOid, status, totalAmount },
+    hash
+  );
+
+  if (!valid) {
+    throw new PaymentVerificationError("PayTR callback hash mismatch");
+  }
+
+  return {
+    eventId: merchantOid,
+    eventType: status === "success" ? "paytr.success" : "paytr.failed",
+    rawBody,
+    payload: {
+      eventType: status === "success" ? "payment.completed" : "payment.failed",
+      providerRef: merchantOid,
+      amount: Number(totalAmount) / 100,
+      currency: payload.currency ?? "TRY",
+      raw: payload,
     },
   };
 }

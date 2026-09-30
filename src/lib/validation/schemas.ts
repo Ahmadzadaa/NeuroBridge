@@ -134,10 +134,12 @@ export const registrationSchema = z.object({
   firstName: safeString(100),
   lastName: safeString(100),
   phone: z.string().trim().max(30).optional(),
+  // The page the applicant filled in knows their language; without it the
+  // welcome email and the account would both default to someone else's.
+  locale: z.enum(["tr", "en", "az"]).default("tr"),
   ...academicProfileFields,
   universityId: z.string().trim().max(50).optional().nullable(),
   departmentId: z.string().trim().max(50).optional().nullable(),
-  locale: z.enum(["tr", "en", "az"]).default("tr"),
   // privacyNotice must be true; the service rejects anything else with a clear code.
   consents: z.object({
     privacyNotice: z.boolean(),
@@ -176,6 +178,51 @@ export const reportExportSchema = z.object({
   programId: z.string().cuid(),
   format: z.enum(["csv", "pdf"]),
   reportType: z.enum(["general", "training", "test", "certificate"]).default("general"),
+});
+
+/**
+ * Query parameters for the tenant analytics overview.
+ *
+ * Dates arrive as strings from a URL, so they are coerced and then rejected if
+ * they did not parse — an unparseable `from` must not silently widen the
+ * window to "everything".
+ */
+const analyticsDate = z
+  .string()
+  .trim()
+  .min(1)
+  .transform((value) => new Date(value))
+  .refine((date) => !Number.isNaN(date.getTime()), "Invalid date")
+  .optional();
+
+export const analyticsQuerySchema = z.object({
+  from: analyticsDate,
+  to: analyticsDate,
+  courseId: z.string().cuid().optional().nullable(),
+  programId: z.string().cuid().optional().nullable(),
+});
+
+/**
+ * Public demo-request form.
+ *
+ * This is the only unauthenticated write in the application, so the schema is
+ * the entire input boundary. `safeString` already rejects angle brackets;
+ * lengths are capped so a bot cannot use the form as free storage.
+ *
+ * `website` is the honeypot: a real field, hidden from people by CSS and from
+ * assistive technology by aria-hidden, that only an automated form-filler
+ * completes. Anything non-empty there is a bot.
+ */
+export const leadSchema = z.object({
+  name: safeString(120),
+  company: safeString(160),
+  email: z.string().trim().toLowerCase().email().max(255),
+  phone: optionalSafeString(40),
+  seatCount: optionalSafeString(40),
+  message: optionalSafeString(2000),
+  locale: z.enum(["az", "tr", "en"]).optional(),
+  source: optionalSafeString(200),
+  website: z.string().max(200).optional(),
 });
 
 export const roleChangeSchema = z.object({

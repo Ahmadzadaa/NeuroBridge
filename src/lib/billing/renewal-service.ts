@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { localeUrl } from "@/lib/app-url";
 import { recordAudit } from "@/lib/audit/audit-service";
 import { AUDIT_ACTIONS } from "@/lib/audit/actions";
 import { sendEmail } from "@/lib/email/email-service";
@@ -162,14 +163,15 @@ export async function sendRenewalInvoiceEmail(
 
   const admin = await prisma.user.findFirst({
     where: { tenantId, role: "TENANT_ADMIN" },
-    select: { email: true },
+    select: { email: true, language: true },
   });
 
   const recipient = admin?.email ?? tenant.email;
   if (!recipient) return undefined;
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
-  let paymentUrl = `${appUrl}/tenant/billing`;
+  // Every route is locale-prefixed, so a bare path does not resolve.
+  let paymentUrl = localeUrl(appUrl, "/tenant/billing", admin?.language);
 
   try {
     const checkout = await createSeatCheckout({
@@ -195,6 +197,7 @@ export async function sendRenewalInvoiceEmail(
       currency: invoice.currency,
       periodEnd: invoice.periodEnd ?? new Date(),
       paymentUrl,
+      language: admin?.language,
     }),
   });
 
