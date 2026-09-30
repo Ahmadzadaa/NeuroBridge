@@ -13,6 +13,8 @@ import { consumeSeat, lockTenantForUpdate } from "@/lib/seats/seat-service";
 import { isPostgresDatabase } from "@/lib/db/tenant-context";
 import { normalizeAcademicProfile } from "@/lib/users/academic-profile";
 import { invalidateCache } from "@/lib/cache/cache-service";
+import { ConsentRequiredError, recordConsents, type ConsentAnswers } from "@/lib/consent/consents";
+import { resolveAcademicSelection } from "@/lib/reference/academic-lists";
 
 export interface RegisterParticipantInput {
   token: string;
@@ -26,6 +28,13 @@ export interface RegisterParticipantInput {
   faculty?: string | null;
   specialty?: string | null;
   studyYear?: number | null;
+  /** Picked from the reference lists; their names override the text fields. */
+  universityId?: string | null;
+  departmentId?: string | null;
+  consents: ConsentAnswers;
+  /** Page language: decides which legal notices were shown, and the UI language. */
+  locale?: "tr" | "en" | "az";
+  ip?: string | null;
 }
 
 export interface RegisterParticipantResult {
@@ -101,6 +110,8 @@ export async function registerParticipant(
   }
 
   assertRegistrationWindow(program.applicationStart, program.applicationEnd);
+  if (!input.consents.privacyNotice) throw new ConsentRequiredError();
+  const locale = input.locale ?? "tr";
 
   const passwordHash = await bcrypt.hash(input.password, 12);
 
@@ -149,6 +160,7 @@ export async function registerParticipant(
     const seatState = await consumeSeat(tx, program.tenantId);
 
     const academic = normalizeAcademicProfile(input);
+    const picked = await resolveAcademicSelection(tx, program.tenantId, input);
 
     const user = await tx.user.create({
       data: {
@@ -159,10 +171,16 @@ export async function registerParticipant(
         lastName: input.lastName,
         phone: input.phone ?? null,
         role: "PARTICIPANT",
-        language: "tr",
+        language: locale,
         ...academic,
+        university: picked.universityName ?? academic.university,
+        specialty: picked.departmentName ?? academic.specialty,
+        universityId: input.universityId ?? null,
+        departmentId: input.departmentId ?? null,
       },
     });
+
+    await recordConsents(user.id, input.consents, { locale, ip: input.ip, db: tx });
 
     const participant = await tx.participant.create({
       data: {
@@ -214,6 +232,7 @@ export async function getProgramByApplicationToken(token: string) {
     where: { applicationToken: token },
     select: {
       id: true,
+      tenantId: true,
       name: true,
       description: true,
       type: true,
@@ -231,6 +250,22 @@ export async function getProgramByApplicationToken(token: string) {
       _count: { select: { participants: true } },
     },
   });
+}
+
+export type ApplyProgram = NonNullable<Awaited<ReturnType<typeof getProgramByApplicationToken>>>;
+
+/** Whether the public registration form may be submitted right now. */
+export function registrationAvailability(program: ApplyProgram, now = new Date()) {
+  const registrationOpen = now >= program.applicationStart && now <= program.applicationEnd;
+  const seatsAvailable =
+    program.tenant.status === "ACTIVE" && program.tenant.seatsUsed < program.tenant.seatLimit;
+  const programCapacityAvailable = program._count.participants < program.participantLimit;
+  return {
+    registrationOpen,
+    seatsAvailable,
+    programCapacityAvailable,
+    canRegister: registrationOpen && seatsAvailable && programCapacityAvailable,
+  };
 }
 
 export { lockTenantForUpdate };

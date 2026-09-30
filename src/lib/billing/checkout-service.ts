@@ -57,30 +57,39 @@ export interface SeatCheckoutResult {
   merchantOid: string;
 }
 
-export async function createSeatCheckout(
-  input: SeatCheckoutInput
-): Promise<SeatCheckoutResult> {
-  const { invoice } = input;
-  const credentials = getPaytrCredentials();
-  const currency = toPaytrCurrency(invoice.currency);
-  const appUrl =
-    input.appUrl ?? process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+export interface PaytrCheckoutInput {
+  merchantOid: string;
+  customerEmail: string;
+  /** Integer kuruş. */
+  amount: number;
+  currency: string;
+  /** Single basket line shown on the PayTR page. */
+  description: string;
+  userIp: string;
+  okUrl: string;
+  failUrl: string;
+  lang?: "tr" | "en";
+}
 
+/** Requests a PayTR iframe token and returns the payment page URL. */
+export async function requestPaytrCheckoutUrl(input: PaytrCheckoutInput): Promise<string> {
+  const credentials = getPaytrCredentials();
+  const currency = toPaytrCurrency(input.currency);
   const basket = encodeBasket([
-    [describeInvoice(invoice), toMajorUnits(invoice.amount).toFixed(2), 1],
+    [input.description, toMajorUnits(input.amount).toFixed(2), 1],
   ]);
 
   const request: PaytrGetTokenRequest = {
     merchant_id: credentials.merchantId,
     user_ip: input.userIp,
-    merchant_oid: invoice.merchantOid,
+    merchant_oid: input.merchantOid,
     email: input.customerEmail,
-    payment_amount: invoice.amount,
+    payment_amount: input.amount,
     paytr_token: buildIframeToken(credentials, {
-      merchantOid: invoice.merchantOid,
+      merchantOid: input.merchantOid,
       userIp: input.userIp,
       email: input.customerEmail,
-      paymentAmount: invoice.amount,
+      paymentAmount: input.amount,
       basket,
       noInstallment: 0,
       maxInstallment: 0,
@@ -92,13 +101,32 @@ export async function createSeatCheckout(
     max_installment: 0,
     currency,
     test_mode: credentials.testMode,
-    merchant_ok_url: `${appUrl}/tenant/billing?payment=success`,
-    merchant_fail_url: `${appUrl}/tenant/billing?payment=failed`,
-    lang: "tr",
+    merchant_ok_url: input.okUrl,
+    merchant_fail_url: input.failUrl,
+    lang: input.lang ?? "tr",
   };
 
+  return iframeUrl(await requestIframeToken(request));
+}
+
+export async function createSeatCheckout(
+  input: SeatCheckoutInput
+): Promise<SeatCheckoutResult> {
+  const { invoice } = input;
+  const appUrl =
+    input.appUrl ?? process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+
   try {
-    const token = await requestIframeToken(request);
+    const checkoutUrl = await requestPaytrCheckoutUrl({
+      merchantOid: invoice.merchantOid,
+      customerEmail: input.customerEmail,
+      amount: invoice.amount,
+      currency: invoice.currency,
+      description: describeInvoice(invoice),
+      userIp: input.userIp,
+      okUrl: `${appUrl}/tenant/billing?payment=success`,
+      failUrl: `${appUrl}/tenant/billing?payment=failed`,
+    });
 
     await prisma.paymentTransaction.create({
       data: {
@@ -111,7 +139,7 @@ export async function createSeatCheckout(
       },
     });
 
-    return { checkoutUrl: iframeUrl(token), merchantOid: invoice.merchantOid };
+    return { checkoutUrl, merchantOid: invoice.merchantOid };
   } catch (error) {
     // Record the failed handshake so a tenant reporting "it never opened" can
     // be traced, then let the caller surface the error.

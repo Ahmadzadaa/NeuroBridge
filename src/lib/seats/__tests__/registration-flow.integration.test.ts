@@ -32,6 +32,7 @@ describe.skipIf(!hasTestDb)("registration flow integration", () => {
       token: program.applicationToken,
       email: `reg-${Date.now()}@test.com`,
       password: "Password123!",
+      consents: { privacyNotice: true, dataUse: false, opportunities: false, psychResultsShare: false },
       firstName: "Test",
       lastName: "User",
     });
@@ -76,6 +77,7 @@ describe.skipIf(!hasTestDb)("registration flow integration", () => {
         token: program.applicationToken,
         email: `fail-${Date.now()}@test.com`,
         password: "Password123!",
+        consents: { privacyNotice: true, dataUse: false, opportunities: false, psychResultsShare: false },
         firstName: "Fail",
         lastName: "User",
       })

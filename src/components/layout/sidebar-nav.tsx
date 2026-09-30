@@ -24,6 +24,10 @@ import {
   User,
   Rocket,
   Scale,
+  Tag,
+  CalendarDays,
+  ClipboardCheck,
+  BookOpen,
 } from "lucide-react";
 
 type PanelType = "super-admin" | "tenant" | "participant" | "jury" | "teacher";
@@ -41,6 +45,7 @@ const navConfig: Record<PanelType, NavItem[]> = {
     { href: "/super-admin", labelKey: "dashboard", icon: LayoutDashboard },
     { href: "/super-admin/tenants", labelKey: "tenants", icon: Building2 },
     { href: "/super-admin/billing", labelKey: "billing", icon: CreditCard },
+    { href: "/super-admin/pricing", labelKey: "pricing", icon: Tag },
     { href: "/super-admin/content", labelKey: "content", icon: FileText },
     { href: "/super-admin/support", labelKey: "support", icon: Headphones },
     { href: "/super-admin/system", labelKey: "system", icon: Activity },
@@ -49,6 +54,7 @@ const navConfig: Record<PanelType, NavItem[]> = {
   tenant: [
     { href: "/tenant", labelKey: "dashboard", icon: LayoutDashboard },
     { href: "/tenant/programs", labelKey: "programs", icon: FileText },
+    { href: "/tenant/assessments", labelKey: "assessments", icon: ClipboardCheck },
     {
       href: "/tenant/simulations",
       labelKey: "simulations",
@@ -68,6 +74,9 @@ const navConfig: Record<PanelType, NavItem[]> = {
   ],
   participant: [
     { href: "/participant", labelKey: "dashboard", icon: LayoutDashboard },
+    { href: "/participant/program", labelKey: "program", icon: CalendarDays },
+    { href: "/participant/assessments", labelKey: "assessments", icon: ClipboardCheck },
+    { href: "/participant/units", labelKey: "units", icon: BookOpen, feature: "simulations" },
     {
       href: "/participant/simulations",
       labelKey: "simulations",

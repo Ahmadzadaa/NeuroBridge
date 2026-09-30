@@ -49,3 +49,69 @@ export const setContractPriceSchema = z.object({
 export type CreateSubscriptionInput = z.infer<typeof createSubscriptionSchema>;
 export type ChangeSeatsInput = z.infer<typeof changeSeatsSchema>;
 export type ApproveInvoiceInput = z.infer<typeof approveInvoiceSchema>;
+
+// ---------------------------------------------------------------------------
+// Self-serve service orders. Only service codes and participant counts come
+// from the client; every price is recomputed server-side in calculateQuote.
+// ---------------------------------------------------------------------------
+
+const quoteItems = z
+  .array(
+    z.object({
+      serviceCode: z.string().trim().min(1).max(50),
+      participantCount: z
+        .number()
+        .int("Participant count must be a whole number")
+        .min(1, "At least one participant is required")
+        .max(100_000, "Participant count is unrealistically large"),
+    })
+  )
+  .min(1, "Select at least one service")
+  .max(20);
+
+export const quoteSchema = z.object({ items: quoteItems });
+
+export const createOrderSchema = z.object({
+  institutionName: z.string().trim().min(2).max(200),
+  contactName: z.string().trim().min(2).max(200),
+  contactEmail: z.string().trim().toLowerCase().email().max(254),
+  locale: z.enum(["tr", "en", "az"]).default("tr"),
+  items: quoteItems,
+});
+
+export type CreateOrderInput = z.infer<typeof createOrderSchema>;
+
+// ---------------------------------------------------------------------------
+// Super-admin service catalogue. Prices are integer kuruş per participant.
+// Overlap between tiers is checked in service-catalog.validateTiers.
+// ---------------------------------------------------------------------------
+
+const tierSchema = z.object({
+  minParticipants: z.number().int().min(1).max(1_000_000),
+  maxParticipants: z.number().int().min(1).max(1_000_000).nullable(),
+  pricePerParticipant: z.number().int("Price must be whole kuruş").min(0).max(100_000_000),
+  currency: z.literal("TRY").default("TRY"),
+});
+
+const tiersSchema = z.array(tierSchema).min(1, "At least one tier is required").max(20);
+
+export const serviceSchema = z.object({
+  code: z
+    .string()
+    .trim()
+    .toUpperCase()
+    .regex(/^[A-Z][A-Z0-9_]{1,39}$/, "Code must be letters, digits or _ (e.g. HACKATHON)"),
+  name: z.string().trim().min(2).max(100),
+  active: z.boolean().default(true),
+  tiers: tiersSchema,
+});
+
+export const serviceUpdateSchema = z.object({
+  name: z.string().trim().min(2).max(100).optional(),
+  active: z.boolean().optional(),
+  tiers: tiersSchema.optional(),
+});
+
+export type TierInput = z.infer<typeof tierSchema>;
+export type ServiceInput = z.infer<typeof serviceSchema>;
+export type ServiceUpdateInput = z.infer<typeof serviceUpdateSchema>;

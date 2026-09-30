@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { seedDemoAssessments } from "./seed-assessments";
+import { seedIdeaDevelopmentTraining } from "./seed-training";
 
 const prisma = new PrismaClient();
 
@@ -162,6 +164,35 @@ async function main() {
     role: "SUPER_ADMIN",
     language: "tr",
   });
+
+  // Service pricing (kuruş per participant). Tiers are replaced on every run
+  // so editing this table and re-seeding is enough to change demo prices.
+  const services: { code: string; name: string; tiers: [number, number | null, number][] }[] = [
+    { code: "HACKATHON", name: "Hackathon", tiers: [[1, 50, 1000], [51, 100, 800], [101, null, 600]] },
+    { code: "TEACHERS", name: "Teacher-Student Panel", tiers: [[1, 50, 1500], [51, 100, 1200], [101, null, 1000]] },
+    { code: "SIMULATIONS", name: "Business Simulations", tiers: [[1, 50, 2000], [51, 100, 1700], [101, null, 1400]] },
+    { code: "TRAININGS", name: "Trainings", tiers: [[1, 50, 800], [51, 100, 650], [101, null, 500]] },
+    { code: "AI_TOOLS", name: "AI Tools", tiers: [[1, 50, 1200], [51, 100, 1000], [101, null, 800]] },
+  ];
+  for (const s of services) {
+    const service = await prisma.service.upsert({
+      where: { code: s.code },
+      update: { name: s.name },
+      create: { code: s.code, name: s.name },
+    });
+    await prisma.servicePriceTier.deleteMany({ where: { serviceId: service.id } });
+    await prisma.servicePriceTier.createMany({
+      data: s.tiers.map(([minParticipants, maxParticipants, pricePerParticipant]) => ({
+        serviceId: service.id,
+        minParticipants,
+        maxParticipants,
+        pricePerParticipant,
+      })),
+    });
+  }
+
+  await seedDemoAssessments(prisma);
+  await seedIdeaDevelopmentTraining(prisma);
 
   console.log("Seed completed!");
   console.log("Run `npm run db:seed-demo` to populate the full demo tenant and 100 participants.");

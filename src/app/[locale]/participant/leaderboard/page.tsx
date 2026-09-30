@@ -12,12 +12,14 @@ export default async function LeaderboardPage({
   setRequestLocale(locale);
   const session = await requireRole(locale, ["PARTICIPANT"]);
 
+  // Scoped to the student's own university (tenant). Without a tenant there
+  // is nothing to rank against — never fall back to an unfiltered query.
+  const tenantId = session.user.tenantId;
+  const scope = { tenantId: tenantId ?? "__none__", role: "PARTICIPANT" };
+
   const [entries, me] = await Promise.all([
     prisma.user.findMany({
-      where: {
-        tenantId: session.user.tenantId ?? undefined,
-        role: "PARTICIPANT",
-      },
+      where: scope,
       orderBy: [{ coinBalance: "desc" }],
       take: 50,
       select: {
@@ -34,8 +36,16 @@ export default async function LeaderboardPage({
     }),
   ]);
 
+  const myCoins = me?.coinBalance ?? 0;
+  const [ahead, total] = await Promise.all([
+    prisma.user.count({ where: { ...scope, coinBalance: { gt: myCoins } } }),
+    prisma.user.count({ where: scope }),
+  ]);
+
   return (
     <LeaderboardClient
+      myRank={tenantId ? ahead + 1 : null}
+      totalParticipants={total}
       userName={session.user.name ?? "Participant"}
       currentUserId={session.user.id}
       coinBalance={me?.coinBalance ?? 0}

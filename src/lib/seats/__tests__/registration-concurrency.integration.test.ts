@@ -37,6 +37,7 @@ describe.skipIf(!hasTestDb)("registration concurrency", () => {
           token: program.applicationToken,
           email: `user${index}@concurrency.test`,
           password: "Password123!",
+          consents: { privacyNotice: true, dataUse: false, opportunities: false, psychResultsShare: false },
           firstName: "Test",
           lastName: `User${index}`,
         })

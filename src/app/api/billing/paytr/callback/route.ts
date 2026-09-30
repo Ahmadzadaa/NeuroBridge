@@ -4,6 +4,8 @@ import { processPaytrCallback } from "@/lib/billing/callback-service";
 import { PaymentVerificationError } from "@/lib/payment/types";
 import type { PaytrCallbackPayload } from "@/lib/payment/paytr/paytr.types";
 import { prisma } from "@/lib/prisma";
+import { ORDER_MERCHANT_OID_PREFIX } from "@/lib/payment/paytr/paytr.hash";
+import { processOrderCallback } from "@/lib/onboarding/order-provisioning";
 
 /**
  * PayTR payment notification (iFrame API, step 2).
@@ -64,6 +66,12 @@ export async function POST(request: Request): Promise<Response> {
 
   try {
     const payload = verified.payload.raw as PaytrCallbackPayload;
+
+    // Self-serve orders (ORD…) have no tenant yet; they provision one.
+    if (payload.merchant_oid.startsWith(ORDER_MERCHANT_OID_PREFIX)) {
+      await processOrderCallback(payload);
+      return ok();
+    }
 
     try {
       await processPaytrCallback(payload);

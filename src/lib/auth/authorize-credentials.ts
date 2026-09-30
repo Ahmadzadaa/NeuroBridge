@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import type { UserRole } from "@/lib/types";
 import {
   adminRequires2FA,
+  isTwoFactorEnabled,
   decryptSecret,
   verifyRecoveryCode,
   verifyTotpCode,
@@ -159,7 +160,7 @@ export async function authorizeCredentials(
     !demoBypass && adminRequires2FA(role) && !user.twoFactorEnabled;
   let twoFactorVerified = !adminRequires2FA(role) || demoBypass;
 
-  if (user.twoFactorEnabled && user.twoFactorSecret && !demoBypass) {
+  if (isTwoFactorEnabled() && user.twoFactorEnabled && user.twoFactorSecret && !demoBypass) {
     twoFactorVerified = false;
     const secret = decryptSecret(user.twoFactorSecret);
 

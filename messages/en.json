@@ -80,11 +80,12 @@
     "superAdmin": {
       "dashboard": "Dashboard",
       "tenants": "Tenants",
-      "billing": "Billing",
+      "billing": "Orders",
       "content": "Content Management",
       "support": "Support",
       "system": "System Health",
-      "audit": "Audit Log"
+      "audit": "Audit Log",
+      "pricing": "Services & Pricing"
     },
     "tenant": {
       "dashboard": "Dashboard",
@@ -94,7 +95,8 @@
       "settings": "Settings",
       "billing": "Billing",
       "simulations": "Simulations",
-      "teachers": "Teachers"
+      "teachers": "Teachers",
+      "assessments": "Baseline tests"
     },
     "participant": {
       "dashboard": "Dashboard",
@@ -105,7 +107,10 @@
       "certificates": "Certificates",
       "leaderboard": "Leaderboard",
       "profile": "Profile",
-      "hackathon": "Hackathon"
+      "hackathon": "Hackathon",
+      "program": "My program",
+      "assessments": "Baseline tests",
+      "units": "Training units"
     },
     "jury": {
       "dashboard": "Dashboard",
@@ -136,7 +141,7 @@
       "subtitle": "Open an organization account, set the seat count and hand over the admin login by email — the organization runs everything else itself.",
       "usage": "Usage",
       "programCount": "{count} programs",
-      "createDescription": "Creates the organization + admin account and emails the credentials to the admin.",
+      "createDescription": "Creates the organization + admin account and emails the admin a one-time activation link.",
       "namePlaceholder": "e.g. Baku Technopark",
       "adminFirstName": "Admin first name",
       "adminLastName": "Admin last name",
@@ -144,10 +149,8 @@
       "seatLimit": "Seat count",
       "provision": "Create & hand over",
       "created": "Organization account created",
-      "credentialsEmailed": "Credentials were emailed to {email}",
-      "credentialsNotEmailed": "Email could not be sent — share the password manually",
-      "passwordCopied": "Password copied",
-      "passwordShownOnce": "This temporary password is shown only once. The admin should change it after first login.",
+      "credentialsEmailed": "Activation link sent to {email}",
+      "credentialsNotEmailed": "The email could not be sent. The admin cannot sign in until they receive an activation link — check the email settings.",
       "done": "Done",
       "activate": "Activate",
       "deactivate": "Suspend",
@@ -172,6 +175,58 @@
       "title": "License & Billing",
       "pricePerSeat": "Price Per Seat",
       "paymentStatus": "Payment Status"
+    },
+    "orders": {
+      "title": "Orders",
+      "subtitle": "Self-serve purchases from the pricing page. Paid orders are provisioned automatically.",
+      "all": "All",
+      "status": {
+        "PENDING": "Pending",
+        "PAID": "Paid",
+        "FAILED": "Failed"
+      },
+      "statusLabel": "Status",
+      "institution": "Institution",
+      "services": "Services",
+      "total": "Total",
+      "createdAt": "Created",
+      "adminActivated": "Admin activated",
+      "adminNotActivated": "Admin not activated yet",
+      "resendActivation": "Resend link",
+      "resent": "A new activation link was sent to {email}",
+      "resendNotEmailed": "The link was created but the email could not be sent",
+      "alreadyActivated": "The admin has already set a password"
+    },
+    "services": {
+      "title": "Services & Pricing",
+      "subtitle": "Price per participant, by participant-count tier. Changes apply to new orders only.",
+      "add": "Add service",
+      "addTitle": "New service",
+      "editTitle": "Edit service",
+      "edit": "Edit",
+      "delete": "Delete",
+      "save": "Save",
+      "saved": "Service saved",
+      "deleted": "Service deleted",
+      "code": "Code",
+      "codeLocked": "The code cannot be changed after creation.",
+      "name": "Name",
+      "active": "Active",
+      "inactive": "Inactive",
+      "activate": "Activate",
+      "deactivate": "Deactivate",
+      "tiers": "Price tiers",
+      "tiersHint": "Leave Max empty for no upper limit. Tiers must not overlap.",
+      "min": "Min participants",
+      "max": "Max participants",
+      "price": "Price / participant (TL)",
+      "addTier": "Add tier",
+      "removeTier": "Remove tier",
+      "confirmDelete": "Delete {name}? This cannot be undone.",
+      "inUse": "This service has orders or tenants. Deactivate it instead of deleting.",
+      "codeTaken": "A service with this code already exists.",
+      "tierOverlap": "Price tiers overlap. Each participant count may belong to only one tier.",
+      "tierRange": "A tier ends before it starts. Max must be at least Min."
     }
   },
   "tenant": {
@@ -199,7 +254,13 @@
       "applicationLink": "Application Link",
       "participants": "Participants",
       "start": "Start",
-      "end": "End"
+      "end": "End",
+      "programStart": "Program start",
+      "programEnd": "Program end",
+      "scheduleHint": "The 6-week plan is generated from these dates. Jury presentations are always placed on weekdays and can be moved later.",
+      "certificateName": "Certificate name",
+      "finalistCount": "Number of finalists",
+      "juryEnabled": "Jury evaluation for finalists"
     },
     "projectTypes": {
       "entrepreneurship_training": "Entrepreneurship Training",
@@ -384,7 +445,8 @@
       "rank": "Rank",
       "name": "Name",
       "coins": "Coins",
-      "badgeCount": "Badge Count"
+      "badgeCount": "Badge Count",
+      "myStanding": "Your points: {coins} · You are #{rank} of {total} students at your university."
     },
     "profile": {
       "title": "Profile & Settings",
@@ -741,5 +803,238 @@
       "saved": "Scenario saved",
       "validationHint": "To save: a name, at least 2 rounds, each with a title + description + at least 2 choices (each with a label and outcome text)."
     }
+  },
+  "pricing": {
+    "title": "Pricing",
+    "subtitle": "Pick the services you need and how many participants each one has. You pay only for what you choose.",
+    "servicesHeading": "Services",
+    "summaryHeading": "Summary",
+    "contactHeading": "Institution details",
+    "participants": "Participants",
+    "tierRange": "{min}–{max} participants",
+    "tierOpen": "{min}+ participants",
+    "perParticipant": "{price} per participant",
+    "total": "Total",
+    "selectPrompt": "Select at least one service to see the price.",
+    "calculating": "Calculating…",
+    "pay": "Pay {total}",
+    "payDisabled": "Pay",
+    "redirecting": "Redirecting to payment…",
+    "noServices": "No services are available right now.",
+    "paymentSuccess": "Payment received. We are setting up your account — the activation link will arrive by email shortly.",
+    "paymentFailed": "The payment was not completed. You can try again.",
+    "fields": {
+      "institutionName": "Institution name",
+      "contactName": "Contact person",
+      "contactEmail": "Email"
+    },
+    "services": {
+      "HACKATHON": "Hackathon",
+      "TEACHERS": "Teacher-Student Panel",
+      "SIMULATIONS": "Business Simulations",
+      "TRAININGS": "Trainings",
+      "AI_TOOLS": "AI Tools"
+    },
+    "errors": {
+      "generic": "Something went wrong. Please try again.",
+      "rateLimited": "Too many attempts. Please wait a minute and try again.",
+      "EMPTY_QUOTE": "Select at least one service.",
+      "INVALID_PARTICIPANT_COUNT": "Enter a whole number of participants between 1 and 100,000.",
+      "DUPLICATE_SERVICE": "A service was selected twice.",
+      "UNKNOWN_SERVICE": "One of the selected services is no longer available.",
+      "NO_MATCHING_TIER": "This participant count is not available for one of the services. Please contact us.",
+      "CURRENCY_MISMATCH": "The selected services cannot be paid together. Please contact us.",
+      "EMAIL_TAKEN": "An account with this email already exists. Use another email or sign in.",
+      "PAYMENT_PROVIDER": "The payment service is temporarily unavailable. Please try again in a few minutes."
+    }
+  },
+  "activation": {
+    "title": "Activate your account",
+    "subtitle": "Set a password to finish setting up your admin account.",
+    "password": "New password",
+    "confirm": "Repeat password",
+    "passwordHint": "At least 8 characters, with an uppercase letter, a lowercase letter and a number.",
+    "submit": "Set password",
+    "saving": "Saving…",
+    "goToLogin": "Go to sign in",
+    "state": {
+      "INVALID": "This activation link is not valid.",
+      "EXPIRED": "This activation link has expired. Please contact support for a new one.",
+      "USED": "This activation link has already been used. You can sign in with your password."
+    },
+    "errors": {
+      "weak": "The password does not meet the requirements.",
+      "mismatch": "The passwords do not match.",
+      "rateLimited": "Too many attempts. Please wait a minute.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "apply": {
+    "title": "Program registration",
+    "intro": "Enter your details to join the program. They are used only for program activities.",
+    "notFound": "Program not found",
+    "closed": "Registration for this program is closed.",
+    "seatsFull": "The organization has no seats left.",
+    "programFull": "The program has reached its participant limit.",
+    "personalHeading": "Personal details",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email address",
+    "phone": "Phone number",
+    "password": "Password",
+    "passwordHint": "At least 8 characters. You will sign in with this password.",
+    "academicHeading": "Education",
+    "university": "University",
+    "universityOther": "University name",
+    "department": "Department",
+    "departmentOther": "Department name",
+    "studyYear": "Year of study",
+    "yearOption": "Year {year}",
+    "choose": "Select",
+    "notListed": "Not in the list",
+    "otherField": "Other",
+    "consentHeading": "Consents",
+    "draftTranslation": "draft translation",
+    "opportunitiesQuestion": "In the future, would you like us to share suitable opportunities to take part in organizations' innovation and problem-solving projects?",
+    "opportunitiesYes": "Yes, you may share them",
+    "opportunitiesNo": "No, thank you",
+    "psychShare": "I separately and explicitly consent to my psychological wellbeing test results being shared with my university. (Optional — without it, your university only sees whether you completed the test.)",
+    "submit": "Register and continue",
+    "submitting": "Saving…",
+    "errors": {
+      "alreadyRegistered": "This email is already registered. Try signing in.",
+      "rateLimited": "Too many attempts. Please wait a minute.",
+      "consentRequired": "You need to accept the privacy notice to continue.",
+      "invalid": "Some details are invalid. Please check the fields.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "programSchedule": {
+    "caption": "6-week program calendar",
+    "week": "Week",
+    "weekN": "Week {n}",
+    "dates": "Dates",
+    "content": "Content",
+    "juryDay": "Jury presentations: {date}",
+    "activities": {
+      "BASELINE_TESTS": "Baseline Competency Tests",
+      "CREATIVE_THINKING": "Creative Thinking and a Creative Mindset",
+      "MULTIPLE_PERSPECTIVES": "Thinking from Multiple Perspectives",
+      "PROBLEM_DISCOVERY": "Problem Discovery and Definition",
+      "UNDERSTANDING_USERS": "Understanding Users and Their Needs",
+      "INSIGHT_OPPORTUNITY": "Insight and Opportunity Discovery",
+      "IDEA_GENERATION": "Creative Idea Generation Techniques",
+      "IDEA_EVALUATION": "Evaluating and Prioritizing Ideas",
+      "VALUE_PROPOSITION": "Building a Value Proposition",
+      "FINAL_PROJECT": "Preparing the Final Project",
+      "FINAL_SUBMISSION": "Final Project Submission",
+      "PLATFORM_EVALUATION": "Platform Evaluation",
+      "FINALIST_SELECTION": "Selecting the Finalists",
+      "JURY_PRESENTATION": "Jury Presentations and Evaluation"
+    }
+  },
+  "participantProgram": {
+    "title": "Program Information",
+    "noProgram": "You are not enrolled in a program yet.",
+    "noSchedule": "The program calendar will appear here once the organization sets the dates.",
+    "intro": "{program}, organized by {org}, is designed for university students who want to grow in entrepreneurship and innovation, gain new skills and put what they learn into practice through real scenarios.",
+    "during": "Throughout the program you will take part in training on {content}, make decisions in different simulations, work on solving problems and experience the different stages of the entrepreneurial world.",
+    "factsHeading": "Program Details",
+    "participantsValue": "{count} people",
+    "facts": {
+      "org": "Organized by",
+      "program": "Program name",
+      "content": "Program content",
+      "start": "Start date",
+      "end": "Completion date",
+      "participants": "Participants",
+      "certificate": "Certificate you will earn"
+    },
+    "scheduleHeading": "6-Week Program Calendar",
+    "certificateNote": "When you complete the program successfully, you will earn the {certificate} certificate. You will also be able to track your development through the work and assessments you complete along the way.",
+    "ctaHeading": "Your Turn Now!",
+    "cta1": "This is not just a training program. It is a journey where you will discover yourself, test your ideas and experience the world of entrepreneurship.",
+    "cta2": "Sometimes you will make the right call, sometimes you will be wrong, and sometimes you will find a solution you never thought of. The goal is not to get everything right the first time; it is to think, try, learn and grow.",
+    "cta3": "If you are ready, let us start by discovering your potential. Your first step is waiting.",
+    "start": "Go to the baseline tests"
+  },
+  "assessments": {
+    "title": "Baseline Competency Tests",
+    "noProgram": "You need to be enrolled in a program to take the tests.",
+    "intro": "These tests help us understand your character, creativity and current state. A personal development plan is prepared from your results.",
+    "demoNotice": "These tests currently contain sample (demo) questions. The real tests will be added soon.",
+    "demoResultsNotice": "These results are based on sample (demo) tests and are not a real assessment.",
+    "step": "Step {n} of {total}",
+    "completed": "Completed",
+    "start": "Start test",
+    "viewResults": "See my results and development plan",
+    "viewPartialResults": "See my results so far",
+    "progress": "{answered} of {total} questions answered",
+    "questionN": "Question {n}",
+    "answerAll": "Please answer every question.",
+    "alreadyDone": "You have already completed this test.",
+    "submitError": "Your answers could not be saved. Please try again.",
+    "submit": "Submit answers",
+    "submitting": "Submitting…",
+    "likert": {
+      "1": "Strongly disagree",
+      "2": "Disagree",
+      "3": "Neutral",
+      "4": "Agree",
+      "5": "Strongly agree"
+    },
+    "resultsTitle": "Test Results and Personal Development Plan",
+    "noResults": "You have not completed a test yet.",
+    "backToTests": "Back to the tests",
+    "band": {
+      "low": "Development area",
+      "mid": "Moderate",
+      "high": "Strong"
+    },
+    "planHeading": "Your Personal Development Plan",
+    "strengths": "Your strengths",
+    "developmentAreas": "Your development areas",
+    "continueToTraining": "Continue to the training"
+  },
+  "tenantAssessments": {
+    "title": "Baseline Tests",
+    "subtitle": "Students' progress on the baseline tests. Psychological test scores are shown only when the student gave separate consent.",
+    "newCompletions": "{count} students just completed their analysis.",
+    "empty": "No students are enrolled yet.",
+    "student": "Student",
+    "program": "Program",
+    "new": "New",
+    "notStarted": "Not started",
+    "notShared": "Scores not shared (no consent)"
+  },
+  "units": {
+    "title": "Training Units",
+    "notInProgram": "Your program does not include this simulation's training units.",
+    "intro": "In each unit, watch the training video first, then do the practice project and take the 10-question test. You earn the unit's points when you pass the test.",
+    "pointsSummary": "Your total points: {earned} / {total}",
+    "unitN": "Unit {n}",
+    "points": "{earned}/{total} points",
+    "backToUnits": "All units",
+    "steps": {
+      "video": "Training video",
+      "project": "Practice / Project",
+      "test": "Test",
+      "testScore": "Test: {score}/100"
+    },
+    "watchVideo": "Watch the video",
+    "videoComingSoon": "This unit's video will be added soon. You can go on to the project for now.",
+    "markWatched": "Mark as watched",
+    "tasksHeading": "Questions to think about",
+    "yourAnswer": "Your solution",
+    "chars": "{count}/{max} characters",
+    "submitProject": "Submit project",
+    "updateProject": "Update project",
+    "projectSaved": "Your project was saved.",
+    "testIntro": "Pass the 10-question test to earn {points} points.",
+    "testPassed": "You passed with {score}/100 and earned {points} points.",
+    "testRetry": "Your last score was {score}/100. You can take the test again.",
+    "startTest": "Start the test",
+    "retakeTest": "Retake the test",
+    "error": "Something went wrong. Please try again."
   }
 }

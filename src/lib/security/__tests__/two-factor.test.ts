@@ -1,4 +1,4 @@
-import { describe, expect, it, beforeEach, afterEach } from "vitest";
+import { describe, expect, it, beforeEach, afterEach, vi } from "vitest";
 import {
   encryptSecret,
   decryptSecret,
@@ -8,6 +8,7 @@ import {
   hashRecoveryCode,
   verifyRecoveryCode,
   adminRequires2FA,
+  isTwoFactorEnabled,
 } from "@/lib/security/two-factor";
 import { generateSync } from "otplib";
 
@@ -47,10 +48,20 @@ describe("two-factor security", () => {
     expect(await verifyRecoveryCode("WRONGCODE", hash)).toBe(false);
   });
 
-  it("requires 2FA for admin roles only", () => {
+  it("requires 2FA for admin roles only when the switch is on", () => {
+    vi.stubEnv("TWO_FACTOR_ENABLED", "true");
     expect(adminRequires2FA("SUPER_ADMIN")).toBe(true);
     expect(adminRequires2FA("TENANT_ADMIN")).toBe(true);
     expect(adminRequires2FA("TENANT_VIEWER")).toBe(false);
     expect(adminRequires2FA("PARTICIPANT")).toBe(false);
+    vi.unstubAllEnvs();
+  });
+
+  it("requires 2FA for nobody when the switch is off (the default)", () => {
+    vi.stubEnv("TWO_FACTOR_ENABLED", "");
+    expect(isTwoFactorEnabled()).toBe(false);
+    expect(adminRequires2FA("SUPER_ADMIN")).toBe(false);
+    expect(adminRequires2FA("TENANT_ADMIN")).toBe(false);
+    vi.unstubAllEnvs();
   });
 });

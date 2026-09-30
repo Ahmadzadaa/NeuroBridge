@@ -13,6 +13,7 @@ import { enforceRateLimit, getClientIdentifier } from "@/lib/security/rate-limit
 import { prisma } from "@/lib/prisma";
 import { sendEmail } from "@/lib/email/email-service";
 import { welcomeEmail } from "@/lib/email/templates";
+import { ConsentRequiredError } from "@/lib/consent/consents";
 
 function mapRegistrationError(error: unknown): NextResponse {
   if (error instanceof ValidationError) {
@@ -20,6 +21,9 @@ function mapRegistrationError(error: unknown): NextResponse {
       { error: error.message, issues: error.issues },
       { status: 400 }
     );
+  }
+  if (error instanceof ConsentRequiredError) {
+    return NextResponse.json({ error: error.message, code: error.code }, { status: 400 });
   }
   if (error instanceof SeatLimitReachedError) {
     return NextResponse.json(
@@ -61,7 +65,7 @@ export async function POST(request: Request) {
 
   try {
     const body = parseBody(registrationSchema, await request.json());
-    const result = await registerParticipant(body);
+    const result = await registerParticipant({ ...body, ip: getClientIdentifier(request) });
 
     // Welcome email — never blocks or fails the registration itself.
     const program = await prisma.program.findUnique({

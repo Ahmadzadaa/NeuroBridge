@@ -1,4 +1,4 @@
-import { createHmac, timingSafeEqual } from "crypto";
+import { createHmac, randomBytes, timingSafeEqual } from "crypto";
 import type {
   PaytrBasketItem,
   PaytrCredentials,
@@ -192,6 +192,17 @@ export function buildMerchantOid(tenantId: string, now = new Date()): string {
     throw new Error(`Generated merchant_oid is not alphanumeric: ${oid}`);
   }
   return oid;
+}
+
+/**
+ * Order ids for self-serve purchases, which have no tenant yet. The ORD prefix
+ * is what lets the callback tell an order apart from a tenant invoice (BIZ).
+ */
+export const ORDER_MERCHANT_OID_PREFIX = "ORD";
+
+export function buildOrderMerchantOid(now = new Date()): string {
+  const random = randomBytes(8).toString("hex");
+  return `${ORDER_MERCHANT_OID_PREFIX}${now.getTime().toString(36)}${random}`;
 }
 
 export function isValidMerchantOid(oid: string): boolean {

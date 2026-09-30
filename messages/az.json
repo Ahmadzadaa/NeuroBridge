@@ -80,11 +80,12 @@
     "superAdmin": {
       "dashboard": "Panel",
       "tenants": "Kirayəçilər",
-      "billing": "Faktura",
+      "billing": "Sifarişlər",
       "content": "Məzmun İdarəetməsi",
       "support": "Dəstək",
       "system": "Sistem Sağlamlığı",
-      "audit": "Audit Jurnalı"
+      "audit": "Audit Jurnalı",
+      "pricing": "Xidmətlər və Qiymətlər"
     },
     "tenant": {
       "dashboard": "Panel",
@@ -94,7 +95,8 @@
       "settings": "Parametrlər",
       "billing": "Ödənişlər",
       "simulations": "Simulyasiyalar",
-      "teachers": "Müəllimlər"
+      "teachers": "Müəllimlər",
+      "assessments": "Başlanğıc testləri"
     },
     "participant": {
       "dashboard": "Panel",
@@ -105,7 +107,10 @@
       "certificates": "Sertifikatlar",
       "leaderboard": "Liderlik Cədvəli",
       "profile": "Profil",
-      "hackathon": "Hakaton"
+      "hackathon": "Hakaton",
+      "program": "Proqramım",
+      "assessments": "Başlanğıc testləri",
+      "units": "Təlim bölmələri"
     },
     "jury": {
       "dashboard": "İdarə Paneli",
@@ -136,7 +141,7 @@
       "subtitle": "Təşkilat hesabı açın, oturacaq sayı təyin edin və admin girişini email ilə təhvil verin — qalan hər şeyi təşkilat özü idarə edir.",
       "usage": "İstifadə",
       "programCount": "{count} proqram",
-      "createDescription": "Yeni təşkilat + admin hesabı yaradılır və giriş məlumatları admin e-poçtuna göndərilir.",
+      "createDescription": "Yeni təşkilat + admin hesabı yaradılır və adminə birdəfəlik aktivləşdirmə linki e-poçtla göndərilir.",
       "namePlaceholder": "məs. Bakı Teknopark",
       "adminFirstName": "Admin adı",
       "adminLastName": "Admin soyadı",
@@ -144,10 +149,8 @@
       "seatLimit": "Oturacaq sayı",
       "provision": "Hesabı yarat və təhvil ver",
       "created": "Təşkilat hesabı yaradıldı",
-      "credentialsEmailed": "Giriş məlumatları {email} ünvanına göndərildi",
-      "credentialsNotEmailed": "E-poçt göndərilə bilmədi — şifrəni əl ilə ötürün",
-      "passwordCopied": "Şifrə kopyalandı",
-      "passwordShownOnce": "Bu müvəqqəti şifrə yalnız bir dəfə göstərilir. Admin ilk girişdən sonra dəyişməlidir.",
+      "credentialsEmailed": "Aktivləşdirmə linki {email} ünvanına göndərildi",
+      "credentialsNotEmailed": "E-poçt göndərilə bilmədi. Admin aktivləşdirmə linkini alana qədər daxil ola bilməz — e-poçt ayarlarını yoxlayın.",
       "done": "Hazırdır",
       "activate": "Aktivləşdir",
       "deactivate": "Dayandır",
@@ -172,6 +175,58 @@
       "title": "Lisenziya və Faktura",
       "pricePerSeat": "Oturacaq Başına Qiymət",
       "paymentStatus": "Ödəniş Statusu"
+    },
+    "orders": {
+      "title": "Sifarişlər",
+      "subtitle": "Qiymətlər səhifəsindən gələn sifarişlər. Ödənilmiş sifarişlər avtomatik qurulur.",
+      "all": "Hamısı",
+      "status": {
+        "PENDING": "Gözləyir",
+        "PAID": "Ödənilib",
+        "FAILED": "Uğursuz"
+      },
+      "statusLabel": "Status",
+      "institution": "Qurum",
+      "services": "Xidmətlər",
+      "total": "Cəmi",
+      "createdAt": "Yaradılıb",
+      "adminActivated": "Admin aktivləşdirib",
+      "adminNotActivated": "Admin hələ aktivləşdirməyib",
+      "resendActivation": "Linki yenidən göndər",
+      "resent": "Yeni aktivləşdirmə linki {email} ünvanına göndərildi",
+      "resendNotEmailed": "Link yaradıldı, amma e-poçt göndərilə bilmədi",
+      "alreadyActivated": "Admin artıq şifrəsini təyin edib"
+    },
+    "services": {
+      "title": "Xidmətlər və Qiymətlər",
+      "subtitle": "İştirakçı başına qiymət, iştirakçı sayı aralığına görə. Dəyişikliklər yalnız yeni sifarişlərə tətbiq olunur.",
+      "add": "Xidmət əlavə et",
+      "addTitle": "Yeni xidmət",
+      "editTitle": "Xidməti redaktə et",
+      "edit": "Redaktə",
+      "delete": "Sil",
+      "save": "Yadda saxla",
+      "saved": "Xidmət yadda saxlanıldı",
+      "deleted": "Xidmət silindi",
+      "code": "Kod",
+      "codeLocked": "Kod yaradıldıqdan sonra dəyişdirilə bilməz.",
+      "name": "Ad",
+      "active": "Aktiv",
+      "inactive": "Deaktiv",
+      "activate": "Aktivləşdir",
+      "deactivate": "Deaktiv et",
+      "tiers": "Qiymət aralıqları",
+      "tiersHint": "Yuxarı hədd yoxdursa, Maks sahəsini boş buraxın. Aralıqlar üst-üstə düşməməlidir.",
+      "min": "Min iştirakçı",
+      "max": "Maks iştirakçı",
+      "price": "İştirakçı başına qiymət (TL)",
+      "addTier": "Aralıq əlavə et",
+      "removeTier": "Aralığı sil",
+      "confirmDelete": "{name} silinsin? Bu əməliyyat geri qaytarıla bilməz.",
+      "inUse": "Bu xidmətin sifarişləri və ya qurumları var. Silmək əvəzinə deaktiv edin.",
+      "codeTaken": "Bu kodla xidmət artıq mövcuddur.",
+      "tierOverlap": "Qiymət aralıqları üst-üstə düşür. Hər iştirakçı sayı yalnız bir aralığa aid olmalıdır.",
+      "tierRange": "Aralıq başlamadan bitir. Maks, Min-dən kiçik ola bilməz."
     }
   },
   "tenant": {
@@ -199,7 +254,13 @@
       "applicationLink": "Müraciət Linki",
       "participants": "İştirakçılar",
       "start": "Başlanğıc",
-      "end": "Bitiş"
+      "end": "Bitiş",
+      "programStart": "Proqramın başlanğıcı",
+      "programEnd": "Proqramın sonu",
+      "scheduleHint": "6 həftəlik plan bu tarixlərdən yaradılır. Jüri təqdimatları həmişə iş günlərinə qoyulur və sonradan dəyişdirilə bilər.",
+      "certificateName": "Sertifikatın adı",
+      "finalistCount": "Finalçıların sayı",
+      "juryEnabled": "Finalçılar üçün jüri qiymətləndirməsi"
     },
     "projectTypes": {
       "entrepreneurship_training": "Sahibkarlıq Təlimi",
@@ -384,7 +445,8 @@
       "rank": "Sıra",
       "name": "Ad",
       "coins": "Coin",
-      "badgeCount": "Nişan Sayı"
+      "badgeCount": "Nişan Sayı",
+      "myStanding": "Balın: {coins} · Universitetində {total} tələbə arasında yerin: {rank}."
     },
     "profile": {
       "title": "Profil və Parametrlər",
@@ -741,5 +803,238 @@
       "saved": "Ssenari yadda saxlanıldı",
       "validationHint": "Yadda saxlamaq üçün: ad, ən az 2 raund, hər raundda başlıq + təsvir + ən az 2 seçim (hər seçimdə ad və nəticə mətni)."
     }
+  },
+  "pricing": {
+    "title": "Qiymətlər",
+    "subtitle": "Lazım olan xidmətləri və hər biri üçün iştirakçı sayını seçin. Yalnız seçdiyinizə görə ödəyirsiniz.",
+    "servicesHeading": "Xidmətlər",
+    "summaryHeading": "Xülasə",
+    "contactHeading": "Qurum məlumatları",
+    "participants": "İştirakçı",
+    "tierRange": "{min}–{max} iştirakçı",
+    "tierOpen": "{min}+ iştirakçı",
+    "perParticipant": "iştirakçı başına {price}",
+    "total": "Cəmi",
+    "selectPrompt": "Qiyməti görmək üçün ən azı bir xidmət seçin.",
+    "calculating": "Hesablanır…",
+    "pay": "{total} ödə",
+    "payDisabled": "Ödə",
+    "redirecting": "Ödəniş səhifəsinə yönləndirilir…",
+    "noServices": "Hazırda mövcud xidmət yoxdur.",
+    "paymentSuccess": "Ödəniş qəbul edildi. Hesabınız hazırlanır — aktivləşdirmə linki qısa zamanda e-poçtla gələcək.",
+    "paymentFailed": "Ödəniş tamamlanmadı. Yenidən cəhd edə bilərsiniz.",
+    "fields": {
+      "institutionName": "Qurumun adı",
+      "contactName": "Əlaqə şəxsi",
+      "contactEmail": "E-poçt"
+    },
+    "services": {
+      "HACKATHON": "Hakaton",
+      "TEACHERS": "Müəllim-Tələbə Paneli",
+      "SIMULATIONS": "Biznes Simulyasiyaları",
+      "TRAININGS": "Təlimlər",
+      "AI_TOOLS": "Süni İntellekt Alətləri"
+    },
+    "errors": {
+      "generic": "Xəta baş verdi. Yenidən cəhd edin.",
+      "rateLimited": "Çox sayda cəhd. Bir dəqiqə gözləyib yenidən cəhd edin.",
+      "EMPTY_QUOTE": "Ən azı bir xidmət seçin.",
+      "INVALID_PARTICIPANT_COUNT": "İştirakçı sayı 1 ilə 100 000 arasında tam ədəd olmalıdır.",
+      "DUPLICATE_SERVICE": "Bir xidmət iki dəfə seçilib.",
+      "UNKNOWN_SERVICE": "Seçilmiş xidmətlərdən biri artıq mövcud deyil.",
+      "NO_MATCHING_TIER": "Bu iştirakçı sayı xidmətlərdən biri üçün mövcud deyil. Bizimlə əlaqə saxlayın.",
+      "CURRENCY_MISMATCH": "Seçilmiş xidmətlər birlikdə ödənilə bilməz. Bizimlə əlaqə saxlayın.",
+      "EMAIL_TAKEN": "Bu e-poçtla hesab artıq mövcuddur. Başqa e-poçt istifadə edin və ya daxil olun.",
+      "PAYMENT_PROVIDER": "Ödəniş xidməti müvəqqəti əlçatan deyil. Bir neçə dəqiqədən sonra yenidən cəhd edin."
+    }
+  },
+  "activation": {
+    "title": "Hesabınızı aktivləşdirin",
+    "subtitle": "Admin hesabınızın qurulmasını tamamlamaq üçün şifrə təyin edin.",
+    "password": "Yeni şifrə",
+    "confirm": "Şifrənin təkrarı",
+    "passwordHint": "Ən azı 8 simvol; böyük hərf, kiçik hərf və rəqəm olmalıdır.",
+    "submit": "Şifrəni təyin et",
+    "saving": "Yadda saxlanılır…",
+    "goToLogin": "Girişə keç",
+    "state": {
+      "INVALID": "Bu aktivləşdirmə linki etibarlı deyil.",
+      "EXPIRED": "Bu aktivləşdirmə linkinin müddəti bitib. Yeni link üçün dəstək ilə əlaqə saxlayın.",
+      "USED": "Bu aktivləşdirmə linki artıq istifadə olunub. Şifrənizlə daxil ola bilərsiniz."
+    },
+    "errors": {
+      "weak": "Şifrə tələblərə uyğun deyil.",
+      "mismatch": "Şifrələr uyğun gəlmir.",
+      "rateLimited": "Çox sayda cəhd. Bir dəqiqə gözləyin.",
+      "generic": "Xəta baş verdi. Yenidən cəhd edin."
+    }
+  },
+  "apply": {
+    "title": "Proqrama qeydiyyat",
+    "intro": "Proqrama qoşulmaq üçün məlumatlarını daxil et. Bu məlumatlar yalnız proqram proseslərində istifadə olunur.",
+    "notFound": "Proqram tapılmadı",
+    "closed": "Bu proqram üçün qeydiyyat bağlıdır.",
+    "seatsFull": "Qurumun yer limiti dolub.",
+    "programFull": "Proqramın iştirakçı limitinə çatılıb.",
+    "personalHeading": "Şəxsi məlumatlar",
+    "firstName": "Ad",
+    "lastName": "Soyad",
+    "email": "E-poçt ünvanı",
+    "phone": "Telefon nömrəsi",
+    "password": "Şifrə",
+    "passwordHint": "Ən azı 8 simvol. Platformaya bu şifrə ilə daxil olacaqsan.",
+    "academicHeading": "Təhsil məlumatları",
+    "university": "Universitet",
+    "universityOther": "Universitetin adı",
+    "department": "Bölmə",
+    "departmentOther": "Bölmənin adı",
+    "studyYear": "Kurs",
+    "yearOption": "Kurs {year}",
+    "choose": "Seçin",
+    "notListed": "Siyahıda yoxdur",
+    "otherField": "Digər",
+    "consentHeading": "Razılıqlar",
+    "draftTranslation": "qaralama tərcümə",
+    "opportunitiesQuestion": "Gələcəkdə qurumların innovasiya və problem həlli layihələrində iştirak edə biləcəyin uyğun imkanları səninlə paylaşmağımızı istəyirsən?",
+    "opportunitiesYes": "Bəli, paylaşa bilərsiniz",
+    "opportunitiesNo": "Xeyr, istəmirəm",
+    "psychShare": "Psixoloji vəziyyət testinin nəticələrimin universitetimlə paylaşılmasına ayrıca açıq razılıq verirəm. (Könüllüdür — razılıq verməsən, universitetin yalnız testi bitirib-bitirmədiyini görür.)",
+    "submit": "Qeydiyyatdan keç və davam et",
+    "submitting": "Yadda saxlanılır…",
+    "errors": {
+      "alreadyRegistered": "Bu e-poçtla artıq qeydiyyat var. Daxil olmağa cəhd et.",
+      "rateLimited": "Çox sayda cəhd. Bir dəqiqə gözlə.",
+      "consentRequired": "Davam etmək üçün məlumatlandırma mətnini təsdiqləməlisən.",
+      "invalid": "Bəzi məlumatlar yanlışdır. Sahələri yoxla.",
+      "generic": "Xəta baş verdi. Yenidən cəhd et."
+    }
+  },
+  "programSchedule": {
+    "caption": "6 həftəlik proqram təqvimi",
+    "week": "Həftə",
+    "weekN": "{n}. həftə",
+    "dates": "Tarixlər",
+    "content": "Məzmun",
+    "juryDay": "Jüri təqdimatları: {date}",
+    "activities": {
+      "BASELINE_TESTS": "Başlanğıc Səriştə Testləri",
+      "CREATIVE_THINKING": "Yaradıcı Düşüncə və Yaradıcı Baxış",
+      "MULTIPLE_PERSPECTIVES": "Fərqli Baxış Bucaqlarından Düşünmək",
+      "PROBLEM_DISCOVERY": "Problemin Kəşfi və Tərifi",
+      "UNDERSTANDING_USERS": "İstifadəçini və Ehtiyaclarını Anlamaq",
+      "INSIGHT_OPPORTUNITY": "İnsayt və İmkan Sahəsinin Kəşfi",
+      "IDEA_GENERATION": "Yaradıcı İdeya Yaratma Texnikaları",
+      "IDEA_EVALUATION": "İdeyaların Qiymətləndirilməsi və Prioritetləşdirilməsi",
+      "VALUE_PROPOSITION": "Dəyər Təklifinin Yaradılması",
+      "FINAL_PROJECT": "Final Layihəsinin Hazırlanması",
+      "FINAL_SUBMISSION": "Final Layihəsinin Təhvili",
+      "PLATFORM_EVALUATION": "Platforma Qiymətləndirməsi",
+      "FINALIST_SELECTION": "Finalçıların Müəyyənləşdirilməsi",
+      "JURY_PRESENTATION": "Jüri Təqdimatları və Qiymətləndirmə"
+    }
+  },
+  "participantProgram": {
+    "title": "Proqram Məlumatı",
+    "noProgram": "Hələ qeydiyyatda olduğun proqram yoxdur.",
+    "noSchedule": "Qurum tarixləri təyin edəndə proqram təqvimi burada görünəcək.",
+    "intro": "{org} tərəfindən təşkil olunan {program} sahibkarlıq və innovasiya sahəsində inkişaf etmək, yeni bacarıqlar qazanmaq və öyrəndiklərini real ssenarilər üzərində sınamaq istəyən universitet tələbələri üçün hazırlanıb.",
+    "during": "Proqram boyu {content} üzrə təlimlərdə iştirak edəcək, müxtəlif simulyasiyalarda qərarlar verəcək, problemləri həll etməyə çalışacaq və sahibkarlıq dünyasının müxtəlif proseslərini təcrübədən keçirəcəksən.",
+    "factsHeading": "Proqram Məlumatı",
+    "participantsValue": "{count} nəfər",
+    "facts": {
+      "org": "Təşkilatçı qurum",
+      "program": "Proqramın adı",
+      "content": "Proqramın məzmunu",
+      "start": "Başlanğıc tarixi",
+      "end": "Bitmə tarixi",
+      "participants": "İştirakçı sayı",
+      "certificate": "Qazanılacaq sertifikat"
+    },
+    "scheduleHeading": "6 Həftəlik Proqram Təqvimi",
+    "certificateNote": "Proqramı uğurla tamamladıqda {certificate} sertifikatını almağa haqq qazanacaqsan. Həmçinin proqram boyu gördüyün işlər və qiymətləndirmələr əsasında inkişafını izləyə biləcəksən.",
+    "ctaHeading": "İndi Növbə Səndədir!",
+    "cta1": "Burada sadəcə təlim proqramına qoşulmursan. Özünü kəşf edəcəyin, ideyalarını sınayacağın və sahibkarlıq dünyasını yaşayacağın bir səyahətə çıxırsan.",
+    "cta2": "Bəzən düzgün qərar verəcək, bəzən yanılacaq, bəzən də heç ağlına gəlməyən bir həll tapacaqsan. Çünki burada məqsəd hər şeyi ilk dəfədən düz etmək deyil; düşünmək, sınamaq, öyrənmək və inkişaf etməkdir.",
+    "cta3": "Hazırsansa, öz potensialını kəşf etməklə başlayaq. İlk addım səni gözləyir.",
+    "start": "Başlanğıc testlərinə keç"
+  },
+  "assessments": {
+    "title": "Başlanğıc Səriştə Testləri",
+    "noProgram": "Testlərə başlamaq üçün proqrama qeydiyyatdan keçməlisən.",
+    "intro": "Bu testlər xarakterini, yaradıcılığını və hazırkı vəziyyətini anlamağa kömək edir. Nəticələrinə əsasən sənin üçün şəxsi inkişaf planı hazırlanır.",
+    "demoNotice": "Bu testlər hazırda nümunə (demo) suallardan ibarətdir. Real testlər tezliklə əlavə olunacaq.",
+    "demoResultsNotice": "Bu nəticələr nümunə (demo) testlərə əsaslanır və real qiymətləndirmə deyil.",
+    "step": "Addım {n}/{total}",
+    "completed": "Tamamlandı",
+    "start": "Testə başla",
+    "viewResults": "Nəticələrimə və inkişaf planıma bax",
+    "viewPartialResults": "İndiyədək nəticələrimə bax",
+    "progress": "{answered}/{total} suala cavab verilib",
+    "questionN": "Sual {n}",
+    "answerAll": "Zəhmət olmasa bütün suallara cavab ver.",
+    "alreadyDone": "Bu testi artıq tamamlamısan.",
+    "submitError": "Cavablar yadda saxlanılmadı. Yenidən cəhd et.",
+    "submit": "Cavabları göndər",
+    "submitting": "Göndərilir…",
+    "likert": {
+      "1": "Qətiyyən razı deyiləm",
+      "2": "Razı deyiləm",
+      "3": "Qərarsızam",
+      "4": "Razıyam",
+      "5": "Tamamilə razıyam"
+    },
+    "resultsTitle": "Test Nəticələri və Şəxsi İnkişaf Planı",
+    "noResults": "Hələ tamamlanmış testin yoxdur.",
+    "backToTests": "Testlərə qayıt",
+    "band": {
+      "low": "İnkişaf sahəsi",
+      "mid": "Orta",
+      "high": "Güclü"
+    },
+    "planHeading": "Şəxsi İnkişaf Planın",
+    "strengths": "Güclü tərəflərin",
+    "developmentAreas": "İnkişaf sahələrin",
+    "continueToTraining": "Təlimlərə davam et"
+  },
+  "tenantAssessments": {
+    "title": "Başlanğıc Testləri",
+    "subtitle": "Tələbələrin başlanğıc testlərini tamamlama vəziyyəti. Psixoloji test balları yalnız tələbə ayrıca razılıq veribsə görünür.",
+    "newCompletions": "{count} tələbə təhlilini yenicə tamamladı.",
+    "empty": "Hələ qeydiyyatda olan tələbə yoxdur.",
+    "student": "Tələbə",
+    "program": "Proqram",
+    "new": "Yeni",
+    "notStarted": "Başlamayıb",
+    "notShared": "Ballar paylaşılmayıb (razılıq yoxdur)"
+  },
+  "units": {
+    "title": "Təlim Bölmələri",
+    "notInProgram": "Proqramında bu simulyasiyanın təlim bölmələri yoxdur.",
+    "intro": "Hər bölmədə əvvəlcə təlim videosuna bax, sonra praktiki layihəni et və 10 suallıq testi həll et. Testi keçəndə bölmənin ballarını qazanırsan.",
+    "pointsSummary": "Ümumi balın: {earned} / {total}",
+    "unitN": "Bölmə {n}",
+    "points": "{earned}/{total} bal",
+    "backToUnits": "Bütün bölmələr",
+    "steps": {
+      "video": "Təlim videosu",
+      "project": "Praktika / Layihə",
+      "test": "Test",
+      "testScore": "Test: {score}/100"
+    },
+    "watchVideo": "Videoya bax",
+    "videoComingSoon": "Bu bölmənin videosu tezliklə əlavə olunacaq. Hələlik layihəyə keçə bilərsən.",
+    "markWatched": "Baxdım kimi işarələ",
+    "tasksHeading": "Düşünməli olduğun suallar",
+    "yourAnswer": "Həllin",
+    "chars": "{count}/{max} simvol",
+    "submitProject": "Layihəni göndər",
+    "updateProject": "Layihəni yenilə",
+    "projectSaved": "Layihən yadda saxlanıldı.",
+    "testIntro": "10 suallıq testi keçəndə {points} bal qazanırsan.",
+    "testPassed": "Testi {score}/100 ilə keçdin və {points} bal qazandın.",
+    "testRetry": "Son nəticən {score}/100. Testi yenidən həll edə bilərsən.",
+    "startTest": "Testə başla",
+    "retakeTest": "Testi yenidən həll et",
+    "error": "Xəta baş verdi. Yenidən cəhd et."
   }
 }

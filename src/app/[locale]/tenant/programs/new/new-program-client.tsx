@@ -66,6 +66,11 @@ export function NewProgramClient({ userName }: NewProgramClientProps) {
       simulationStart: formData.get("simulationStart"),
       simulationEnd: formData.get("simulationEnd"),
       participantLimit: formData.get("participantLimit"),
+      programStart: formData.get("programStart"),
+      programEnd: formData.get("programEnd"),
+      certificateName: formData.get("certificateName"),
+      finalistCount: formData.get("finalistCount"),
+      juryEnabled: formData.get("juryEnabled") === "on",
       simulations,
       trainings,
       aiTools,
@@ -145,7 +150,30 @@ export function NewProgramClient({ userName }: NewProgramClientProps) {
                 <Label htmlFor="simulationEnd">{t("simulationEnd")}</Label>
                 <Input id="simulationEnd" name="simulationEnd" type="date" className="rounded-xl" />
               </div>
+              <div className="space-y-2">
+                <Label htmlFor="programStart">{t("programStart")}</Label>
+                <Input id="programStart" name="programStart" type="date" className="rounded-xl" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="programEnd">{t("programEnd")}</Label>
+                <Input id="programEnd" name="programEnd" type="date" className="rounded-xl" />
+              </div>
             </div>
+            <p className="text-xs text-muted-foreground">{t("scheduleHint")}</p>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="certificateName">{t("certificateName")}</Label>
+                <Input id="certificateName" name="certificateName" maxLength={200} className="rounded-xl" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="finalistCount">{t("finalistCount")}</Label>
+                <Input id="finalistCount" name="finalistCount" type="number" min={1} max={1000} className="rounded-xl" />
+              </div>
+            </div>
+            <label className="flex min-h-11 cursor-pointer items-center gap-3 text-sm">
+              <input type="checkbox" name="juryEnabled" className="h-4 w-4 accent-primary" />
+              {t("juryEnabled")}
+            </label>
             <div className="space-y-2">
               <Label htmlFor="participantLimit">{t("participantLimit")}</Label>
               <Input id="participantLimit" name="participantLimit" type="number" min={1} required className="rounded-xl" />

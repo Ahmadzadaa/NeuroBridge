@@ -1,0 +1,1023 @@
+{
+  "source": "docs/spec/Fikir_Gelistirme_Test_ve_Sorular.docx",
+  "units": [
+    {
+      "order": 1,
+      "title": "YARATICI DÜŞÜNCE VE YARATICI BAKIŞ AÇISI",
+      "project": {
+        "scenario": "Bir mahallede insanlar birbirlerini tanımıyor. Sosyal bağları güçlendirecek yaratıcı bir çözüm geliştir.",
+        "tasks": [
+          "Bu problemi çözmek için teknoloji kullanmak yasak olsaydı ne yapardın?",
+          "Bu problemi tamamen ortadan kaldırmak zorunda olsaydın nasıl düşünürdün?",
+          "Bu problemi 10 yaşındaki bir çocuk çözse nasıl bir çözüm geliştirebilirdi?",
+          "Bu problemi çözmek için hiç paran olmasaydı hangi çözümü geliştirirdin?",
+          "Mevcut çözüm yöntemlerini tamamen unut. Sıfırdan nasıl bir çözüm geliştirirdin"
+        ]
+      },
+      "questions": [
+        {
+          "number": 1,
+          "text": "Yaratıcı insanlar bir problemle karşılaştıklarında genellikle nasıl yaklaşırlar?",
+          "options": {
+            "A": "Problemi mümkün olduğunca görmezden gelirler",
+            "B": "Problemi sadece çözülmesi gereken bir engel olarak görürler",
+            "C": "Problemin içinde yeni bir fırsat olup olmadığını araştırırlar",
+            "D": "Başkalarının çözmesini beklerler"
+          },
+          "correct": "C"
+        },
+        {
+          "number": 2,
+          "text": "Yaratıcı bir kişinin meraklı olması ne anlama gelir?",
+          "options": {
+            "A": "Her konuda uzman olmaya çalışması",
+            "B": "Olayların neden ve nasıl olduğunu sorgulaması",
+            "C": "Sürekli fikir değiştirmesi",
+            "D": "Karar vermekten kaçınması"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 3,
+          "text": "Yaratıcı insanlar bir problemin çözümünü bulamadıklarında genellikle ne yaparlar?",
+          "options": {
+            "A": "Problemin çözülemeyeceğini düşünürler",
+            "B": "İlk çözüme geri dönerler",
+            "C": "Problemi farklı bir açıdan ele almayı denerler",
+            "D": "Problemi başkasına bırakırlar"
+          },
+          "correct": "C"
+        },
+        {
+          "number": 4,
+          "text": "Aşağıdakilerden hangisi yaratıcı düşünmenin güçlü yönlerinden biridir?",
+          "options": {
+            "A": "Belirsizlikten tamamen kaçınmak",
+            "B": "Tek bir yönteme bağlı kalmak",
+            "C": "Farklı bilgiler arasında yeni bağlantılar kurmak",
+            "D": "Her durumda geçmişte kullanılan yöntemi tercih etmek"
+          },
+          "correct": "C"
+        },
+        {
+          "number": 5,
+          "text": "Yaratıcı bir kişi herkesin aynı fikirde olduğunu gördüğünde nasıl davranabilir?",
+          "options": {
+            "A": "Çoğunluğun fikrini sorgulamadan kabul eder",
+            "B": "Farklı bir bakış açısının olup olmadığını araştırır",
+            "C": "Konuyu değiştirmeyi tercih eder",
+            "D": "Kendi fikrinden vazgeçer"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 6,
+          "text": "Bir fikrin ilk denemede başarısız olması yaratıcı bir kişi için ne ifade edebilir?",
+          "options": {
+            "A": "Fikrin kesinlikle değersiz olduğunu",
+            "B": "Bir daha denememesi gerektiğini",
+            "C": "Öğrenme ve fikri geliştirme fırsatı olduğunu",
+            "D": "Başarısızlığın tamamen başkasının sorumluluğu olduğunu"
+          },
+          "correct": "C"
+        },
+        {
+          "number": 7,
+          "text": "Yaratıcı bir kişi alışılmış bir yöntemle karşılaştığında ne yapmaya daha yatkındır?",
+          "options": {
+            "A": "“Her zaman böyle yapıldı” diyerek kabul eder",
+            "B": "Yöntemin neden böyle olduğunu ve başka nasıl yapılabileceğini sorgular",
+            "C": "Yöntemi değiştirmeden uygular",
+            "D": "Başkasının karar vermesini bekler"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 8,
+          "text": "Yaratıcı düşünmede farklı alanlardan bilgi edinmenin önemli olmasının temel nedeni nedir?",
+          "options": {
+            "A": "Daha fazla bilgiye sahip olmak her zaman başarı getirir",
+            "B": "Farklı bilgiler arasında yeni fikir bağlantıları kurulabilir",
+            "C": "Karar vermeyi tamamen ortadan kaldırır",
+            "D": "Uzman olmadan fikir üretmeyi engeller"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 9,
+          "text": "Yaratıcı bir kişi bir fikri geliştirirken aşağıdakilerden hangisini daha çok yapar?",
+          "options": {
+            "A": "İlk fikrini değiştirmeden korur",
+            "B": "Fikrini farklı olasılıklarla geliştirir ve yeni alternatifler dener",
+            "C": "Sadece başkalarının önerilerini kullanır",
+            "D": "Fikrin eleştirilmesini engeller"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 10,
+          "text": "Aşağıdakilerden hangisi yaratıcı bir kişinin problem karşısındaki yaklaşımını en iyi açıklar?",
+          "options": {
+            "A": "“Bu problem daha önce çözülmediyse çözülemez.”",
+            "B": "“En güvenli çözüm mevcut yöntemi aynen uygulamaktır.”",
+            "C": "“Bu problemin içinde başka hangi fırsatlar ve çözümler olabilir?”",
+            "D": "“Önce başkalarının ne yaptığını görmeliyim.”"
+          },
+          "correct": "C"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "title": "FARKLI BAKIŞ AÇILARIYLA DÜŞÜNMEK",
+      "project": {
+        "scenario": "Bir hastanede hastalar, randevu saatleri olmasına rağmen bekleme alanında uzun süre bekliyor. Bu bekleme deneyimini iyileştirecek yaratıcı bir çözüm geliştir.",
+        "tasks": [
+          "Aynı problemi bir hasta ve bir hastane yöneticisi nasıl farklı çözebilir? Her iki bakış açısından bir çözüm geliştir.",
+          "Bu probleme hastane yöneticisi değil, bir tiyatro yönetmeni gibi yaklaş. Bekleme deneyimini nasıl yeniden tasarlardın?",
+          "Bu problemi 2050 yılında yaşayan bir hasta açısından düşün. Hastanede bekleme deneyimi nasıl olabilir?",
+          "Bu problemi daha önce hiç hastaneye gitmemiş bir kişinin gözünden düşün. Ona göre nasıl bir çözüm tasarlanabilir?",
+          "Hastaların bekleme süresini azaltamıyorsun. O halde beklemeyi ortadan kaldırmak yerine, bekleme deneyimini nasıl değerli hale getirirdin?"
+        ]
+      },
+      "questions": [
+        {
+          "number": 1,
+          "text": "Bir probleme farklı bakış açılarından yaklaşmanın temel amacı nedir?",
+          "options": {
+            "A": "Tek bir görüşü doğrulamak",
+            "B": "Problemi daha geniş değerlendirmek",
+            "C": "Karar vermeyi zorlaştırmak",
+            "D": "Problemi değiştirmemek"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 2,
+          "text": "Bir problemi yalnızca kendi deneyimin üzerinden değerlendirmek neden yeterli olmayabilir?",
+          "options": {
+            "A": "Her problemin tek bir çözümü olduğu için",
+            "B": "Farklı insanların aynı problemi farklı deneyimleyebileceği için",
+            "C": "Kendi deneyimin her zaman yanlış olduğu için",
+            "D": "Problemi çözmek mümkün olmadığı için"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 3,
+          "text": "Bir girişimci geliştirdiği ürüne kullanıcı gözüyle baktığında öncelikle neyi anlamaya çalışır?",
+          "options": {
+            "A": "Rakiplerin ne yaptığını",
+            "B": "Kullanıcının gerçek ihtiyacını ve yaşadığı problemi",
+            "C": "Ürünün nasıl daha pahalı satılacağını",
+            "D": "Şirketin nasıl daha fazla toplantı yapacağını"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 4,
+          "text": "Aynı probleme bir öğrenci, bir öğretmen ve bir girişimcinin farklı çözümler önermesinin temel nedeni nedir?",
+          "options": {
+            "A": "Her birinin farklı deneyim ve ihtiyaçlara sahip olması",
+            "B": "Birinin mutlaka yanlış düşünmesi",
+            "C": "Problemin her kişide farklı olması",
+            "D": "Çözümlerin tamamen tesadüfi olması"
+          },
+          "correct": "A"
+        },
+        {
+          "number": 5,
+          "text": "“Bu probleme benim yerimde başka biri baksa neyi farklı görürdü?” sorusu hangi düşünme becerisini destekler?",
+          "options": {
+            "A": "Perspektif değiştirmeyi",
+            "B": "Kararı ertelemeyi",
+            "C": "Problemi görmezden gelmeyi",
+            "D": "Tek çözüme odaklanmayı"
+          },
+          "correct": "A"
+        },
+        {
+          "number": 6,
+          "text": "Bir üniversitedeki yemek israfı problemini çözmeye çalışan bir öğrenci, aynı probleme bir restoran işletmecisi gibi yaklaşırsa ne yapmış olur?",
+          "options": {
+            "A": "Problemi değiştirmiş olur",
+            "B": "Farklı bir perspektiften değerlendirmiş olur",
+            "C": "Problemi çözmekten vazgeçmiş olur",
+            "D": "Sadece mevcut çözümü tekrar etmiş olur"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 7,
+          "text": "Bir probleme hiç o problemi yaşamamış bir kişinin gözünden bakmak ne sağlayabilir?",
+          "options": {
+            "A": "Problemin bütün yönlerini kesin olarak ortaya çıkarır",
+            "B": "Alışılmış düşüncenin dışında yeni bir bakış açısı sağlayabilir",
+            "C": "Problemin önemini ortadan kaldırır",
+            "D": "Doğru çözümü garanti eder"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 8,
+          "text": "Bir girişimci kendi fikrinin çok iyi olduğunu düşünüyor. Fikrine yatırımcı gözüyle bakması neden faydalı olabilir?",
+          "options": {
+            "A": "Yatırım alacağını garanti etmek için",
+            "B": "Fikrin farklı bir açıdan değerlendirilmesini sağlamak için",
+            "C": "Rakiplerini ortadan kaldırmak için",
+            "D": "Ürünün fiyatını otomatik olarak artırmak için"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 9,
+          "text": "Bir problemi gelecekte yaşayan insanların bakış açısından değerlendirmek ne sağlayabilir?",
+          "options": {
+            "A": "Gelecekteki ihtiyaçların ve farklı çözüm olasılıklarının düşünülmesini",
+            "B": "Mevcut problemi tamamen yok etmeyi",
+            "C": "Bugünkü çözümü değiştirmeden kullanmayı",
+            "D": "Kesin olarak geleceği tahmin etmeyi"
+          },
+          "correct": "A"
+        },
+        {
+          "number": 10,
+          "text": "Aşağıdakilerden hangisi farklı bakış açılarıyla düşünmeye en iyi örnektir?",
+          "options": {
+            "A": "İlk akla gelen çözümü hemen uygulamak",
+            "B": "Herkesin aynı fikirde olup olmadığını kontrol etmek",
+            "C": "Bir problemi kullanıcı, uzman, yönetici ve farklı bir alandaki kişinin gözünden ayrı ayrı değerlendirmek",
+            "D": "Daha önce kullanılan çözümü değiştirmeden kullanmak"
+          },
+          "correct": "C"
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "title": "PROBLEM KEŞFİ VE PROBLEM TANIMLAMA",
+      "project": {
+        "scenario": "🐧 Bir hayvanat bahçesinde ziyaretçiler bazı hayvanların bulunduğu bölümlerde çok kısa süre kalıyor ve hayvanları yeterince gözlemlemeden geçiyor.",
+        "tasks": [
+          "Hayvanat bahçesi işletme sahibi olsaydın, ziyaretçilerin kısa süre kalmasını nasıl bir problem olarak tanımlardın?",
+          "Hayvanat bahçesi görevlisi olsaydın, ziyaretçilerin bu alanlarda kısa süre kalmasının arkasındaki problemi nasıl tanımlardın?",
+          "Ziyaretçi olsaydın, hayvanları yeterince gözlemlemeden geçmene neden olan problemi nasıl tanımlardın?",
+          "Bir çocuk ziyaretçi olsaydın, bu deneyimde seni rahatsız eden veya ilgini kaybetmene neden olan problem ne olurdu?",
+          "Hayvanat bahçesini ziyaret eden bir turist olsaydın, yaşadığın deneyimde hangi problemi fark eder ve nasıl tanımlardın?"
+        ]
+      },
+      "questions": [
+        {
+          "number": 1,
+          "text": "Problem keşfinin temel amacı aşağıdakilerden hangisidir?",
+          "options": {
+            "A": "En hızlı çözümü bulmak",
+            "B": "Gerçekten çözülmesi gereken problemi ortaya çıkarmak",
+            "C": "Bir ürün geliştirmeye başlamak",
+            "D": "Rakipleri incelemek"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 2,
+          "text": "Bir kişinin “Bu hizmeti kullanmak zor” demesi problem keşfi açısından ne ifade eder?",
+          "options": {
+            "A": "Problemin kesin olarak belirlendiğini",
+            "B": "Araştırılması gereken bir ipucu olduğunu",
+            "C": "Hemen çözüm geliştirilmesi gerektiğini",
+            "D": "Kullanıcının yanlış düşündüğünü"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 3,
+          "text": "Aynı durumu işletme sahibi, çalışan ve müşteri farklı şekilde değerlendirebilir. Bunun temel nedeni nedir?",
+          "options": {
+            "A": "Her birinin farklı deneyim, ihtiyaç ve sorumluluklara sahip olması",
+            "B": "Problemin her zaman farklı olması",
+            "C": "Bir kişinin mutlaka yanlış düşünmesi",
+            "D": "Çözümün kişiye göre değişmesi"
+          },
+          "correct": "A"
+        },
+        {
+          "number": 4,
+          "text": "Bir hayvanat bahçesinde ziyaretçiler bazı hayvanların bulunduğu alanlarda kısa süre kalıyor. İşletme sahibi bu durumu araştırırken öncelikle neyi anlamaya çalışmalıdır?",
+          "options": {
+            "A": "Yeni bir ürünün fiyatını",
+            "B": "Ziyaretçilerin neden kısa süre kaldığını",
+            "C": "Hayvan sayısını nasıl artıracağını",
+            "D": "Reklam bütçesini ne kadar artıracağını"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 5,
+          "text": "“Ziyaretçiler hayvanları yeterince izlemiyor.” ifadesini problem olarak inceleyen bir kişi öncelikle hangi soruyu sormalıdır?",
+          "options": {
+            "A": "“Bunu nasıl çözeriz?”",
+            "B": "“Bunun nedeni ne olabilir?”",
+            "C": "“Hangi ürünü geliştirelim?”",
+            "D": "“Ne kadar bütçeye ihtiyacımız var?”"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 6,
+          "text": "Aşağıdakilerden hangisi iyi tanımlanmış bir problem ifadesine en yakındır?",
+          "options": {
+            "A": "Hayvanat bahçesini geliştirmeliyiz.",
+            "B": "Ziyaretçiler hayvanları sevmiyor.",
+            "C": "Ziyaretçiler bazı hayvan alanlarında yeterince zaman geçirmiyor ve bu durum onların hayvanları gözlemleme deneyimini sınırlıyor.",
+            "D": "Hayvan alanlarına yeni teknolojiler eklenmeli."
+          },
+          "correct": "C"
+        },
+        {
+          "number": 7,
+          "text": "Bir problemin görünen sonucu ile asıl problemini birbirinden ayırmak neden önemlidir?",
+          "options": {
+            "A": "Daha fazla çözüm üretmek için",
+            "B": "Gerçek problemin yanlış tanımlanmasını önlemek için",
+            "C": "Problemi daha karmaşık hale getirmek için",
+            "D": "Daha fazla veri toplamak için"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 8,
+          "text": "Bir problem tanımlanırken “Kim yaşıyor?” sorusunun sorulmasının temel amacı nedir?",
+          "options": {
+            "A": "Problemi yaşayan kişi veya grubu netleştirmek",
+            "B": "Çözümün maliyetini hesaplamak",
+            "C": "Rakipleri belirlemek",
+            "D": "Ürünün özelliklerini oluşturmak"
+          },
+          "correct": "A"
+        },
+        {
+          "number": 9,
+          "text": "Bir öğrenci “Üniversite öğrencileri kütüphaneyi yeterince kullanmıyor.” şeklinde bir problem tanımlıyor. Problemi daha iyi anlamak için aşağıdakilerden hangisi en doğru yaklaşımdır?",
+          "options": {
+            "A": "Hemen kütüphaneye yeni özellikler eklemek",
+            "B": "Öğrencilerin neden kütüphaneyi kullanmadığını araştırmak",
+            "C": "Kütüphanenin reklamını artırmak",
+            "D": "Daha fazla masa satın almak"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 10,
+          "text": "Aşağıdakilerden hangisi problem keşfi ve tanımlama sürecini en doğru şekilde ifade eder?",
+          "options": {
+            "A": "Problem → Çözüm → Araştırma",
+            "B": "Çözüm → Problem → Kullanıcı",
+            "C": "Gözlem → Araştırma → Nedenleri anlama → Problemi tanımlama",
+            "D": "Kullanıcı → Ürün → Problem → Çözüm"
+          },
+          "correct": "C"
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "title": "KULLANICIYI VE İHTİYAÇLARI ANLAMAK",
+      "project": {
+        "scenario": "Konu: ✈️ Bir havaalanında ilk kez seyahat eden yolcular, check-in işlemini tamamladıktan sonra uçağın kalkacağı kapıyı bulmakta zorlanıyor ve bazı yolcular uçağa yetişmek için son anda koşmak zorunda kalıyor.",
+        "tasks": [
+          "Bir yolcuyu gözlemlediğini düşün. Yolcunun havaalanına girişinden uçağın kapısına ulaşmasına kadar hangi ihtiyaçlarının ortaya çıkabileceğini belirle.",
+          "Bu problemi yaşayan bir yolcu ile görüşseydin, onun yaşadığı gerçek problemi anlamak için hangi 3 soruyu sorardın?",
+          "Yolcu “Daha fazla yönlendirme tabelası olmalı.” diyor. Bu ifadeyi doğrudan ihtiyaç olarak kabul etme. Yolcunun bunun arkasındaki gerçek ihtiyacı ne olabilir?",
+          "Aynı yolculuğu ilk kez seyahat eden bir yolcu ile sık seyahat eden bir yolcu açısından karşılaştır. İhtiyaçları nasıl farklılaşabilir?",
+          "Bir yolcunun sadece söylediklerine değil, öfkelip sinirlenen davranışlarına baktığını düşün. Yolcunun davranışlarının altında yatan gerçek neden nedir?"
+        ]
+      },
+      "questions": [
+        {
+          "number": 1,
+          "text": "Kullanıcıyı anlamanın temel amacı nedir?",
+          "options": {
+            "A": "Kullanıcıya ne istediğini söylemek",
+            "B": "Gerçek ihtiyaç ve problemleri anlamak",
+            "C": "Ürünün reklamını yapmak",
+            "D": "Rakipleri incelemek"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 2,
+          "text": "Kullanıcı görüşmesinde aşağıdaki sorulardan hangisi daha değerlidir?",
+          "options": {
+            "A": "“Bu ürünü satın alır mısınız?”",
+            "B": "“Bu problemi en son ne zaman yaşadınız ve ne yaptınız?”",
+            "C": "“Bizim fikrimizi beğendiniz mi?”",
+            "D": "“Ürünümüzü kaç TL'ye alırsınız?”"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 3,
+          "text": "Kullanıcının söylediği her şey neden doğrudan gerçek ihtiyaç olarak kabul edilmemelidir?",
+          "options": {
+            "A": "Kullanıcılar hiçbir şey bilmez",
+            "B": "Söylenen ile gerçek davranış arasında fark olabilir",
+            "C": "Kullanıcılar ürün istemez",
+            "D": "Görüşmeler gereksizdir"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 4,
+          "text": "Kullanıcı gözlemlemek ne sağlayabilir?",
+          "options": {
+            "A": "Kullanıcının gerçek davranışlarını anlamayı",
+            "B": "Kesin satış rakamlarını",
+            "C": "Yatırım almayı",
+            "D": "Rakipleri ortadan kaldırmayı"
+          },
+          "correct": "A"
+        },
+        {
+          "number": 5,
+          "text": "Kullanıcı merkezli düşünmenin temelinde ne vardır?",
+          "options": {
+            "A": "Şirketin istediğini yapmak",
+            "B": "Kullanıcının ihtiyaç ve deneyimini anlamak",
+            "C": "Rakibin ürününü kopyalamak",
+            "D": "En pahalı ürünü geliştirmek"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 6,
+          "text": "Bir kullanıcı “Bu uygulamada daha fazla özellik olsun.” diyor. Kullanıcının gerçek ihtiyacını anlamak için öncelikle ne yapılmalıdır?",
+          "options": {
+            "A": "Hemen yeni özellikler eklemek",
+            "B": "Hangi problemi çözmek için bu özellikleri istediğini anlamak",
+            "C": "Kullanıcıya hangi özellikleri istediğini söylemek",
+            "D": "Uygulamanın fiyatını artırmak"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 7,
+          "text": "Kullanıcı görüşmesinde aşağıdaki yaklaşımlardan hangisi daha sağlıklı bilgi sağlar?",
+          "options": {
+            "A": "Kullanıcıya düşündüğümüz çözümü kabul ettirmeye çalışmak",
+            "B": "Kullanıcının geçmişte yaşadığı gerçek deneyimleri ve davranışları sormak",
+            "C": "Sadece ürünümüz hakkında görüş almak",
+            "D": "Kullanıcıya doğru cevabı göstermek"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 8,
+          "text": "Bir kullanıcının söylediği ile yaptığı farklıysa, kullanıcı ihtiyacını anlamak için hangisi daha değerlidir?",
+          "options": {
+            "A": "Sadece söylediğini dikkate almak",
+            "B": "Sadece kendi varsayımımıza güvenmek",
+            "C": "Söylediği ve gerçek davranışı birlikte değerlendirmek",
+            "D": "Kullanıcıyı görüşmeden çıkarmak"
+          },
+          "correct": "C"
+        },
+        {
+          "number": 9,
+          "text": "Kullanıcı yolculuğundaki “sorun noktası” neyi ifade eder?",
+          "options": {
+            "A": "Kullanıcının deneyimi sırasında zorlandığı veya ihtiyaç duyduğu anı",
+            "B": "Ürünün satış fiyatını",
+            "C": "Şirketin çalışan sayısını",
+            "D": "Rakiplerin güçlü yönlerini"
+          },
+          "correct": "A"
+        },
+        {
+          "number": 10,
+          "text": "Kullanıcıyı gerçekten anlamaya çalışan bir kişi aşağıdakilerden hangisini yapar?",
+          "options": {
+            "A": "Kullanıcı adına ihtiyaçları kendisi belirler",
+            "B": "Kendi fikrini kullanıcıya kabul ettirmeye çalışır",
+            "C": "Kullanıcının deneyimini, davranışlarını ve ihtiyaçlarını araştırır",
+            "D": "En çok kullanılan ürünü doğrudan kopyalar"
+          },
+          "correct": "C"
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "title": "İÇGÖRÜ VE FIRSAT ALANI KEŞFİ",
+      "project": {
+        "scenario": "Görme engelli bir birey, büyük ve kalabalık bir tren istasyonunda tek başına yolculuk ederken yönünü bulmakta ve doğru perona ulaşmakta zorlanıyor.",
+        "tasks": [
+          "Bu probleme yönelik bir çözüm fikri geliştir. Çözümünün kullanıcıya hangi ihtiyacı karşıladığını açıkla.",
+          "Kullanıcı, asıl problemin peronu bulmak değil, istasyonda tek başına hareket ederken kendini güvende hissetmemek olduğunu söylüyor. Fikrini bu yeni bilgiye göre nasıl değiştirirsin?",
+          "Çözümünü uygulamak için hiç paran ve teknolojik imkânın olmadığını düşün. Fikrini mevcut imkânlarınla nasıl yeniden geliştirirsin?",
+          "Çözümünü test ettin ancak kullanıcılar çözümünü kullanmadı. Neden kullanmadıklarını nasıl araştırır ve fikrini buna göre nasıl geliştirirsin?",
+          "Kullanıcıların yalnızca istasyonda değil, evden çıkıp trene binene kadar yolculuğun tamamında benzer zorluklar yaşadığını fark ettin. Bu yeni içgörüden nasıl yeni bir fırsat alanı çıkarırsın?"
+        ]
+      },
+      "questions": [
+        {
+          "number": 1,
+          "text": "Bir kullanıcının sürekli aynı problemi yaşadığını gözlemliyorsun. Bu gözlemden içgörü elde etmek için öncelikle neyi anlamaya çalışmalısın?",
+          "options": {
+            "A": "Kullanıcıya hangi ürünü satabileceğini",
+            "B": "Problemin arkasındaki neden ve ihtiyacı",
+            "C": "Rakiplerin ne yaptığını",
+            "D": "Ürünün fiyatını"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 2,
+          "text": "Kullanıcı “İstasyonda yönümü bulmakta zorlanıyorum.” diyor. Bu ifade tek başına neden yeterli bir içgörü değildir?",
+          "options": {
+            "A": "Çok kısa olduğu için",
+            "B": "Kullanıcının hangi marka ürünü kullandığını söylemediği için",
+            "C": "Sorunun arkasındaki neden ve ihtiyacı açıklamadığı için",
+            "D": "Çözüm içermediği için"
+          },
+          "correct": "C"
+        },
+        {
+          "number": 3,
+          "text": "Bir grup kullanıcı aynı problemi farklı şekillerde çözmeye çalışıyor. Bu durum sana öncelikle ne sağlayabilir?",
+          "options": {
+            "A": "Kullanıcıların farklı ihtiyaç ve davranışlarını keşfetme fırsatı",
+            "B": "Tek bir çözümün kesinlikle doğru olduğunu gösterir",
+            "C": "Problemin önemsiz olduğunu gösterir",
+            "D": "Ürünün fiyatını belirler"
+          },
+          "correct": "A"
+        },
+        {
+          "number": 4,
+          "text": "Görme engelli kullanıcıların bir kısmının istasyonda sürekli çalışanlardan yardım istediğini gözlemledin. Bu gözlemden hareketle hangi bilgi daha değerlidir?",
+          "options": {
+            "A": "İstasyondaki çalışan sayısı",
+            "B": "Kullanıcıların neden yardıma ihtiyaç duyduğunu anlamak",
+            "C": "İstasyonun büyüklüğü",
+            "D": "Kullanıcıların yaşları"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 5,
+          "text": "Bir kullanıcı “Bu hizmet çok güzel ama ben kullanmıyorum.” diyor. İçgörü keşfetmek için en doğru yaklaşım hangisidir?",
+          "options": {
+            "A": "Hizmeti hemen değiştirmek",
+            "B": "Kullanıcıya hizmeti neden kullanmadığını sormak ve davranışını anlamak",
+            "C": "Hizmetin fiyatını düşürmek",
+            "D": "Daha fazla özellik eklemek"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 6,
+          "text": "Bir problemden yeni bir fırsat alanı keşfetmek ne anlama gelir?",
+          "options": {
+            "A": "Mevcut çözümü aynen uygulamak",
+            "B": "Problemin ortaya çıkardığı yeni ihtiyaçları ve çözüm alanlarını keşfetmek",
+            "C": "Sadece teknolojik bir ürün geliştirmek",
+            "D": "Rakibin ürününü geliştirmek"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 7,
+          "text": "Kullanıcıların söyledikleri ile gerçek davranışları arasında fark olduğunu fark ettin. İçgörü ararken hangisini yapmalısın?",
+          "options": {
+            "A": "Sadece söylediklerini dikkate almak",
+            "B": "Sadece gözlemlerine güvenmek",
+            "C": "Söyledikleri ile davranışlarını birlikte değerlendirerek nedenini araştırmak",
+            "D": "Kullanıcı görüşlerini tamamen göz ardı etmek"
+          },
+          "correct": "C"
+        },
+        {
+          "number": 8,
+          "text": "Aynı problemi yaşayan iki farklı kullanıcıdan biri çözümü kullanıyor, diğeri kullanmıyor. Bu durum sana ne söyleyebilir?",
+          "options": {
+            "A": "Kullanıcılardan birinin yanlış düşündüğünü",
+            "B": "Farklı kullanıcıların ihtiyaç, koşul veya davranışlarının farklı olabileceğini",
+            "C": "Problemin gerçek olmadığını",
+            "D": "Çözümün kesinlikle başarısız olduğunu"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 9,
+          "text": "Aşağıdakilerden hangisi güçlü bir içgörüye daha yakındır?",
+          "options": {
+            "A": "“Kullanıcılar istasyona geliyor.”",
+            "B": "“Kullanıcılar yön tabelalarını görüyor.”",
+            "C": "“Kullanıcılar yardım istiyor.”",
+            "D": "“Kullanıcılar bağımsız hareket etmek istiyor ancak yanlış yönlendirilme endişesi nedeniyle yardım almaya yöneliyor.”"
+          },
+          "correct": "D"
+        },
+        {
+          "number": 10,
+          "text": "Bir içgörü keşfedildiğinde bunun bir fırsat alanına dönüşebilmesi için öncelikle ne değerlendirilmelidir?",
+          "options": {
+            "A": "Bu ihtiyacın gerçekten anlamlı bir problem oluşturup oluşturmadığı",
+            "B": "Fikrin ne kadar gösterişli olduğu",
+            "C": "Ürünün logosunun nasıl görüneceği",
+            "D": "Rakiplerin kaç çalışanı olduğu"
+          },
+          "correct": "A"
+        }
+      ]
+    },
+    {
+      "order": 6,
+      "title": "YARATICI FİKİR ÜRETME TEKNİKLERİ",
+      "project": {
+        "scenario": "Bir gün dünyadaki bütün insanlar aynı anda aynı şarkıyı söylemeye başlıyor. Kimse nedenini bilmiyor ve şarkı 24 saat boyunca durmuyor.",
+        "tasks": [
+          "Bu durumun ortaya çıkardığı en az 5 farklı problemi düşün ve birbirinden tamamen farklı çözümler üret.",
+          "İlk aklına gelen çözümü yaz. Şimdi bu fikrin dünyada başka insanlar tarafından da düşünülebileceğini varsay ve ondan tamamen farklı bir fikir üret.",
+          "İnsanların şarkı söylemesini durdurmadan bu durumu avantaja dönüştürecek bir fikir geliştir.",
+          "Para, internet ve teknoloji kullanmadan bu durumdan ortaya çıkabilecek bir fırsat yarat.",
+          "Şarkının aslında bir problem değil, dünyadaki en büyük fırsat olduğunu varsay. Bundan nasıl bir fikir çıkar?"
+        ]
+      },
+      "questions": [
+        {
+          "number": 1,
+          "text": "Bir problem için yalnızca bir çözüm üretmek yerine birden fazla farklı çözüm üretmenin temel amacı nedir?",
+          "options": {
+            "A": "En hızlı çözümü seçmek",
+            "B": "Farklı olasılıkları ve fikirleri keşfetmek",
+            "C": "Problemi daha karmaşık hale getirmek",
+            "D": "İlk fikri doğrulamak"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 2,
+          "text": "Bir fikir üretirken ilk akla gelen çözümün hemen kabul edilmemesinin temel nedeni nedir?",
+          "options": {
+            "A": "İlk fikirlerin her zaman yanlış olması",
+            "B": "İlk fikrin uygulanmasının zor olması",
+            "C": "İlk fikrin başkalarının da aklına gelen alışılmış bir çözüm olabilmesi",
+            "D": "İlk fikrin mutlaka pahalı olması"
+          },
+          "correct": "C"
+        },
+        {
+          "number": 3,
+          "text": "“Bu problemi herkesin yaptığı gibi çözmek zorunda olmasaydım nasıl çözerdim?” sorusu hangi düşünme yaklaşımını destekler?",
+          "options": {
+            "A": "Kalıpların dışına çıkmayı",
+            "B": "Maliyet hesaplamayı",
+            "C": "Risk analizi yapmayı",
+            "D": "Planlama yapmayı"
+          },
+          "correct": "A"
+        },
+        {
+          "number": 4,
+          "text": "Bir probleme yönelik üretilen beş fikrin de birbirine çok benzediğini fark ettin. Bu durumda ne yapılması daha doğrudur?",
+          "options": {
+            "A": "En iyi görünen fikri seçmek",
+            "B": "Fikir üretmeyi bırakmak",
+            "C": "Fikirlerin birbirinden farklı olmasını sağlayacak yeni bakış açıları ve yöntemler denemek",
+            "D": "İlk fikre geri dönmek"
+          },
+          "correct": "C"
+        },
+        {
+          "number": 5,
+          "text": "“Mevcut çözümün tam tersini yapsaydık ne olurdu?” sorusunun temel amacı nedir?",
+          "options": {
+            "A": "Doğru çözümü değiştirmemek",
+            "B": "Problemi daha iyi tanımlamak",
+            "C": "Alışılmış düşünce biçimini kırarak yeni fikirler ortaya çıkarmak",
+            "D": "Uygulama süresini kısaltmak"
+          },
+          "correct": "C"
+        },
+        {
+          "number": 6,
+          "text": "Bir fikir üretme çalışmasında fikirlerin erken aşamada sürekli eleştirilmesi neden yaratıcılığı azaltabilir?",
+          "options": {
+            "A": "Fikirlerin sayısını artırdığı için",
+            "B": "Kişilerin sıra dışı fikirleri söylemekten çekinmesine neden olabileceği için",
+            "C": "Problemin çözülmesini hızlandırdığı için",
+            "D": "Fikirlerin uygulanabilirliğini artırdığı için"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 7,
+          "text": "Aşağıdakilerden hangisi fikir çeşitliliğini en iyi gösterir?",
+          "options": {
+            "A": "Aynı çözümün beş farklı şekilde ifade edilmesi",
+            "B": "Beş farklı teknolojinin aynı çözümde kullanılması",
+            "C": "Aynı probleme farklı ihtiyaç, bakış açısı ve yöntemlerden hareket eden çözümler üretilmesi",
+            "D": "Bir fikrin giderek daha ayrıntılı hale getirilmesi"
+          },
+          "correct": "C"
+        },
+        {
+          "number": 8,
+          "text": "Bir probleme 100 kişinin çözüm ürettiğini düşün. 90 kişinin birbirine çok benzeyen cevaplar verdiğini, 10 kişinin ise tamamen farklı yaklaşımlar geliştirdiğini görüyorsun. Bu durumda hangi yaklaşım yaratıcı düşünmeye daha yakındır?",
+          "options": {
+            "A": "En çok tekrar edilen fikri seçmek",
+            "B": "En uzun fikri seçmek",
+            "C": "Farklı düşünme biçimlerini incelemek ve yeni bağlantılar aramak",
+            "D": "Çoğunluğun fikrini geliştirmek"
+          },
+          "correct": "C"
+        },
+        {
+          "number": 9,
+          "text": "“Bir problemi çözmek yerine, problemi tamamen ortadan kaldırsaydık ne olurdu?” sorusu hangi yaratıcı düşünme tekniğine örnektir?",
+          "options": {
+            "A": "Varsayımı sorgulama ve problemi yeniden çerçeveleme",
+            "B": "Maliyet analizi",
+            "C": "Rakip analizi",
+            "D": "Performans ölçümü"
+          },
+          "correct": "A"
+        },
+        {
+          "number": 10,
+          "text": "Aşağıdakilerden hangisi yaratıcı fikir üretme sürecinin en güçlü göstergesidir?",
+          "options": {
+            "A": "Çok hızlı şekilde tek bir fikir bulmak",
+            "B": "Daha önce bilinen bir çözümü geliştirmek",
+            "C": "Çok sayıda benzer fikir üretmek",
+            "D": "Farklı bağlantılar kurarak alışılmış çözümlerden ayrışan fikirler üretebilmek"
+          },
+          "correct": "D"
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "title": "FİKİRLERİ DEĞERLENDİRME VE ÖNCELİKLENDİRME",
+      "project": {
+        "scenario": "Bir şehirde insanlar parklarda daha fazla zaman geçirmek istiyor ancak parkların günün büyük bölümünde yeterince kullanılmadığı görülüyor.",
+        "tasks": [
+          "Bu sorun ile ilgili  3 fikri geliştir ve  kullanıcıya sağlayacağı değer açısından karşılaştır.",
+          "Hangi fikrin gerçek bir kullanıcı ihtiyacını daha güçlü karşıladığını belirle ve nedenini açıkla.",
+          "Hangi fikrin mevcut imkânlarla hayata geçirilmesinin daha kolay olduğunu değerlendir.",
+          "Hangi fikrin daha fazla geliştirilerek büyütülebileceğini düşün ve nedenini açıkla.",
+          "Her fikrin en büyük avantajını ve en büyük riskini belirle.",
+          "Üç fikrinden yalnızca birini test etme hakkın olduğunu düşün. Hangisini seçersin ve neden?",
+          "Seçtiğin fikri test etmeden önce hangi varsayımın doğru olduğunu kanıtlamak istediğini belirle.",
+          "Fikirlerinden biri çok yaratıcı ama uygulanması zor, diğeri daha basit ama kullanıcı ihtiyacını daha güçlü karşılıyor. Hangisini önceliklendirirsin? Neden?",
+          "Değerlendirme sonucunda başlangıçta en sevdiğin fikrin aslında en güçlü fikir olmadığını fark ettin. Kararını değiştirebilir misin? Yeni sıralamanı oluştur.",
+          "Son olarak 3 fikrini 1. → 2. → 3. şeklinde sırala ve hangi kriterlere göre bu sıralamayı yaptığını açıkla."
+        ]
+      },
+      "questions": [
+        {
+          "number": 1,
+          "text": "Birden fazla fikir arasından seçim yaparken ilk olarak ne yapılmalıdır?",
+          "options": {
+            "A": "En yaratıcı görünen fikri seçmek",
+            "B": "Fikirleri belirlenen kriterlere göre karşılaştırmak",
+            "C": "En pahalı fikri seçmek",
+            "D": "En hızlı uygulanacak fikri seçmek"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 2,
+          "text": "Bir fikrin kullanıcı için değerli olup olmadığını anlamanın en doğru yolu hangisidir?",
+          "options": {
+            "A": "Fikrin ne kadar ilginç olduğuna bakmak",
+            "B": "Fikri geliştiren kişinin fikre ne kadar inandığını değerlendirmek",
+            "C": "Kullanıcının gerçek bir ihtiyacını karşılayıp karşılamadığını değerlendirmek",
+            "D": "Fikrin ne kadar yeni olduğuna bakmak"
+          },
+          "correct": "C"
+        },
+        {
+          "number": 3,
+          "text": "İki fikirden biri çok yaratıcı, diğeri ise daha kolay uygulanabilir. Bu iki fikri karşılaştırırken ne yapılmalıdır?",
+          "options": {
+            "A": "Her zaman yaratıcı olan seçilmelidir.",
+            "B": "Her zaman kolay uygulanabilir olan seçilmelidir.",
+            "C": "Her iki fikir de belirlenen kriterler üzerinden değerlendirilmelidir.",
+            "D": "Daha pahalı olan tercih edilmelidir."
+          },
+          "correct": "C"
+        },
+        {
+          "number": 4,
+          "text": "Bir fikrin önceliklendirilmesi ne anlama gelir?",
+          "options": {
+            "A": "Fikri daha yaratıcı hale getirmek",
+            "B": "Fikri başkalarına anlatmak",
+            "C": "Hangi fikrin önce ele alınması gerektiğine karar vermek",
+            "D": "Fikri hemen uygulamaya geçirmek"
+          },
+          "correct": "C"
+        },
+        {
+          "number": 5,
+          "text": "Aşağıdakilerden hangisi bir fikri değerlendirmek için en anlamlı kriterlerden biridir?",
+          "options": {
+            "A": "Fikri kimin geliştirdiği",
+            "B": "Fikrin sunumunun ne kadar uzun olduğu",
+            "C": "Kullanıcı ihtiyacını ne ölçüde karşıladığı",
+            "D": "Fikrin ne kadar karmaşık olduğu"
+          },
+          "correct": "C"
+        },
+        {
+          "number": 6,
+          "text": "Bir fikrin geliştirilme potansiyelinin yüksek olması ne anlama gelir?",
+          "options": {
+            "A": "Fikrin hiçbir şekilde değiştirilmesine gerek olmaması",
+            "B": "Fikrin zaman içinde geliştirilebilecek ve farklı ihtiyaçlara uyarlanabilecek bir yapıya sahip olması",
+            "C": "Fikrin mutlaka pahalı olması",
+            "D": "Fikrin hemen başarılı olması"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 7,
+          "text": "Üç fikirden yalnızca birini test etme imkânın var. Hangi yaklaşım daha doğrudur?",
+          "options": {
+            "A": "En çok sevdiğin fikri seçmek",
+            "B": "En pahalı fikri seçmek",
+            "C": "En önemli varsayımı en hızlı ve anlamlı şekilde test edebilecek fikri seçmek",
+            "D": "En karmaşık fikri seçmek"
+          },
+          "correct": "C"
+        },
+        {
+          "number": 8,
+          "text": "Bir fikrin güçlü bir kullanıcı ihtiyacını karşıladığı ancak uygulanmasının çok zor olduğu görülüyor. Bu durumda ne yapılmalıdır?",
+          "options": {
+            "A": "Fikir hemen elenmelidir.",
+            "B": "Uygulanabilirliğini artıracak değişiklikler araştırılmalıdır.",
+            "C": "Kullanıcı ihtiyacı göz ardı edilmelidir.",
+            "D": "Fikir hiçbir şekilde değiştirilmemelidir."
+          },
+          "correct": "B"
+        },
+        {
+          "number": 9,
+          "text": "Bir fikri değerlendirirken yalnızca avantajlarına odaklanmak neden yeterli değildir?",
+          "options": {
+            "A": "Çünkü fikirler mutlaka pahalı olmalıdır.",
+            "B": "Çünkü her fikrin olası riskleri ve sınırlılıkları da vardır.",
+            "C": "Çünkü yaratıcı fikirler değerlendirilmemelidir.",
+            "D": "Çünkü kullanıcı ihtiyaçları önemli değildir."
+          },
+          "correct": "B"
+        },
+        {
+          "number": 10,
+          "text": "Bir öğrenci başlangıçta en çok sevdiği fikri seçiyor. Ancak değerlendirme sonucunda başka bir fikrin kullanıcı ihtiyacı, uygulanabilirlik ve geliştirilme potansiyeli açısından daha güçlü olduğunu görüyor. En doğru yaklaşım hangisidir?",
+          "options": {
+            "A": "İlk seçimini değiştirmemek",
+            "B": "Sadece kendi beğenisine göre karar vermek",
+            "C": "Değerlendirme sonuçlarına göre önceliğini yeniden belirlemek",
+            "D": "Tüm fikirlerden vazgeçmek"
+          },
+          "correct": "C"
+        }
+      ]
+    },
+    {
+      "order": 8,
+      "title": "DEĞER ÖNERİSİ OLUŞTURMA",
+      "project": {
+        "scenario": "Bir mahallede insanlar birbirlerine yardım edebilecekleri birçok beceriye sahip olmasına rağmen kimin ne konuda yardımcı olabileceğini bilmiyor.\nÇözüm: Mahalle sakinlerinin sahip oldukları becerileri ve ihtiyaçlarını paylaşabildiği bir sistem.",
+        "tasks": [
+          "Çözümünün hangi kullanıcıya yönelik olduğunu belirle.",
+          "Kullanıcının yaşadığı temel problemi tanımla.",
+          "Çözümünün kullanıcı için sağladığı en önemli faydayı belirle.",
+          "Kullanıcının neden mevcut alternatifler yerine senin çözümünü tercih etmesi gerektiğini açıkla.",
+          "Çözümünün kullanıcıya sağladığı en önemli farklılığı belirle.",
+          "Fikrinin kullanıcıya sunduğu değeri tek cümlede ifade et.",
+          "Değer önerini kullanıcıya anlatırken gereksiz özellikleri çıkar ve yalnızca temel faydaya odaklan.",
+          "Hazırladığın değer önerisini farklı bir kullanıcı grubu için yeniden yaz.",
+          "Kullanıcı “Bunun bana ne faydası var?” diye sorsaydı, değer önerini nasıl değiştirirdin?",
+          "Son olarak değer önerini kısa, açık ve anlaşılır tek bir slogan / motto belirle"
+        ]
+      },
+      "questions": [
+        {
+          "number": 1,
+          "text": "Değer önerisinin temel amacı nedir?",
+          "options": {
+            "A": "Ürünün tüm özelliklerini anlatmak",
+            "B": "Kullanıcıya sunulan temel değeri açık ve anlaşılır biçimde ifade etmek",
+            "C": "Rakiplerin ürünlerini tanıtmak",
+            "D": "Şirketin finansal durumunu açıklamak"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 2,
+          "text": "Aşağıdakilerden hangisi güçlü bir değer önerisinin temel unsurlarından biridir?",
+          "options": {
+            "A": "Kullanıcının problemi ve çözümün sağladığı fayda",
+            "B": "Şirketin kuruluş hikâyesi",
+            "C": "Ürünün teknik altyapısı",
+            "D": "Şirket çalışanlarının sayısı"
+          },
+          "correct": "A"
+        },
+        {
+          "number": 3,
+          "text": "“Yapay zekâ kullanan, mobil ve kullanıcı dostu bir uygulamadır.” ifadesinin değer önerisi açısından temel eksikliği nedir?",
+          "options": {
+            "A": "Çok kısa olması",
+            "B": "Teknolojiden bahsetmesi",
+            "C": "Kullanıcıya hangi değeri sağladığının açık olmaması",
+            "D": "Ürünün adının bulunmaması"
+          },
+          "correct": "C"
+        },
+        {
+          "number": 4,
+          "text": "Aşağıdakilerden hangisi daha güçlü bir değer önerisidir?",
+          "options": {
+            "A": "“Modern bir kitap uygulamasıdır.”",
+            "B": "“Yapay zekâ destekli bir platformdur.”",
+            "C": "“Kitap severler için geliştirilmiş yeni nesil bir teknolojidir.”",
+            "D": "“Okuyucuların ayırabilecekleri zamana ve ilgi alanlarına göre doğru kitabı daha hızlı seçmelerini sağlar.”"
+          },
+          "correct": "D"
+        },
+        {
+          "number": 5,
+          "text": "Değer önerisi oluştururken neden belirli bir kullanıcı grubuna odaklanmak önemlidir?",
+          "options": {
+            "A": "Ürünü daha karmaşık hale getirmek için",
+            "B": "Sunulan değerin kimin için ve hangi ihtiyaca yönelik olduğunu netleştirmek için",
+            "C": "Daha fazla özellik eklemek için",
+            "D": "Rakipleri tamamen ortadan kaldırmak için"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 6,
+          "text": "Bir çözümün birçok özelliği bulunuyor. Değer önerisi hazırlanırken en doğru yaklaşım hangisidir?",
+          "options": {
+            "A": "Tüm özellikleri tek tek sıralamak",
+            "B": "En teknik özellikleri öne çıkarmak",
+            "C": "Kullanıcı için en önemli faydaya odaklanmak",
+            "D": "Özelliklerin tamamını gizlemek"
+          },
+          "correct": "C"
+        },
+        {
+          "number": 7,
+          "text": "“Herkes için her şeyi yapan bir platform” ifadesi neden güçlü bir değer önerisi değildir?",
+          "options": {
+            "A": "Çok kısa olduğu için",
+            "B": "Hedef kullanıcı ve sunulan temel değeri belirsiz bıraktığı için",
+            "C": "Ürünün teknoloji kullanmadığını gösterdiği için",
+            "D": "Kullanıcı sayısını azalttığı için"
+          },
+          "correct": "B"
+        },
+        {
+          "number": 8,
+          "text": "Bir değer önerisinin kullanıcı açısından gerçekten anlamlı olup olmadığını anlamak için hangi soruya cevap vermesi gerekir?",
+          "options": {
+            "A": "Şirket kaç yıldır faaliyet gösteriyor?",
+            "B": "Ürün hangi yazılım diliyle geliştirildi?",
+            "C": "“Bu çözüm benim hangi problemimi çözüyor ve bana ne kazandırıyor?”",
+            "D": "Şirketin kaç çalışanı var?"
+          },
+          "correct": "C"
+        },
+        {
+          "number": 9,
+          "text": "Aşağıdaki ifadelerden hangisi ürünün özelliği ile kullanıcıya sağladığı değer arasındaki farkı doğru gösterir?",
+          "options": {
+            "A": "“Mobil uygulamadır” → “Kullanıcının zaman kazanmasını sağlar.”",
+            "B": "“Yapay zekâ kullanır” → “Yapay zekâ kullanır.”",
+            "C": "“Beş farklı özelliği vardır” → “Beş farklı özelliği vardır.”",
+            "D": "“Bulut tabanlıdır” → “Bulut tabanlıdır.”"
+          },
+          "correct": "A"
+        },
+        {
+          "number": 10,
+          "text": "Güçlü bir değer önerisi hazırlayan bir girişimci aşağıdakilerden hangisini en iyi şekilde yapar?",
+          "options": {
+            "A": "Ürünün bütün özelliklerini anlatır.",
+            "B": "Teknolojisinin ne kadar gelişmiş olduğunu gösterir.",
+            "C": "Kullanıcıyı, problemi ve çözümün sağladığı temel değeri kısa ve anlaşılır biçimde bir araya getirir.",
+            "D": "Rakiplerinden daha iyi olduğunu söylemekle yetinir."
+          },
+          "correct": "C"
+        }
+      ]
+    }
+  ]
+}

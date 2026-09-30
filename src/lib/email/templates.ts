@@ -54,31 +54,6 @@ export function juryCredentialsEmail(params: {
   };
 }
 
-export function tenantWelcomeEmail(params: {
-  organizationName: string;
-  adminEmail: string;
-  tempPassword: string;
-  seatLimit: number;
-  loginUrl: string;
-}): { subject: string; html: string } {
-  return {
-    subject: `BizSim — "${params.organizationName}" hesabınız hazırdır`,
-    html: layout(
-      "Təşkilat hesabınız aktivləşdirildi 🎉",
-      paragraph(
-        `<strong>${params.organizationName}</strong> üçün BizSim platformasında <strong>${params.seatLimit} nəfərlik</strong> hesab yaradıldı.`
-      ) +
-        paragraph(
-          `Admin giriş məlumatlarınız:<br/>E-poçt: <strong>${params.adminEmail}</strong><br/>Müvəqqəti şifrə: <code style="background:#f1f5f9;border-radius:6px;padding:2px 8px;font-size:14px;">${params.tempPassword}</code>`
-        ) +
-        paragraph(
-          "İlk girişdən sonra: 1) şifrənizi dəyişin, 2) proqram yaradın, 3) QR kod və ya dəvət linki ilə iştirakçılarınızı qeydiyyata dəvət edin. Jüri üzvlərini hakaton panelindən özünüz təyin edə bilərsiniz."
-        ) +
-        button(params.loginUrl, "Panelə daxil ol")
-    ),
-  };
-}
-
 export function teacherCredentialsEmail(params: {
   email: string;
   tempPassword: string;
@@ -237,6 +212,63 @@ export function subscriptionExpiredEmail(params: {
             "Ödənişi tamamladıqdan sonra hər şey dərhal bərpa olunur."
         ) +
         button(params.paymentUrl, "Abunəliyi bərpa et")
+    ),
+  };
+}
+
+/** For values typed by the public (e.g. an institution name on the pricing form). */
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+const ACTIVATION_COPY = {
+  az: {
+    subject: (org: string) => `BizSim — "${org}" hesabınızı aktivləşdirin`,
+    title: "Hesabınız hazırdır",
+    intro: (org: string) => `Ödənişiniz qəbul edildi. <strong>${org}</strong> üçün BizSim hesabı yaradıldı.`,
+    action: "Başlamaq üçün aşağıdakı düymə ilə şifrənizi təyin edin. Link 48 saat etibarlıdır və yalnız bir dəfə istifadə olunur.",
+    button: "Şifrəni təyin et",
+    ignore: "Bu sorğunu siz etməmisinizsə, bu məktubu nəzərə almayın.",
+  },
+  en: {
+    subject: (org: string) => `BizSim — activate your "${org}" account`,
+    title: "Your account is ready",
+    intro: (org: string) => `Your payment was received and a BizSim account was created for <strong>${org}</strong>.`,
+    action: "Set your password with the button below to get started. The link is valid for 48 hours and can be used once.",
+    button: "Set password",
+    ignore: "If you did not request this, you can ignore this email.",
+  },
+  tr: {
+    subject: (org: string) => `BizSim — "${org}" hesabınızı etkinleştirin`,
+    title: "Hesabınız hazır",
+    intro: (org: string) => `Ödemeniz alındı ve <strong>${org}</strong> için BizSim hesabı oluşturuldu.`,
+    action: "Başlamak için aşağıdaki düğmeyle şifrenizi belirleyin. Bağlantı 48 saat geçerlidir ve yalnızca bir kez kullanılabilir.",
+    button: "Şifreyi belirle",
+    ignore: "Bu isteği siz yapmadıysanız bu e-postayı dikkate almayın.",
+  },
+} as const;
+
+/** One-time set-password link for a newly provisioned tenant admin. */
+export function activationEmail(params: {
+  organizationName: string;
+  activationUrl: string;
+  locale: string;
+}): { subject: string; html: string } {
+  const copy = ACTIVATION_COPY[params.locale as keyof typeof ACTIVATION_COPY] ?? ACTIVATION_COPY.tr;
+  const org = escapeHtml(params.organizationName);
+  return {
+    subject: copy.subject(params.organizationName),
+    html: layout(
+      copy.title,
+      paragraph(copy.intro(org)) +
+        paragraph(copy.action) +
+        button(params.activationUrl, copy.button) +
+        paragraph(`<span style="color:#94a3b8;font-size:12px;">${copy.ignore}</span>`)
     ),
   };
 }

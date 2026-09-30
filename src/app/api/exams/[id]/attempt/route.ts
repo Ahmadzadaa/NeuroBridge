@@ -13,17 +13,22 @@ export async function POST(
   const { id } = await context.params;
 
   return withAuthorizedHandler("training:submit", async ({ session }) => {
-    await assertFeatureEnabled(session.tenantId, "trainings");
     const body = parseBody(examAttemptSchema, await request.json());
 
     const exam = await prisma.exam.findUnique({
       where: { id },
-      include: { questions: { orderBy: { order: "asc" } } },
+      include: {
+        questions: { orderBy: { order: "asc" } },
+        lesson: { select: { points: true } },
+      },
     });
 
     if (!exam || exam.questions.length === 0) {
       return NextResponse.json({ error: "Exam not found" }, { status: 404 });
     }
+    // Unit tests belong to a simulation's training units; other exams to trainings.
+    await assertFeatureEnabled(session.tenantId, exam.lessonId ? "simulations" : "trainings");
+    const reward = exam.lesson?.points || EXAM_PASS_COIN_REWARD;
 
     const results = exam.questions.map((q) => {
       const answer = body.answers[q.id] ?? null;
@@ -49,26 +54,35 @@ export async function POST(
     const bestScore = Math.max(score, previous?.score ?? 0);
     const everPassed = passed || (previous?.passed ?? false);
 
-    await prisma.$transaction(async (tx) => {
+    const coinsAwarded = await prisma.$transaction(async (tx) => {
       await tx.examAttempt.upsert({
         where: { examId_userId: { examId: exam.id, userId: session.id } },
         create: { examId: exam.id, userId: session.id, score, passed },
         update: { score: bestScore, passed: everPassed, completedAt: new Date() },
       });
 
-      if (firstPass) {
+      // Re-checked inside the transaction so two concurrent passes cannot both pay out.
+      const alreadyPaid =
+        firstPass &&
+        (await tx.coinTransaction.findFirst({
+          where: { userId: session.id, reason: `EXAM_PASSED:${exam.id}` },
+          select: { id: true },
+        }));
+      if (firstPass && !alreadyPaid) {
         await tx.user.update({
           where: { id: session.id },
-          data: { coinBalance: { increment: EXAM_PASS_COIN_REWARD } },
+          data: { coinBalance: { increment: reward } },
         });
         await tx.coinTransaction.create({
           data: {
             userId: session.id,
-            amount: EXAM_PASS_COIN_REWARD,
+            amount: reward,
             reason: `EXAM_PASSED:${exam.id}`,
           },
         });
+        return reward;
       }
+      return 0;
     });
 
     return {
@@ -77,7 +91,7 @@ export async function POST(
       passingThreshold: exam.passingThreshold,
       correctCount,
       totalQuestions: exam.questions.length,
-      coinsAwarded: firstPass ? EXAM_PASS_COIN_REWARD : 0,
+      coinsAwarded,
       bestScore,
       results,
     };

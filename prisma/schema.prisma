@@ -46,6 +46,13 @@ model Tenant {
   paymentMethods PaymentMethod[]
   seatChangeLogs SeatChangeLog[]
 
+  services TenantService[]
+  orders   Order[]
+
+  universities University[]
+  departments  Department[]
+  notifications TenantNotification[]
+
   @@map("tenants")
 }
 
@@ -88,6 +95,10 @@ model User {
   specialty  String?
   /// Year of study, 1–6.
   studyYear  Int?    @map("study_year")
+  /// Picked from the reference lists; the free-text fields above stay as the
+  /// fallback for anything not in them.
+  universityId String? @map("university_id")
+  departmentId String? @map("department_id")
 
   /// Stored avatar file, relative to uploads/avatars. Served through an
   /// authenticated route — never exposed as a public static path.
@@ -119,6 +130,12 @@ model User {
   authoredSimulations Simulation[]   @relation("AuthoredSimulations")
   approvedInvoices Invoice[]         @relation("InvoiceApprover")
   seatChanges      SeatChangeLog[]   @relation("SeatChangeActor")
+  activationTokens ActivationToken[]
+  consents         UserConsent[]
+  assessmentResults AssessmentResult[]
+  projectSubmissions LessonProjectSubmission[]
+  universityRef    University?       @relation(fields: [universityId], references: [id])
+  departmentRef    Department?       @relation(fields: [departmentId], references: [id])
 
   @@unique([tenantId, email])
   @@index([tenantId])
@@ -149,6 +166,13 @@ model Program {
   applicationEnd   DateTime  @map("application_end")
   simulationStart  DateTime? @map("simulation_start")
   simulationEnd    DateTime? @map("simulation_end")
+  /// Calendar dates (UTC midnight) bounding the 6-week plan.
+  programStart     DateTime? @map("program_start")
+  programEnd       DateTime? @map("program_end")
+  finalistCount    Int?      @map("finalist_count")
+  juryEnabled      Boolean   @default(false) @map("jury_enabled")
+  /// Name printed on the completion certificate, shown on the program info screen.
+  certificateName  String?   @map("certificate_name")
   participantLimit Int       @map("participant_limit")
   applicationToken String    @unique @default(cuid()) @map("application_token")
   resultsRevealAt  DateTime? @map("results_reveal_at")
@@ -161,6 +185,8 @@ model Program {
   programTrainings   ProgramTraining[]
   programAiTools     ProgramAiTool[]
   hackathonTeams     HackathonTeam[]
+  scheduleItems      ProgramScheduleItem[]
+  assessmentResults  AssessmentResult[]
 
   @@index([tenantId])
   @@map("programs")
@@ -368,8 +394,19 @@ model Lesson {
   order            Int
   createdAt        DateTime @default(now()) @map("created_at")
 
+  // Training-unit fields (video -> project -> test -> points). Null/0 on
+  // ordinary lessons.
+  /// Program-calendar activity this unit belongs to, e.g. CREATIVE_THINKING.
+  activity         String?
+  /// JSON {"scenario": string, "tasks": string[]} — the unit's project brief.
+  projectBrief     String?  @map("project_brief")
+  /// Coins awarded the first time the unit test is passed.
+  points           Int      @default(0)
+
   training Training @relation(fields: [trainingId], references: [id], onDelete: Cascade)
   progress LessonProgress[]
+  unitExams          Exam[]
+  projectSubmissions LessonProjectSubmission[]
 
   @@index([trainingId])
   @@map("lessons")
@@ -383,12 +420,16 @@ model Exam {
   titleEn     String     @map("title_en")
   titleAz     String     @map("title_az")
   passingThreshold Int   @map("passing_threshold")
+  /// Set when this is a training unit's test; the unit's points are the reward.
+  lessonId    String?    @map("lesson_id")
   questions   Question[]
   attempts    ExamAttempt[]
 
   training Training @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+  lesson   Lesson?  @relation(fields: [lessonId], references: [id], onDelete: SetNull)
 
   @@index([trainingId])
+  @@index([lessonId])
   @@map("exams")
 }
 
@@ -813,4 +854,318 @@ model AuditLog {
   @@index([action])
   @@index([createdAt])
   @@map("audit_logs")
+}
+
+// ---------------------------------------------------------------------------
+// Service-based pricing and self-serve onboarding
+//
+// Each service is priced per participant, with the unit price chosen by
+// participant-count tier. Money is INTEGER kuruş, statuses are String — same
+// rules as the billing models above.
+// ---------------------------------------------------------------------------
+
+model Service {
+  id        String   @id @default(cuid())
+  /// Stable key, e.g. HACKATHON | TEACHERS | SIMULATIONS | TRAININGS | AI_TOOLS.
+  code      String   @unique
+  name      String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  tiers          ServicePriceTier[]
+  orderItems     OrderItem[]
+  tenantServices TenantService[]
+
+  @@index([active])
+  @@map("services")
+}
+
+model ServicePriceTier {
+  id                  String  @id @default(cuid())
+  serviceId           String  @map("service_id")
+  minParticipants     Int     @map("min_participants")
+  /// Null means no upper bound.
+  maxParticipants     Int?    @map("max_participants")
+  pricePerParticipant Int     @map("price_per_participant")
+  currency            String  @default("TRY")
+
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@index([serviceId, minParticipants])
+  @@map("service_price_tiers")
+}
+
+model Order {
+  id               String    @id @default(cuid())
+  institutionName  String    @map("institution_name")
+  contactName      String    @map("contact_name")
+  contactEmail     String    @map("contact_email")
+  /// Locale the buyer used, so the activation email goes out in it.
+  locale           String    @default("tr")
+  /// PENDING | PAID | FAILED
+  status           String    @default("PENDING")
+  total            Int
+  currency         String    @default("TRY")
+  paytrMerchantOid String    @unique @map("paytr_merchant_oid")
+  tenantId         String?   @map("tenant_id")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  paidAt           DateTime? @map("paid_at")
+
+  tenant Tenant?     @relation(fields: [tenantId], references: [id], onDelete: SetNull)
+  items  OrderItem[]
+
+  @@index([status])
+  @@index([tenantId])
+  @@map("orders")
+}
+
+model OrderItem {
+  id               String @id @default(cuid())
+  orderId          String @map("order_id")
+  serviceId        String @map("service_id")
+  participantCount Int    @map("participant_count")
+  /// Snapshot at order time; later tier changes never alter a placed order.
+  unitPrice        Int    @map("unit_price")
+  subtotal         Int
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  service Service @relation(fields: [serviceId], references: [id])
+
+  @@index([orderId])
+  @@map("order_items")
+}
+
+/// A service a tenant has bought, with its participant limit.
+model TenantService {
+  id               String   @id @default(cuid())
+  tenantId         String   @map("tenant_id")
+  serviceId        String   @map("service_id")
+  participantLimit Int      @map("participant_limit")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  tenant  Tenant  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  service Service @relation(fields: [serviceId], references: [id])
+
+  @@unique([tenantId, serviceId])
+  @@map("tenant_services")
+}
+
+/// One-time set-password link. Only the SHA-256 hash of the token is stored.
+model ActivationToken {
+  id        String    @id @default(cuid())
+  userId    String    @map("user_id")
+  tokenHash String    @unique @map("token_hash")
+  expiresAt DateTime  @map("expires_at")
+  usedAt    DateTime? @map("used_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("activation_tokens")
+}
+
+// ---------------------------------------------------------------------------
+// Student flow: reference lists, consents, program calendar
+// ---------------------------------------------------------------------------
+
+/// Universities for the registration select. Rows with a null tenantId are the
+/// platform-wide list (imported from docs/spec); a tenant can add its own,
+/// e.g. Azerbaijani universities, without touching the shared list.
+model University {
+  id        String   @id @default(cuid())
+  name      String
+  city      String?
+  /// ISO 3166-1 alpha-2.
+  country   String   @default("TR")
+  tenantId  String?  @map("tenant_id")
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  tenant Tenant? @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  users  User[]
+
+  @@index([tenantId])
+  @@index([country, name])
+  @@map("universities")
+}
+
+/// Departments for the registration select, grouped by field of study.
+/// Same platform-wide / per-tenant split as University.
+model Department {
+  id        String   @id @default(cuid())
+  name      String
+  /// Field of study ("Alan"), e.g. Eğitim, Mühendislik.
+  field     String?
+  tenantId  String?  @map("tenant_id")
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  tenant Tenant? @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  users  User[]
+
+  @@index([tenantId])
+  @@index([field, name])
+  @@map("departments")
+}
+
+/// Append-only consent log. The latest row per (user, type) is the current
+/// answer; older rows are kept as the audit trail KVKK/GDPR requires.
+model UserConsent {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  /// PRIVACY_NOTICE (required) | DATA_USE | OPPORTUNITIES | PSYCH_RESULTS_SHARE
+  type      String
+  granted   Boolean
+  /// What the user saw, e.g. "kvkk-tr@2026-09" or "2026-09".
+  version   String
+  ip        String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, type, createdAt])
+  @@map("user_consents")
+}
+
+/// One row of a program's 6-week plan. Generated from the program dates, then
+/// editable by the university (e.g. moving a jury presentation).
+model ProgramScheduleItem {
+  id        String   @id @default(cuid())
+  programId String   @map("program_id")
+  week      Int
+  /// See PROGRAM_ACTIVITIES in src/lib/programs/schedule.ts.
+  activity  String
+  startsOn  DateTime @map("starts_on")
+  endsOn    DateTime @map("ends_on")
+  sortOrder Int      @map("sort_order")
+  /// Set when the university changed the generated dates.
+  editedAt  DateTime? @map("edited_at")
+
+  program Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+
+  @@index([programId, sortOrder])
+  @@map("program_schedule_items")
+}
+
+// ---------------------------------------------------------------------------
+// Baseline assessments. Questions, dimensions and feedback texts are data, so
+// the real instruments can be imported later without code changes. Localized
+// text columns hold JSON: {"tr": "...", "en": "...", "az": "..."} (SQLite has
+// no JSON column type).
+// ---------------------------------------------------------------------------
+
+model Assessment {
+  id          String  @id @default(cuid())
+  /// Stable key, e.g. CHARACTER_CREATIVITY | PSYCH_STATE.
+  code        String  @unique
+  /// CHARACTER | PSYCH. PSYCH results reach the university only with the
+  /// student's PSYCH_RESULTS_SHARE consent.
+  kind        String
+  version     String
+  /// Placeholder content for testing the flow; never shown as a real result.
+  isDemo      Boolean @default(false) @map("is_demo")
+  active      Boolean @default(true)
+  title       String
+  description String?
+  /// Likert scale bounds.
+  scaleMin    Int     @default(1) @map("scale_min")
+  scaleMax    Int     @default(5) @map("scale_max")
+  sortOrder   Int     @default(0) @map("sort_order")
+
+  dimensions AssessmentDimension[]
+  questions  AssessmentQuestion[]
+  results    AssessmentResult[]
+
+  @@map("assessments")
+}
+
+model AssessmentDimension {
+  id           String @id @default(cuid())
+  assessmentId String @map("assessment_id")
+  code         String
+  label        String
+  /// Feedback for a low (<40), medium (40-69) and high (>=70) score.
+  lowText      String @map("low_text")
+  midText      String @map("mid_text")
+  highText     String @map("high_text")
+  sortOrder    Int    @default(0) @map("sort_order")
+
+  assessment Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+
+  @@unique([assessmentId, code])
+  @@map("assessment_dimensions")
+}
+
+model AssessmentQuestion {
+  id            String  @id @default(cuid())
+  assessmentId  String  @map("assessment_id")
+  dimensionCode String  @map("dimension_code")
+  text          String
+  /// Agreement lowers the score (e.g. "I often feel overwhelmed").
+  reverse       Boolean @default(false)
+  sortOrder     Int     @default(0) @map("sort_order")
+
+  assessment Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+
+  @@index([assessmentId, sortOrder])
+  @@map("assessment_questions")
+}
+
+model AssessmentResult {
+  id                String   @id @default(cuid())
+  userId            String   @map("user_id")
+  programId         String   @map("program_id")
+  assessmentId      String   @map("assessment_id")
+  assessmentVersion String   @map("assessment_version")
+  /// JSON {questionId: answer}.
+  answers           String
+  /// JSON {dimensionCode: 0-100}.
+  scores            String
+  completedAt       DateTime @default(now()) @map("completed_at")
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  program    Program    @relation(fields: [programId], references: [id], onDelete: Cascade)
+  assessment Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, programId, assessmentId])
+  @@index([programId])
+  @@map("assessment_results")
+}
+
+/// In-panel notices for the university (e.g. a student finished the baseline
+/// analysis).
+model TenantNotification {
+  id        String    @id @default(cuid())
+  tenantId  String    @map("tenant_id")
+  /// e.g. ASSESSMENTS_COMPLETED
+  type      String
+  /// JSON with the ids the panel needs to link to.
+  payload   String
+  readAt    DateTime? @map("read_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, readAt, createdAt])
+  @@map("tenant_notifications")
+}
+
+/// A student's answer to a training unit's project step.
+model LessonProjectSubmission {
+  id          String   @id @default(cuid())
+  lessonId    String   @map("lesson_id")
+  userId      String   @map("user_id")
+  content     String
+  submittedAt DateTime @default(now()) @map("submitted_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([lessonId, userId])
+  @@index([userId])
+  @@map("lesson_project_submissions")
 }

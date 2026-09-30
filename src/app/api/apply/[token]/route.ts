@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
-import { getProgramByApplicationToken } from "@/lib/seats/registration-service";
+import {
+  getProgramByApplicationToken,
+  registrationAvailability,
+} from "@/lib/seats/registration-service";
 import {
   CacheKeys,
   CacheTTL,
@@ -34,14 +37,7 @@ export async function GET(
     return NextResponse.json({ error: "Program not found" }, { status: 404 });
   }
 
-  const now = new Date();
-  const registrationOpen =
-    now >= program.applicationStart && now <= program.applicationEnd;
-  const seatsAvailable =
-    program.tenant.status === "ACTIVE" &&
-    program.tenant.seatsUsed < program.tenant.seatLimit;
-  const programCapacityAvailable =
-    program._count.participants < program.participantLimit;
+  const availability = registrationAvailability(program);
 
   const response = {
     id: program.id,
@@ -53,10 +49,7 @@ export async function GET(
     participantLimit: program.participantLimit,
     enrolledCount: program._count.participants,
     tenantName: program.tenant.name,
-    registrationOpen,
-    seatsAvailable,
-    programCapacityAvailable,
-    canRegister: registrationOpen && seatsAvailable && programCapacityAvailable,
+    ...availability,
   };
 
   await setCached(cacheKey, response, CacheTTL.apply);

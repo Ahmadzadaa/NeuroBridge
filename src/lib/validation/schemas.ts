@@ -51,6 +51,9 @@ export const academicProfileFields = {
 
 export const academicProfileSchema = z.object(academicProfileFields);
 
+const emptyToNull = (value: unknown) => (value === "" || value === undefined ? null : value);
+const optionalDate = z.preprocess(emptyToNull, z.coerce.date().nullable()).optional();
+
 export const createProgramSchema = z
   .object({
     name: safeString(200),
@@ -61,6 +64,12 @@ export const createProgramSchema = z
     simulationStart: z.coerce.date().optional().nullable(),
     simulationEnd: z.coerce.date().optional().nullable(),
     participantLimit: z.coerce.number().int().min(1).max(100000),
+    // Student-flow calendar. Empty form fields arrive as "" and mean "not set".
+    programStart: optionalDate,
+    programEnd: optionalDate,
+    certificateName: z.preprocess(emptyToNull, z.string().trim().max(200).nullable()).optional(),
+    finalistCount: z.preprocess(emptyToNull, z.coerce.number().int().min(1).max(1000).nullable()).optional(),
+    juryEnabled: z.coerce.boolean().default(false),
     simulations: z.array(z.enum(SIMULATION_TYPES)).max(4).default([]),
     trainings: z.array(z.enum(TRAINING_TYPES)).default([]),
     aiTools: z.array(z.enum(AI_TOOLS)).default([]),
@@ -77,7 +86,11 @@ export const createProgramSchema = z
       return true;
     },
     { message: "Simulation end must be after start", path: ["simulationEnd"] }
-  );
+  )
+  .refine((data) => !data.programStart === !data.programEnd, {
+    message: "Program start and end must be set together",
+    path: ["programEnd"],
+  });
 
 export const aiChatSchema = z.object({
   tool: z.enum(AI_TOOLS),
@@ -122,6 +135,16 @@ export const registrationSchema = z.object({
   lastName: safeString(100),
   phone: z.string().trim().max(30).optional(),
   ...academicProfileFields,
+  universityId: z.string().trim().max(50).optional().nullable(),
+  departmentId: z.string().trim().max(50).optional().nullable(),
+  locale: z.enum(["tr", "en", "az"]).default("tr"),
+  // privacyNotice must be true; the service rejects anything else with a clear code.
+  consents: z.object({
+    privacyNotice: z.boolean(),
+    dataUse: z.boolean().default(false),
+    opportunities: z.boolean().default(false),
+    psychResultsShare: z.boolean().default(false),
+  }),
 });
 
 export const checkoutSchema = z.object({
@@ -364,3 +387,16 @@ export function parseBody<T extends z.ZodType>(
   }
   return result.data;
 }
+
+/** Set-password from a one-time activation link. */
+export const activateAccountSchema = z.object({
+  token: z.string().min(20).max(200),
+  password: z
+    .string()
+    .min(8)
+    .max(128)
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+      "Password must contain uppercase, lowercase and a number"
+    ),
+});

@@ -15,6 +15,9 @@ import {
   GraduationCap,
   Award,
   Rocket,
+  CalendarDays,
+  ClipboardCheck,
+  BookOpen,
 } from "lucide-react";
 
 type PanelType = "super-admin" | "tenant" | "participant" | "jury" | "teacher";
@@ -37,12 +40,16 @@ const mobileNavConfig: Record<PanelType, MobileNavItem[]> = {
   tenant: [
     { href: "/tenant", labelKey: "dashboard", icon: LayoutDashboard },
     { href: "/tenant/programs", labelKey: "programs", icon: FileText },
+    { href: "/tenant/assessments", labelKey: "assessments", icon: ClipboardCheck },
     { href: "/tenant/participants", labelKey: "participants", icon: Users },
     { href: "/tenant/reports", labelKey: "reports", icon: BarChart3 },
     { href: "/tenant/settings", labelKey: "settings", icon: Settings },
   ],
   participant: [
     { href: "/participant", labelKey: "dashboard", icon: LayoutDashboard },
+    { href: "/participant/program", labelKey: "program", icon: CalendarDays },
+    { href: "/participant/assessments", labelKey: "assessments", icon: ClipboardCheck },
+    { href: "/participant/units", labelKey: "units", icon: BookOpen, feature: "simulations" },
     {
       href: "/participant/simulations",
       labelKey: "simulations",

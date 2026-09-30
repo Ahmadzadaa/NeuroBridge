@@ -57,6 +57,8 @@ interface ExamClientProps {
   userName: string;
   coinBalance: number;
   trainingId: string;
+  /** Where "back" goes; defaults to the training page (unit tests pass the unit page). */
+  backHref?: string;
   examId: string;
   examTitle: string;
   passingThreshold: number;
@@ -71,6 +73,7 @@ export function ExamClient({
   userName,
   coinBalance,
   trainingId,
+  backHref: backHrefProp,
   examId,
   examTitle,
   passingThreshold,
@@ -90,7 +93,7 @@ export function ExamClient({
   const question = questions[current];
   const answeredCount = Object.keys(answers).length;
   const allAnswered = answeredCount === questions.length;
-  const backHref = `/${locale}/participant/trainings/${trainingId}`;
+  const backHref = backHrefProp ?? `/${locale}/participant/trainings/${trainingId}`;
 
   function selectOption(option: OptionKey) {
     setAnswers((prev) => ({ ...prev, [question.id]: option }));

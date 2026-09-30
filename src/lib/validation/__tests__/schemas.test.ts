@@ -34,6 +34,7 @@ describe("validation schemas", () => {
       password: "password123",
       firstName: "Jane",
       lastName: "Doe",
+      consents: { privacyNotice: true },
     });
     expect(result.success).toBe(true);
   });

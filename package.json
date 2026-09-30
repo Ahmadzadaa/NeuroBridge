@@ -12,6 +12,8 @@
     "db:setup": "prisma generate && prisma db push --accept-data-loss && prisma db seed",
     "db:reset-demo": "tsx scripts/reset-demo-passwords.ts",
     "db:seed": "tsx prisma/seed.ts",
+    "db:import-universities": "tsx scripts/import-universities.ts",
+    "db:import-idea-dev": "tsx scripts/import-idea-dev-questions.ts",
     "db:seed-demo": "tsx prisma/seed-demo.ts",
     "db:seed-hackathon": "tsx prisma/seed-hackathon.ts",
     "db:seed-simulation": "tsx prisma/seed-simulation.ts",

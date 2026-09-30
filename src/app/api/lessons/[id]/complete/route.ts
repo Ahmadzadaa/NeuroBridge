@@ -10,15 +10,16 @@ export async function POST(
   const { id } = await context.params;
 
   return withAuthorizedHandler("training:submit", async ({ session }) => {
-    await assertFeatureEnabled(session.tenantId, "trainings");
     const lesson = await prisma.lesson.findUnique({
       where: { id },
-      select: { id: true },
+      select: { id: true, activity: true },
     });
 
     if (!lesson) {
       return NextResponse.json({ error: "Lesson not found" }, { status: 404 });
     }
+    // Training units (they carry a calendar activity) belong to a simulation.
+    await assertFeatureEnabled(session.tenantId, lesson.activity ? "simulations" : "trainings");
 
     const progress = await prisma.lessonProgress.upsert({
       where: { lessonId_userId: { lessonId: id, userId: session.id } },

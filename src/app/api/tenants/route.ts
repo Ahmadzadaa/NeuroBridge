@@ -1,28 +1,19 @@
-import { randomBytes } from "crypto";
 import { NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
 import { withAuthorizedHandler } from "@/lib/auth/authorize";
 import { provisionTenantSchema, parseBody } from "@/lib/validation/schemas";
 import { prisma } from "@/lib/prisma";
 import { recordAudit, getClientIp } from "@/lib/audit/audit-service";
 import { AUDIT_ACTIONS } from "@/lib/audit/actions";
 import { sendEmail } from "@/lib/email/email-service";
-import { tenantWelcomeEmail } from "@/lib/email/templates";
+import { activationEmail } from "@/lib/email/templates";
 import { presetFor, toFeatureColumns } from "@/lib/tenant/features";
-
-function generateTempPassword(): string {
-  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789";
-  const pick = () =>
-    Array.from(randomBytes(3))
-      .map((b) => alphabet[b % alphabet.length])
-      .join("");
-  return `${pick()}-${pick()}-${pick()}`;
-}
+import { createActivationToken, unusablePasswordHash } from "@/lib/onboarding/activation-token";
 
 /**
- * Platform-owner provisioning: creates the organization, its settings,
- * and the TENANT_ADMIN account, then emails the credentials. The platform
- * owner hands the account over and stays out of tenant content.
+ * Platform-owner provisioning (for deals outside the self-serve pricing page):
+ * creates the organization, its settings and the TENANT_ADMIN account, then
+ * emails the admin a one-time activation link. No password is ever generated,
+ * shown or handed over — the admin sets their own.
  */
 export async function POST(request: Request) {
   return withAuthorizedHandler("platform:admin", async ({ session }) => {
@@ -39,10 +30,9 @@ export async function POST(request: Request) {
       );
     }
 
-    const tempPassword = generateTempPassword();
-    const passwordHash = await bcrypt.hash(tempPassword, 12);
+    const passwordHash = await unusablePasswordHash();
 
-    const tenant = await prisma.$transaction(async (tx) => {
+    const { tenant, token } = await prisma.$transaction(async (tx) => {
       // The type seeds the module flags; anything sent explicitly wins, so a
       // university can be provisioned with a hackathon in one step.
       const features = { ...presetFor(body.tenantType), ...(body.modules ?? {}) };
@@ -60,7 +50,7 @@ export async function POST(request: Request) {
         },
       });
 
-      await tx.user.create({
+      const admin = await tx.user.create({
         data: {
           tenantId: created.id,
           email: body.adminEmail,
@@ -72,7 +62,8 @@ export async function POST(request: Request) {
         },
       });
 
-      return created;
+      const activation = await createActivationToken(admin.id, tx);
+      return { tenant: created, token: activation.token };
     });
 
     await recordAudit({
@@ -93,18 +84,15 @@ export async function POST(request: Request) {
     const origin = process.env.APP_BASE_URL ?? new URL(request.url).origin;
     const emailResult = await sendEmail({
       to: body.adminEmail,
-      ...tenantWelcomeEmail({
+      ...activationEmail({
         organizationName: body.name,
-        adminEmail: body.adminEmail,
-        tempPassword,
-        seatLimit: body.seatLimit,
-        loginUrl: `${origin}/az/login`,
+        activationUrl: `${origin}/az/activate/${token}`,
+        locale: "az",
       }),
     });
 
-    // tempPassword is shown exactly once, so the platform owner can hand it over.
     return NextResponse.json(
-      { id: tenant.id, tempPassword, emailSent: emailResult.sent },
+      { id: tenant.id, emailSent: emailResult.sent },
       { status: 201 }
     );
   });

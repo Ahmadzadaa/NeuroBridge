@@ -6,6 +6,7 @@ import { enforceRateLimit, getClientIdentifier } from "@/lib/security/rate-limit
 import { recordAudit, getClientIp } from "@/lib/audit/audit-service";
 import { AUDIT_ACTIONS } from "@/lib/audit/actions";
 import { parsePagination } from "@/lib/pagination";
+import { generateProgramSchedule, toCalendarDate } from "@/lib/programs/schedule";
 import {
   invalidateProgramsCacheForTenant,
   listPrograms,
@@ -50,6 +51,16 @@ export async function POST(request: Request) {
             simulationStart: body.simulationStart ?? null,
             simulationEnd: body.simulationEnd ?? null,
             participantLimit: body.participantLimit,
+            programStart: body.programStart ? toCalendarDate(body.programStart) : null,
+            programEnd: body.programEnd ? toCalendarDate(body.programEnd) : null,
+            certificateName: body.certificateName ?? null,
+            finalistCount: body.finalistCount ?? null,
+            juryEnabled: body.juryEnabled,
+            // Throws ScheduleError (400) for a range too short for six weeks.
+            scheduleItems:
+              body.programStart && body.programEnd
+                ? { create: generateProgramSchedule(body.programStart, body.programEnd) }
+                : undefined,
             programSimulations: {
               create: body.simulations.map((s) => ({ simulationType: s })),
             },

@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import {
   Building2,
-  Copy,
   Loader2,
   Mail,
   Pause,
@@ -94,7 +93,6 @@ export function TenantsPageClient({
     modules: presetFor("FULL"),
   });
   const [provisioned, setProvisioned] = useState<{
-    tempPassword: string;
     emailSent: boolean;
     adminEmail: string;
   } | null>(null);
@@ -122,7 +120,6 @@ export function TenantsPageClient({
         }),
       });
       const data = (await res.json().catch(() => null)) as {
-        tempPassword?: string;
         emailSent?: boolean;
         error?: string;
       } | null;
@@ -131,7 +128,6 @@ export function TenantsPageClient({
         return;
       }
       setProvisioned({
-        tempPassword: data?.tempPassword ?? "",
         emailSent: data?.emailSent ?? false,
         adminEmail: form.adminEmail,
       });
@@ -304,25 +300,6 @@ export function TenantsPageClient({
                   {provisioned.emailSent
                     ? t("credentialsEmailed", { email: provisioned.adminEmail })
                     : t("credentialsNotEmailed")}
-                </p>
-                <div className="mt-3 flex items-center gap-2">
-                  <code className="rounded-lg bg-card px-3 py-1.5 font-mono text-[15px]">
-                    {provisioned.tempPassword}
-                  </code>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="rounded-lg"
-                    onClick={() => {
-                      navigator.clipboard.writeText(provisioned.tempPassword);
-                      toast.success(t("passwordCopied"));
-                    }}
-                  >
-                    <Copy className="h-3.5 w-3.5" aria-hidden="true" />
-                  </Button>
-                </div>
-                <p className="mt-2 text-[12px] text-muted-foreground">
-                  {t("passwordShownOnce")}
                 </p>
               </div>
               <Button className="w-full rounded-xl" onClick={closeDialog}>

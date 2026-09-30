@@ -80,11 +80,12 @@
     "superAdmin": {
       "dashboard": "Panel",
       "tenants": "Kiracılar",
-      "billing": "Faturalandırma",
+      "billing": "Siparişler",
       "content": "İçerik Yönetimi",
       "support": "Destek",
       "system": "Sistem Sağlığı",
-      "audit": "Denetim Kaydı"
+      "audit": "Denetim Kaydı",
+      "pricing": "Hizmetler ve Fiyatlar"
     },
     "tenant": {
       "dashboard": "Panel",
@@ -94,7 +95,8 @@
       "settings": "Ayarlar",
       "billing": "Ödemeler",
       "simulations": "Simülasyonlar",
-      "teachers": "Öğretmenler"
+      "teachers": "Öğretmenler",
+      "assessments": "Başlangıç testleri"
     },
     "participant": {
       "dashboard": "Panel",
@@ -105,7 +107,10 @@
       "certificates": "Sertifikalar",
       "leaderboard": "Liderlik Tablosu",
       "profile": "Profil",
-      "hackathon": "Hackathon"
+      "hackathon": "Hackathon",
+      "program": "Programım",
+      "assessments": "Başlangıç testleri",
+      "units": "Eğitim birimleri"
     },
     "jury": {
       "dashboard": "Kontrol Paneli",
@@ -136,7 +141,7 @@
       "subtitle": "Kuruluş hesabı açın, koltuk sayısı belirleyin ve admin girişini e-postayla teslim edin — gerisini kuruluş kendisi yönetir.",
       "usage": "Kullanım",
       "programCount": "{count} program",
-      "createDescription": "Yeni kuruluş + admin hesabı oluşturulur ve giriş bilgileri admin e-postasına gönderilir.",
+      "createDescription": "Yeni kuruluş + admin hesabı oluşturulur ve admine tek kullanımlık etkinleştirme bağlantısı e-postayla gönderilir.",
       "namePlaceholder": "örn. İstanbul Teknopark",
       "adminFirstName": "Admin adı",
       "adminLastName": "Admin soyadı",
@@ -144,10 +149,8 @@
       "seatLimit": "Koltuk sayısı",
       "provision": "Hesabı oluştur ve teslim et",
       "created": "Kuruluş hesabı oluşturuldu",
-      "credentialsEmailed": "Giriş bilgileri {email} adresine gönderildi",
-      "credentialsNotEmailed": "E-posta gönderilemedi — şifreyi elden iletin",
-      "passwordCopied": "Şifre kopyalandı",
-      "passwordShownOnce": "Bu geçici şifre yalnızca bir kez gösterilir. Admin ilk girişten sonra değiştirmelidir.",
+      "credentialsEmailed": "Etkinleştirme bağlantısı {email} adresine gönderildi",
+      "credentialsNotEmailed": "E-posta gönderilemedi. Admin etkinleştirme bağlantısını alana kadar giriş yapamaz — e-posta ayarlarını kontrol edin.",
       "done": "Tamam",
       "activate": "Aktifleştir",
       "deactivate": "Durdur",
@@ -172,6 +175,58 @@
       "title": "Lisans ve Faturalandırma",
       "pricePerSeat": "Koltuk Başına Fiyat",
       "paymentStatus": "Ödeme Durumu"
+    },
+    "orders": {
+      "title": "Siparişler",
+      "subtitle": "Fiyatlandırma sayfasından gelen siparişler. Ödenen siparişler otomatik kurulur.",
+      "all": "Tümü",
+      "status": {
+        "PENDING": "Bekliyor",
+        "PAID": "Ödendi",
+        "FAILED": "Başarısız"
+      },
+      "statusLabel": "Durum",
+      "institution": "Kurum",
+      "services": "Hizmetler",
+      "total": "Toplam",
+      "createdAt": "Oluşturulma",
+      "adminActivated": "Admin etkinleştirdi",
+      "adminNotActivated": "Admin henüz etkinleştirmedi",
+      "resendActivation": "Bağlantıyı yeniden gönder",
+      "resent": "Yeni etkinleştirme bağlantısı {email} adresine gönderildi",
+      "resendNotEmailed": "Bağlantı oluşturuldu ancak e-posta gönderilemedi",
+      "alreadyActivated": "Admin şifresini zaten belirledi"
+    },
+    "services": {
+      "title": "Hizmetler ve Fiyatlar",
+      "subtitle": "Katılımcı başı fiyat, katılımcı sayısı aralığına göre. Değişiklikler yalnızca yeni siparişlere uygulanır.",
+      "add": "Hizmet ekle",
+      "addTitle": "Yeni hizmet",
+      "editTitle": "Hizmeti düzenle",
+      "edit": "Düzenle",
+      "delete": "Sil",
+      "save": "Kaydet",
+      "saved": "Hizmet kaydedildi",
+      "deleted": "Hizmet silindi",
+      "code": "Kod",
+      "codeLocked": "Kod oluşturulduktan sonra değiştirilemez.",
+      "name": "Ad",
+      "active": "Aktif",
+      "inactive": "Pasif",
+      "activate": "Etkinleştir",
+      "deactivate": "Devre dışı bırak",
+      "tiers": "Fiyat aralıkları",
+      "tiersHint": "Üst sınır yoksa Maks alanını boş bırakın. Aralıklar çakışmamalıdır.",
+      "min": "Min katılımcı",
+      "max": "Maks katılımcı",
+      "price": "Katılımcı başı fiyat (TL)",
+      "addTier": "Aralık ekle",
+      "removeTier": "Aralığı kaldır",
+      "confirmDelete": "{name} silinsin mi? Bu işlem geri alınamaz.",
+      "inUse": "Bu hizmetin siparişleri veya kurumları var. Silmek yerine devre dışı bırakın.",
+      "codeTaken": "Bu kodla bir hizmet zaten var.",
+      "tierOverlap": "Fiyat aralıkları çakışıyor. Her katılımcı sayısı yalnızca bir aralığa ait olmalıdır.",
+      "tierRange": "Bir aralık başlamadan bitiyor. Maks, Min değerinden küçük olamaz."
     }
   },
   "tenant": {
@@ -199,7 +254,13 @@
       "applicationLink": "Başvuru Linki",
       "participants": "Katılımcılar",
       "start": "Başlangıç",
-      "end": "Bitiş"
+      "end": "Bitiş",
+      "programStart": "Program başlangıcı",
+      "programEnd": "Program bitişi",
+      "scheduleHint": "6 haftalık plan bu tarihlerden oluşturulur. Jüri sunumları her zaman hafta içine yerleştirilir ve sonradan değiştirilebilir.",
+      "certificateName": "Sertifika adı",
+      "finalistCount": "Finalist sayısı",
+      "juryEnabled": "Finalistler için jüri değerlendirmesi"
     },
     "projectTypes": {
       "entrepreneurship_training": "Girişimcilik Eğitimi",
@@ -384,7 +445,8 @@
       "rank": "Sıra",
       "name": "İsim",
       "coins": "Coin",
-      "badgeCount": "Rozet Sayısı"
+      "badgeCount": "Rozet Sayısı",
+      "myStanding": "Puanın: {coins} · Üniversitende {total} öğrenci arasında {rank}. sıradasın."
     },
     "profile": {
       "title": "Profil ve Ayarlar",
@@ -741,5 +803,238 @@
       "saved": "Senaryo kaydedildi",
       "validationHint": "Kaydetmek için: ad, en az 2 tur, her turda başlık + açıklama + en az 2 seçenek (her seçenekte ad ve sonuç metni)."
     }
+  },
+  "pricing": {
+    "title": "Fiyatlandırma",
+    "subtitle": "İhtiyacınız olan hizmetleri ve her biri için katılımcı sayısını seçin. Yalnızca seçtiğiniz kadar ödersiniz.",
+    "servicesHeading": "Hizmetler",
+    "summaryHeading": "Özet",
+    "contactHeading": "Kurum bilgileri",
+    "participants": "Katılımcı",
+    "tierRange": "{min}–{max} katılımcı",
+    "tierOpen": "{min}+ katılımcı",
+    "perParticipant": "katılımcı başı {price}",
+    "total": "Toplam",
+    "selectPrompt": "Fiyatı görmek için en az bir hizmet seçin.",
+    "calculating": "Hesaplanıyor…",
+    "pay": "{total} öde",
+    "payDisabled": "Öde",
+    "redirecting": "Ödeme sayfasına yönlendiriliyor…",
+    "noServices": "Şu anda kullanılabilir hizmet yok.",
+    "paymentSuccess": "Ödeme alındı. Hesabınız hazırlanıyor — aktivasyon bağlantısı kısa süre içinde e-posta ile gelecek.",
+    "paymentFailed": "Ödeme tamamlanmadı. Tekrar deneyebilirsiniz.",
+    "fields": {
+      "institutionName": "Kurum adı",
+      "contactName": "Yetkili kişi",
+      "contactEmail": "E-posta"
+    },
+    "services": {
+      "HACKATHON": "Hackathon",
+      "TEACHERS": "Öğretmen-Öğrenci Paneli",
+      "SIMULATIONS": "İş Simülasyonları",
+      "TRAININGS": "Eğitimler",
+      "AI_TOOLS": "Yapay Zeka Araçları"
+    },
+    "errors": {
+      "generic": "Bir hata oluştu. Lütfen tekrar deneyin.",
+      "rateLimited": "Çok fazla deneme. Lütfen bir dakika bekleyip tekrar deneyin.",
+      "EMPTY_QUOTE": "En az bir hizmet seçin.",
+      "INVALID_PARTICIPANT_COUNT": "Katılımcı sayısı 1 ile 100.000 arasında bir tam sayı olmalıdır.",
+      "DUPLICATE_SERVICE": "Bir hizmet iki kez seçildi.",
+      "UNKNOWN_SERVICE": "Seçilen hizmetlerden biri artık mevcut değil.",
+      "NO_MATCHING_TIER": "Bu katılımcı sayısı hizmetlerden biri için mevcut değil. Lütfen bizimle iletişime geçin.",
+      "CURRENCY_MISMATCH": "Seçilen hizmetler birlikte ödenemiyor. Lütfen bizimle iletişime geçin.",
+      "EMAIL_TAKEN": "Bu e-posta ile kayıtlı bir hesap zaten var. Başka bir e-posta kullanın veya giriş yapın.",
+      "PAYMENT_PROVIDER": "Ödeme hizmeti geçici olarak kullanılamıyor. Lütfen birkaç dakika sonra tekrar deneyin."
+    }
+  },
+  "activation": {
+    "title": "Hesabınızı etkinleştirin",
+    "subtitle": "Admin hesabınızın kurulumunu tamamlamak için bir şifre belirleyin.",
+    "password": "Yeni şifre",
+    "confirm": "Şifre tekrarı",
+    "passwordHint": "En az 8 karakter; büyük harf, küçük harf ve rakam içermelidir.",
+    "submit": "Şifreyi belirle",
+    "saving": "Kaydediliyor…",
+    "goToLogin": "Girişe git",
+    "state": {
+      "INVALID": "Bu etkinleştirme bağlantısı geçerli değil.",
+      "EXPIRED": "Bu etkinleştirme bağlantısının süresi doldu. Yeni bağlantı için destekle iletişime geçin.",
+      "USED": "Bu etkinleştirme bağlantısı zaten kullanıldı. Şifrenizle giriş yapabilirsiniz."
+    },
+    "errors": {
+      "weak": "Şifre gereksinimleri karşılamıyor.",
+      "mismatch": "Şifreler eşleşmiyor.",
+      "rateLimited": "Çok fazla deneme. Lütfen bir dakika bekleyin.",
+      "generic": "Bir hata oluştu. Lütfen tekrar deneyin."
+    }
+  },
+  "apply": {
+    "title": "Programa kayıt",
+    "intro": "Programa katılmak için bilgilerini gir. Bu bilgiler yalnızca program süreçlerinde kullanılır.",
+    "notFound": "Program bulunamadı",
+    "closed": "Bu program için kayıtlar kapalı.",
+    "seatsFull": "Kurumun kontenjanı doldu.",
+    "programFull": "Programın katılımcı sınırına ulaşıldı.",
+    "personalHeading": "Kişisel bilgiler",
+    "firstName": "Ad",
+    "lastName": "Soyad",
+    "email": "E-posta adresi",
+    "phone": "Telefon numarası",
+    "password": "Şifre",
+    "passwordHint": "En az 8 karakter. Bu şifreyle platforma giriş yapacaksın.",
+    "academicHeading": "Öğrenim bilgileri",
+    "university": "Üniversite",
+    "universityOther": "Üniversite adı",
+    "department": "Bölüm",
+    "departmentOther": "Bölüm adı",
+    "studyYear": "Sınıf",
+    "yearOption": "{year}. sınıf",
+    "choose": "Seçiniz",
+    "notListed": "Listede yok",
+    "otherField": "Diğer",
+    "consentHeading": "Onaylar",
+    "draftTranslation": "taslak çeviri",
+    "opportunitiesQuestion": "İlerleyen süreçte, kurumların inovasyon ve problem çözme projelerinde yer alabileceğin uygun fırsatları seninle paylaşmamızı ister misin?",
+    "opportunitiesYes": "Evet, paylaşabilirsiniz",
+    "opportunitiesNo": "Hayır, istemiyorum",
+    "psychShare": "Psikolojik durum testi sonuçlarımın üniversitemle paylaşılmasına ayrıca açık rıza veriyorum. (İsteğe bağlı — onay vermezsen üniversiten yalnızca testi tamamlayıp tamamlamadığını görür.)",
+    "submit": "Kaydol ve devam et",
+    "submitting": "Kaydediliyor…",
+    "errors": {
+      "alreadyRegistered": "Bu e-posta adresiyle zaten kayıt olunmuş. Giriş yapmayı dene.",
+      "rateLimited": "Çok fazla deneme. Lütfen bir dakika bekle.",
+      "consentRequired": "Devam etmek için aydınlatma metnini onaylamalısın.",
+      "invalid": "Bazı bilgiler geçersiz. Lütfen alanları kontrol et.",
+      "generic": "Bir hata oluştu. Lütfen tekrar dene."
+    }
+  },
+  "programSchedule": {
+    "caption": "6 haftalık program takvimi",
+    "week": "Hafta",
+    "weekN": "{n}. Hafta",
+    "dates": "Tarihler",
+    "content": "İçerik",
+    "juryDay": "Jüri sunumları: {date}",
+    "activities": {
+      "BASELINE_TESTS": "Başlangıç Yetkinlik Testleri",
+      "CREATIVE_THINKING": "Yaratıcı Düşünce ve Yaratıcı Bakış Açısı",
+      "MULTIPLE_PERSPECTIVES": "Farklı Bakış Açılarıyla Düşünmek",
+      "PROBLEM_DISCOVERY": "Problem Keşfi ve Problem Tanımlama",
+      "UNDERSTANDING_USERS": "Kullanıcıyı ve İhtiyaçları Anlamak",
+      "INSIGHT_OPPORTUNITY": "İçgörü ve Fırsat Alanı Keşfi",
+      "IDEA_GENERATION": "Yaratıcı Fikir Üretme Teknikleri",
+      "IDEA_EVALUATION": "Fikirleri Değerlendirme ve Önceliklendirme",
+      "VALUE_PROPOSITION": "Değer Önerisi Oluşturma",
+      "FINAL_PROJECT": "Final Proje Hazırlama",
+      "FINAL_SUBMISSION": "Final Proje Teslimi",
+      "PLATFORM_EVALUATION": "Platform Değerlendirmesi",
+      "FINALIST_SELECTION": "Finalistlerin Belirlenmesi",
+      "JURY_PRESENTATION": "Jüri Sunumları ve Değerlendirmesi"
+    }
+  },
+  "participantProgram": {
+    "title": "Program Bilgileri",
+    "noProgram": "Henüz kayıtlı olduğun bir program yok.",
+    "noSchedule": "Program takvimi, kurum tarihleri belirlediğinde burada görünecek.",
+    "intro": "{org} tarafından düzenlenen {program}, girişimcilik ve inovasyon alanında kendini geliştirmek, yeni beceriler kazanmak ve öğrendiklerini gerçek senaryolar üzerinden deneyimlemek isteyen üniversite öğrencileri için hazırlanmıştır.",
+    "during": "Program boyunca {content} kapsamında eğitimlere katılacaksın, farklı simülasyonlarda kararlar alacaksın, problemleri çözmeye çalışacaksın ve girişimcilik dünyasının farklı süreçlerini deneyimleyeceksin.",
+    "factsHeading": "Program Bilgileri",
+    "participantsValue": "{count} kişi",
+    "facts": {
+      "org": "Düzenleyen Kurum",
+      "program": "Program Adı",
+      "content": "Program İçeriği",
+      "start": "Program Başlangıç Tarihi",
+      "end": "Program Tamamlanma Tarihi",
+      "participants": "Katılımcı Sayısı",
+      "certificate": "Kazanılacak Sertifika"
+    },
+    "scheduleHeading": "6 Haftalık Program Takvimi",
+    "certificateNote": "Programı başarıyla tamamladığında, {certificate} sertifikasını almaya hak kazanacaksın. Ayrıca program boyunca gerçekleştirdiğin çalışmalar ve değerlendirmeler doğrultusunda gelişimini takip edebileceksin.",
+    "ctaHeading": "Şimdi Sıra Sende!",
+    "cta1": "Burada sadece bir eğitim programına katılmıyorsun. Kendini keşfedeceğin, fikirlerini deneyeceğin ve girişimcilik dünyasını deneyimleyeceğin bir yolculuğa çıkıyorsun.",
+    "cta2": "Bazen doğru kararı vereceksin, bazen yanılacaksın, bazen de hiç düşünmediğin bir çözüm bulacaksın. Çünkü burada amaç her şeyi ilk seferde doğru yapmak değil; düşünmek, denemek, öğrenmek ve gelişmek.",
+    "cta3": "Hazırsan, kendi potansiyelini keşfetmekle başlayalım. İlk adım seni bekliyor.",
+    "start": "Başlangıç testlerine geç"
+  },
+  "assessments": {
+    "title": "Başlangıç Yetkinlik Testleri",
+    "noProgram": "Testlere başlamak için bir programa kayıtlı olmalısın.",
+    "intro": "Bu testler karakterini, yaratıcılığını ve şu anki durumunu anlamamıza yardımcı olur. Sonuçlarına göre sana kişisel bir gelişim planı hazırlanır.",
+    "demoNotice": "Bu testler şu an örnek (demo) sorular içeriyor. Gerçek testler yakında eklenecek.",
+    "demoResultsNotice": "Bu sonuçlar örnek (demo) testlere dayanıyor ve gerçek bir değerlendirme değildir.",
+    "step": "Adım {n}/{total}",
+    "completed": "Tamamlandı",
+    "start": "Teste başla",
+    "viewResults": "Sonuçlarımı ve gelişim planımı gör",
+    "viewPartialResults": "Şimdiye kadarki sonuçlarımı gör",
+    "progress": "{answered}/{total} soru cevaplandı",
+    "questionN": "Soru {n}",
+    "answerAll": "Lütfen tüm soruları cevapla.",
+    "alreadyDone": "Bu testi zaten tamamladın.",
+    "submitError": "Cevaplar kaydedilemedi. Lütfen tekrar dene.",
+    "submit": "Cevapları gönder",
+    "submitting": "Gönderiliyor…",
+    "likert": {
+      "1": "Kesinlikle katılmıyorum",
+      "2": "Katılmıyorum",
+      "3": "Kararsızım",
+      "4": "Katılıyorum",
+      "5": "Kesinlikle katılıyorum"
+    },
+    "resultsTitle": "Test Sonuçları ve Kişisel Gelişim Planı",
+    "noResults": "Henüz tamamlanmış bir testin yok.",
+    "backToTests": "Testlere dön",
+    "band": {
+      "low": "Gelişim alanı",
+      "mid": "Orta",
+      "high": "Güçlü"
+    },
+    "planHeading": "Kişisel Gelişim Planın",
+    "strengths": "Güçlü yönlerin",
+    "developmentAreas": "Gelişim alanların",
+    "continueToTraining": "Eğitimlere devam et"
+  },
+  "tenantAssessments": {
+    "title": "Başlangıç Testleri",
+    "subtitle": "Öğrencilerin başlangıç testlerini tamamlama durumu. Psikolojik test puanları yalnızca öğrenci ayrıca onay verdiyse görünür.",
+    "newCompletions": "{count} öğrenci analizini yeni tamamladı.",
+    "empty": "Henüz kayıtlı öğrenci yok.",
+    "student": "Öğrenci",
+    "program": "Program",
+    "new": "Yeni",
+    "notStarted": "Başlamadı",
+    "notShared": "Puanlar paylaşılmadı (onay yok)"
+  },
+  "units": {
+    "title": "Eğitim Birimleri",
+    "notInProgram": "Programında bu simülasyonun eğitim birimleri yok.",
+    "intro": "Her birimde önce eğitim videosunu izle, sonra uygulama projesini yap ve 10 soruluk testi çöz. Testi geçtiğinde birimin puanını kazanırsın.",
+    "pointsSummary": "Toplam puanın: {earned} / {total}",
+    "unitN": "{n}. Birim",
+    "points": "{earned}/{total} puan",
+    "backToUnits": "Tüm birimler",
+    "steps": {
+      "video": "Eğitim videosu",
+      "project": "Uygulama / Proje",
+      "test": "Test",
+      "testScore": "Test: {score}/100"
+    },
+    "watchVideo": "Videoyu izle",
+    "videoComingSoon": "Bu birimin videosu yakında eklenecek. Şimdilik projeye geçebilirsin.",
+    "markWatched": "İzledim olarak işaretle",
+    "tasksHeading": "Düşünmen gereken sorular",
+    "yourAnswer": "Çözümün",
+    "chars": "{count}/{max} karakter",
+    "submitProject": "Projeyi gönder",
+    "updateProject": "Projeyi güncelle",
+    "projectSaved": "Projen kaydedildi.",
+    "testIntro": "10 soruluk testi geçtiğinde {points} puan kazanırsın.",
+    "testPassed": "Testi {score}/100 ile geçtin ve {points} puan kazandın.",
+    "testRetry": "Son puanın {score}/100. Testi tekrar çözebilirsin.",
+    "startTest": "Teste başla",
+    "retakeTest": "Testi tekrar çöz",
+    "error": "Bir hata oluştu. Lütfen tekrar dene."
   }
 }

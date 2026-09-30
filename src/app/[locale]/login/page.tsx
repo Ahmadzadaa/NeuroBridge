@@ -224,6 +224,8 @@ export default function LoginPage() {
             }}
             transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
             className="overflow-hidden"
+            // Collapsed fields must not be reachable by Tab or screen readers.
+            inert={!show2FAFields}
           >
             <div className="mb-4">
               <FieldLabel htmlFor="totpCode">{t("totpCode")}</FieldLabel>

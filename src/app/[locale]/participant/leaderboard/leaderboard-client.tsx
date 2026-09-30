@@ -21,6 +21,9 @@ interface LeaderboardClientProps {
   currentUserId: string;
   coinBalance: number;
   entries: LeaderboardEntry[];
+  /** Rank among the student's own university, even outside the top 50. */
+  myRank: number | null;
+  totalParticipants: number;
 }
 
 function initials(name: string) {
@@ -56,6 +59,8 @@ export function LeaderboardClient({
   currentUserId,
   coinBalance,
   entries,
+  myRank,
+  totalParticipants,
 }: LeaderboardClientProps) {
   const t = useTranslations("participant.leaderboard");
   const tc = useTranslations("common");
@@ -73,6 +78,11 @@ export function LeaderboardClient({
       userName={userName}
       coinBalance={coinBalance}
     >
+      {myRank !== null && (
+        <p className="mb-4 rounded-2xl bg-card p-4 text-sm text-foreground shadow-sm">
+          {t("myStanding", { coins: coinBalance, rank: myRank, total: totalParticipants })}
+        </p>
+      )}
       {entries.length === 0 ? (
         <div className="rounded-2xl bg-card shadow-sm">
           <EmptyState title={tc("noData")} />

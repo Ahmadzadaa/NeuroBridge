@@ -65,6 +65,16 @@ export async function verifyRecoveryCode(
   return bcrypt.compare(code, hash);
 }
 
+/**
+ * Global 2FA switch. Off unless TWO_FACTOR_ENABLED=true: logins then need only
+ * email + password, admins are not forced into setup, and codes are ignored
+ * even for accounts that enabled 2FA earlier (their secrets are kept, so
+ * turning the switch back on restores their second factor).
+ */
+export function isTwoFactorEnabled(env: NodeJS.ProcessEnv = process.env): boolean {
+  return env.TWO_FACTOR_ENABLED === "true";
+}
+
 export function adminRequires2FA(role: string): boolean {
-  return role === "SUPER_ADMIN" || role === "TENANT_ADMIN";
+  return isTwoFactorEnabled() && (role === "SUPER_ADMIN" || role === "TENANT_ADMIN");
 }
