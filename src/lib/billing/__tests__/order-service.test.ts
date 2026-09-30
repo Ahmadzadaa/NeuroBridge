@@ -95,6 +95,7 @@ describe("startOrderCheckout", () => {
     total: 48_000,
     currency: "TRY",
     paytrMerchantOid: "ORDabc123",
+    kind: "NEW_TENANT",
     tenantId: null,
     createdAt: new Date(),
     paidAt: null,

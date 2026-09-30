@@ -4,7 +4,6 @@ import {
   AI_TOOLS,
   PROJECT_TYPES,
   SIMULATION_TYPES,
-  TRAINING_TYPES,
 } from "@/lib/constants";
 
 const safeString = (max: number) =>
@@ -71,7 +70,8 @@ export const createProgramSchema = z
     finalistCount: z.preprocess(emptyToNull, z.coerce.number().int().min(1).max(1000).nullable()).optional(),
     juryEnabled: z.coerce.boolean().default(false),
     simulations: z.array(z.enum(SIMULATION_TYPES)).max(4).default([]),
-    trainings: z.array(z.enum(TRAINING_TYPES)).default([]),
+    // Catalogue keys (e.g. finance_training); the route checks they exist.
+    trainings: z.array(z.string().trim().min(1).max(100)).max(50).default([]),
     aiTools: z.array(z.enum(AI_TOOLS)).default([]),
   })
   .refine((data) => data.applicationEnd >= data.applicationStart, {
@@ -289,6 +289,8 @@ export const scenarioSchema = z.object({
 
 export const simulationDecideSchema = z.object({
   choiceId: z.string().min(1).max(50),
+  // Language of the page the choice was made on; picks the feedback text.
+  locale: z.enum(["az", "tr", "en"]).optional(),
 });
 
 export const simulationGradeSchema = z

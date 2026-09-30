@@ -402,6 +402,13 @@
   animation: enter-rise 220ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* iOS-style staggered entrance: set --i on siblings (0, 1, 2…). The resting
+   state is visible, so content never stays hidden if the animation is skipped. */
+.ios-reveal {
+  animation: enter-rise 520ms cubic-bezier(0.32, 0.72, 0, 1) backwards;
+  animation-delay: calc(var(--i, 0) * 55ms);
+}
+
 /* Accessibility: respect reduced motion everywhere */
 @media (prefers-reduced-motion: reduce) {
   *,

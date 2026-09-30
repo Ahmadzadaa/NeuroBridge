@@ -3,6 +3,7 @@ import { withAuthorizedHandler } from "@/lib/auth/authorize";
 import { assertFeatureEnabled } from "@/lib/tenant/features";
 import { simulationDecideSchema, parseBody } from "@/lib/validation/schemas";
 import { prisma } from "@/lib/prisma";
+import { localizedText } from "@/lib/i18n-content";
 import {
   applyChoice,
   computeScore,
@@ -113,7 +114,7 @@ export async function POST(
         satisfaction: nextState.satisfaction - run.satisfaction,
         reputation: nextState.reputation - run.reputation,
       },
-      feedback: choice.feedback,
+      feedback: localizedText(choice.feedback, body.locale ?? session.language ?? "tr"),
       completed: isLastRound,
       nextRound: isLastRound ? null : run.currentRound + 1,
       score,

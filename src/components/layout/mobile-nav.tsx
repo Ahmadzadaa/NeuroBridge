@@ -96,7 +96,7 @@ export function MobileNav({ panel }: MobileNavProps) {
   );
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around border-t border-border bg-card/80 px-2 pb-[max(env(safe-area-inset-bottom),0.5rem)] pt-2 backdrop-blur-[20px] lg:hidden">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around border-t border-border/60 bg-background/75 px-2 pb-[max(env(safe-area-inset-bottom),0.5rem)] pt-1.5 backdrop-blur-2xl backdrop-saturate-150 lg:hidden">
       {items.map((item) => {
         const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
         const Icon = item.icon;
@@ -108,8 +108,8 @@ export function MobileNav({ panel }: MobileNavProps) {
             aria-current={isActive ? "page" : undefined}
             aria-label={t(item.labelKey)}
             className={cn(
-              "flex min-h-11 min-w-11 flex-col items-center justify-center gap-0.5 rounded-xl px-3 py-1 text-[10px] font-medium",
-              "transition-colors duration-150",
+              "relative flex min-h-12 min-w-14 flex-col items-center justify-center gap-0.5 rounded-2xl px-3 py-1 text-[10px] font-semibold",
+              "transition-colors duration-200 active:scale-95",
               "focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
               isActive ? "text-primary" : "text-muted-foreground"
             )}

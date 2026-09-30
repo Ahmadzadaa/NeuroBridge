@@ -1,12 +1,15 @@
 /**
  * Seeds the "TexnoStart: Startupını Böyüt" scenario onto the
- * startup_management simulation — 8 rounds × 3 choices, AZ content —
+ * startup_management simulation — 8 rounds × 3 choices, AZ content with
+ * TR/EN translations (seed-data/texnostart-i18n.ts) stored trilingually —
  * plus two demo student runs (one graded) so the teacher panel has data.
  * Idempotent: re-running resets the scenario and demo runs.
  *
  *   npx tsx prisma/seed-simulation.ts
  */
 import { PrismaClient } from "@prisma/client";
+import { trilingual } from "../src/lib/i18n-content";
+import { TEXNOSTART_EN, TEXNOSTART_TR } from "./seed-data/texnostart-i18n";
 
 const prisma = new PrismaClient();
 
@@ -291,8 +294,11 @@ async function main() {
     data: {
       startCash: START_CASH,
       targetCash: TARGET_CASH,
-      description:
-        "TexnoStart — B2B SaaS startupını 8 raundda sıfırdan regional oyunçuya çevir. Hər qərarın kapitala, müştəri məmnuniyyətinə və reputasiyaya təsiri var.",
+      description: trilingual({
+        az: "TexnoStart — B2B SaaS startupını 8 raundda sıfırdan regional oyunçuya çevir. Hər qərarın kapitala, müştəri məmnuniyyətinə və reputasiyaya təsiri var.",
+        tr: TEXNOSTART_TR.description,
+        en: TEXNOSTART_EN.description,
+      }),
     },
   });
 
@@ -306,17 +312,17 @@ async function main() {
         data: {
           simulationId: simulation.id,
           order: i + 1,
-          title: round.title,
-          context: round.context,
+          title: trilingual({ az: round.title, tr: TEXNOSTART_TR.rounds[i].title, en: TEXNOSTART_EN.rounds[i].title }),
+          context: trilingual({ az: round.context, tr: TEXNOSTART_TR.rounds[i].context, en: TEXNOSTART_EN.rounds[i].context }),
           choices: {
             create: round.choices.map((choice, j) => ({
-              label: choice.label,
-              detail: choice.detail,
+              label: trilingual({ az: choice.label, tr: TEXNOSTART_TR.rounds[i].choices[j].label, en: TEXNOSTART_EN.rounds[i].choices[j].label }),
+              detail: trilingual({ az: choice.detail, tr: TEXNOSTART_TR.rounds[i].choices[j].detail, en: TEXNOSTART_EN.rounds[i].choices[j].detail }),
               cashDelta: choice.cash,
               satisfactionDelta: choice.sat,
               reputationDelta: choice.rep,
               variance: choice.variance,
-              feedback: choice.feedback,
+              feedback: trilingual({ az: choice.feedback, tr: TEXNOSTART_TR.rounds[i].choices[j].feedback, en: TEXNOSTART_EN.rounds[i].choices[j].feedback }),
               order: j,
             })),
           },

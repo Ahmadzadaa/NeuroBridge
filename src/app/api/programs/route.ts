@@ -6,7 +6,13 @@ import { enforceRateLimit, getClientIdentifier } from "@/lib/security/rate-limit
 import { recordAudit, getClientIp } from "@/lib/audit/audit-service";
 import { AUDIT_ACTIONS } from "@/lib/audit/actions";
 import { parsePagination } from "@/lib/pagination";
-import { generateProgramSchedule, toCalendarDate } from "@/lib/programs/schedule";
+import { z } from "zod";
+import {
+  assertTrainingKeys,
+  programColumns,
+  programSchedule,
+  ProgramAdminError,
+} from "@/lib/programs/program-admin";
 import {
   invalidateProgramsCacheForTenant,
   listPrograms,
@@ -22,45 +28,24 @@ export async function POST(request: Request) {
     );
   }
 
-  return withAuthorizedHandler(
-    "program:write",
-    async ({ session, context }) => {
-      if (!session.tenantId) {
-        return NextResponse.json({ error: "Tenant required" }, { status: 400 });
-      }
-
-      const body = parseBody(createProgramSchema, await request.json());
+  // Organisations buy programmes (see order-provisioning); only the platform
+  // team builds them, for a tenant named in the body.
+  return withAuthorizedHandler("platform:admin", async ({ session, context }) => {
+      const raw = await request.json();
+      const { tenantId } = parseBody(z.object({ tenantId: z.string().trim().min(1).max(50) }), raw);
+      const body = parseBody(createProgramSchema, raw);
+      const schedule = programSchedule(body);
 
       const result = await withTenantContext(context, async (tx) => {
-        const tenant = await tx.tenant.findUnique({
-          where: { id: session.tenantId! },
-        });
-
-        if (!tenant) {
-          return NextResponse.json({ error: "Tenant not found" }, { status: 404 });
-        }
+        const tenant = await tx.tenant.findUnique({ where: { id: tenantId }, select: { id: true } });
+        if (!tenant) throw new ProgramAdminError("TENANT_NOT_FOUND", 404, "Tenant not found");
+        await assertTrainingKeys(tx, body.trainings);
 
         const program = await tx.program.create({
           data: {
-            tenantId: session.tenantId!,
-            name: body.name,
-            description: body.description ?? null,
-            type: body.type,
-            applicationStart: body.applicationStart,
-            applicationEnd: body.applicationEnd,
-            simulationStart: body.simulationStart ?? null,
-            simulationEnd: body.simulationEnd ?? null,
-            participantLimit: body.participantLimit,
-            programStart: body.programStart ? toCalendarDate(body.programStart) : null,
-            programEnd: body.programEnd ? toCalendarDate(body.programEnd) : null,
-            certificateName: body.certificateName ?? null,
-            finalistCount: body.finalistCount ?? null,
-            juryEnabled: body.juryEnabled,
-            // Throws ScheduleError (400) for a range too short for six weeks.
-            scheduleItems:
-              body.programStart && body.programEnd
-                ? { create: generateProgramSchedule(body.programStart, body.programEnd) }
-                : undefined,
+            tenantId,
+            ...programColumns(body),
+            scheduleItems: schedule.length ? { create: schedule } : undefined,
             programSimulations: {
               create: body.simulations.map((s) => ({ simulationType: s })),
             },
@@ -77,9 +62,9 @@ export async function POST(request: Request) {
           tx,
           action: AUDIT_ACTIONS.PROGRAM_CREATED,
           userId: session.id,
-          tenantId: session.tenantId!,
+          tenantId,
           ip: getClientIp(request),
-          details: { programId: program.id, name: program.name },
+          details: { programId: program.id, name: program.name, by: "platform" },
         });
 
         return {
@@ -88,13 +73,9 @@ export async function POST(request: Request) {
         };
       });
 
-      if (result instanceof Response) return result;
-
-      await invalidateProgramsCacheForTenant(session.tenantId!);
+      await invalidateProgramsCacheForTenant(tenantId);
       return result;
-    },
-    { requireTenant: true }
-  );
+    });
 }
 
 export async function GET(request: Request) {

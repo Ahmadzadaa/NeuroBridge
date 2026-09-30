@@ -1,4 +1,5 @@
 import { setRequestLocale } from "next-intl/server";
+import { localizedText } from "@/lib/i18n-content";
 import { requireRole } from "@/lib/auth-utils";
 import { requireFeature } from "@/lib/tenant/require-feature";
 import { prisma } from "@/lib/prisma";
@@ -59,7 +60,7 @@ export default async function SimulationsPage({
     return {
       id: simulation.id,
       name: localized(simulation, "name", locale),
-      description: simulation.description,
+      description: simulation.description ? localizedText(simulation.description, locale) : null,
       category: simulation.category,
       totalRounds: simulation._count.rounds,
       playable: simulation._count.rounds > 0,

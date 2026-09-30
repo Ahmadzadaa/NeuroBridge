@@ -1,4 +1,5 @@
 import { setRequestLocale } from "next-intl/server";
+import { localizedText } from "@/lib/i18n-content";
 import { requireRole } from "@/lib/auth-utils";
 import { requireFeature } from "@/lib/tenant/require-feature";
 import { prisma } from "@/lib/prisma";
@@ -34,7 +35,7 @@ export default async function TeacherScenariosPage({
       scenarios={scenarios.map((s) => ({
         id: s.id,
         name: s.nameAz,
-        description: s.description,
+        description: s.description ? localizedText(s.description, locale) : null,
         startCash: s.startCash,
         targetCash: s.targetCash,
         roundCount: s._count.rounds,

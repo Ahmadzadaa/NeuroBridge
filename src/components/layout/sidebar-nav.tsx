@@ -5,6 +5,7 @@ import { useTenantFeatures } from "@/components/providers/tenant-features-provid
 import type { TenantFeature } from "@/lib/tenant/features";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   LayoutDashboard,
   Building2,
@@ -45,6 +46,7 @@ const navConfig: Record<PanelType, NavItem[]> = {
   "super-admin": [
     { href: "/super-admin", labelKey: "dashboard", icon: LayoutDashboard },
     { href: "/super-admin/tenants", labelKey: "tenants", icon: Building2 },
+    { href: "/super-admin/programs", labelKey: "programs", icon: FileText },
     { href: "/super-admin/billing", labelKey: "billing", icon: CreditCard },
     { href: "/super-admin/pricing", labelKey: "pricing", icon: Tag },
     { href: "/super-admin/content", labelKey: "content", icon: FileText },
@@ -129,6 +131,7 @@ export function SidebarNav({ panel, collapsed }: SidebarNavProps) {
   const t = useTranslations(`nav.${panel === "super-admin" ? "superAdmin" : panel}`);
   const pathname = usePathname();
   const features = useTenantFeatures();
+  const reduced = useReducedMotion();
   const items = navConfig[panel].filter(
     (item) => item.feature === undefined || features[item.feature]
   );
@@ -148,23 +151,32 @@ export function SidebarNav({ panel, collapsed }: SidebarNavProps) {
             aria-current={isActive ? "page" : undefined}
             title={collapsed ? t(item.labelKey) : undefined}
             className={cn(
-              "relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium",
-              "transition-all duration-150 ease-[cubic-bezier(0.4,0,0.2,1)]",
+              "relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-[14px] font-medium",
+              "transition-colors duration-200",
               "focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
               collapsed && "justify-center px-2",
               isActive
-                ? "bg-accent text-primary shadow-[inset_3px_0_0_var(--color-primary)]"
-                : "text-muted-foreground hover:translate-x-0.5 hover:bg-subtle hover:text-foreground"
+                ? "text-primary"
+                : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
             )}
           >
+            {/* The active pill glides between items instead of jumping. */}
+            {isActive && (
+              <motion.span
+                layoutId={reduced ? undefined : `nav-pill-${panel}`}
+                className="absolute inset-0 rounded-xl bg-accent shadow-[0_1px_2px_rgba(15,23,42,0.06)] ring-1 ring-primary/10"
+                transition={{ type: "spring", stiffness: 500, damping: 40 }}
+                aria-hidden="true"
+              />
+            )}
             <Icon
               className={cn(
-                "h-[18px] w-[18px] shrink-0",
+                "relative h-[18px] w-[18px] shrink-0",
                 !isActive && "opacity-70"
               )}
               aria-hidden="true"
             />
-            {!collapsed && <span className="truncate">{t(item.labelKey)}</span>}
+            {!collapsed && <span className="relative truncate">{t(item.labelKey)}</span>}
           </Link>
         );
       })}

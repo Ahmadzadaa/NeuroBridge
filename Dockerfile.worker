@@ -17,6 +17,7 @@ COPY src ./src
 COPY scripts ./scripts
 COPY tsconfig.json ./
 
-RUN npx prisma generate
+# Production is PostgreSQL; the default schema is pinned to SQLite for local dev.
+RUN node scripts/gen-postgres-schema.mjs && npx prisma generate --schema=prisma/schema.postgres.prisma
 
 CMD ["npx", "tsx", "scripts/queue-worker.ts"]

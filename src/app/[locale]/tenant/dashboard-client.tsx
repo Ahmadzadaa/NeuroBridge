@@ -89,8 +89,8 @@ export function TenantDashboardClient({
               title={tc("noData")}
               className="py-6"
               action={
-                <Link href="/tenant/programs/new">
-                  <Button className="rounded-xl">{t("programs.create")}</Button>
+                <Link href="/tenant/programs/buy">
+                  <Button>{t("programs.buy")}</Button>
                 </Link>
               }
             />

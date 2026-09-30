@@ -43,17 +43,21 @@ export interface ProgramRow {
   applicationToken: string;
   participantCount: number;
   teamCount: number;
+  /** Paid for, still being built by the platform team: no invite link yet. */
+  pendingSetup: boolean;
 }
 
 interface ProgramsPageClientProps {
   locale: string;
   userName: string;
+  paymentSucceeded?: boolean;
   programs: ProgramRow[];
 }
 
 export function ProgramsPageClient({
   locale,
   userName,
+  paymentSucceeded,
   programs,
 }: ProgramsPageClientProps) {
   const t = useTranslations("tenant.programs");
@@ -114,13 +118,18 @@ export function ProgramsPageClient({
 
   return (
     <DashboardLayout panel="tenant" title={t("title")} userName={userName}>
-      <div className="overflow-hidden rounded-2xl bg-card shadow-sm">
+      {paymentSucceeded && (
+        <p role="status" className="ios-reveal mb-5 rounded-2xl bg-success/10 px-4 py-3 text-[14px] text-foreground ring-1 ring-success/30">
+          {t("paymentSuccess")}
+        </p>
+      )}
+      <div className="overflow-hidden rounded-[20px] bg-card shadow-sm ring-1 ring-border/60">
         <div className="flex items-center justify-between border-b border-border px-5 py-4">
           <h2 className="text-[15px] font-semibold">{t("title")}</h2>
-          <Link href="/tenant/programs/new">
-            <Button className="rounded-xl">
+          <Link href="/tenant/programs/buy">
+            <Button>
               <Plus className="h-4 w-4" aria-hidden="true" />
-              {t("create")}
+              {t("buy")}
             </Button>
           </Link>
         </div>
@@ -142,7 +151,16 @@ export function ProgramsPageClient({
             <TableBody>
               {programs.map((program) => (
                 <TableRow key={program.id} className="group">
-                  <TableCell className="font-medium">{program.name}</TableCell>
+                  <TableCell className="font-medium">
+                    <span className="flex flex-wrap items-center gap-2">
+                      {program.name}
+                      {program.pendingSetup && (
+                        <span className="rounded-full bg-warning/15 px-2.5 py-0.5 text-[11px] font-semibold text-warning-dark" title={t("pendingHint")}>
+                          {t("statusPending")}
+                        </span>
+                      )}
+                    </span>
+                  </TableCell>
                   <TableCell className="text-muted-foreground">
                     {tp.has(program.type) ? tp(program.type) : program.type}
                   </TableCell>
@@ -156,10 +174,10 @@ export function ProgramsPageClient({
                     </span>
                   </TableCell>
                   <TableCell className="text-muted-foreground">
-                    {new Date(program.applicationStart).toLocaleDateString(locale)}
+                    {program.pendingSetup ? "—" : new Date(program.applicationStart).toLocaleDateString(locale)}
                   </TableCell>
                   <TableCell className="text-muted-foreground">
-                    {new Date(program.applicationEnd).toLocaleDateString(locale)}
+                    {program.pendingSetup ? "—" : new Date(program.applicationEnd).toLocaleDateString(locale)}
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center justify-end gap-1.5">
@@ -167,6 +185,8 @@ export function ProgramsPageClient({
                         variant="outline"
                         size="sm"
                         className="rounded-lg"
+                        disabled={program.pendingSetup}
+                        title={program.pendingSetup ? t("pendingHint") : undefined}
                         onClick={() => setQrProgram(program)}
                       >
                         <QrCode className="h-4 w-4" aria-hidden="true" />

@@ -4,9 +4,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useApiErrorMessage } from "@/lib/api/api-error";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { IconTile, Reveal } from "@/components/ui/ios";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FormSection } from "@/components/tenant/form-section";
@@ -73,8 +71,8 @@ function SaveButton({
   onSave: () => void;
 }) {
   return (
-    <div className="mt-5">
-      <Button className="rounded-xl px-6" disabled={saving} onClick={onSave}>
+    <div className="mt-5 flex justify-end">
+      <Button size="lg" disabled={saving} onClick={onSave}>
         {/* Was a bare "…" string, which read as a stalled button. */}
         {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />}
         {saving ? loadingLabel : label}
@@ -134,12 +132,12 @@ export function SettingsPageClient({
   }
 
   const orgFields = [
-    { key: "name" as const, label: t("orgName"), icon: Building2, type: "text" },
-    { key: "website" as const, label: t("website"), icon: Globe, type: "url" },
-    { key: "authorizedContact" as const, label: t("contact"), icon: User, type: "text" },
-    { key: "phone" as const, label: t("phone"), icon: Phone, type: "tel" },
-    { key: "email" as const, label: t("email"), icon: Mail, type: "email" },
-    { key: "address" as const, label: t("address"), icon: MapPin, type: "text" },
+    { key: "name" as const, label: t("orgName"), icon: Building2, tone: "violet" as const, type: "text" },
+    { key: "website" as const, label: t("website"), icon: Globe, tone: "sky" as const, type: "url" },
+    { key: "authorizedContact" as const, label: t("contact"), icon: User, tone: "amber" as const, type: "text" },
+    { key: "phone" as const, label: t("phone"), icon: Phone, tone: "emerald" as const, type: "tel" },
+    { key: "email" as const, label: t("email"), icon: Mail, tone: "indigo" as const, type: "email" },
+    { key: "address" as const, label: t("address"), icon: MapPin, tone: "rose" as const, type: "text" },
   ];
 
   const certificateToggles = [
@@ -163,8 +161,15 @@ export function SettingsPageClient({
 
   return (
     <DashboardLayout panel="tenant" title={t("title")} userName={userName}>
-      <Tabs defaultValue="organization" className="mx-auto max-w-3xl">
-        <TabsList className="rounded-xl">
+      <Reveal className="mx-auto mb-6 flex max-w-3xl items-center gap-4">
+        <IconTile icon={Building2} tone="violet" size="lg" />
+        <div className="min-w-0">
+          <h2 className="truncate text-[24px] font-bold tracking-[-0.6px] text-foreground">{settings.name}</h2>
+          {settings.email && <p className="truncate text-[14px] text-muted-foreground">{settings.email}</p>}
+        </div>
+      </Reveal>
+      <Tabs defaultValue="organization" className="ios-reveal mx-auto max-w-3xl [--i:1]">
+        <TabsList className="grid w-full grid-cols-3 sm:inline-flex sm:w-auto">
           <TabsTrigger value="organization">{t("organization")}</TabsTrigger>
           <TabsTrigger value="certificates">{t("certificates")}</TabsTrigger>
           <TabsTrigger value="notifications">{t("notifications")}</TabsTrigger>
@@ -173,25 +178,24 @@ export function SettingsPageClient({
         <TabsContent value="organization">
           {/* The card used to repeat the tab's own name as its title. */}
           <FormSection title={t("organization")} description={td("organization.description")}>
-            <Card className="rounded-2xl border-0 shadow-sm">
-              <CardContent className="space-y-5 p-6">
-                {orgFields.map(({ key, label, icon: Icon, type }) => (
-                  <div key={key} className="space-y-2">
-                    <Label htmlFor={`org-${key}`} className="flex items-center gap-1.5">
-                      <Icon className="h-3.5 w-3.5 text-muted-foreground" aria-hidden="true" />
-                      {label}
-                    </Label>
-                    <Input
-                      id={`org-${key}`}
-                      type={type}
-                      className="rounded-xl"
-                      value={settings[key] ?? ""}
-                      onChange={(e) => setSettings({ ...settings, [key]: e.target.value })}
-                    />
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
+            {/* Settings-style rows: icon, label, the value editable in place. */}
+            <div className="divide-y divide-border/60 overflow-hidden rounded-[20px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60">
+              {orgFields.map(({ key, label, icon, tone, type }) => (
+                <div key={key} className="flex min-h-[56px] items-center gap-3.5 px-4 focus-within:bg-muted/40">
+                  <IconTile icon={icon} tone={tone} size="sm" />
+                  <label htmlFor={`org-${key}`} className="w-28 shrink-0 text-[15px] text-foreground sm:w-36">
+                    {label}
+                  </label>
+                  <input
+                    id={`org-${key}`}
+                    type={type}
+                    value={settings[key] ?? ""}
+                    onChange={(e) => setSettings({ ...settings, [key]: e.target.value })}
+                    className="h-12 min-w-0 flex-1 bg-transparent text-right text-[15px] text-foreground outline-none placeholder:text-muted-foreground/60"
+                  />
+                </div>
+              ))}
+            </div>
             <SaveButton
               saving={saving}
               label={tc("save")}
@@ -248,7 +252,7 @@ export function SettingsPageClient({
             title={t("notifications")}
             description={td("notifications.description")}
           >
-            <p className="mb-4 flex gap-2.5 rounded-xl border border-warning/40 bg-warning/10 p-3.5 text-[12.5px] leading-[1.6] text-foreground">
+            <p className="mb-4 flex gap-2.5 rounded-2xl bg-warning/10 p-4 text-[13px] leading-[1.6] text-foreground ring-1 ring-warning/30">
               <Bell className="mt-0.5 h-4 w-4 shrink-0 text-warning" aria-hidden="true" />
               {td("notifications.pendingNotice")}
             </p>

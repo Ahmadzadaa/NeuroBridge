@@ -10,6 +10,8 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { AuthShell } from "@/components/layout/auth-shell";
+import { IconTile } from "@/components/ui/ios";
 
 interface JoinClientProps {
   locale: string;
@@ -92,24 +94,23 @@ export function JoinClient({
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4 py-12">
+    <AuthShell width="sm">
       <motion.div
         initial={reducedMotion ? false : { opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.35, ease: [0, 0, 0.2, 1] }}
-        className="w-full max-w-[440px] rounded-2xl border border-border bg-card p-8 shadow-md"
+        className="w-full rounded-[28px] bg-card/85 p-6 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_30px_80px_-30px_rgba(15,23,42,0.35)] ring-1 ring-border/60 backdrop-blur-xl sm:p-8"
       >
         {done ? (
           <div className="text-center">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-success/10 text-success">
-              <CheckCircle2 className="h-8 w-8" aria-hidden="true" />
-            </div>
-            <h1 className="mt-4 text-[20px] font-bold">{t("doneTitle")}</h1>
+            <IconTile icon={CheckCircle2} tone="emerald" size="lg" className="mx-auto" />
+            <h1 className="mt-4 text-[26px] font-bold tracking-[-0.6px]">{t("doneTitle")}</h1>
             <p className="mt-2 text-[14px] text-muted-foreground">
               {t("doneText", { teacher: teacherName })}
             </p>
             <Button
-              className="mt-6 w-full rounded-xl"
+              size="lg"
+              className="mt-7 w-full"
               nativeButton={false}
               render={<Link href={`/${locale}/login`} />}
             >
@@ -119,11 +120,9 @@ export function JoinClient({
         ) : (
           <>
             <div className="text-center">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                <GraduationCap className="h-7 w-7" aria-hidden="true" />
-              </div>
-              <h1 className="mt-4 text-[20px] font-bold">{t("title")}</h1>
-              <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">
+              <IconTile icon={GraduationCap} tone="violet" size="lg" className="mx-auto" />
+              <h1 className="mt-4 text-[26px] font-bold tracking-[-0.6px]">{t("title")}</h1>
+              <p className="mt-1.5 text-[15px] leading-relaxed text-muted-foreground">
                 {t("subtitle", {
                   teacher: teacherName,
                   organization: organizationName,
@@ -143,7 +142,6 @@ export function JoinClient({
                     onChange={(e) =>
                       setForm({ ...form, firstName: e.target.value })
                     }
-                    className="rounded-xl"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -156,7 +154,6 @@ export function JoinClient({
                     onChange={(e) =>
                       setForm({ ...form, lastName: e.target.value })
                     }
-                    className="rounded-xl"
                   />
                 </div>
               </div>
@@ -169,7 +166,6 @@ export function JoinClient({
                   maxLength={255}
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className="rounded-xl"
                 />
               </div>
               <div className="space-y-1.5">
@@ -183,7 +179,6 @@ export function JoinClient({
                   onChange={(e) =>
                     setForm({ ...form, password: e.target.value })
                   }
-                  className="rounded-xl"
                 />
                 {form.password.length > 0 && !passwordOk && (
                   <p className="text-[11px] text-warning-dark">
@@ -209,7 +204,6 @@ export function JoinClient({
                   onChange={(e) =>
                     setForm({ ...form, university: e.target.value })
                   }
-                  className="rounded-xl"
                 />
               </div>
               <div className="space-y-1.5">
@@ -220,7 +214,6 @@ export function JoinClient({
                   maxLength={200}
                   value={form.faculty}
                   onChange={(e) => setForm({ ...form, faculty: e.target.value })}
-                  className="rounded-xl"
                 />
               </div>
               <div className="grid grid-cols-[1fr_auto] gap-3">
@@ -234,7 +227,6 @@ export function JoinClient({
                     onChange={(e) =>
                       setForm({ ...form, specialty: e.target.value })
                     }
-                    className="rounded-xl"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -246,7 +238,7 @@ export function JoinClient({
                     onChange={(e) =>
                       setForm({ ...form, studyYear: e.target.value })
                     }
-                    className="h-9 w-[110px] rounded-xl border border-input bg-transparent px-3 text-[14px] shadow-xs outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                    className="h-11 w-[130px] rounded-xl border border-transparent bg-muted/60 px-3.5 text-[15px] outline-none transition-[background-color,box-shadow] duration-200 hover:bg-muted focus-visible:border-primary/40 focus-visible:bg-card focus-visible:ring-4 focus-visible:ring-primary/15"
                   >
                     <option value="" disabled>
                       —
@@ -263,7 +255,7 @@ export function JoinClient({
               <Button
                 type="submit"
                 disabled={!valid || saving}
-                className="w-full rounded-xl"
+                className="w-full"
                 size="lg"
               >
                 {saving ? (
@@ -276,6 +268,6 @@ export function JoinClient({
           </>
         )}
       </motion.div>
-    </div>
+    </AuthShell>
   );
 }

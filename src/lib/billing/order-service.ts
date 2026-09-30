@@ -55,12 +55,53 @@ export async function createOrder(input: CreateOrderInput) {
   });
 }
 
+/**
+ * An existing organisation buying one more programme. No email check: the
+ * buyer is the signed-in admin, and nothing new is provisioned for them —
+ * the paid programme is added to their tenant (see order-provisioning).
+ */
+export async function createProgramOrder(input: {
+  tenantId: string;
+  institutionName: string;
+  contactName: string;
+  contactEmail: string;
+  locale: string;
+  items: CreateOrderInput["items"];
+}) {
+  return prisma.$transaction(async (tx) => {
+    const quote = await calculateQuote(input.items, tx);
+    return tx.order.create({
+      data: {
+        kind: "ADD_PROGRAM",
+        tenantId: input.tenantId,
+        institutionName: input.institutionName,
+        contactName: input.contactName,
+        contactEmail: input.contactEmail,
+        locale: input.locale,
+        total: quote.total,
+        currency: quote.currency,
+        paytrMerchantOid: buildOrderMerchantOid(),
+        items: {
+          create: quote.items.map((line) => ({
+            serviceId: line.serviceId,
+            participantCount: line.participantCount,
+            unitPrice: line.unitPrice,
+            subtotal: line.subtotal,
+          })),
+        },
+      },
+    });
+  });
+}
+
 export async function startOrderCheckout(
   order: Awaited<ReturnType<typeof createOrder>>,
   userIp: string,
   appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
 ): Promise<string> {
-  const pricingUrl = `${appUrl}/${order.locale}/pricing`;
+  // A programme bought from inside the panel returns there, not to the public page.
+  const returnPath = order.kind === "ADD_PROGRAM" ? "/tenant/programs" : "/pricing";
+  const pricingUrl = `${appUrl}/${order.locale}${returnPath}`;
   try {
     return await requestPaytrCheckoutUrl({
       merchantOid: order.paytrMerchantOid,

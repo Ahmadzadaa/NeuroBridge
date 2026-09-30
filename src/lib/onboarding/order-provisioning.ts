@@ -1,3 +1,4 @@
+import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { recordAudit } from "@/lib/audit/audit-service";
 import { AUDIT_ACTIONS } from "@/lib/audit/actions";
@@ -8,7 +9,9 @@ import { createActivationToken, unusablePasswordHash } from "@/lib/onboarding/ac
 import type { PaytrCallbackPayload } from "@/lib/payment/paytr/paytr.types";
 
 /**
- * Turns a paid self-serve order into a live tenant.
+ * Turns a paid order into a live tenant (NEW_TENANT) or an extra programme for
+ * an existing one (ADD_PROGRAM). Either way the paid programme is created in
+ * PENDING_SETUP: organisations buy programmes, the platform team builds them.
  *
  * Runs from the PayTR callback after the hash is verified. PayTR retries until
  * it gets "OK", so this must be idempotent: the PENDING/FAILED -> PAID update
@@ -26,8 +29,46 @@ const SERVICE_FEATURES: Record<string, TenantFeature> = {
 
 export type OrderCallbackResult =
   | { outcome: "PROVISIONED"; orderId: string; tenantId: string; emailSent: boolean }
+  | { outcome: "PROGRAM_ADDED"; orderId: string; tenantId: string; programId: string }
   | { outcome: "DUPLICATE"; orderId: string }
   | { outcome: "FAILED"; orderId: string };
+
+const PENDING_PROGRAM_NAME: Record<string, string> = {
+  az: "Yeni proqram",
+  tr: "Yeni program",
+  en: "New programme",
+};
+const PLACEHOLDER_APPLICATION_DAYS = 30;
+
+/**
+ * The programme an order paid for, as a placeholder the platform team
+ * completes: name, dates and content are theirs to set. Applications stay
+ * closed until it is READY, so the placeholder dates are never used.
+ */
+async function createPendingProgram(
+  tx: Prisma.TransactionClient,
+  order: { id: string; locale: string; items: { participantCount: number; service: { code: string } }[] },
+  tenantId: string
+) {
+  const now = new Date();
+  const participantLimit = Math.max(...order.items.map((i) => i.participantCount));
+  return tx.program.create({
+    data: {
+      tenantId,
+      orderId: order.id,
+      setupStatus: "PENDING_SETUP",
+      name: PENDING_PROGRAM_NAME[order.locale] ?? PENDING_PROGRAM_NAME.tr,
+      type: "other",
+      applicationStart: now,
+      applicationEnd: new Date(now.getTime() + PLACEHOLDER_APPLICATION_DAYS * 86_400_000),
+      participantLimit,
+      programAiTools: order.items.some((i) => i.service.code === "AI_TOOLS")
+        ? { create: [{ aiTool: "ai_mentor" }] }
+        : undefined,
+    },
+    select: { id: true },
+  });
+}
 
 export class UnknownOrderError extends Error {
   constructor(merchantOid: string) {
@@ -82,6 +123,10 @@ export async function processOrderCallback(
   // A person can take part in several services, so the largest service
   // bounds how many distinct accounts the tenant needs.
   const seatLimit = Math.max(...order.items.map((i) => i.participantCount));
+  if (order.kind === "ADD_PROGRAM" && order.tenantId) {
+    return addProgramToTenant(order, order.tenantId, featureSet, seatLimit);
+  }
+
   const passwordHash = await unusablePasswordHash();
 
   const provisioned = await prisma.$transaction(async (tx) => {
@@ -126,6 +171,7 @@ export async function processOrderCallback(
     });
 
     await tx.order.update({ where: { id: order.id }, data: { tenantId: tenant.id } });
+    await createPendingProgram(tx, order, tenant.id);
     const activation = await createActivationToken(admin.id, tx);
 
     await recordAudit({
@@ -149,6 +195,57 @@ export async function processOrderCallback(
     tenantId: provisioned.tenant.id,
     emailSent,
   };
+}
+
+/**
+ * An existing organisation bought another programme: widen what it may use
+ * (modules only ever switch on here, seats grow by the new programme's size)
+ * and add the pending programme. No new account, so no activation email.
+ */
+async function addProgramToTenant(
+  order: Parameters<typeof createPendingProgram>[1] & {
+    items: { serviceId: string; participantCount: number; service: { code: string } }[];
+    total: number;
+  },
+  tenantId: string,
+  featureSet: Record<TenantFeature, boolean>,
+  seats: number
+): Promise<OrderCallbackResult> {
+  const result = await prisma.$transaction(async (tx) => {
+    const claimed = await tx.order.updateMany({
+      where: { id: order.id, status: { in: ["PENDING", "FAILED"] } },
+      data: { status: "PAID", paidAt: new Date() },
+    });
+    if (claimed.count !== 1) return null;
+
+    // Only the columns being switched on: a bought module never turns another off.
+    const enabled = Object.fromEntries(
+      Object.entries(toFeatureColumns(featureSet)).filter(([, on]) => on)
+    );
+    await tx.tenant.update({
+      where: { id: tenantId },
+      data: { seatLimit: { increment: seats }, ...enabled },
+    });
+    for (const item of order.items) {
+      await tx.tenantService.upsert({
+        where: { tenantId_serviceId: { tenantId, serviceId: item.serviceId } },
+        create: { tenantId, serviceId: item.serviceId, participantLimit: item.participantCount },
+        update: { participantLimit: { increment: item.participantCount } },
+      });
+    }
+    const program = await createPendingProgram(tx, order, tenantId);
+
+    await recordAudit({
+      tx,
+      action: AUDIT_ACTIONS.PROGRAM_CREATED,
+      tenantId,
+      details: { source: "order", orderId: order.id, programId: program.id, total: order.total, seats },
+    });
+    return program;
+  });
+
+  if (!result) return { outcome: "DUPLICATE", orderId: order.id };
+  return { outcome: "PROGRAM_ADDED", orderId: order.id, tenantId, programId: result.id };
 }
 
 async function sendActivation(

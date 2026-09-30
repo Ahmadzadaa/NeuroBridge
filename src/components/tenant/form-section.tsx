@@ -37,13 +37,13 @@ export function FormSection({
     <section className={cn("mt-8 first:mt-2", className)}>
       <div className="mb-4 flex items-start gap-3">
         {index !== undefined && (
-          <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-[13px] font-bold text-primary-text">
+          <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 text-[13px] font-bold text-white shadow-[0_6px_14px_-6px_var(--primary)]">
             {index}
           </span>
         )}
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h2 className="text-[17px] font-semibold tracking-[-0.2px] text-foreground">
+            <h2 className="text-[19px] font-bold tracking-[-0.4px] text-foreground">
               {title}
             </h2>
             {counter && (

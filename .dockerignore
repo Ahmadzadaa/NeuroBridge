@@ -14,3 +14,9 @@ backups
 infra/terraform/.terraform
 infra/terraform/*.tfstate*
 terminals
+
+# Local data never belongs in an image
+prisma/*.db
+prisma/*.db-journal
+uploads
+docs

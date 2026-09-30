@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
+import { formatSimMoney } from "@/lib/simulation/money";
 
 interface ScenarioRow {
   id: string;
@@ -117,8 +118,7 @@ export function ScenariosListClient({
                   {t("runCount", { count: scenario.runCount })}
                 </span>
                 <span>
-                  ₼{scenario.startCash.toLocaleString()} → ₼
-                  {scenario.targetCash.toLocaleString()}
+                  {formatSimMoney(scenario.startCash, locale)} → {formatSimMoney(scenario.targetCash, locale)}
                 </span>
               </div>
             </div>

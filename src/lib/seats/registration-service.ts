@@ -102,6 +102,7 @@ export async function registerParticipant(
       applicationStart: true,
       applicationEnd: true,
       participantLimit: true,
+      setupStatus: true,
     },
   });
 
@@ -109,6 +110,8 @@ export async function registerParticipant(
     throw new Error("Invalid application token");
   }
 
+  // A paid programme the platform team has not finished building is not open yet.
+  if (program.setupStatus !== "READY") throw new RegistrationClosedError();
   assertRegistrationWindow(program.applicationStart, program.applicationEnd);
   if (!input.consents.privacyNotice) throw new ConsentRequiredError();
   const locale = input.locale ?? "tr";
@@ -239,6 +242,7 @@ export async function getProgramByApplicationToken(token: string) {
       applicationStart: true,
       applicationEnd: true,
       participantLimit: true,
+      setupStatus: true,
       tenant: {
         select: {
           name: true,
@@ -256,7 +260,8 @@ export type ApplyProgram = NonNullable<Awaited<ReturnType<typeof getProgramByApp
 
 /** Whether the public registration form may be submitted right now. */
 export function registrationAvailability(program: ApplyProgram, now = new Date()) {
-  const registrationOpen = now >= program.applicationStart && now <= program.applicationEnd;
+  const registrationOpen =
+    program.setupStatus === "READY" && now >= program.applicationStart && now <= program.applicationEnd;
   const seatsAvailable =
     program.tenant.status === "ACTIVE" && program.tenant.seatsUsed < program.tenant.seatLimit;
   const programCapacityAvailable = program._count.participants < program.participantLimit;

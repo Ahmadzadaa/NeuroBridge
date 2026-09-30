@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { TrendingUp, TrendingDown } from "lucide-react";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { Label } from "@/components/ui/typography";
+import { IconTile, type IconTone } from "@/components/ui/ios";
 import { cn } from "@/lib/utils";
 import type { LucideIcon } from "lucide-react";
 
@@ -26,30 +27,11 @@ interface StatCardProps {
   gradient?: string;
 }
 
-const accentStyles: Record<
-  StatCardAccent,
-  { bar: string; iconWrap: string; icon: string }
-> = {
-  brand: {
-    bar: "bg-gradient-to-r from-primary via-primary/70 to-primary/30",
-    iconWrap: "bg-primary/10",
-    icon: "text-primary",
-  },
-  success: {
-    bar: "bg-gradient-to-r from-success via-success/70 to-success/30",
-    iconWrap: "bg-success/10",
-    icon: "text-success",
-  },
-  coin: {
-    bar: "bg-gradient-to-r from-coin via-coin/70 to-coin/30",
-    iconWrap: "bg-coin/10",
-    icon: "text-coin",
-  },
-  purple: {
-    bar: "bg-gradient-to-r from-chart-2 via-chart-2/70 to-chart-2/30",
-    iconWrap: "bg-chart-2/10",
-    icon: "text-chart-2",
-  },
+const accentTone: Record<StatCardAccent, IconTone> = {
+  brand: "indigo",
+  success: "emerald",
+  coin: "amber",
+  purple: "violet",
 };
 
 export function StatCard({
@@ -63,7 +45,6 @@ export function StatCard({
   prefix,
   className,
 }: StatCardProps) {
-  const styles = accentStyles[accent];
   const reducedMotion = useReducedMotion();
   const numericValue = typeof value === "number" ? value : null;
 
@@ -80,13 +61,12 @@ export function StatCard({
     >
       <div
         className={cn(
-          "relative h-full overflow-hidden rounded-2xl bg-card shadow-sm",
-          "transition-shadow duration-[250ms] ease-[cubic-bezier(0.4,0,0.2,1)] hover:shadow-hover",
+          "relative h-full overflow-hidden rounded-[20px] bg-card ring-1 ring-border/60",
+          "shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)]",
+          "transition-shadow duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:shadow-[0_2px_4px_rgba(15,23,42,0.05),0_18px_40px_-16px_rgba(15,23,42,0.22)]",
           className
         )}
       >
-        {/* Top gradient accent */}
-        <div className={cn("h-1 w-full", styles.bar)} aria-hidden="true" />
 
         <div className="p-5">
           {/* The title used to be right-aligned and pushed to the far edge by
@@ -95,20 +75,13 @@ export function StatCard({
               reads from the left next to the icon instead. `min-w-0` lets it
               wrap inside the row rather than forcing the row wider. */}
           <div className="flex items-start gap-3">
-            <div
-              className={cn(
-                "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl",
-                styles.iconWrap
-              )}
-            >
-              <Icon className={cn("h-5 w-5", styles.icon)} />
-            </div>
+            <IconTile icon={Icon} tone={accentTone[accent]} />
             <Label className="min-w-0 flex-1 pt-0.5 text-left leading-snug text-pretty break-words">
               {title}
             </Label>
           </div>
 
-          <div className="mt-4 text-[36px] font-bold leading-[1.1] tracking-[-0.5px] text-foreground">
+          <div className="mt-4 text-[34px] font-bold leading-[1.1] tracking-[-1px] tabular-nums text-foreground">
             {numericValue !== null ? (
               <AnimatedCounter value={numericValue} suffix={suffix} prefix={prefix} />
             ) : (

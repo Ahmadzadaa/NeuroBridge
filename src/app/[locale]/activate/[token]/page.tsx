@@ -1,5 +1,9 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { KeyRound, LinkIcon } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import { AuthShell, Sheet } from "@/components/layout/auth-shell";
+import { IconTile } from "@/components/ui/ios";
+import { buttonVariants } from "@/components/ui/button";
 import { getActivationTokenState } from "@/lib/onboarding/activation-token";
 import { ActivateForm } from "./activate-form";
 
@@ -12,25 +16,26 @@ export default async function ActivatePage({
   setRequestLocale(locale);
   const t = await getTranslations("activation");
   const state = await getActivationTokenState(token);
+  const valid = state === "VALID";
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4 py-16">
-      <div className="w-full max-w-[420px] rounded-xl border border-border bg-card p-6 shadow-md sm:p-10">
-        <h1 className="text-xl font-bold text-foreground">{t("title")}</h1>
-        {state === "VALID" ? (
-          <>
-            <p className="mt-2 text-sm text-muted-foreground">{t("subtitle")}</p>
-            <ActivateForm token={token} />
-          </>
+    <AuthShell width="sm">
+      <Sheet>
+        <div className="flex flex-col items-center text-center">
+          <IconTile icon={valid ? KeyRound : LinkIcon} tone={valid ? "indigo" : "slate"} size="lg" />
+          <h1 className="mt-4 text-[26px] font-bold tracking-[-0.6px] text-foreground">{t("title")}</h1>
+          <p className="mt-1.5 text-[15px] leading-relaxed text-muted-foreground">
+            {valid ? t("subtitle") : t(`state.${state}`)}
+          </p>
+        </div>
+        {valid ? (
+          <ActivateForm token={token} />
         ) : (
-          <>
-            <p className="mt-3 text-sm text-muted-foreground">{t(`state.${state}`)}</p>
-            <Link href="/login" className="mt-6 inline-block text-sm font-medium text-primary hover:underline">
-              {t("goToLogin")}
-            </Link>
-          </>
+          <Link href="/login" className={buttonVariants({ size: "lg", className: "mt-7 w-full" })}>
+            {t("goToLogin")}
+          </Link>
         )}
-      </div>
-    </div>
+      </Sheet>
+    </AuthShell>
   );
 }

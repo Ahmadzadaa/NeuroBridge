@@ -24,6 +24,7 @@ import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
+import { formatSimMoney } from "@/lib/simulation/money";
 
 interface MetricState {
   cash: number;
@@ -167,7 +168,7 @@ export function SimulationPlayClient({
       const res = await fetch(`/api/simulations/runs/${activeRun.id}/decide`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ choiceId }),
+        body: JSON.stringify({ choiceId, locale }),
       });
       if (!res.ok) throw new Error();
       const data = (await res.json()) as DecideOutcome;
@@ -237,7 +238,7 @@ export function SimulationPlayClient({
               <MetricChip
                 icon={Coins}
                 label={t("metrics.cash")}
-                value={`₼${displayedState.cash.toLocaleString()}`}
+                value={formatSimMoney(displayedState.cash, locale)}
                 delta={outcome?.deltas.cash}
                 accent="bg-coin/15 text-coin-dark"
               />
@@ -423,7 +424,7 @@ export function SimulationPlayClient({
                   <MetricChip
                     icon={Coins}
                     label={t("metrics.cash")}
-                    value={`₼${lastCompleted.cash.toLocaleString()}`}
+                    value={formatSimMoney(lastCompleted.cash, locale)}
                     accent="bg-coin/15 text-coin-dark"
                   />
                   <MetricChip
@@ -494,8 +495,8 @@ export function SimulationPlayClient({
                   <p>
                     {t("introRules", {
                       rounds: simulation.totalRounds,
-                      cash: `₼${simulation.startCash.toLocaleString()}`,
-                      target: `₼${simulation.targetCash.toLocaleString()}`,
+                      cash: formatSimMoney(simulation.startCash, locale),
+                      target: formatSimMoney(simulation.targetCash, locale),
                     })}
                   </p>
                 </div>

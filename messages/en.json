@@ -97,7 +97,8 @@
       "support": "Support",
       "system": "System Health",
       "audit": "Audit Log",
-      "pricing": "Services & Pricing"
+      "pricing": "Services & Pricing",
+      "programs": "Programmes"
     },
     "tenant": {
       "dashboard": "Dashboard",
@@ -116,7 +117,7 @@
       "dashboard": "Dashboard",
       "simulations": "Simulations",
       "trainings": "Trainings",
-      "aiTools": "AI Tools",
+      "aiTools": "AI Mentor",
       "badges": "Badges",
       "certificates": "Certificates",
       "leaderboard": "Leaderboard",
@@ -277,6 +278,26 @@
       "registrationRate7d": "Registration rate (7 days)",
       "aiUsage7d": "AI usage (7 days)",
       "seatByTenant": "Seat utilization by organization"
+    },
+    "programs": {
+      "title": "Programmes",
+      "subtitle": "Programmes organisations have bought. Complete and publish the ones created by payments here.",
+      "pendingHeading": "To set up",
+      "pendingFooter": "Paid — fill in the name, dates and content, then publish.",
+      "allHeading": "All programmes",
+      "empty": "No programmes yet.",
+      "new": "New programme",
+      "editTitle": "Edit programme",
+      "saved": "Programme saved",
+      "publish": "Publish",
+      "pendingNotice": "This programme was created automatically from a payment. Fill in its name, dates and content, then publish — registration stays closed until then.",
+      "tenantTitle": "Organisation",
+      "tenantDescription": "Who the programme is for.",
+      "chooseTenant": "Choose an organisation",
+      "tenantRequired": "Choose an organisation",
+      "statusPending": "Being set up",
+      "statusReady": "Live",
+      "participants": "{count} participants"
     }
   },
   "tenant": {
@@ -312,7 +333,12 @@
       "finalistCount": "Number of finalists",
       "juryEnabled": "Jury evaluation for finalists",
       "created": "Program created",
-      "createFailed": "The program could not be created. Please try again in a moment."
+      "createFailed": "The program could not be created. Please try again in a moment.",
+      "buy": "Buy a new programme",
+      "buySubtitle": "Choose services and participant numbers; after payment the programme is added to your account and our team sets it up.",
+      "statusPending": "Being set up",
+      "pendingHint": "Payment received; our team is setting up the programme. The registration link will appear here once it is ready.",
+      "paymentSuccess": "Payment received. Your new programme is being set up."
     },
     "projectTypes": {
       "entrepreneurship_training": "Entrepreneurship Training",
@@ -341,13 +367,7 @@
       "ai_tools": "AI Tools Training"
     },
     "aiTools": {
-      "ai_mentor": "AI Mentor",
-      "ai_jury": "AI Jury",
-      "ai_evaluation": "AI Evaluation",
-      "ai_analysis": "AI Analysis",
-      "ai_reporting": "AI Reporting",
-      "ai_pitch_coach": "AI Pitch Coach",
-      "ai_finance_advisor": "AI Finance Advisor"
+      "ai_mentor": "AI Mentor"
     },
     "participants": {
       "title": "Participants",
@@ -711,9 +731,13 @@
       "examHint": "We recommend completing all lessons first"
     },
     "aiTools": {
-      "title": "AI Support Tools",
+      "title": "AI Mentor",
       "chatPlaceholder": "Type your question...",
-      "send": "Send"
+      "send": "Send",
+      "subtitle": "Your personal mentor for questions on the entrepreneurship journey.",
+      "empty": "Ask about your idea, your plan or where you are stuck — the AI Mentor will help step by step.",
+      "unavailable": "The AI Mentor is not available right now. Please try again shortly.",
+      "thinking": "Thinking…"
     },
     "badges": {
       "title": "My Badges",
@@ -799,7 +823,14 @@
       "photoUpdated": "Profile picture updated",
       "photoRemoved": "Profile picture removed",
       "photoTooLarge": "Image must be 2 MB or smaller",
-      "photoInvalid": "Only JPEG, PNG or WebP is accepted"
+      "photoInvalid": "Only JPEG, PNG or WebP is accepted",
+      "strength": {
+        "weak": "Weak",
+        "fair": "Fair",
+        "good": "Good",
+        "strong": "Strong"
+      },
+      "changePhoto": "Change photo"
     },
     "certificateTypes": {
       "participation": "Certificate of Participation",
@@ -1117,7 +1148,7 @@
       "TEACHERS": "Teacher-Student Panel",
       "SIMULATIONS": "Business Simulations",
       "TRAININGS": "Trainings",
-      "AI_TOOLS": "AI Tools"
+      "AI_TOOLS": "AI Mentor"
     },
     "errors": {
       "generic": "Something went wrong. Please try again.",
@@ -1130,7 +1161,27 @@
       "CURRENCY_MISMATCH": "The selected services cannot be paid together. Please contact us.",
       "EMAIL_TAKEN": "An account with this email already exists. Use another email or sign in.",
       "PAYMENT_PROVIDER": "The payment service is temporarily unavailable. Please try again in a few minutes."
-    }
+    },
+    "selectedCount": "{count} selected",
+    "fromPrice": "from {price}",
+    "perParticipantShort": "/ participant",
+    "decrease": "Fewer participants",
+    "increase": "More participants",
+    "quickPick": "Quick pick",
+    "activeTier": "Your tier",
+    "summaryEmptyTitle": "Build your package",
+    "secure": "Secure payment with PayTR · 3D Secure",
+    "activationNote": "Your account is created right after payment and the activation link is emailed to you.",
+    "continue": "Continue",
+    "lineDetail": "{count} × {price}",
+    "descriptions": {
+      "HACKATHON": "Team projects, jury scoring and live results",
+      "TEACHERS": "Teachers follow, grade and guide their students",
+      "SIMULATIONS": "Data-driven business scenarios with grading",
+      "TRAININGS": "Video lessons, tests and certificates",
+      "AI_TOOLS": "A personal AI mentor for students on ideas and plans"
+    },
+    "tenantNote": "After payment the programme is added to your account; our team sets it up and activates it."
   },
   "activation": {
     "title": "Activate your account",
@@ -1199,7 +1250,13 @@
     "capacityReached": "The program is full.",
     "successToast": "Registration complete. You can sign in now.",
     "seatLimitToast": "Registration is not possible: the organization has run out of seats.",
-    "failedToast": "Registration failed. Please try again in a moment."
+    "failedToast": "Registration failed. Please try again in a moment.",
+    "stepOf": "Step {current} of {total}",
+    "continue": "Continue",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "readNotice": "Read",
+    "secureNote": "Your data is protected under the privacy notice."
   },
   "programSchedule": {
     "caption": "6-week program calendar",

@@ -27,15 +27,8 @@ export const TRAINING_TYPES = [
   "ai_tools",
 ] as const;
 
-export const AI_TOOLS = [
-  "ai_mentor",
-  "ai_jury",
-  "ai_evaluation",
-  "ai_analysis",
-  "ai_reporting",
-  "ai_pitch_coach",
-  "ai_finance_advisor",
-] as const;
+/** The AI Mentor is the platform's only AI assistant. */
+export const AI_TOOLS = ["ai_mentor"] as const;
 
 export const SEAT_PACKAGES = [
   { id: "50", seats: 50, pricePerSeat: 29 },

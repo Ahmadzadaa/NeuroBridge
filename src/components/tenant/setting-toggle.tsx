@@ -2,6 +2,7 @@
 
 import type { LucideIcon } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
+import { IconTile } from "@/components/ui/ios";
 import { cn } from "@/lib/utils";
 
 /**
@@ -37,29 +38,26 @@ export function SettingToggle({
     <label
       htmlFor={id}
       className={cn(
-        "flex cursor-pointer items-start gap-3 p-4 transition-colors",
-        "hover:bg-subtle/60 has-[:focus-visible]:bg-subtle/60",
+        "flex cursor-pointer items-center gap-3.5 px-4 py-3.5 transition-colors",
+        "hover:bg-muted/40 has-[:focus-visible]:bg-muted/40 active:bg-muted/60",
       )}
     >
-      <span
-        className={cn(
-          "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition-colors",
-          checked ? "bg-primary/10 text-primary-text" : "bg-subtle text-muted-foreground",
-        )}
-      >
-        <Icon className="h-4.5 w-4.5" aria-hidden="true" />
-      </span>
+      <IconTile
+        icon={Icon}
+        tone={checked ? "indigo" : "slate"}
+        className={cn("transition-opacity duration-300", !checked && "opacity-60")}
+      />
 
       <span className="min-w-0 flex-1">
         <span className="flex flex-wrap items-center gap-2">
-          <span className="text-[14px] font-medium text-foreground">{title}</span>
+          <span className="text-[15px] font-medium text-foreground">{title}</span>
           {badge && (
             <span className="rounded-full bg-warning/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.3px] text-warning-dark">
               {badge}
             </span>
           )}
         </span>
-        <span className="mt-0.5 block text-[12.5px] leading-[1.55] text-muted-foreground">
+        <span className="mt-0.5 block text-[13px] leading-[1.5] text-muted-foreground">
           {description}
         </span>
       </span>
@@ -68,7 +66,7 @@ export function SettingToggle({
         id={id}
         checked={checked}
         onCheckedChange={onCheckedChange}
-        className="mt-0.5 shrink-0"
+        className="shrink-0"
       />
     </label>
   );
@@ -77,7 +75,7 @@ export function SettingToggle({
 /** Groups toggles into one card with hairline dividers between them. */
 export function SettingGroup({ children }: { children: React.ReactNode }) {
   return (
-    <div className="divide-y divide-border overflow-hidden rounded-2xl bg-card shadow-sm">
+    <div className="divide-y divide-border/60 overflow-hidden rounded-[20px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60">
       {children}
     </div>
   );

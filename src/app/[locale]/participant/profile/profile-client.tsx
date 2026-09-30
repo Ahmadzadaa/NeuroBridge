@@ -7,31 +7,24 @@ import { useApiErrorMessage } from "@/lib/api/api-error";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   Award,
-  BookOpen,
   Camera,
   CalendarDays,
   CheckCircle2,
+  ChevronsUpDown,
   FileText,
   GraduationCap,
   KeyRound,
   Loader2,
+  Lock,
   Save,
-  ShieldCheck,
   Trash2,
 } from "lucide-react";
 import { toast } from "sonner";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { IconTile, InsetGroup, Reveal } from "@/components/ui/ios";
+import { cn } from "@/lib/utils";
 
 interface ProfileData {
   email: string;
@@ -55,6 +48,7 @@ interface ProfileData {
 const MAX_AVATAR_BYTES = 2 * 1024 * 1024;
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const STUDY_YEARS = [1, 2, 3, 4, 5, 6];
+const EASE = [0.32, 0.72, 0, 1] as const;
 
 interface ProfileClientProps {
   locale: string;
@@ -62,10 +56,13 @@ interface ProfileClientProps {
 }
 
 const LANGUAGES = [
-  { value: "az", label: "Azərbaycan dili" },
+  { value: "az", label: "Azərbaycan" },
   { value: "tr", label: "Türkçe" },
   { value: "en", label: "English" },
 ];
+
+const STRENGTH = ["weak", "fair", "good", "strong"] as const;
+const STRENGTH_COLORS = ["bg-destructive", "bg-amber-500", "bg-sky-500", "bg-success"];
 
 export function ProfileClient({ locale, profile }: ProfileClientProps) {
   const t = useTranslations("participant.profilePage");
@@ -105,11 +102,14 @@ export function ProfileClient({ locale, profile }: ProfileClientProps) {
     .slice(0, 2)
     .toUpperCase();
 
-  const passwordPolicyOk =
-    newPassword.length >= 8 &&
-    /[a-z]/.test(newPassword) &&
-    /[A-Z]/.test(newPassword) &&
-    /\d/.test(newPassword);
+  const passwordRules = [
+    newPassword.length >= 8,
+    /[a-z]/.test(newPassword),
+    /[A-Z]/.test(newPassword),
+    /\d/.test(newPassword),
+  ];
+  const passwordScore = passwordRules.filter(Boolean).length;
+  const passwordPolicyOk = passwordScore === passwordRules.length;
   const passwordsMatch = newPassword === confirmPassword;
 
   async function saveProfile(e: React.FormEvent) {
@@ -227,9 +227,9 @@ export function ProfileClient({ locale, profile }: ProfileClientProps) {
   }
 
   const stats = [
-    { icon: Award, label: t("stats.badges"), value: profile.badges },
-    { icon: FileText, label: t("stats.certificates"), value: profile.certificates },
-    { icon: CheckCircle2, label: t("stats.examsPassed"), value: profile.examsPassed },
+    { icon: Award, tone: "amber" as const, label: t("stats.badges"), value: profile.badges },
+    { icon: FileText, tone: "sky" as const, label: t("stats.certificates"), value: profile.certificates },
+    { icon: CheckCircle2, tone: "emerald" as const, label: t("stats.examsPassed"), value: profile.examsPassed },
   ];
 
   return (
@@ -239,349 +239,273 @@ export function ProfileClient({ locale, profile }: ProfileClientProps) {
       userName={fullName}
       coinBalance={profile.coinBalance}
     >
-      <div className="mx-auto max-w-3xl space-y-6">
-        {/* ── Identity card ──────────────────────────────────── */}
-        <motion.div
-          initial={reducedMotion ? false : { opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35, ease: [0, 0, 0.2, 1] }}
-          className="rounded-2xl bg-gradient-to-br from-primary/10 via-card to-card p-6 shadow-sm ring-1 ring-primary/10 sm:p-8"
-        >
-          <div className="flex flex-wrap items-center gap-5">
-            <div className="flex flex-col items-center gap-2">
-              <Avatar className="h-16 w-16 text-lg ring-2 ring-primary/30">
-                {avatarUrl && <AvatarImage src={avatarUrl} alt={fullName} />}
-                <AvatarFallback className="bg-primary/10 font-semibold text-primary">
-                  {initials}
-                </AvatarFallback>
-              </Avatar>
-
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept={ACCEPTED_IMAGE_TYPES.join(",")}
-                className="sr-only"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) uploadAvatar(file);
-                }}
-              />
-              <div className="flex items-center gap-1">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  disabled={uploadingAvatar}
-                  onClick={() => fileInputRef.current?.click()}
-                  className="h-7 rounded-lg px-2 text-[11px]"
-                >
-                  {uploadingAvatar ? (
-                    <Loader2 className="h-3 w-3 animate-spin" aria-hidden="true" />
-                  ) : (
-                    <>
-                      <Camera className="h-3 w-3" aria-hidden="true" />
-                      {t("uploadPhoto")}
-                    </>
-                  )}
-                </Button>
-                {avatarUrl && !uploadingAvatar && (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={removeAvatar}
-                    className="h-7 rounded-lg px-2 text-[11px] text-muted-foreground"
-                    aria-label={t("removePhoto")}
-                  >
-                    <Trash2 className="h-3 w-3" aria-hidden="true" />
-                  </Button>
-                )}
-              </div>
-            </div>
-            <div className="min-w-0 flex-1">
-              <h2 className="text-[19px] font-bold leading-snug">{fullName}</h2>
-              <p className="mt-0.5 text-[13px] text-muted-foreground">
-                {profile.email}
-              </p>
-              <p className="mt-1 flex items-center gap-1.5 text-[12px] text-muted-foreground">
-                <CalendarDays className="h-3.5 w-3.5" aria-hidden="true" />
-                {t("memberSince", {
-                  date: new Date(profile.memberSince).toLocaleDateString(locale),
-                })}
-              </p>
-              {profile.teacherName && (
-                <p className="mt-1 flex items-center gap-1.5 text-[12px] font-medium text-primary">
-                  <GraduationCap className="h-3.5 w-3.5" aria-hidden="true" />
-                  {t("myTeacher", { name: profile.teacherName })}
-                </p>
+      <div className="mx-auto max-w-2xl space-y-8">
+        {/* ── Identity: centred like an Apple ID header ─────────── */}
+        <Reveal className="flex flex-col items-center pt-2 text-center">
+          <div className="relative">
+            <Avatar className="h-24 w-24 text-2xl shadow-[0_12px_30px_-12px_rgba(79,70,229,0.55)] ring-4 ring-card">
+              {avatarUrl && <AvatarImage src={avatarUrl} alt={fullName} />}
+              <AvatarFallback className="bg-gradient-to-br from-indigo-500 to-violet-600 font-semibold text-white">
+                {initials}
+              </AvatarFallback>
+            </Avatar>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept={ACCEPTED_IMAGE_TYPES.join(",")}
+              className="sr-only"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) uploadAvatar(file);
+              }}
+            />
+            <button
+              type="button"
+              disabled={uploadingAvatar}
+              onClick={() => fileInputRef.current?.click()}
+              aria-label={avatarUrl ? t("changePhoto") : t("uploadPhoto")}
+              className="absolute -bottom-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-md ring-4 ring-background transition active:scale-90 disabled:opacity-60"
+            >
+              {uploadingAvatar ? (
+                <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+              ) : (
+                <Camera className="h-4 w-4" aria-hidden="true" />
               )}
-            </div>
+            </button>
           </div>
 
-          <div className="mt-6 grid grid-cols-3 gap-3">
-            {stats.map((stat) => (
-              <div
-                key={stat.label}
-                className="rounded-xl bg-card/80 p-3.5 text-center shadow-sm ring-1 ring-border/60"
+          <h2 className="mt-4 text-[26px] font-bold tracking-[-0.6px] text-foreground">{fullName}</h2>
+          <p className="text-[15px] text-muted-foreground">{profile.email}</p>
+
+          <div className="mt-3 flex flex-wrap justify-center gap-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-card px-3 py-1 text-[12px] text-muted-foreground shadow-sm ring-1 ring-border/60">
+              <CalendarDays className="h-3.5 w-3.5" aria-hidden="true" />
+              {t("memberSince", {
+                date: new Date(profile.memberSince).toLocaleDateString(locale),
+              })}
+            </span>
+            {profile.teacherName && (
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-[12px] font-medium text-primary">
+                <GraduationCap className="h-3.5 w-3.5" aria-hidden="true" />
+                {t("myTeacher", { name: profile.teacherName })}
+              </span>
+            )}
+            {avatarUrl && !uploadingAvatar && (
+              <button
+                type="button"
+                onClick={removeAvatar}
+                className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[12px] text-muted-foreground transition hover:bg-destructive/10 hover:text-destructive"
               >
-                <stat.icon
-                  className="mx-auto h-4.5 w-4.5 text-primary"
-                  aria-hidden="true"
-                />
-                <p className="mt-1.5 text-[18px] font-bold tabular-nums">
-                  {stat.value}
-                </p>
-                <p className="text-[11px] text-muted-foreground">{stat.label}</p>
-              </div>
-            ))}
+                <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
+                {t("removePhoto")}
+              </button>
+            )}
           </div>
-        </motion.div>
+        </Reveal>
 
-        {/* ── Personal info ──────────────────────────────────── */}
-        <motion.form
-          onSubmit={saveProfile}
-          initial={reducedMotion ? false : { opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.08, duration: 0.35, ease: [0, 0, 0.2, 1] }}
-          className="rounded-2xl bg-card p-6 shadow-sm sm:p-8"
-        >
-          <h3 className="text-[15px] font-semibold">{t("personalInfo")}</h3>
-          <p className="mt-1 text-[12px] text-muted-foreground">
-            {t("personalInfoHint")}
-          </p>
+        <Reveal index={1} className="grid grid-cols-3 gap-3">
+          {stats.map((stat) => (
+            <div
+              key={stat.label}
+              className="flex flex-col items-center rounded-[20px] bg-card px-2 py-4 text-center shadow-sm ring-1 ring-border/60"
+            >
+              <IconTile icon={stat.icon} tone={stat.tone} size="sm" />
+              <p className="mt-2 text-[22px] font-bold tabular-nums tracking-[-0.5px] text-foreground">{stat.value}</p>
+              <p className="text-[12px] leading-tight text-muted-foreground">{stat.label}</p>
+            </div>
+          ))}
+        </Reveal>
 
-          <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div className="space-y-1.5">
-              <Label htmlFor="firstName">{t("firstName")}</Label>
-              <Input
-                id="firstName"
-                required
-                maxLength={100}
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                className="rounded-xl"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="lastName">{t("lastName")}</Label>
-              <Input
-                id="lastName"
-                required
-                maxLength={100}
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                className="rounded-xl"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="phone">{t("phone")}</Label>
-              <Input
-                id="phone"
-                type="tel"
-                maxLength={30}
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder="+994 50 000 00 00"
-                className="rounded-xl"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="language">{t("language")}</Label>
-              <Select value={language} onValueChange={(v) => v && setLanguage(v)}>
-                <SelectTrigger id="language" className="w-full rounded-xl">
-                  <SelectValue>
-                    {LANGUAGES.find((l) => l.value === language)?.label}
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  {LANGUAGES.map((lang) => (
-                    <SelectItem key={lang.value} value={lang.value}>
-                      {lang.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-1.5 sm:col-span-2">
-              <Label htmlFor="email">{t("email")}</Label>
-              <Input
-                id="email"
-                value={profile.email}
-                readOnly
-                className="rounded-xl bg-subtle text-muted-foreground"
-              />
-              <p className="text-[11px] text-muted-foreground">
-                {t("emailLocked")}
-              </p>
-            </div>
-          </div>
-
-          {/* ── Academic details ─────────────────────────────── */}
-          <div className="mt-8 border-t border-border pt-6">
-            <h3 className="flex items-center gap-2 text-[15px] font-semibold">
-              <BookOpen className="h-4.5 w-4.5 text-primary" aria-hidden="true" />
-              {t("academicInfo")}
-            </h3>
-            <p className="mt-1 text-[12px] text-muted-foreground">
-              {t("academicHint")}
-            </p>
-
-            <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div className="space-y-1.5 sm:col-span-2">
-                <Label htmlFor="university">{t("university")}</Label>
-                <Input
-                  id="university"
-                  maxLength={200}
-                  value={university}
-                  onChange={(e) => setUniversity(e.target.value)}
-                  className="rounded-xl"
+        {/* ── Personal + academic: Settings-style rows ───────────── */}
+        <Reveal index={2}>
+          <form onSubmit={saveProfile} className="space-y-6">
+            <InsetGroup header={t("personalInfo")} footer={t("emailLocked")}>
+              <FormRow label={t("firstName")} htmlFor="firstName">
+                <RowInput id="firstName" required maxLength={100} autoComplete="given-name" value={firstName} onChange={setFirstName} />
+              </FormRow>
+              <FormRow label={t("lastName")} htmlFor="lastName">
+                <RowInput id="lastName" required maxLength={100} autoComplete="family-name" value={lastName} onChange={setLastName} />
+              </FormRow>
+              <FormRow label={t("phone")} htmlFor="phone">
+                <RowInput id="phone" type="tel" maxLength={30} autoComplete="tel" placeholder="+994 50 000 00 00" value={phone} onChange={setPhone} />
+              </FormRow>
+              <FormRow label={t("email")} htmlFor="email">
+                <span id="email" className="flex min-w-0 flex-1 items-center justify-end gap-1.5 truncate text-[15px] text-muted-foreground">
+                  <span className="truncate">{profile.email}</span>
+                  <Lock className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                </span>
+              </FormRow>
+              <div className="px-4 py-3">
+                <p id="language-label" className="mb-2 text-[15px] text-foreground">{t("language")}</p>
+                <Segmented
+                  labelledBy="language-label"
+                  value={language}
+                  options={LANGUAGES}
+                  onChange={setLanguage}
+                  layoutId={reducedMotion ? undefined : "profile-language"}
                 />
               </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="faculty">{t("faculty")}</Label>
-                <Input
-                  id="faculty"
-                  maxLength={200}
-                  value={faculty}
-                  onChange={(e) => setFaculty(e.target.value)}
-                  className="rounded-xl"
-                />
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="specialty">{t("specialty")}</Label>
-                <Input
-                  id="specialty"
-                  maxLength={200}
-                  value={specialty}
-                  onChange={(e) => setSpecialty(e.target.value)}
-                  className="rounded-xl"
-                />
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="studyYear">{t("studyYear")}</Label>
-                <Select
-                  value={studyYear}
-                  onValueChange={(v) => setStudyYear(v ?? "")}
-                >
-                  <SelectTrigger id="studyYear" className="w-full rounded-xl">
-                    <SelectValue>
-                      {studyYear
-                        ? t("studyYearUnit", { year: studyYear })
-                        : t("notSet")}
-                    </SelectValue>
-                  </SelectTrigger>
-                  <SelectContent>
+            </InsetGroup>
+
+            <InsetGroup header={t("academicInfo")} footer={t("academicHint")}>
+              <FormRow label={t("university")} htmlFor="university">
+                <RowInput id="university" maxLength={200} value={university} onChange={setUniversity} />
+              </FormRow>
+              <FormRow label={t("faculty")} htmlFor="faculty">
+                <RowInput id="faculty" maxLength={200} value={faculty} onChange={setFaculty} />
+              </FormRow>
+              <FormRow label={t("specialty")} htmlFor="specialty">
+                <RowInput id="specialty" maxLength={200} value={specialty} onChange={setSpecialty} />
+              </FormRow>
+              <FormRow label={t("studyYear")} htmlFor="studyYear">
+                <span className="relative flex min-w-0 flex-1 justify-end">
+                  <select
+                    id="studyYear"
+                    value={studyYear}
+                    onChange={(e) => setStudyYear(e.target.value)}
+                    className="h-11 appearance-none bg-transparent pr-6 text-right text-[15px] text-muted-foreground outline-none"
+                  >
+                    <option value="">{t("notSet")}</option>
                     {STUDY_YEARS.map((year) => (
-                      <SelectItem key={year} value={String(year)}>
+                      <option key={year} value={String(year)}>
                         {t("studyYearUnit", { year })}
-                      </SelectItem>
+                      </option>
                     ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          </div>
+                  </select>
+                  <ChevronsUpDown className="pointer-events-none absolute right-0 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/70" aria-hidden="true" />
+                </span>
+              </FormRow>
+            </InsetGroup>
 
-          <Button
-            type="submit"
-            disabled={savingProfile || !firstName.trim() || !lastName.trim()}
-            className="mt-6 rounded-xl"
-          >
-            {savingProfile ? (
-              <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-            ) : (
-              <>
-                <Save className="h-4 w-4" aria-hidden="true" />
+            <div className="flex justify-end px-1">
+              <Button type="submit" size="lg" disabled={savingProfile || !firstName.trim() || !lastName.trim()}>
+                {savingProfile ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <Save className="h-4 w-4" aria-hidden="true" />}
                 {tc("save")}
-              </>
-            )}
-          </Button>
-        </motion.form>
-
-        {/* ── Password ───────────────────────────────────────── */}
-        <motion.form
-          onSubmit={changePassword}
-          initial={reducedMotion ? false : { opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.16, duration: 0.35, ease: [0, 0, 0.2, 1] }}
-          className="rounded-2xl bg-card p-6 shadow-sm sm:p-8"
-        >
-          <h3 className="flex items-center gap-2 text-[15px] font-semibold">
-            <ShieldCheck className="h-4.5 w-4.5 text-primary" aria-hidden="true" />
-            {t("security")}
-          </h3>
-          <p className="mt-1 text-[12px] text-muted-foreground">
-            {t("securityHint")}
-          </p>
-
-          <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div className="space-y-1.5 sm:col-span-2">
-              <Label htmlFor="currentPassword">{t("currentPassword")}</Label>
-              <Input
-                id="currentPassword"
-                type="password"
-                autoComplete="current-password"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                className="rounded-xl sm:max-w-[calc(50%-0.5rem)]"
-              />
+              </Button>
             </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="newPassword">{t("newPassword")}</Label>
-              <Input
-                id="newPassword"
-                type="password"
-                autoComplete="new-password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                className="rounded-xl"
-              />
-              {newPassword.length > 0 && !passwordPolicyOk && (
-                <p className="text-[11px] text-warning-dark">
-                  {t("passwordPolicy")}
-                </p>
+          </form>
+        </Reveal>
+
+        {/* ── Password ───────────────────────────────────────────── */}
+        <Reveal index={3}>
+          <form onSubmit={changePassword} className="space-y-4">
+            <InsetGroup header={t("security")} footer={t("securityHint")}>
+              <FormRow label={t("currentPassword")} htmlFor="currentPassword">
+                <RowInput id="currentPassword" type="password" autoComplete="current-password" value={currentPassword} onChange={setCurrentPassword} />
+              </FormRow>
+              <FormRow label={t("newPassword")} htmlFor="newPassword">
+                <RowInput id="newPassword" type="password" autoComplete="new-password" value={newPassword} onChange={setNewPassword} />
+              </FormRow>
+              <FormRow label={t("confirmPassword")} htmlFor="confirmPassword">
+                <RowInput id="confirmPassword" type="password" autoComplete="new-password" value={confirmPassword} onChange={setConfirmPassword} />
+              </FormRow>
+              {newPassword.length > 0 && (
+                <div className="px-4 py-3">
+                  <div className="flex items-center gap-3">
+                    <div className="grid flex-1 grid-cols-4 gap-1.5" aria-hidden="true">
+                      {STRENGTH.map((key, i) => (
+                        <div key={key} className="h-1.5 overflow-hidden rounded-full bg-muted">
+                          <motion.div
+                            className={cn("h-full rounded-full", STRENGTH_COLORS[passwordScore - 1] ?? "bg-muted")}
+                            initial={false}
+                            animate={{ width: i < passwordScore ? "100%" : "0%" }}
+                            transition={{ duration: reducedMotion ? 0 : 0.35, ease: EASE }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    <span className="w-14 text-right text-[12px] font-semibold text-muted-foreground" aria-live="polite">
+                      {t(`strength.${STRENGTH[Math.max(passwordScore, 1) - 1]}`)}
+                    </span>
+                  </div>
+                  {!passwordPolicyOk && <p className="mt-2 text-[12px] text-muted-foreground">{t("passwordPolicy")}</p>}
+                  {confirmPassword.length > 0 && !passwordsMatch && (
+                    <p className="mt-2 text-[12px] text-destructive">{t("passwordMismatch")}</p>
+                  )}
+                </div>
               )}
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="confirmPassword">{t("confirmPassword")}</Label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                autoComplete="new-password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="rounded-xl"
-              />
-              {confirmPassword.length > 0 && !passwordsMatch && (
-                <p className="text-[11px] text-destructive">
-                  {t("passwordMismatch")}
-                </p>
-              )}
-            </div>
-          </div>
+            </InsetGroup>
 
-          <Button
-            type="submit"
-            variant="outline"
-            disabled={
-              savingPassword ||
-              !currentPassword ||
-              !passwordPolicyOk ||
-              !passwordsMatch
-            }
-            className="mt-6 rounded-xl"
-          >
-            {savingPassword ? (
-              <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-            ) : (
-              <>
-                <KeyRound className="h-4 w-4" aria-hidden="true" />
+            <div className="flex justify-end px-1">
+              <Button
+                type="submit"
+                variant="outline"
+                size="lg"
+                disabled={savingPassword || !currentPassword || !passwordPolicyOk || !passwordsMatch}
+              >
+                {savingPassword ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <KeyRound className="h-4 w-4" aria-hidden="true" />}
                 {t("changePassword")}
-              </>
-            )}
-          </Button>
-        </motion.form>
+              </Button>
+            </div>
+          </form>
+        </Reveal>
       </div>
     </DashboardLayout>
+  );
+}
+
+/** Settings-style row: label on the left, the control fills the right. */
+function FormRow({ label, htmlFor, children }: { label: string; htmlFor: string; children: React.ReactNode }) {
+  return (
+    <div className="flex min-h-[52px] items-center gap-4 px-4 focus-within:bg-muted/40">
+      <label htmlFor={htmlFor} className="w-32 shrink-0 text-[15px] text-foreground sm:w-40">
+        {label}
+      </label>
+      {children}
+    </div>
+  );
+}
+
+function RowInput({
+  onChange,
+  ...props
+}: Omit<React.ComponentProps<"input">, "onChange"> & { onChange: (value: string) => void }) {
+  return (
+    <input
+      {...props}
+      onChange={(e) => onChange(e.target.value)}
+      className="h-11 min-w-0 flex-1 bg-transparent text-right text-[15px] text-foreground outline-none placeholder:text-muted-foreground/60"
+    />
+  );
+}
+
+function Segmented({
+  value,
+  options,
+  onChange,
+  labelledBy,
+  layoutId,
+}: {
+  value: string;
+  options: { value: string; label: string }[];
+  onChange: (value: string) => void;
+  labelledBy: string;
+  layoutId?: string;
+}) {
+  return (
+    <div role="radiogroup" aria-labelledby={labelledBy} className="grid auto-cols-fr grid-flow-col gap-1 rounded-[12px] bg-muted p-1">
+      {options.map((option) => {
+        const on = option.value === value;
+        return (
+          <button
+            key={option.value}
+            type="button"
+            role="radio"
+            aria-checked={on}
+            onClick={() => onChange(option.value)}
+            className="relative h-9 rounded-[9px] text-[13px] font-semibold outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            {on && (
+              <motion.span
+                layoutId={layoutId}
+                className="absolute inset-0 rounded-[9px] bg-card shadow-sm ring-1 ring-border/50"
+                transition={{ type: "spring", stiffness: 500, damping: 38 }}
+              />
+            )}
+            <span className={cn("relative", on ? "text-foreground" : "text-muted-foreground")}>{option.label}</span>
+          </button>
+        );
+      })}
+    </div>
   );
 }

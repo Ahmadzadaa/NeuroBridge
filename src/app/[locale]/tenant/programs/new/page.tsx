@@ -1,15 +1,7 @@
-import { setRequestLocale } from "next-intl/server";
-import { requireRole } from "@/lib/auth-utils";
-import { NewProgramClient } from "./new-program-client";
+import { redirect } from "next/navigation";
 
-export default async function NewProgramPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
+/** Programmes are bought, not created here; old links land on the purchase page. */
+export default async function NewProgramRedirect({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-  setRequestLocale(locale);
-  const session = await requireRole(locale, ["TENANT_ADMIN"]);
-
-  return <NewProgramClient userName={session.user.name ?? "Admin"} />;
+  redirect(`/${locale}/tenant/programs/buy`);
 }

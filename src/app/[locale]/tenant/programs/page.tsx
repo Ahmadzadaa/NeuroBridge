@@ -5,10 +5,13 @@ import { ProgramsPageClient } from "./programs-client";
 
 export default async function ProgramsPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ payment?: string }>;
 }) {
   const { locale } = await params;
+  const { payment } = await searchParams;
   setRequestLocale(locale);
   const session = await requireRole(locale, ["TENANT_ADMIN", "TENANT_VIEWER"]);
 
@@ -24,6 +27,7 @@ export default async function ProgramsPage({
           applicationEnd: true,
           participantLimit: true,
           applicationToken: true,
+          setupStatus: true,
           _count: { select: { participants: true, hackathonTeams: true } },
         },
       })
@@ -33,6 +37,7 @@ export default async function ProgramsPage({
     <ProgramsPageClient
       locale={locale}
       userName={session.user.name ?? "Admin"}
+      paymentSucceeded={payment === "success"}
       programs={programs.map((p) => ({
         id: p.id,
         name: p.name,
@@ -43,6 +48,7 @@ export default async function ProgramsPage({
         applicationToken: p.applicationToken,
         participantCount: p._count.participants,
         teamCount: p._count.hackathonTeams,
+        pendingSetup: p.setupStatus === "PENDING_SETUP",
       }))}
     />
   );

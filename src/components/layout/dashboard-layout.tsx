@@ -64,7 +64,7 @@ export function DashboardLayout({
       {/* ── Desktop sidebar ─────────────────────────────────────── */}
       <aside
         className={cn(
-          "fixed left-0 top-0 z-40 hidden h-full flex-col border-r border-sidebar-border bg-sidebar",
+          "fixed left-0 top-0 z-40 hidden h-full flex-col border-r border-sidebar-border/70 bg-sidebar/85 backdrop-blur-xl",
           "transition-[width] duration-[250ms] ease-[cubic-bezier(0.4,0,0.2,1)] lg:flex",
           sidebarOpen ? "w-60" : "w-16"
         )}
@@ -178,8 +178,8 @@ export function DashboardLayout({
         )}
       >
         {/* Topbar */}
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-card/70 px-4 backdrop-blur-xl lg:px-6">
-          <h1 className="truncate text-[18px] font-semibold tracking-[-0.3px] text-foreground">
+        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border/60 bg-background/70 px-4 backdrop-blur-2xl backdrop-saturate-150 lg:px-6">
+          <h1 className="truncate text-[17px] font-semibold tracking-[-0.4px] text-foreground">
             {title}
           </h1>
 
@@ -218,7 +218,7 @@ export function DashboardLayout({
         </header>
 
         {/* Page content — capped at 1400px so ultra-wide screens stay composed */}
-        <main className="min-w-0 flex-1 p-4 pb-24 lg:p-6 lg:pb-6">
+        <main className="min-w-0 flex-1 p-4 pb-28 sm:p-6 lg:p-8 lg:pb-8">
           <div className="mx-auto w-full min-w-0 max-w-[1400px]">
             <PageTransition>{children}</PageTransition>
           </div>

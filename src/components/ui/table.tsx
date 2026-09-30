@@ -59,7 +59,7 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
       className={cn(
         // Zebra rows + hover with brand left-border indicator (inset shadow on
         // the first cell, since tr borders don't render reliably when collapsed)
-        "border-b transition-colors even:bg-subtle/50 hover:bg-subtle has-aria-expanded:bg-subtle data-[state=selected]:bg-accent hover:[&>td:first-child]:shadow-[inset_3px_0_0_var(--color-primary)]",
+        "border-b border-border/60 transition-colors duration-150 hover:bg-muted/50 has-aria-expanded:bg-muted/50 data-[state=selected]:bg-accent",
         className
       )}
       {...props}

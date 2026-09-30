@@ -6,22 +6,8 @@ import { enforceRateLimit, getClientIdentifier } from "@/lib/security/rate-limit
 import { recordAudit, getClientIp } from "@/lib/audit/audit-service";
 import { AUDIT_ACTIONS } from "@/lib/audit/actions";
 
-const AI_PROMPTS: Record<string, string> = {
-  ai_mentor:
-    "You are an AI Mentor for entrepreneurship. Provide supportive, actionable guidance.",
-  ai_jury:
-    "You are an AI Jury member evaluating startup pitches. Give constructive feedback.",
-  ai_evaluation:
-    "You are an AI Evaluation tool. Assess business ideas objectively.",
-  ai_analysis:
-    "You are an AI Analysis tool. Provide data-driven business insights.",
-  ai_reporting:
-    "You are an AI Reporting assistant. Help summarize progress and metrics.",
-  ai_pitch_coach:
-    "You are an AI Pitch Coach. Help improve pitch decks and presentations.",
-  ai_finance_advisor:
-    "You are an AI Finance Advisor. Provide financial planning guidance.",
-};
+const AI_MENTOR_PROMPT =
+  "You are an AI Mentor for entrepreneurship. Provide supportive, actionable guidance.";
 
 export async function POST(request: Request) {
   try {
@@ -44,7 +30,7 @@ export async function POST(request: Request) {
     }
 
     const body = parseBody(aiChatSchema, await request.json());
-    const systemPrompt = AI_PROMPTS[body.tool] ?? AI_PROMPTS.ai_mentor;
+    const systemPrompt = AI_MENTOR_PROMPT;
 
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",

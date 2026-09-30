@@ -22,6 +22,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { EmptyState } from "@/components/ui/empty-state";
 import { cn } from "@/lib/utils";
+import { formatSimMoney } from "@/lib/simulation/money";
 
 interface DecisionRow {
   round: number;
@@ -152,7 +153,7 @@ export function SimulationGradingClient({
           <span className="hidden shrink-0 items-center gap-3 text-[12px] tabular-nums text-muted-foreground sm:flex">
             <span className="flex items-center gap-1">
               <Coins className="h-3.5 w-3.5 text-coin-dark" aria-hidden="true" />
-              ₼{run.cash.toLocaleString()}
+              {formatSimMoney(run.cash, locale)}
             </span>
             <span className="flex items-center gap-1">
               <Heart className="h-3.5 w-3.5 text-destructive" aria-hidden="true" />
@@ -215,7 +216,7 @@ export function SimulationGradingClient({
                         {decision.choiceLabel}
                       </span>
                       <span className="shrink-0 tabular-nums text-muted-foreground">
-                        ₼{decision.cashAfter.toLocaleString()} ·{" "}
+                        {formatSimMoney(decision.cashAfter, locale)} ·{" "}
                         {decision.satisfactionAfter}% · {decision.reputationAfter}%
                       </span>
                     </div>

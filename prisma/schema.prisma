@@ -180,10 +180,16 @@ model Program {
   participantLimit Int       @map("participant_limit")
   applicationToken String    @unique @default(cuid()) @map("application_token")
   resultsRevealAt  DateTime? @map("results_reveal_at")
+  /// PENDING_SETUP: created from a paid order, waiting for the platform team
+  /// to fill in name, dates and content; applications stay closed. READY: live.
+  setupStatus      String    @default("READY") @map("setup_status")
+  /// The purchase that paid for this programme (null for ones made by hand).
+  orderId          String?   @map("order_id")
   createdAt        DateTime  @default(now()) @map("created_at")
   updatedAt        DateTime  @updatedAt @map("updated_at")
 
   tenant             Tenant                @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  order              Order?                @relation(fields: [orderId], references: [id], onDelete: SetNull)
   participants       Participant[]
   programSimulations ProgramSimulation[]
   programTrainings   ProgramTraining[]
@@ -195,6 +201,8 @@ model Program {
   certificates Certificate[]
 
   @@index([tenantId])
+  @@index([setupStatus])
+  @@index([orderId])
   @@map("programs")
 }
 
@@ -1024,12 +1032,16 @@ model Order {
   total            Int
   currency         String    @default("TRY")
   paytrMerchantOid String    @unique @map("paytr_merchant_oid")
+  /// NEW_TENANT: first purchase, provisions the organisation. ADD_PROGRAM: an
+  /// existing organisation buying another programme (tenantId set up front).
+  kind             String    @default("NEW_TENANT")
   tenantId         String?   @map("tenant_id")
   createdAt        DateTime  @default(now()) @map("created_at")
   paidAt           DateTime? @map("paid_at")
 
-  tenant Tenant?     @relation(fields: [tenantId], references: [id], onDelete: SetNull)
-  items  OrderItem[]
+  tenant   Tenant?     @relation(fields: [tenantId], references: [id], onDelete: SetNull)
+  items    OrderItem[]
+  programs Program[]
 
   @@index([status])
   @@index([tenantId])

@@ -6,6 +6,9 @@ import {
 } from "@/lib/seats/registration-service";
 import { listDepartments, listUniversities } from "@/lib/reference/academic-lists";
 import { noticesFor } from "@/lib/consent/notices";
+import { AuthShell, Sheet } from "@/components/layout/auth-shell";
+import { IconTile } from "@/components/ui/ios";
+import { CalendarX2, GraduationCap } from "lucide-react";
 import { ApplyForm } from "./apply-form";
 
 type Params = { params: Promise<{ locale: string; token: string }> };
@@ -25,9 +28,13 @@ export default async function ApplyPage({ params }: Params) {
 
   if (!program) {
     return (
-      <Shell>
-        <h1 className="text-xl font-bold text-foreground">{t("notFound")}</h1>
-      </Shell>
+      <AuthShell width="sm">
+        <Sheet className="text-center">
+          <IconTile icon={CalendarX2} tone="slate" size="lg" className="mx-auto" />
+          <h1 className="mt-4 text-[22px] font-bold tracking-[-0.5px] text-foreground">{t("notFound")}</h1>
+          <p className="mt-2 text-[15px] text-muted-foreground">{t("notFoundHint")}</p>
+        </Sheet>
+      </AuthShell>
     );
   }
 
@@ -45,12 +52,18 @@ export default async function ApplyPage({ params }: Params) {
     : await Promise.all([listUniversities(program.tenantId), listDepartments(program.tenantId)]);
 
   return (
-    <Shell>
-      <p className="text-sm font-medium text-primary">{program.tenant.name}</p>
-      <h1 className="mt-1 text-xl font-bold text-foreground sm:text-2xl">{program.name}</h1>
-      <p className="mt-2 text-sm text-muted-foreground">{t("intro")}</p>
+    <AuthShell>
+      <div className="ios-reveal mb-6 flex items-center gap-4 px-1">
+        <IconTile icon={GraduationCap} tone="violet" size="lg" />
+        <div className="min-w-0">
+          <p className="truncate text-[13px] font-semibold text-primary">{program.tenant.name}</p>
+          <h1 className="text-[24px] font-bold leading-tight tracking-[-0.6px] text-foreground sm:text-[30px]">{program.name}</h1>
+        </div>
+      </div>
+      <Sheet>
+      <p className="text-[15px] leading-relaxed text-muted-foreground">{t("intro")}</p>
       {closedReason ? (
-        <p role="alert" className="mt-6 text-sm text-destructive">
+        <p role="alert" className="mt-6 rounded-2xl bg-destructive/10 px-4 py-3 text-sm text-destructive">
           {closedReason}
         </p>
       ) : (
@@ -62,16 +75,7 @@ export default async function ApplyPage({ params }: Params) {
           notices={noticesFor(locale)}
         />
       )}
-    </Shell>
-  );
-}
-
-function Shell({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="min-h-screen bg-background px-4 py-10 sm:py-16">
-      <div className="mx-auto w-full max-w-2xl rounded-2xl border border-border bg-card p-5 shadow-sm sm:p-8">
-        {children}
-      </div>
-    </div>
+      </Sheet>
+    </AuthShell>
   );
 }

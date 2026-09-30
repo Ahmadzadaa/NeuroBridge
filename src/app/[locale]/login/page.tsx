@@ -8,17 +8,16 @@ import { Eye, EyeOff, Loader2, CheckCircle2, Lock } from "lucide-react";
 import { useRouter } from "@/i18n/navigation";
 import type { UserRole } from "@/lib/types";
 import { Button } from "@/components/ui/button";
-import { DotGridBackground } from "@/components/auth/dot-grid-background";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 const inputClassName = cn(
-  "h-11 w-full rounded-lg border border-input bg-card px-3.5 text-[14px] text-foreground outline-none",
-  "placeholder:text-tertiary",
-  "transition-[border-color,box-shadow] duration-150 ease-out",
-  "focus:border-primary focus:shadow-glow"
+  "h-12 w-full rounded-xl border border-transparent bg-muted/60 px-4 text-[15px] text-foreground outline-none",
+  "placeholder:text-muted-foreground/70 hover:bg-muted",
+  "transition-[background-color,border-color,box-shadow] duration-200 ease-out",
+  "focus:border-primary/40 focus:bg-card focus:ring-4 focus:ring-primary/15"
 );
 
 function FieldLabel({
@@ -31,7 +30,7 @@ function FieldLabel({
   return (
     <label
       htmlFor={htmlFor}
-      className="mb-1.5 block text-[12px] font-semibold text-muted-foreground"
+      className="mb-1.5 block px-1 text-[13px] font-medium text-foreground/80"
     >
       {children}
     </label>
@@ -111,8 +110,12 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center bg-background px-4 py-16">
-      <DotGridBackground />
+    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-background px-4 py-16">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+        <div className="absolute -left-40 -top-40 h-[440px] w-[440px] rounded-full bg-primary/15 blur-[110px]" />
+        <div className="absolute -right-32 top-1/3 h-[380px] w-[380px] rounded-full bg-fuchsia-500/10 blur-[110px]" />
+        <div className="absolute -bottom-40 left-1/4 h-[400px] w-[400px] rounded-full bg-sky-400/10 blur-[110px]" />
+      </div>
 
       {/* Top bar — fixed, above everything */}
       <div className="fixed right-5 top-4 z-50 flex gap-2">
@@ -121,10 +124,10 @@ export default function LoginPage() {
       </div>
 
       {/* Card */}
-      <div className="relative z-10 w-full max-w-[420px] rounded-xl border border-border bg-card p-6 shadow-md sm:p-10">
+      <div className="ios-reveal relative z-10 w-full max-w-[420px] rounded-[28px] bg-card/85 p-6 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_30px_80px_-30px_rgba(15,23,42,0.35)] ring-1 ring-border/60 backdrop-blur-xl sm:p-10">
         {/* Logo block */}
         <div className="flex items-center">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-[18px] font-extrabold text-primary-foreground">
+          <div className="flex h-10 w-10 items-center justify-center rounded-[12px] bg-gradient-to-br from-indigo-500 to-violet-600 text-[18px] font-extrabold text-white shadow-[0_8px_20px_-8px_var(--primary)]">
             {appName.charAt(0)}
           </div>
           <span className="ml-2.5 text-[18px] font-bold text-foreground">
@@ -133,13 +136,13 @@ export default function LoginPage() {
         </div>
 
         {/* Divider — structured, dashboard-like header */}
-        <div className="mb-6 mt-7 h-px w-full bg-subtle" aria-hidden="true" />
+        <div className="mt-8" aria-hidden="true" />
 
         {/* Heading */}
-        <h1 className="text-[22px] font-bold tracking-[-0.3px] text-foreground">
+        <h1 className="text-[28px] font-bold leading-tight tracking-[-0.8px] text-foreground">
           {t("loginTitle")}
         </h1>
-        <p className="mt-1 text-[13px] text-muted-foreground">
+        <p className="mt-1.5 text-[15px] text-muted-foreground">
           {t("loginSubtitle")}
         </p>
 
@@ -258,7 +261,7 @@ export default function LoginPage() {
           <Button
             type="submit"
             className={cn(
-              "h-11 w-full rounded-lg text-[14px] font-semibold",
+              "h-12 w-full rounded-2xl text-[15px] font-semibold",
               loading && "opacity-85",
               success && "bg-success hover:bg-success"
             )}
@@ -283,7 +286,7 @@ export default function LoginPage() {
 
           {/* Demo accounts — development only, zero DOM presence in production */}
           {process.env.NODE_ENV === "development" && (
-            <div className="mt-5 rounded-lg border border-dashed border-border bg-subtle/60 p-3 text-[12px] text-tertiary">
+            <div className="mt-5 rounded-2xl bg-muted/50 p-3.5 text-[12px] text-tertiary ring-1 ring-border/60">
               <p className="mb-1 font-semibold uppercase tracking-[0.5px] text-muted-foreground">
                 Dev only
               </p>

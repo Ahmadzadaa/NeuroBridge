@@ -3,7 +3,9 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 vi.mock("@/lib/prisma", () => {
   const tx = {
     order: { updateMany: vi.fn(), update: vi.fn() },
-    tenant: { create: vi.fn() },
+    tenant: { create: vi.fn(), update: vi.fn() },
+    tenantService: { upsert: vi.fn() },
+    program: { create: vi.fn() },
     user: { create: vi.fn() },
     activationToken: { create: vi.fn(), updateMany: vi.fn() },
     auditLog: { create: vi.fn() },
@@ -45,7 +47,8 @@ const order = {
   total: 120_000,
   currency: "TRY",
   paytrMerchantOid: "ORDabc123",
-  tenantId: null,
+  kind: "NEW_TENANT",
+  tenantId: null as string | null,
   items: [
     { serviceId: "svc_hack", participantCount: 60, service: { code: "HACKATHON" } },
     { serviceId: "svc_teach", participantCount: 40, service: { code: "TEACHERS" } },
@@ -67,7 +70,46 @@ describe("processOrderCallback", () => {
     tx.order.updateMany.mockResolvedValue({ count: 1 });
     tx.tenant.create.mockResolvedValue({ id: "ten_1" });
     tx.user.create.mockResolvedValue({ id: "usr_1" });
+    tx.program.create.mockResolvedValue({ id: "prg_1" });
     vi.mocked(sendEmail).mockResolvedValue({ sent: true, provider: "console" });
+  });
+
+  it("creates the paid programme as a placeholder for the platform team to set up", async () => {
+    await processOrderCallback(payload(), "https://app.test");
+    expect(tx.program.create.mock.calls[0][0].data).toMatchObject({
+      tenantId: "ten_1",
+      orderId: "ord_1",
+      setupStatus: "PENDING_SETUP",
+      name: "Yeni proqram",
+      participantLimit: 60,
+    });
+  });
+
+  it("adds a programme to an existing tenant without creating an account", async () => {
+    findOrder.mockResolvedValue({
+      ...order,
+      kind: "ADD_PROGRAM",
+      tenantId: "ten_9",
+      items: [{ serviceId: "svc_ai", participantCount: 30, service: { code: "AI_TOOLS" } }],
+    });
+
+    const result = await processOrderCallback(payload(), "https://app.test");
+
+    expect(result).toEqual({ outcome: "PROGRAM_ADDED", orderId: "ord_1", tenantId: "ten_9", programId: "prg_1" });
+    expect(tx.tenant.create).not.toHaveBeenCalled();
+    expect(tx.user.create).not.toHaveBeenCalled();
+    expect(sendEmail).not.toHaveBeenCalled();
+    // Modules only switch on; seats grow by the programme's size.
+    expect(tx.tenant.update).toHaveBeenCalledWith({
+      where: { id: "ten_9" },
+      data: { seatLimit: { increment: 30 }, aiToolsEnabled: true },
+    });
+    expect(tx.tenantService.upsert.mock.calls[0][0].update).toEqual({ participantLimit: { increment: 30 } });
+    expect(tx.program.create.mock.calls[0][0].data).toMatchObject({
+      tenantId: "ten_9",
+      setupStatus: "PENDING_SETUP",
+      programAiTools: { create: [{ aiTool: "ai_mentor" }] },
+    });
   });
 
   it("provisions the tenant, services, admin and a hashed activation token", async () => {

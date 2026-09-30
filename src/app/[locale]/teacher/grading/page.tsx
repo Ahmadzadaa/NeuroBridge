@@ -1,4 +1,5 @@
 import { setRequestLocale } from "next-intl/server";
+import { localizedText } from "@/lib/i18n-content";
 import { requireRole } from "@/lib/auth-utils";
 import { requireFeature } from "@/lib/tenant/require-feature";
 import { prisma } from "@/lib/prisma";
@@ -59,8 +60,8 @@ export default async function TeacherGradingPage({
         teacherComment: run.teacherComment,
         decisions: run.decisions.map((d) => ({
           round: d.round.order,
-          roundTitle: d.round.title,
-          choiceLabel: d.choice.label,
+          roundTitle: localizedText(d.round.title, locale),
+          choiceLabel: localizedText(d.choice.label, locale),
           cashAfter: d.cashAfter,
           satisfactionAfter: d.satisfactionAfter,
           reputationAfter: d.reputationAfter,

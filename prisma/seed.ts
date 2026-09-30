@@ -172,7 +172,7 @@ async function main() {
     { code: "TEACHERS", name: "Teacher-Student Panel", tiers: [[1, 50, 1500], [51, 100, 1200], [101, null, 1000]] },
     { code: "SIMULATIONS", name: "Business Simulations", tiers: [[1, 50, 2000], [51, 100, 1700], [101, null, 1400]] },
     { code: "TRAININGS", name: "Trainings", tiers: [[1, 50, 800], [51, 100, 650], [101, null, 500]] },
-    { code: "AI_TOOLS", name: "AI Tools", tiers: [[1, 50, 1200], [51, 100, 1000], [101, null, 800]] },
+    { code: "AI_TOOLS", name: "AI Mentor", tiers: [[1, 50, 1200], [51, 100, 1000], [101, null, 800]] },
   ];
   for (const s of services) {
     const service = await prisma.service.upsert({

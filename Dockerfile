@@ -11,6 +11,10 @@ FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
+# NEXT_PUBLIC_* values are inlined at build time, server code included; without
+# this PayTR would send buyers back to http://localhost:3000 after paying.
+ARG NEXT_PUBLIC_APP_URL=http://localhost:3000
+ENV NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL
 
 # prisma/schema.prisma is pinned to sqlite for local development. Generating
 # from it here would ship a SQLite client to a container whose DATABASE_URL is
@@ -39,9 +43,14 @@ COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/assets ./assets
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
+# The Prisma CLI, so the entrypoint can bring the schema up to date on start.
+COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
 COPY --from=builder /app/package.json ./package.json
 COPY scripts/docker-entrypoint.sh ./docker-entrypoint.sh
 RUN chmod +x ./docker-entrypoint.sh
+
+# Local-storage uploads live on a mounted volume; it must be writable by nextjs.
+RUN mkdir -p /app/uploads && chown nextjs:nodejs /app/uploads
 
 USER nextjs
 EXPOSE 3000

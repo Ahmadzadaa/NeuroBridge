@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Field } from "@/components/ui/ios";
 
 const PASSWORD_RULE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,128}$/;
 
@@ -50,9 +50,8 @@ export function ActivateForm({ token }: { token: string }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-      <div className="space-y-1.5">
-        <Label htmlFor="password">{t("password")}</Label>
+    <form onSubmit={handleSubmit} className="mt-7 space-y-4">
+      <Field label={t("password")} htmlFor="password" hint={t("passwordHint")}>
         <Input
           id="password"
           type="password"
@@ -61,10 +60,8 @@ export function ActivateForm({ token }: { token: string }) {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <p className="text-xs text-muted-foreground">{t("passwordHint")}</p>
-      </div>
-      <div className="space-y-1.5">
-        <Label htmlFor="confirm">{t("confirm")}</Label>
+      </Field>
+      <Field label={t("confirm")} htmlFor="confirm">
         <Input
           id="confirm"
           type="password"
@@ -73,9 +70,9 @@ export function ActivateForm({ token }: { token: string }) {
           value={confirm}
           onChange={(e) => setConfirm(e.target.value)}
         />
-      </div>
-      {error && <p className="text-sm text-destructive">{error}</p>}
-      <Button type="submit" className="w-full" disabled={submitting}>
+      </Field>
+      {error && <p role="alert" className="rounded-2xl bg-destructive/10 px-4 py-3 text-sm text-destructive">{error}</p>}
+      <Button type="submit" size="lg" className="w-full" disabled={submitting}>
         {submitting ? t("saving") : t("submit")}
       </Button>
     </form>

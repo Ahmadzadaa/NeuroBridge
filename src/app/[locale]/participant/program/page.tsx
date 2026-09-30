@@ -6,6 +6,7 @@ import { ScheduleTable } from "@/components/programs/schedule-table";
 import { Link } from "@/i18n/navigation";
 import { getCurrentProgramForUser } from "@/lib/programs/participant-program";
 import { getProgramSchedule } from "@/lib/programs/schedule-service";
+import { programContentNames } from "@/lib/programs/content-names";
 
 type Params = { params: Promise<{ locale: string }> };
 
@@ -39,10 +40,7 @@ export default async function ParticipantProgramPage({ params }: Params) {
 
   const schedule = await getProgramSchedule(program.id);
   const date = new Intl.DateTimeFormat(INTL[locale] ?? "tr-TR", { dateStyle: "long", timeZone: "UTC" });
-  const content = [
-    ...program.programTrainings.map((p) => (tTrain.has(p.trainingType) ? tTrain(p.trainingType) : p.trainingType)),
-    ...program.programSimulations.map((p) => (tSim.has(p.simulationType) ? tSim(p.simulationType) : p.simulationType)),
-  ];
+  const content = await programContentNames(program, locale, { trainings: tTrain, simulations: tSim });
   const vars = {
     org: program.tenant.name,
     program: program.name,

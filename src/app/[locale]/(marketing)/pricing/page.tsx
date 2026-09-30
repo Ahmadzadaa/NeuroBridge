@@ -91,14 +91,14 @@ export default async function PricingPage({
       </Section>
 
       <Section className="py-6 sm:py-8">
-        <div className="mx-auto w-full max-w-3xl">
+        <div className="mx-auto w-full max-w-6xl">
           {payment === "success" && (
-            <div role="status" className="mb-6 rounded-lg border border-success/40 bg-success/10 p-4 text-sm text-foreground">
+            <div role="status" className="mx-auto mb-6 max-w-3xl rounded-2xl border border-success/40 bg-success/10 p-4 text-sm text-foreground">
               {t("paymentSuccess")}
             </div>
           )}
           {payment === "failed" && (
-            <div role="alert" className="mb-6 rounded-lg border border-destructive/40 bg-destructive/10 p-4 text-sm text-foreground">
+            <div role="alert" className="mx-auto mb-6 max-w-3xl rounded-2xl border border-destructive/40 bg-destructive/10 p-4 text-sm text-foreground">
               {t("paymentFailed")}
             </div>
           )}

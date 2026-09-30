@@ -97,7 +97,8 @@
       "support": "Destek",
       "system": "Sistem Sağlığı",
       "audit": "Denetim Kaydı",
-      "pricing": "Hizmetler ve Fiyatlar"
+      "pricing": "Hizmetler ve Fiyatlar",
+      "programs": "Programlar"
     },
     "tenant": {
       "dashboard": "Panel",
@@ -116,7 +117,7 @@
       "dashboard": "Panel",
       "simulations": "Simülasyonlar",
       "trainings": "Eğitimler",
-      "aiTools": "AI Araçları",
+      "aiTools": "AI Mentor",
       "badges": "Rozetler",
       "certificates": "Sertifikalar",
       "leaderboard": "Liderlik Tablosu",
@@ -277,6 +278,26 @@
       "registrationRate7d": "Kayıt hızı (7 gün)",
       "aiUsage7d": "AI kullanımı (7 gün)",
       "seatByTenant": "Kurumlara göre koltuk kullanımı"
+    },
+    "programs": {
+      "title": "Programlar",
+      "subtitle": "Kurumların satın aldığı programlar. Ödemeden gelen programları burada tamamlayıp yayınlarsınız.",
+      "pendingHeading": "Hazırlanacaklar",
+      "pendingFooter": "Ödeme alındı — adını, tarihlerini ve içeriğini doldurup yayınlayın.",
+      "allHeading": "Tüm programlar",
+      "empty": "Henüz program yok.",
+      "new": "Yeni program",
+      "editTitle": "Programı düzenle",
+      "saved": "Program kaydedildi",
+      "publish": "Yayınla",
+      "pendingNotice": "Bu program ödemeden otomatik oluşturuldu. Adını, tarihlerini ve içeriğini doldurup yayınlayın — yayınlanana kadar kayıtlar kapalıdır.",
+      "tenantTitle": "Kurum",
+      "tenantDescription": "Program hangi kurum için.",
+      "chooseTenant": "Kurum seçin",
+      "tenantRequired": "Kurum seçin",
+      "statusPending": "Hazırlanıyor",
+      "statusReady": "Aktif",
+      "participants": "{count} katılımcı"
     }
   },
   "tenant": {
@@ -312,7 +333,12 @@
       "finalistCount": "Finalist sayısı",
       "juryEnabled": "Finalistler için jüri değerlendirmesi",
       "created": "Program oluşturuldu",
-      "createFailed": "Program oluşturulamadı. Biraz sonra tekrar deneyin."
+      "createFailed": "Program oluşturulamadı. Biraz sonra tekrar deneyin.",
+      "buy": "Yeni program satın al",
+      "buySubtitle": "Hizmetleri ve katılımcı sayısını seçin; ödemeden sonra program hesabınıza eklenir ve ekibimiz hazırlar.",
+      "statusPending": "Hazırlanıyor",
+      "pendingHint": "Ödeme alındı, ekibimiz programı hazırlıyor. Hazır olduğunda kayıt bağlantısı burada görünecek.",
+      "paymentSuccess": "Ödeme alındı. Yeni programınız hazırlanıyor."
     },
     "projectTypes": {
       "entrepreneurship_training": "Girişimcilik Eğitimi",
@@ -341,13 +367,7 @@
       "ai_tools": "AI Araçları Eğitimi"
     },
     "aiTools": {
-      "ai_mentor": "AI Mentor",
-      "ai_jury": "AI Jüri",
-      "ai_evaluation": "AI Değerlendirme",
-      "ai_analysis": "AI Analiz",
-      "ai_reporting": "AI Raporlama",
-      "ai_pitch_coach": "AI Pitch Koçu",
-      "ai_finance_advisor": "AI Finans Danışmanı"
+      "ai_mentor": "AI Mentor"
     },
     "participants": {
       "title": "Katılımcılar",
@@ -711,9 +731,13 @@
       "examHint": "Önce tüm dersleri tamamlamanız önerilir"
     },
     "aiTools": {
-      "title": "AI Destek Araçları",
+      "title": "AI Mentor",
       "chatPlaceholder": "Sorunuzu yazın...",
-      "send": "Gönder"
+      "send": "Gönder",
+      "subtitle": "Girişimcilik yolculuğundaki soruların için kişisel mentorun.",
+      "empty": "Fikrini, planını ya da zorlandığın konuyu sor — AI Mentor adım adım yardımcı olacak.",
+      "unavailable": "AI Mentor şu anda kullanılamıyor. Biraz sonra tekrar dene.",
+      "thinking": "Düşünüyor…"
     },
     "badges": {
       "title": "Rozetlerim",
@@ -799,7 +823,14 @@
       "photoUpdated": "Profil fotoğrafı güncellendi",
       "photoRemoved": "Profil fotoğrafı kaldırıldı",
       "photoTooLarge": "Fotoğraf 2 MB'dan büyük olmamalı",
-      "photoInvalid": "Yalnızca JPEG, PNG veya WebP kabul edilir"
+      "photoInvalid": "Yalnızca JPEG, PNG veya WebP kabul edilir",
+      "strength": {
+        "weak": "Zayıf",
+        "fair": "Orta",
+        "good": "İyi",
+        "strong": "Güçlü"
+      },
+      "changePhoto": "Fotoğrafı değiştir"
     },
     "certificateTypes": {
       "participation": "Katılım Sertifikası",
@@ -1117,7 +1148,7 @@
       "TEACHERS": "Öğretmen-Öğrenci Paneli",
       "SIMULATIONS": "İş Simülasyonları",
       "TRAININGS": "Eğitimler",
-      "AI_TOOLS": "Yapay Zeka Araçları"
+      "AI_TOOLS": "AI Mentor"
     },
     "errors": {
       "generic": "Bir hata oluştu. Lütfen tekrar deneyin.",
@@ -1130,7 +1161,27 @@
       "CURRENCY_MISMATCH": "Seçilen hizmetler birlikte ödenemiyor. Lütfen bizimle iletişime geçin.",
       "EMAIL_TAKEN": "Bu e-posta ile kayıtlı bir hesap zaten var. Başka bir e-posta kullanın veya giriş yapın.",
       "PAYMENT_PROVIDER": "Ödeme hizmeti geçici olarak kullanılamıyor. Lütfen birkaç dakika sonra tekrar deneyin."
-    }
+    },
+    "selectedCount": "{count} seçildi",
+    "fromPrice": "en düşük {price}",
+    "perParticipantShort": "/ katılımcı",
+    "decrease": "Katılımcı sayısını azalt",
+    "increase": "Katılımcı sayısını artır",
+    "quickPick": "Hızlı seçim",
+    "activeTier": "Kademeniz",
+    "summaryEmptyTitle": "Paketinizi oluşturun",
+    "secure": "PayTR ile güvenli ödeme · 3D Secure",
+    "activationNote": "Ödemeden hemen sonra hesabınız oluşturulur ve etkinleştirme bağlantısı e-postanıza gönderilir.",
+    "continue": "Devam et",
+    "lineDetail": "{count} × {price}",
+    "descriptions": {
+      "HACKATHON": "Takım projeleri, jüri puanlaması ve canlı sonuçlar",
+      "TEACHERS": "Öğretmenler öğrencilerini takip eder, değerlendirir ve yönlendirir",
+      "SIMULATIONS": "Veriye dayalı iş senaryoları ve değerlendirme",
+      "TRAININGS": "Video dersler, testler ve sertifikalar",
+      "AI_TOOLS": "Öğrencilere fikir ve plan üzerinde kişisel AI mentor"
+    },
+    "tenantNote": "Ödemeden sonra program hesabınıza eklenir, ekibimiz hazırlayıp etkinleştirir."
   },
   "activation": {
     "title": "Hesabınızı etkinleştirin",
@@ -1199,7 +1250,13 @@
     "capacityReached": "Programın katılımcı limiti doldu.",
     "successToast": "Kayıt tamamlandı. Artık giriş yapabilirsiniz.",
     "seatLimitToast": "Kurumun koltuk limiti dolduğu için kayıt yapılamıyor.",
-    "failedToast": "Kayıt tamamlanamadı. Biraz sonra tekrar deneyin."
+    "failedToast": "Kayıt tamamlanamadı. Biraz sonra tekrar deneyin.",
+    "stepOf": "Adım {current} / {total}",
+    "continue": "Devam et",
+    "showPassword": "Şifreyi göster",
+    "hidePassword": "Şifreyi gizle",
+    "readNotice": "Oku",
+    "secureNote": "Verilerin KVKK kapsamında korunur."
   },
   "programSchedule": {
     "caption": "6 haftalık program takvimi",

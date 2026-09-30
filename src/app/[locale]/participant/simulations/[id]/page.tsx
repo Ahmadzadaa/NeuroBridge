@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { requireRole } from "@/lib/auth-utils";
 import { requireFeature } from "@/lib/tenant/require-feature";
 import { prisma } from "@/lib/prisma";
-import { localized } from "@/lib/i18n-content";
+import { localized, localizedText } from "@/lib/i18n-content";
 import { SimulationPlayClient } from "./play-client";
 
 export default async function SimulationPlayPage({
@@ -71,7 +71,7 @@ export default async function SimulationPlayPage({
       simulation={{
         id: simulation.id,
         name: localized(simulation, "name", locale),
-        description: simulation.description,
+        description: localizedText(simulation.description, locale),
         startCash: simulation.startCash,
         targetCash: simulation.targetCash,
         totalRounds: simulation._count.rounds,
@@ -91,9 +91,13 @@ export default async function SimulationPlayPage({
         currentRound
           ? {
               order: currentRound.order,
-              title: currentRound.title,
-              context: currentRound.context,
-              choices: currentRound.choices,
+              title: localizedText(currentRound.title, locale),
+              context: localizedText(currentRound.context, locale),
+              choices: currentRound.choices.map((c) => ({
+                id: c.id,
+                label: localizedText(c.label, locale),
+                detail: c.detail ? localizedText(c.detail, locale) : null,
+              })),
             }
           : null
       }
