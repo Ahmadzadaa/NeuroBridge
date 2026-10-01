@@ -334,7 +334,7 @@ export function HackathonAdminClient({
             );
           })()}
 
-          <div className="rounded-2xl bg-card p-5 shadow-sm">
+          <div className="rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60 p-5">
             <h3 className="flex items-center gap-2 text-[15px] font-semibold">
               <Scale className="h-4.5 w-4.5 text-primary" aria-hidden="true" />
               {t("criteria.heading")}
@@ -456,7 +456,7 @@ export function HackathonAdminClient({
           </div>
 
           {/* Juries */}
-          <div className="rounded-2xl bg-card p-5 shadow-sm">
+          <div className="rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60 p-5">
             <h3 className="flex items-center gap-2 text-[15px] font-semibold">
               <Users className="h-4.5 w-4.5 text-primary" aria-hidden="true" />
               {t("juries.heading")} ({juries.length})

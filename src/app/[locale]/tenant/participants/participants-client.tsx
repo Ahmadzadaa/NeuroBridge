@@ -1,13 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { GraduationCap } from "lucide-react";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { StatusChip, type StatusChipVariant } from "@/components/ui/status-chip";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Pagination } from "@/components/ui/pagination";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { LargeTitle } from "@/components/ui/ios";
+import { avatarTone } from "@/components/ui/avatar-tone";
 import {
   Select,
   SelectContent,
@@ -15,14 +17,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 
 interface ProgramOption {
   id: string;
@@ -59,6 +53,13 @@ export function ParticipantsPageClient({
 }: ParticipantsPageClientProps) {
   const t = useTranslations("tenant.participants");
   const tc = useTranslations("common");
+  const locale = useLocale();
+  // tr-TR for az: Node and browsers format az dates differently.
+  const dateFmt = new Intl.DateTimeFormat(locale === "en" ? "en-GB" : "tr-TR", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
   const [programFilter, setProgramFilter] = useState<string>("all");
   const [items, setItems] = useState<ParticipantItem[]>([]);
   const [total, setTotal] = useState(0);
@@ -136,108 +137,118 @@ export function ParticipantsPageClient({
 
   return (
     <DashboardLayout panel="tenant" title={t("title")} userName={userName}>
-      <Card className="rounded-2xl border-0 shadow-sm">
-        <CardHeader className="flex flex-row items-center justify-between gap-4">
-          <CardTitle>{t("title")}</CardTitle>
-          <Select
-            value={programFilter}
-            onValueChange={(value) => changeProgramFilter(value ?? "all")}
-          >
-            <SelectTrigger className="w-full max-w-xs rounded-xl">
-              {/* Without a formatter the trigger showed the programme's cuid. */}
-              <SelectValue>
-                {(value: string) =>
-                  value === "all"
-                    ? t("allPrograms")
-                    : (programs.find((program) => program.id === value)?.name ??
-                      t("allPrograms"))
-                }
-              </SelectValue>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">{t("allPrograms")}</SelectItem>
-              {programs.map((program) => (
-                <SelectItem key={program.id} value={program.id}>
-                  {program.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>{t("fullName")}</TableHead>
-                <TableHead>{t("email")}</TableHead>
-                <TableHead className="hidden md:table-cell">{t("phone")}</TableHead>
-                <TableHead className="hidden lg:table-cell">{t("university")}</TableHead>
-                <TableHead>{t("registrationDate")}</TableHead>
-                <TableHead>{tc("status")}</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {loading ? (
-                Array.from({ length: 5 }).map((_, i) => (
-                  <TableRow key={i} className="hover:bg-transparent hover:[&>td:first-child]:shadow-none">
-                    <TableCell><Skeleton className="h-4 w-32" /></TableCell>
-                    <TableCell><Skeleton className="h-4 w-44" /></TableCell>
-                    <TableCell className="hidden md:table-cell"><Skeleton className="h-4 w-28" /></TableCell>
-                    <TableCell className="hidden lg:table-cell"><Skeleton className="h-4 w-40" /></TableCell>
-                    <TableCell><Skeleton className="h-4 w-24" /></TableCell>
-                    <TableCell><Skeleton className="h-5 w-16 rounded-full" /></TableCell>
-                  </TableRow>
-                ))
-              ) : items.length === 0 ? (
-                <TableRow className="even:bg-transparent hover:bg-transparent hover:[&>td:first-child]:shadow-none">
-                  <TableCell colSpan={6} className="h-auto whitespace-normal">
-                    <EmptyState title={tc("noData")} />
-                  </TableCell>
-                </TableRow>
-              ) : (
-                items.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell className="font-medium">{formatName(item.user)}</TableCell>
-                    <TableCell className="text-muted-foreground">{item.user.email}</TableCell>
-                    <TableCell className="hidden whitespace-nowrap text-muted-foreground md:table-cell">
-                      {item.user.phone ?? "—"}
-                    </TableCell>
-                    <TableCell className="hidden lg:table-cell">
+      <div className="space-y-6">
+        <LargeTitle
+          title={t("title")}
+          subtitle={loading ? t("subtitle") : t("count", { count: total })}
+          actions={
+            <Select value={programFilter} onValueChange={(value) => changeProgramFilter(value ?? "all")}>
+              <SelectTrigger className="h-11 w-full min-w-56 max-w-xs rounded-xl">
+                {/* Without a formatter the trigger showed the programme's cuid. */}
+                <SelectValue>
+                  {(value: string) =>
+                    value === "all"
+                      ? t("allPrograms")
+                      : (programs.find((program) => program.id === value)?.name ?? t("allPrograms"))
+                  }
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">{t("allPrograms")}</SelectItem>
+                {programs.map((program) => (
+                  <SelectItem key={program.id} value={program.id}>
+                    {program.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          }
+        />
+
+        <div className="overflow-hidden rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60">
+          <div className="hidden grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_120px_96px] gap-4 border-b border-border/60 px-5 py-3 text-[12px] font-semibold uppercase tracking-[0.4px] text-muted-foreground lg:grid">
+            <span>{t("fullName")}</span>
+            <span>{t("university")}</span>
+            <span>{t("registrationDate")}</span>
+            <span className="text-right">{tc("status")}</span>
+          </div>
+          <ul className="divide-y divide-border/60">
+            {loading ? (
+              Array.from({ length: 6 }).map((_, i) => (
+                <li key={i} className="flex items-center gap-3 px-5 py-3.5">
+                  <Skeleton className="h-10 w-10 rounded-full" />
+                  <div className="flex-1 space-y-1.5">
+                    <Skeleton className="h-4 w-40" />
+                    <Skeleton className="h-3 w-56" />
+                  </div>
+                </li>
+              ))
+            ) : items.length === 0 ? (
+              <li>
+                <EmptyState title={tc("noData")} />
+              </li>
+            ) : (
+              items.map((item, i) => {
+                const initials =
+                  [item.user.firstName?.[0], item.user.lastName?.[0]].filter(Boolean).join("") || item.user.email[0];
+                return (
+                  <li
+                    key={item.id}
+                    style={{ "--i": Math.min(i, 12) } as React.CSSProperties}
+                    className="ios-reveal grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 px-5 py-3.5 transition-colors hover:bg-muted/40 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_120px_96px]"
+                  >
+                    <div className="flex min-w-0 items-center gap-3">
+                      <span
+                        aria-hidden="true"
+                        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br text-[13px] font-semibold uppercase text-white ${avatarTone(item.user.id)}`}
+                      >
+                        {initials}
+                      </span>
+                      <div className="min-w-0">
+                        <p className="truncate text-[15px] font-medium text-foreground">{formatName(item.user)}</p>
+                        <p className="truncate text-[13px] text-muted-foreground">
+                          {[item.user.email, item.user.phone].filter(Boolean).join(" · ")}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="hidden min-w-0 lg:block">
                       {item.user.university ? (
-                        <span className="block max-w-[18rem]">
-                          <span className="block truncate text-sm">{item.user.university}</span>
-                          <span className="block truncate text-xs text-muted-foreground">
+                        <>
+                          <p className="flex items-center gap-1.5 text-[14px] text-foreground">
+                            <GraduationCap className="h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
+                            <span className="truncate">{item.user.university}</span>
+                          </p>
+                          <p className="truncate text-[12px] text-muted-foreground">
                             {[item.user.faculty, item.user.studyYear ? `${item.user.studyYear}. ${t("studyYear")}` : null]
                               .filter(Boolean)
                               .join(" · ")}
-                          </span>
-                        </span>
+                          </p>
+                        </>
                       ) : (
-                        <span className="text-sm text-muted-foreground">{t("noProfile")}</span>
+                        <span className="text-[13px] text-muted-foreground">{t("noProfile")}</span>
                       )}
-                    </TableCell>
-                    <TableCell>
-                      {new Date(item.registrationDate).toLocaleDateString()}
-                    </TableCell>
-                    <TableCell>{statusChip(item.status)}</TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
+                    </div>
+                    <span className="hidden text-[13px] tabular-nums text-muted-foreground lg:block">
+                      {dateFmt.format(new Date(item.registrationDate))}
+                    </span>
+                    <span className="justify-self-end">{statusChip(item.status)}</span>
+                  </li>
+                );
+              })
+            )}
+          </ul>
+        </div>
 
-          {totalPages > 1 && (
-            <Pagination
-              className="mt-4"
-              page={page}
-              pageSize={PAGE_SIZE}
-              totalItems={total}
-              onPageChange={(p) => changePage(p)}
-              itemLabel={t("title").toLowerCase()}
-            />
-          )}
-        </CardContent>
-      </Card>
+        {totalPages > 1 && (
+          <Pagination
+            page={page}
+            pageSize={PAGE_SIZE}
+            totalItems={total}
+            onPageChange={(p) => changePage(p)}
+            itemLabel={t("title").toLowerCase()}
+          />
+        )}
+      </div>
     </DashboardLayout>
   );
 }

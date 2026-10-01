@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { redirect } from "next/navigation";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, Sparkles } from "lucide-react";
 import { auth, getRoleDashboardPath } from "@/auth";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,9 @@ import {
   SectionHeading,
 } from "@/components/marketing/sections";
 import { buildMarketingMetadata } from "@/lib/seo/marketing-metadata";
-import { listPublicPlans, formatPlanPrice } from "@/lib/marketing/plans";
+import { getCalculatorServices } from "@/lib/billing/calculator-services";
+import { serviceIcon } from "@/lib/billing/service-icons";
+import { formatKurus } from "@/lib/billing/money";
 
 export async function generateMetadata({
   params,
@@ -52,19 +54,35 @@ export default async function MarketingHomePage({
   }
 
   const t = await getTranslations({ locale, namespace: "marketing.home" });
-  const tp = await getTranslations({ locale, namespace: "marketing.pricing" });
-  const plans = await listPublicPlans();
+  const services = await getCalculatorServices(locale);
+  // Each service from its cheapest per-participant tier, as the pricing page advertises it.
+  const fromPrices = services.flatMap((s) => {
+    const cheapest = s.tiers.reduce<(typeof s.tiers)[number] | null>(
+      (min, tier) => (!min || tier.pricePerParticipant < min.pricePerParticipant ? tier : min),
+      null
+    );
+    return cheapest ? [{ code: s.code, name: s.name, price: formatKurus(cheapest.pricePerParticipant, cheapest.currency, "tr-TR") }] : [];
+  });
 
   return (
     <>
       {/* Hero — problem, then the answer to it. */}
-      <Section className="pb-8 pt-14 sm:pb-12 sm:pt-20">
+      <Section className="relative isolate overflow-hidden pb-8 pt-14 sm:pb-12 sm:pt-20">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+          <div className="absolute -left-32 -top-24 h-[420px] w-[420px] rounded-full bg-primary/20 blur-[120px]" />
+          <div className="absolute -right-24 top-24 h-[360px] w-[360px] rounded-full bg-fuchsia-500/15 blur-[120px]" />
+          <div className="absolute bottom-0 left-1/3 h-[300px] w-[300px] rounded-full bg-sky-400/10 blur-[110px]" />
+        </div>
         <div className="grid items-center gap-10 lg:grid-cols-2">
           <div className="min-w-0">
-            <p className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1.5 text-[12px] font-semibold text-primary-text">
+            <p className="ios-reveal inline-flex items-center gap-1.5 rounded-full bg-card/70 px-3.5 py-1.5 text-[12px] font-semibold text-primary-text ring-1 ring-border/60 backdrop-blur">
+              <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
               {t("hero.eyebrow")}
             </p>
-            <h1 className="mt-4 text-[36px] font-bold leading-[1.1] tracking-[-1px] break-words text-foreground sm:text-[52px]">
+            <h1
+              className="ios-reveal mt-5 bg-gradient-to-br from-foreground via-foreground to-foreground/55 bg-clip-text text-[38px] font-bold leading-[1.06] tracking-[-1.4px] break-words text-transparent sm:text-[58px]"
+              style={{ "--i": 1 } as React.CSSProperties}
+            >
               {t("hero.headline")}
             </h1>
             <p className="mt-3 text-[17px] font-medium text-muted-foreground">
@@ -76,13 +94,13 @@ export default async function MarketingHomePage({
 
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/contact">
-                <Button size="lg" className="rounded-2xl px-7">
+                <Button size="lg" className="h-12 rounded-full px-7 shadow-[0_12px_30px_-12px_var(--primary)]">
                   {t("hero.primaryCta")}
                   <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
                 </Button>
               </Link>
               <Link href="/features">
-                <Button size="lg" variant="outline" className="rounded-2xl px-7">
+                <Button size="lg" variant="outline" className="h-12 rounded-full px-7">
                   {t("hero.secondaryCta")}
                 </Button>
               </Link>
@@ -104,7 +122,7 @@ export default async function MarketingHomePage({
           {PROOF_KEYS.map((key) => (
             <li
               key={key}
-              className="flex h-16 items-center justify-center rounded-xl border border-border bg-card px-4 text-center text-[13px] font-medium text-muted-foreground shadow-sm"
+              className="flex h-16 items-center justify-center rounded-[18px] bg-card/70 px-4 text-center text-[13px] font-semibold text-muted-foreground ring-1 ring-border/60 backdrop-blur"
             >
               {t(`proof.logos.${key}`)}
             </li>
@@ -127,7 +145,7 @@ export default async function MarketingHomePage({
         />
         <div className="mt-10 grid gap-5 md:grid-cols-2">
           {FEATURE_KEYS.map((key) => (
-            <Card key={key} className="rounded-2xl border-0 shadow-sm">
+            <Card key={key}>
               <CardContent className="p-6">
                 <h3 className="text-[18px] font-semibold text-foreground">
                   {t(`features.items.${key}.title`)}
@@ -152,8 +170,8 @@ export default async function MarketingHomePage({
         <SectionHeading title={t("steps.title")} description={t("steps.description")} />
         <ol className="mt-10 grid gap-6 md:grid-cols-3">
           {STEP_KEYS.map((key, index) => (
-            <li key={key} className="rounded-2xl bg-card p-6 shadow-sm">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-[15px] font-bold text-primary-text">
+            <li key={key} className="rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60 p-6">
+              <span className="flex h-11 w-11 items-center justify-center rounded-[13px] bg-gradient-to-br from-indigo-500 to-violet-600 text-[16px] font-bold text-white shadow-sm">
                 {index + 1}
               </span>
               <h3 className="mt-4 text-[17px] font-semibold text-foreground">
@@ -173,30 +191,29 @@ export default async function MarketingHomePage({
           title={t("pricingPreview.title")}
           description={t("pricingPreview.description")}
         />
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
-          {plans.map((plan) => (
-            <Card key={plan.id} className="rounded-2xl border-0 shadow-sm">
-              <CardContent className="p-6">
-                <h3 className="text-[17px] font-semibold text-foreground">{plan.name}</h3>
-                <p className="mt-3 text-[30px] font-bold tracking-[-0.5px] text-foreground">
-                  {formatPlanPrice(plan, locale)}
+        <ul className="mt-10 grid grid-cols-[minmax(0,1fr)] gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {fromPrices.map((s, i) => {
+            const { icon: Icon, gradient } = serviceIcon(s.code);
+            return (
+              <li
+                key={s.code}
+                style={{ "--i": i } as React.CSSProperties}
+                className="ios-reveal flex flex-col rounded-[22px] bg-card p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60"
+              >
+                <span className={`flex h-11 w-11 items-center justify-center rounded-[13px] bg-gradient-to-br text-white shadow-sm ${gradient}`}>
+                  <Icon className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <h3 className="mt-4 text-[16px] font-semibold text-foreground">{s.name}</h3>
+                <p className="mt-auto pt-3 text-[13px] text-muted-foreground">
+                  {t("pricingPreview.from")} <span className="text-[17px] font-bold tabular-nums text-foreground">{s.price}</span>
                 </p>
-                <p className="mt-1 text-[13px] text-muted-foreground">
-                  {tp("perSeatMonth")}
-                </p>
-                <p className="mt-3 text-[13px] text-muted-foreground">
-                  {tp("minSeats", { count: plan.minSeats })}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
-          {plans.length === 0 && (
-            <p className="text-[14px] text-muted-foreground">{tp("noPlans")}</p>
-          )}
-        </div>
+              </li>
+            );
+          })}
+        </ul>
         <div className="mt-8 text-center">
           <Link href="/pricing">
-            <Button variant="outline" className="rounded-2xl">
+            <Button variant="outline" size="lg" className="rounded-full px-6">
               {t("pricingPreview.cta")}
             </Button>
           </Link>
@@ -205,8 +222,10 @@ export default async function MarketingHomePage({
 
       {/* Closing call to action. */}
       <Section className="pb-20 sm:pb-24">
-        <div className="rounded-3xl bg-primary px-6 py-12 text-center text-primary-foreground sm:px-12">
-          <h2 className="text-[28px] font-bold leading-[1.2] tracking-[-0.5px] sm:text-[34px]">
+        <div className="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 px-6 py-14 text-center text-white shadow-[0_30px_80px_-30px_rgba(79,70,229,0.7)] sm:px-12">
+          <span aria-hidden="true" className="pointer-events-none absolute -left-16 -top-20 h-64 w-64 rounded-full bg-white/15 blur-3xl" />
+          <span aria-hidden="true" className="pointer-events-none absolute -bottom-24 right-10 h-64 w-64 rounded-full bg-sky-300/25 blur-3xl" />
+          <h2 className="relative text-[28px] font-bold leading-[1.15] tracking-[-0.8px] sm:text-[38px]">
             {t("cta.title")}
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-[16px] leading-[1.7] opacity-90">
@@ -222,7 +241,7 @@ export default async function MarketingHomePage({
           </ul>
           <div className="mt-8">
             <Link href="/contact">
-              <Button size="lg" variant="secondary" className="rounded-2xl px-8">
+              <Button size="lg" className="h-12 rounded-full bg-white px-8 text-indigo-700 hover:bg-white/90">
                 {t("cta.button")}
                 <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
               </Button>

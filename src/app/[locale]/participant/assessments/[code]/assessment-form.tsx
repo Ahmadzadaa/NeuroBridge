@@ -56,7 +56,7 @@ export function AssessmentForm({
         {t("progress", { answered, total: questions.length })}
       </p>
       {questions.map((q, index) => (
-        <fieldset key={q.id} className="rounded-2xl bg-card p-5 shadow-sm">
+        <fieldset key={q.id} className="rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60 p-5">
           <legend className="sr-only">{t("questionN", { n: index + 1 })}</legend>
           <p className="font-medium text-foreground">
             <span className="mr-2 text-muted-foreground">{index + 1}.</span>

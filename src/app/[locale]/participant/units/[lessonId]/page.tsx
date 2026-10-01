@@ -96,7 +96,7 @@ export default async function UnitPage({ params }: Params) {
 
 function Section({ n, title, done, children }: { n: number; title: string; done: boolean; children: React.ReactNode }) {
   return (
-    <section className="rounded-2xl bg-card p-5 shadow-sm sm:p-6">
+    <section className="rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60 p-5 sm:p-6">
       <h2 className="flex items-center gap-2 text-base font-semibold text-foreground">
         <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs text-primary">{n}</span>
         {title}

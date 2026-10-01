@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
+import { LargeTitle } from "@/components/ui/ios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -189,19 +190,18 @@ export function TenantsPageClient({
 
   return (
     <DashboardLayout panel="super-admin" title={t("title")} userName={userName}>
-      <div className="overflow-hidden rounded-2xl bg-card shadow-sm">
-        <div className="flex items-center justify-between border-b border-border px-5 py-4">
-          <div>
-            <h2 className="text-[15px] font-semibold">{t("title")}</h2>
-            <p className="mt-0.5 text-[12px] text-muted-foreground">
-              {t("subtitle")}
-            </p>
-          </div>
-          <Button className="rounded-xl" onClick={() => setDialogOpen(true)}>
+      <LargeTitle
+        className="mb-6"
+        title={t("title")}
+        subtitle={t("subtitle")}
+        actions={
+          <Button size="lg" onClick={() => setDialogOpen(true)}>
             <Plus className="h-4 w-4" aria-hidden="true" />
             {t("createTenant")}
           </Button>
-        </div>
+        }
+      />
+      <div className="overflow-hidden rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60">
 
         {tenants.length === 0 ? (
           <EmptyState title={tc("noData")} />

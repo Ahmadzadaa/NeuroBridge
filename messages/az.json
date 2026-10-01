@@ -66,7 +66,8 @@
     "pageNumber": "Səhifə {number}",
     "collapseSidebar": "Yan paneli yığ",
     "expandSidebar": "Yan paneli aç",
-    "account": "Hesab və təhlükəsizlik"
+    "account": "Hesab və təhlükəsizlik",
+    "comingSoon": "Tezliklə"
   },
   "auth": {
     "login": "Daxil ol",
@@ -328,6 +329,14 @@
         "PENDING": "Gözləyir",
         "FAILED": "Uğursuz"
       }
+    },
+    "placeholders": {
+      "content": "Simulyasiya modulları, təlim məzmunu, AI Mentor təlimatları və nişanların mərkəzi idarəsi burada olacaq.",
+      "support": "Təşkilatların dəstək müraciətlərini burada görüb cavablandıracaqsınız."
+    },
+    "pages": {
+      "auditSubtitle": "Platformada kim, nə vaxt, nə etdi — giriş, rol və ödəniş hadisələri.",
+      "systemSubtitle": "Qeydiyyat axını, xidmətlərin vəziyyəti və növbələr canlı."
     }
   },
   "tenant": {
@@ -368,7 +377,9 @@
       "buySubtitle": "Xidmətləri və iştirakçı sayını seçin, ödənişdən sonra proqram hesabınıza əlavə olunur və komandamız onu hazırlayır.",
       "statusPending": "Hazırlanır",
       "pendingHint": "Ödəniş alınıb, komandamız proqramı hazırlayır. Hazır olanda qeydiyyat linki burada görünəcək.",
-      "paymentSuccess": "Ödəniş alındı. Yeni proqramınız hazırlanır."
+      "paymentSuccess": "Ödəniş alındı. Yeni proqramınız hazırlanır.",
+      "subtitle": "Aldığınız proqramlar, qeydiyyat dövrü və doluluq.",
+      "applicationWindow": "Qeydiyyat"
     },
     "projectTypes": {
       "entrepreneurship_training": "Sahibkarlıq Təlimi",
@@ -411,7 +422,9 @@
       "university": "Universitet",
       "studyYear": "Kurs",
       "profile": "Profil",
-      "noProfile": "Məlumat yoxdur"
+      "noProfile": "Məlumat yoxdur",
+      "subtitle": "Proqramlarınıza qeydiyyatdan keçən tələbələr.",
+      "count": "{count} tələbə"
     },
     "reports": {
       "title": "Hesabatlar",
@@ -452,7 +465,8 @@
       "noPrograms": "Proqram yoxdur",
       "exported": "Hesabat hazırdır",
       "exportQueued": "Böyük ixrac növbəyə alındı — fayl hazırlanır…",
-      "exportFailed": "İxrac alınmadı. Bir az sonra yenidən cəhd edin."
+      "exportFailed": "İxrac alınmadı. Bir az sonra yenidən cəhd edin.",
+      "subtitle": "Proqram seçin və nəticələri hesabat kimi yükləyin."
     },
     "settings": {
       "title": "Parametrlər",
@@ -516,7 +530,14 @@
       "types": {
         "INITIAL": "İlk alış",
         "UPGRADE": "Genişləndirmə"
-      }
+      },
+      "title": "Ödənişlər",
+      "subtitle": "Oturacaqlarınız, yeni alışlar və bütün sifarişlərin tarixçəsi.",
+      "buyHeading": "Yeni proqram",
+      "buyProgram": "Yeni proqram al",
+      "buyProgramHint": "Xidmətləri seçin, qiyməti görün və ödəyin",
+      "buyFooter": "Ödənişdən sonra komandamız proqramı qurur və qeydiyyat açılır.",
+      "seatsHeading": "Əlavə oturacaq"
     },
     "certificates": {
       "title": "Sertifikatlar",
@@ -630,7 +651,8 @@
         "coursesHint": "Proqramlarınıza təlim əlavə edildikdən sonra burada görünəcək.",
         "completions": "Hələ tamamlanmış kurs yoxdur",
         "completionsHint": "Tələbələr kursun bütün dərslərini bitirdikdə burada görünəcək."
-      }
+      },
+      "subtitle": "Tələbələrin fəallığı, simulyasiya nəticələri və irəliləyiş — tarixə görə süzün."
     },
     "programBuilder": {
       "maxReached": "Ən çox {count} seçim edə bilərsiniz",
@@ -791,7 +813,8 @@
       "title": "Nişanlarım",
       "earned": "Qazanılan",
       "available": "Qazanıla bilən",
-      "coinValue": "Coin Dəyəri"
+      "coinValue": "Coin Dəyəri",
+      "summary": "{total} nişandan {earned}-ni qazanmısınız."
     },
     "leaderboard": {
       "title": "Liderlik Cədvəli",
@@ -909,7 +932,8 @@
       "wallet": "Nailiyyətlər",
       "coins": "Coin balansı",
       "shortcuts": "Tez keçidlər"
-    }
+    },
+    "certificatesSubtitle": "Qazandığınız sertifikatlar — PDF-i yükləyib paylaşa bilərsiniz."
   },
   "landing": {
     "hero": "Sahibkarlıq Səyahətiniz Başlasın",
@@ -1380,7 +1404,8 @@
     "cta1": "Burada sadəcə təlim proqramına qoşulmursan. Özünü kəşf edəcəyin, ideyalarını sınayacağın və sahibkarlıq dünyasını yaşayacağın bir səyahətə çıxırsan.",
     "cta2": "Bəzən düzgün qərar verəcək, bəzən yanılacaq, bəzən də heç ağlına gəlməyən bir həll tapacaqsan. Çünki burada məqsəd hər şeyi ilk dəfədən düz etmək deyil; düşünmək, sınamaq, öyrənmək və inkişaf etməkdir.",
     "cta3": "Hazırsansa, öz potensialını kəşf etməklə başlayaq. İlk addım səni gözləyir.",
-    "start": "Başlanğıc testlərinə keç"
+    "start": "Başlanğıc testlərinə keç",
+    "openUnits": "Təlim bölmələri"
   },
   "assessments": {
     "title": "Başlanğıc Səriştə Testləri",
@@ -1459,7 +1484,8 @@
     "testRetry": "Son nəticən {score}/100. Testi yenidən həll edə bilərsən.",
     "startTest": "Testə başla",
     "retakeTest": "Testi yenidən həll et",
-    "error": "Xəta baş verdi. Yenidən cəhd et."
+    "error": "Xəta baş verdi. Yenidən cəhd et.",
+    "pointsOf": "/ {total} bal"
   },
   "security": {
     "title": "İki mərhələli doğrulama",
@@ -1611,9 +1637,10 @@
         }
       },
       "pricingPreview": {
-        "title": "Şəffaf qiymət",
-        "description": "İştirakçı başına aylıq ödəyirsiniz. Gizli quraşdırma haqqı yoxdur.",
-        "cta": "Bütün planlara bax"
+        "title": "Proqramınızı xidmətlərdən qurun",
+        "description": "Lazım olan modulları seçin — qiymət iştirakçı başına hesablanır və sayı artdıqca azalır. Gizli haqq yoxdur.",
+        "cta": "Qiyməti hesabla",
+        "from": "iştirakçı başına"
       },
       "cta": {
         "title": "Platformanı öz ssenarinizdə görün",
@@ -1739,7 +1766,7 @@
           "bullets": {
             "a": "Starter-dəki hər şey",
             "b": "Hakaton və jüri modulu",
-            "c": "AI alətləri",
+            "c": "AI Mentor",
             "d": "Tam analitika və CSV ixracı"
           }
         },
@@ -1765,7 +1792,7 @@
           "hackathon": "Hakaton və jüri",
           "certificates": "Sertifikatlar",
           "analytics": "Analitika paneli",
-          "aiTools": "AI alətləri",
+          "aiTools": "AI Mentor",
           "support": "Dəstək",
           "gamification": "Gamifikasiya (rozet, coin, liderlik)"
         },

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Gamepad2,
   GraduationCap,
@@ -11,6 +11,7 @@ import {
   Trophy,
 } from "lucide-react";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
+import { LargeTitle } from "@/components/ui/ios";
 import { cn } from "@/lib/utils";
 
 export interface SimulationItem {
@@ -39,7 +40,6 @@ export function SimulationsPageClient({
   simulations,
 }: SimulationsPageClientProps) {
   const t = useTranslations("simulation.list");
-  const reducedMotion = useReducedMotion();
 
   return (
     <DashboardLayout
@@ -48,16 +48,14 @@ export function SimulationsPageClient({
       userName={userName}
       coinBalance={coinBalance}
     >
-      <p className="mb-6 max-w-2xl text-[14px] text-muted-foreground">
-        {t("subtitle")}
-      </p>
+      <LargeTitle className="mb-6" title={t("title")} subtitle={t("subtitle")} />
 
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
         {simulations.map((sim, i) => {
           const inner = (
             <div
               className={cn(
-                "flex h-full flex-col rounded-2xl bg-card p-6 shadow-sm ring-1 ring-transparent transition-all duration-200",
+                "flex h-full flex-col rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60 p-6 ring-1 ring-transparent transition-all duration-200",
                 sim.playable
                   ? "hover:-translate-y-0.5 hover:shadow-md hover:ring-primary/20"
                   : "opacity-60"
@@ -139,9 +137,8 @@ export function SimulationsPageClient({
           return (
             <motion.div
               key={sim.id}
-              initial={reducedMotion ? false : { opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.06, duration: 0.35, ease: [0, 0, 0.2, 1] }}
+              style={{ "--i": i } as React.CSSProperties}
+            className="ios-reveal"
             >
               {sim.playable ? (
                 <Link

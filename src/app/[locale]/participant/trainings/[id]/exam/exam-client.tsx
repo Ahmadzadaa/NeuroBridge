@@ -148,10 +148,8 @@ export function ExamClient({
           {phase === "intro" && (
             <motion.div
               key="intro"
-              initial={reducedMotion ? false : { opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, ease: [0, 0, 0.2, 1] }}
-              className="rounded-2xl bg-card p-8 text-center shadow-sm"
+              style={{ "--i": 0 } as React.CSSProperties}
+              className="ios-reveal rounded-2xl bg-card p-8 text-center shadow-sm"
             >
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                 <FileQuestion className="h-8 w-8" aria-hidden="true" />
@@ -196,9 +194,8 @@ export function ExamClient({
           {phase === "quiz" && question && (
             <motion.div
               key="quiz"
-              initial={reducedMotion ? false : { opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, ease: [0, 0, 0.2, 1] }}
+              style={{ "--i": 0 } as React.CSSProperties}
+            className="ios-reveal"
             >
               <div className="mb-4 flex items-center gap-4">
                 <Progress
@@ -215,7 +212,7 @@ export function ExamClient({
                   initial={reducedMotion ? false : { opacity: 0, x: 24 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.22, ease: [0, 0, 0.2, 1] }}
-                  className="rounded-2xl bg-card p-6 shadow-sm sm:p-8"
+                  className="rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60 p-6 sm:p-8"
                 >
                   <p className="text-[12px] font-semibold uppercase tracking-[0.6px] text-muted-foreground">
                     {t("questionLabel", { number: current + 1 })}
@@ -320,9 +317,8 @@ export function ExamClient({
           {phase === "result" && result && (
             <motion.div
               key="result"
-              initial={reducedMotion ? false : { opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, ease: [0, 0, 0.2, 1] }}
+              style={{ "--i": 0 } as React.CSSProperties}
+            className="ios-reveal"
             >
               <div
                 className={cn(
@@ -417,7 +413,7 @@ export function ExamClient({
                   return (
                     <div
                       key={r.questionId}
-                      className="rounded-2xl bg-card p-5 shadow-sm"
+                      className="rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60 p-5"
                     >
                       <div className="flex items-start gap-3">
                         {r.correct ? (

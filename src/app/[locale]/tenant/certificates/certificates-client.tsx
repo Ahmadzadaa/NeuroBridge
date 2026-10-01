@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
+import { LargeTitle } from "@/components/ui/ios";
 
 interface TemplateSummary {
   id: string;
@@ -358,14 +359,7 @@ export function CertificatesPageClient({
   return (
     <DashboardLayout panel="tenant" title={t("title")} userName={userName}>
       <div className="min-w-0 space-y-6 pb-10">
-        <header className="space-y-1">
-          <h1 className="text-2xl font-bold tracking-tight text-balance">
-            {t("title")}
-          </h1>
-          <p className="max-w-prose text-sm text-muted-foreground">
-            {t("subtitle")}
-          </p>
-        </header>
+        <LargeTitle title={t("title")} subtitle={t("subtitle")} />
 
         <div
           role="tablist"

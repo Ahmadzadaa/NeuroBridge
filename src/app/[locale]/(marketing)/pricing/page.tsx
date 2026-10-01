@@ -114,7 +114,7 @@ export default async function PricingPage({
         <SectionHeading title={tm("faq.title")} />
         <dl className="mx-auto mt-8 max-w-3xl space-y-4">
           {FAQ_KEYS.map((key) => (
-            <div key={key} className="rounded-2xl bg-card p-6 shadow-sm">
+            <div key={key} className="rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60 p-6">
               <dt className="text-[16px] font-semibold text-foreground">
                 {tm(`faq.items.${key}.question`)}
               </dt>

@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 export function StatCardSkeleton() {
   return (
-    <div className="overflow-hidden rounded-2xl bg-card shadow-sm">
+    <div className="overflow-hidden rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60">
       <Skeleton className="h-1 w-full rounded-none" />
       <div className="p-5">
         <div className="flex items-center justify-between gap-3">
@@ -40,7 +40,7 @@ export function TableSkeleton({
   className?: string;
 }) {
   return (
-    <div className={cn("overflow-hidden rounded-2xl bg-card shadow-sm", className)}>
+    <div className={cn("overflow-hidden rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60", className)}>
       {/* Header row */}
       <div className="flex items-center gap-4 border-b border-border px-4 py-3">
         <Skeleton className="h-3 w-1/4" />
@@ -66,7 +66,7 @@ export function TableSkeleton({
 export function DashboardSkeleton() {
   return (
     <div className="space-y-6">
-      <div className="overflow-hidden rounded-2xl bg-card p-6 shadow-sm">
+      <div className="overflow-hidden rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60 p-6">
         <Skeleton className="h-6 w-64" />
         <Skeleton className="mt-2 h-4 w-40" />
         <Skeleton className="mt-4 h-3 w-full rounded-full" />

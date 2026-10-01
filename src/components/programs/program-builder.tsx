@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useRouter } from "@/i18n/navigation";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { Button } from "@/components/ui/button";
@@ -67,7 +67,6 @@ export function ProgramBuilder({ userName, tenants, initial, trainingOptions }: 
   const tsa = useTranslations("superAdmin.programs");
   const router = useRouter();
   const locale = useLocale();
-  const reducedMotion = useReducedMotion();
   const editing = Boolean(initial);
 
   const [tenantId, setTenantId] = useState("");
@@ -158,7 +157,7 @@ export function ProgramBuilder({ userName, tenants, initial, trainingOptions }: 
         )}
 
         <FormSection index={1} title={tsa("tenantTitle")} description={tsa("tenantDescription")}>
-          <Card className="rounded-2xl border-0 shadow-sm">
+          <Card>
             <CardContent className="flex items-center gap-3 p-5">
               <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[11px] bg-gradient-to-br from-violet-500 to-indigo-600 text-white">
                 <Building2 className="h-5 w-5" aria-hidden="true" />
@@ -188,7 +187,7 @@ export function ProgramBuilder({ userName, tenants, initial, trainingOptions }: 
         </FormSection>
 
         <FormSection index={2} title={tb("basics.title")} description={tb("basics.description")}>
-          <Card className="rounded-2xl border-0 shadow-sm">
+          <Card>
             <CardContent className="space-y-5 p-6">
               <div className="space-y-2">
                 <Label htmlFor="name">{t("name")}</Label>
@@ -265,7 +264,7 @@ export function ProgramBuilder({ userName, tenants, initial, trainingOptions }: 
 
         {/* Drives the six-week student calendar and the jury finale. */}
         <FormSection index={5} title={tb("calendar.title")} description={tb("calendar.description")}>
-          <Card className="rounded-2xl border-0 shadow-sm">
+          <Card>
             <CardContent className="space-y-5 p-6">
               <DateWindow
                 icon={CalendarDays}
@@ -352,12 +351,10 @@ export function ProgramBuilder({ userName, tenants, initial, trainingOptions }: 
 
         {applicationLink && (
           <motion.div
-            initial={reducedMotion ? false : { opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
-            className="mt-8"
+            style={{ "--i": 0 } as React.CSSProperties}
+            className="ios-reveal mt-8"
           >
-            <Card className="rounded-2xl border-0 shadow-md">
+            <Card>
               <CardContent className="space-y-4 p-6">
                 <div className="flex items-start gap-3">
                   <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[11px] bg-gradient-to-br from-emerald-400 to-teal-600 text-white">
@@ -439,7 +436,7 @@ function DateWindow({
   required?: boolean;
 }) {
   return (
-    <Card className="rounded-2xl border-0 shadow-sm">
+    <Card>
       <CardContent className="p-5">
         <div className="flex items-start gap-3">
           <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] bg-muted text-muted-foreground">

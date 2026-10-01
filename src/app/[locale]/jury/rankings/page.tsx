@@ -5,6 +5,7 @@ import { requireFeature } from "@/lib/tenant/require-feature";
 import { prisma } from "@/lib/prisma";
 import { computeRankings } from "@/lib/hackathon/ranking";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
+import { LargeTitle } from "@/components/ui/ios";
 import { RankingsTable } from "@/components/hackathon/rankings-table";
 
 export default async function JuryRankingsPage({
@@ -41,9 +42,10 @@ export default async function JuryRankingsPage({
       userName={session.user.name ?? "Jury"}
     >
       <div className="space-y-8">
+        <LargeTitle title={t("heading")} />
         {rankingsByProgram.map(({ program, rankings }) => (
-          <section key={program.id}>
-            <h2 className="mb-3 text-[15px] font-semibold">{program.name}</h2>
+          <section key={program.id} className="ios-reveal">
+            <h2 className="mb-3 px-1 text-[20px] font-bold tracking-[-0.4px]">{program.name}</h2>
             <RankingsTable rankings={rankings} />
           </section>
         ))}

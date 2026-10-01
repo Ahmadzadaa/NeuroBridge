@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
+import { LargeTitle } from "@/components/ui/ios";
 import { StatCard } from "@/components/ui/stat-card";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -137,6 +138,7 @@ export function ReportsPageClient({ userName, programs }: ReportsPageClientProps
 
   return (
     <DashboardLayout panel="tenant" title={t("title")} userName={userName}>
+      <LargeTitle className="mb-6" title={t("title")} subtitle={t("subtitle")} />
       <div className="mb-6">
         <Select value={selectedProgram} onValueChange={(v) => setSelectedProgram(v ?? "")}>
           <SelectTrigger className="w-full max-w-sm rounded-xl">
@@ -177,10 +179,10 @@ export function ReportsPageClient({ userName, programs }: ReportsPageClientProps
         <StatCard title={t("kpi.certificatesEarned")} value={0} icon={FileText} accent="purple" />
       </div>
 
-      <Card className="rounded-2xl border-0 shadow-sm">
-        <CardHeader className="flex flex-row items-center justify-between">
+      <Card>
+        <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-3">
           <CardTitle>{t("title")}</CardTitle>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <Button
               variant="outline"
               size="sm"

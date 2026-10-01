@@ -1,8 +1,9 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
+import { LargeTitle } from "@/components/ui/ios";
 import { BadgeIcon, type BadgeIconState } from "@/components/ui/badge-icon";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BADGE_CATEGORIES } from "@/lib/constants";
@@ -83,23 +84,19 @@ function BadgeGrid({
   badges,
   locale,
   earnedLabel,
-  animated,
 }: {
   badges: BadgeItem[];
   locale: string;
   earnedLabel: string;
-  animated?: boolean;
 }) {
-  const reducedMotion = useReducedMotion();
 
   return (
     <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
       {badges.map((badge, i) => (
         <motion.div
           key={badge.key}
-          initial={animated && !reducedMotion ? { opacity: 0, scale: 0.9 } : false}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: i * 0.04, duration: 0.25, ease: [0, 0, 0.2, 1] }}
+          style={{ "--i": i } as React.CSSProperties}
+        className="ios-reveal"
         >
           <BadgeCard badge={badge} locale={locale} earnedLabel={earnedLabel} />
         </motion.div>
@@ -124,8 +121,13 @@ export function BadgesPageClient({
       userName={userName}
       coinBalance={coinBalance}
     >
+      <LargeTitle
+        className="mb-6"
+        title={t("title")}
+        subtitle={t("summary", { earned: badges.filter((x) => x.earned).length, total: badges.length })}
+      />
       <Tabs defaultValue="all">
-        <TabsList className="h-auto flex-wrap rounded-xl">
+        <TabsList className="h-auto max-w-full flex-wrap">
           <TabsTrigger value="all">{tc("all")}</TabsTrigger>
           {BADGE_CATEGORIES.map((cat) => (
             <TabsTrigger key={cat} value={cat} className="capitalize">
@@ -139,7 +141,6 @@ export function BadgesPageClient({
             badges={badges}
             locale={locale}
             earnedLabel={tc("earned")}
-            animated
           />
         </TabsContent>
 

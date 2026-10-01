@@ -14,14 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { IconTile, LargeTitle } from "@/components/ui/ios";
 import { Link } from "@/i18n/navigation";
 import {
   Plus,
@@ -31,6 +24,9 @@ import {
   Users,
   Trophy,
   ChevronRight,
+  CalendarDays,
+  FolderKanban,
+  CircleDashed,
 } from "lucide-react";
 
 export interface ProgramRow {
@@ -67,6 +63,14 @@ export function ProgramsPageClient({
 
   const [qrProgram, setQrProgram] = useState<ProgramRow | null>(null);
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
+
+  // tr-TR for az: Node and browsers format az dates differently, which breaks hydration.
+  const dateFmt = new Intl.DateTimeFormat(locale === "en" ? "en-GB" : "tr-TR", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  });
 
   const applyUrl = (token: string) =>
     `${window.location.origin}/${locale}/apply/${token}`;
@@ -123,97 +127,105 @@ export function ProgramsPageClient({
           {t("paymentSuccess")}
         </p>
       )}
-      <div className="overflow-hidden rounded-[20px] bg-card shadow-sm ring-1 ring-border/60">
-        <div className="flex items-center justify-between border-b border-border px-5 py-4">
-          <h2 className="text-[15px] font-semibold">{t("title")}</h2>
-          <Link href="/tenant/programs/buy">
-            <Button>
-              <Plus className="h-4 w-4" aria-hidden="true" />
-              {t("buy")}
-            </Button>
-          </Link>
-        </div>
+      <div className="space-y-6">
+        <LargeTitle
+          title={t("title")}
+          subtitle={t("subtitle")}
+          actions={
+            <Link href="/tenant/programs/buy">
+              <Button size="lg">
+                <Plus className="h-4 w-4" aria-hidden="true" />
+                {t("buy")}
+              </Button>
+            </Link>
+          }
+        />
 
         {programs.length === 0 ? (
-          <EmptyState title={tc("noData")} />
+          <div className="rounded-[22px] bg-card ring-1 ring-border/60">
+            <EmptyState title={tc("noData")} />
+          </div>
         ) : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>{t("name")}</TableHead>
-                <TableHead>{t("type")}</TableHead>
-                <TableHead>{t("participants")}</TableHead>
-                <TableHead>{t("start")}</TableHead>
-                <TableHead>{t("end")}</TableHead>
-                <TableHead className="text-right">{tc("actions")}</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {programs.map((program) => (
-                <TableRow key={program.id} className="group">
-                  <TableCell className="font-medium">
-                    <span className="flex flex-wrap items-center gap-2">
-                      {program.name}
-                      {program.pendingSetup && (
-                        <span className="rounded-full bg-warning/15 px-2.5 py-0.5 text-[11px] font-semibold text-warning-dark" title={t("pendingHint")}>
-                          {t("statusPending")}
-                        </span>
-                      )}
-                    </span>
-                  </TableCell>
-                  <TableCell className="text-muted-foreground">
-                    {tp.has(program.type) ? tp(program.type) : program.type}
-                  </TableCell>
-                  <TableCell>
-                    <span className="inline-flex items-center gap-1.5">
-                      <Users
-                        className="h-3.5 w-3.5 text-muted-foreground"
-                        aria-hidden="true"
-                      />
-                      {program.participantCount} / {program.participantLimit}
-                    </span>
-                  </TableCell>
-                  <TableCell className="text-muted-foreground">
-                    {program.pendingSetup ? "—" : new Date(program.applicationStart).toLocaleDateString(locale)}
-                  </TableCell>
-                  <TableCell className="text-muted-foreground">
-                    {program.pendingSetup ? "—" : new Date(program.applicationEnd).toLocaleDateString(locale)}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center justify-end gap-1.5">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="rounded-lg"
-                        disabled={program.pendingSetup}
-                        title={program.pendingSetup ? t("pendingHint") : undefined}
-                        onClick={() => setQrProgram(program)}
-                      >
-                        <QrCode className="h-4 w-4" aria-hidden="true" />
-                        {tq("invite")}
-                      </Button>
-                      {program.type === "hackathon" && (
-                        <Link href={`/tenant/programs/${program.id}/hackathon`}>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="rounded-lg"
-                          >
-                            <Trophy className="h-4 w-4" aria-hidden="true" />
-                            {tq("hackathon")}
-                            <ChevronRight
-                              className="h-3.5 w-3.5"
-                              aria-hidden="true"
-                            />
-                          </Button>
-                        </Link>
-                      )}
+          <ul className="grid grid-cols-[minmax(0,1fr)] gap-4 md:grid-cols-2">
+            {programs.map((program, i) => {
+              const pct = program.participantLimit
+                ? Math.min(100, Math.round((program.participantCount / program.participantLimit) * 100))
+                : 0;
+              return (
+                <li
+                  key={program.id}
+                  style={{ "--i": i + 1 } as React.CSSProperties}
+                  className="ios-reveal flex flex-col rounded-[22px] bg-card p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60"
+                >
+                  <div className="flex items-start gap-3">
+                    <IconTile
+                      icon={program.pendingSetup ? CircleDashed : program.type === "hackathon" ? Trophy : FolderKanban}
+                      tone={program.pendingSetup ? "slate" : program.type === "hackathon" ? "amber" : "indigo"}
+                    />
+                    <div className="min-w-0 flex-1">
+                      <h2 className="text-[17px] font-semibold leading-snug tracking-[-0.3px] text-foreground">{program.name}</h2>
+                      <p className="mt-0.5 text-[13px] text-muted-foreground">
+                        {tp.has(program.type) ? tp(program.type) : program.type}
+                      </p>
                     </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+                    {program.pendingSetup && (
+                      <span className="shrink-0 rounded-full bg-warning/15 px-2.5 py-0.5 text-[11px] font-semibold text-warning-dark">
+                        {t("statusPending")}
+                      </span>
+                    )}
+                  </div>
+
+                  {program.pendingSetup ? (
+                    <p className="mt-4 rounded-2xl bg-muted/60 px-4 py-3 text-[13px] leading-relaxed text-muted-foreground">
+                      {t("pendingHint")}
+                    </p>
+                  ) : (
+                    <div className="mt-5 space-y-3">
+                      <div>
+                        <div className="flex items-center justify-between text-[13px]">
+                          <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+                            <Users className="h-3.5 w-3.5" aria-hidden="true" />
+                            {t("participants")}
+                          </span>
+                          <span className="font-semibold tabular-nums text-foreground">
+                            {program.participantCount} / {program.participantLimit}
+                          </span>
+                        </div>
+                        <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-muted" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100} aria-label={t("participants")}>
+                          <div className="bar-fill h-full rounded-full bg-gradient-to-r from-indigo-500 to-violet-500" style={{ width: `${pct}%` }} />
+                        </div>
+                      </div>
+                      <p className="inline-flex items-center gap-1.5 text-[13px] text-muted-foreground">
+                        <CalendarDays className="h-3.5 w-3.5" aria-hidden="true" />
+                        {t("applicationWindow")}: {dateFmt.format(new Date(program.applicationStart))} – {dateFmt.format(new Date(program.applicationEnd))}
+                      </p>
+                    </div>
+                  )}
+
+                  <div className="mt-5 flex flex-wrap gap-2 border-t border-border/60 pt-4">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={program.pendingSetup}
+                      onClick={() => setQrProgram(program)}
+                    >
+                      <QrCode className="h-4 w-4" aria-hidden="true" />
+                      {tq("invite")}
+                    </Button>
+                    {program.type === "hackathon" && !program.pendingSetup && (
+                      <Link href={`/tenant/programs/${program.id}/hackathon`}>
+                        <Button variant="outline" size="sm">
+                          <Trophy className="h-4 w-4" aria-hidden="true" />
+                          {tq("hackathon")}
+                          <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
+                        </Button>
+                      </Link>
+                    )}
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
         )}
       </div>
 

@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { Loader2, Mail } from "lucide-react";
 import { toast } from "sonner";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
+import { LargeTitle } from "@/components/ui/ios";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -80,20 +81,19 @@ export function OrdersClient({
 
   return (
     <DashboardLayout panel="super-admin" title={t("title")} userName={userName}>
-      <div className="overflow-hidden rounded-2xl bg-card shadow-sm">
-        <div className="border-b border-border px-5 py-4">
-          <h2 className="text-[15px] font-semibold">{t("title")}</h2>
-          <p className="mt-0.5 text-[12px] text-muted-foreground">{t("subtitle")}</p>
-          <div className="mt-3 flex flex-wrap gap-2">
+      <LargeTitle className="mb-6" title={t("title")} subtitle={t("subtitle")} />
+      <div className="overflow-hidden rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60">
+        <div className="border-b border-border/60 px-5 py-4">
+          <div className="flex flex-wrap gap-2">
             {tabs.map((tab) => (
               <Link
                 key={tab.key ?? "all"}
                 href={tab.key ? `/super-admin/billing?status=${tab.key}` : "/super-admin/billing"}
                 className={cn(
-                  "rounded-full px-3 py-1 text-[12px] font-medium",
+                  "rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-colors",
                   filter === tab.key
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-subtle text-muted-foreground hover:text-foreground"
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "bg-muted text-muted-foreground hover:text-foreground"
                 )}
               >
                 {tab.label} · {tab.count}

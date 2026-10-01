@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
+import { LargeTitle } from "@/components/ui/ios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -125,7 +126,7 @@ export function SimulationGradingClient({
     return (
       <div
         key={run.id}
-        className="overflow-hidden rounded-2xl bg-card shadow-sm"
+        className="overflow-hidden rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60"
       >
         <button
           type="button"
@@ -320,12 +321,10 @@ export function SimulationGradingClient({
 
   return (
     <DashboardLayout panel={panel} title={t("title")} userName={userName}>
-      <p className="mb-6 max-w-2xl text-[14px] text-muted-foreground">
-        {t("subtitle")}
-      </p>
+      <LargeTitle className="mb-6" title={t("title")} subtitle={t("subtitle")} />
 
       {runs.length === 0 ? (
-        <div className="rounded-2xl bg-card shadow-sm">
+        <div className="rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60">
           <EmptyState title={tc("noData")} description={t("empty")} />
         </div>
       ) : (

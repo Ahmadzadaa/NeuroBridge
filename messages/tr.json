@@ -66,7 +66,8 @@
     "pageNumber": "Sayfa {number}",
     "collapseSidebar": "Yan paneli daralt",
     "expandSidebar": "Yan paneli genişlet",
-    "account": "Hesap ve güvenlik"
+    "account": "Hesap ve güvenlik",
+    "comingSoon": "Yakında"
   },
   "auth": {
     "login": "Giriş Yap",
@@ -328,6 +329,14 @@
         "PENDING": "Bekliyor",
         "FAILED": "Başarısız"
       }
+    },
+    "placeholders": {
+      "content": "Simülasyon modülleri, eğitim içeriği, AI Mentor talimatları ve rozetlerin merkezi yönetimi burada olacak.",
+      "support": "Kurumların destek taleplerini burada görüp yanıtlayacaksınız."
+    },
+    "pages": {
+      "auditSubtitle": "Platformda kim, ne zaman, ne yaptı — giriş, rol ve ödeme olayları.",
+      "systemSubtitle": "Kayıt akışı, hizmet durumu ve kuyruklar canlı."
     }
   },
   "tenant": {
@@ -368,7 +377,9 @@
       "buySubtitle": "Hizmetleri ve katılımcı sayısını seçin; ödemeden sonra program hesabınıza eklenir ve ekibimiz hazırlar.",
       "statusPending": "Hazırlanıyor",
       "pendingHint": "Ödeme alındı, ekibimiz programı hazırlıyor. Hazır olduğunda kayıt bağlantısı burada görünecek.",
-      "paymentSuccess": "Ödeme alındı. Yeni programınız hazırlanıyor."
+      "paymentSuccess": "Ödeme alındı. Yeni programınız hazırlanıyor.",
+      "subtitle": "Aldığınız programlar, kayıt dönemi ve doluluk.",
+      "applicationWindow": "Kayıt"
     },
     "projectTypes": {
       "entrepreneurship_training": "Girişimcilik Eğitimi",
@@ -411,7 +422,9 @@
       "university": "Üniversite",
       "studyYear": "Sınıf",
       "profile": "Profil",
-      "noProfile": "Bilgi yok"
+      "noProfile": "Bilgi yok",
+      "subtitle": "Programlarınıza kayıtlı öğrenciler.",
+      "count": "{count} öğrenci"
     },
     "reports": {
       "title": "Raporlar",
@@ -452,7 +465,8 @@
       "noPrograms": "Program yok",
       "exported": "Rapor hazır",
       "exportQueued": "Büyük dışa aktarma sıraya alındı — dosya hazırlanıyor…",
-      "exportFailed": "Dışa aktarma başarısız. Biraz sonra tekrar deneyin."
+      "exportFailed": "Dışa aktarma başarısız. Biraz sonra tekrar deneyin.",
+      "subtitle": "Bir program seçin ve sonuçları rapor olarak indirin."
     },
     "settings": {
       "title": "Ayarlar",
@@ -516,7 +530,14 @@
       "types": {
         "INITIAL": "İlk alım",
         "UPGRADE": "Yükseltme"
-      }
+      },
+      "title": "Ödemeler",
+      "subtitle": "Koltuklarınız, yeni alımlar ve tüm siparişlerin geçmişi.",
+      "buyHeading": "Yeni program",
+      "buyProgram": "Yeni program al",
+      "buyProgramHint": "Hizmetleri seçin, fiyatı görün ve ödeyin",
+      "buyFooter": "Ödemeden sonra ekibimiz programı kurar ve kayıt açılır.",
+      "seatsHeading": "Ek koltuk"
     },
     "certificates": {
       "title": "Sertifikalar",
@@ -630,7 +651,8 @@
         "coursesHint": "Programlarınıza eğitim eklendiğinde burada görünecek.",
         "completions": "Henüz tamamlanan kurs yok",
         "completionsHint": "Öğrenciler bir kursun tüm derslerini bitirdiğinde burada görünecek."
-      }
+      },
+      "subtitle": "Öğrenci etkinliği, simülasyon sonuçları ve ilerleme — tarihe göre filtreleyin."
     },
     "programBuilder": {
       "maxReached": "En fazla {count} seçim yapabilirsiniz",
@@ -791,7 +813,8 @@
       "title": "Rozetlerim",
       "earned": "Kazanılan",
       "available": "Kazanılabilir",
-      "coinValue": "Coin Değeri"
+      "coinValue": "Coin Değeri",
+      "summary": "{total} rozetten {earned} tanesini kazandınız."
     },
     "leaderboard": {
       "title": "Liderlik Tablosu",
@@ -909,7 +932,8 @@
       "wallet": "Başarılar",
       "coins": "Coin bakiyesi",
       "shortcuts": "Kısayollar"
-    }
+    },
+    "certificatesSubtitle": "Kazandığınız sertifikalar — PDF'i indirip paylaşabilirsiniz."
   },
   "landing": {
     "hero": "Girişimcilik Yolculuğunuz Başlasın",
@@ -1380,7 +1404,8 @@
     "cta1": "Burada sadece bir eğitim programına katılmıyorsun. Kendini keşfedeceğin, fikirlerini deneyeceğin ve girişimcilik dünyasını deneyimleyeceğin bir yolculuğa çıkıyorsun.",
     "cta2": "Bazen doğru kararı vereceksin, bazen yanılacaksın, bazen de hiç düşünmediğin bir çözüm bulacaksın. Çünkü burada amaç her şeyi ilk seferde doğru yapmak değil; düşünmek, denemek, öğrenmek ve gelişmek.",
     "cta3": "Hazırsan, kendi potansiyelini keşfetmekle başlayalım. İlk adım seni bekliyor.",
-    "start": "Başlangıç testlerine geç"
+    "start": "Başlangıç testlerine geç",
+    "openUnits": "Eğitim bölümleri"
   },
   "assessments": {
     "title": "Başlangıç Yetkinlik Testleri",
@@ -1459,7 +1484,8 @@
     "testRetry": "Son puanın {score}/100. Testi tekrar çözebilirsin.",
     "startTest": "Teste başla",
     "retakeTest": "Testi tekrar çöz",
-    "error": "Bir hata oluştu. Lütfen tekrar dene."
+    "error": "Bir hata oluştu. Lütfen tekrar dene.",
+    "pointsOf": "/ {total} puan"
   },
   "security": {
     "title": "İki adımlı doğrulama",
@@ -1611,9 +1637,10 @@
         }
       },
       "pricingPreview": {
-        "title": "Şeffaf fiyat",
-        "description": "Katılımcı başına aylık ödersiniz. Gizli kurulum ücreti yoktur.",
-        "cta": "Tüm planları gör"
+        "title": "Programınızı hizmetlerden kurun",
+        "description": "İhtiyacınız olan modülleri seçin — fiyat katılımcı başınadır ve sayı arttıkça düşer. Gizli ücret yok.",
+        "cta": "Fiyatı hesapla",
+        "from": "katılımcı başına"
       },
       "cta": {
         "title": "Platformu kendi senaryonuzda görün",
@@ -1739,7 +1766,7 @@
           "bullets": {
             "a": "Starter'daki her şey",
             "b": "Hackathon ve jüri modülü",
-            "c": "AI araçları",
+            "c": "AI Mentor",
             "d": "Tam analitik ve CSV dışa aktarımı"
           }
         },
@@ -1765,7 +1792,7 @@
           "hackathon": "Hackathon ve jüri",
           "certificates": "Sertifikalar",
           "analytics": "Analitik paneli",
-          "aiTools": "AI araçları",
+          "aiTools": "AI Mentor",
           "support": "Destek",
           "gamification": "Oyunlaştırma (rozet, coin, liderlik)"
         },

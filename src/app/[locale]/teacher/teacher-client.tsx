@@ -117,7 +117,7 @@ export function TeacherDashboardClient({
 
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[380px_1fr]">
         {/* ── Invite card ─────────────────────────────────────── */}
-        <div className="self-start rounded-2xl bg-card p-6 shadow-sm">
+        <div className="self-start rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60 p-6">
           <h3 className="flex items-center gap-2 text-[15px] font-semibold">
             <QrCode className="h-4.5 w-4.5 text-primary" aria-hidden="true" />
             {t("invite.heading")}
@@ -177,14 +177,14 @@ export function TeacherDashboardClient({
             {t("students.heading")} ({students.length})
           </h3>
           {students.length === 0 ? (
-            <div className="rounded-2xl bg-card shadow-sm">
+            <div className="rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60">
               <EmptyState
                 title={tc("noData")}
                 description={t("students.empty")}
               />
             </div>
           ) : (
-            <div className="overflow-hidden rounded-2xl bg-card shadow-sm">
+            <div className="overflow-hidden rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60">
               <div className="flex items-center gap-4 border-b border-border px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.6px] text-muted-foreground">
                 <span className="flex-1">{t("students.name")}</span>
                 <span className="w-24 text-right">{t("students.simScore")}</span>

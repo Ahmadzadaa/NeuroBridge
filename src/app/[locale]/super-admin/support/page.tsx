@@ -17,7 +17,7 @@ export default async function SupportPage({
       panel="super-admin"
       title={t("support")}
       userName={session.user.name ?? "Admin"}
-      description="Support ticket management — view and respond to tenant support requests."
+      description={(await getTranslations("superAdmin.placeholders"))("support")}
     />
   );
 }

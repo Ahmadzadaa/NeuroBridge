@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
+import { LargeTitle } from "@/components/ui/ios";
 import { StatCard } from "@/components/ui/stat-card";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -232,7 +233,8 @@ export function AnalyticsClient({
 
   return (
     <DashboardLayout panel="tenant" title={t("title")} userName={userName}>
-      <Card className="mb-6 rounded-2xl border-0 shadow-sm">
+      <LargeTitle className="mb-6" title={t("title")} subtitle={t("subtitle")} />
+      <Card className="mb-6">
         <CardContent className="flex flex-wrap items-end gap-4 p-5">
           <div className="min-w-[150px]">
             <Label htmlFor="analytics-from" className="mb-1.5 block">
@@ -330,7 +332,7 @@ export function AnalyticsClient({
           </div>
         </>
       ) : failed || !data ? (
-        <Card className="rounded-2xl border-0 shadow-sm">
+        <Card>
           <CardContent className="p-0">
             <EmptyState title={t("loadFailed")} description={t("loadFailedHint")} />
           </CardContent>
@@ -350,7 +352,7 @@ export function AnalyticsClient({
           </div>
 
           <div className="mt-6 grid gap-4 lg:grid-cols-2">
-            <Card className="rounded-2xl border-0 shadow-sm">
+            <Card>
               <CardHeader>
                 <CardTitle>{t("charts.activity")}</CardTitle>
               </CardHeader>
@@ -392,7 +394,7 @@ export function AnalyticsClient({
               </CardContent>
             </Card>
 
-            <Card className="rounded-2xl border-0 shadow-sm">
+            <Card>
               <CardHeader>
                 <CardTitle>{t("charts.completion")}</CardTitle>
               </CardHeader>
@@ -429,7 +431,7 @@ export function AnalyticsClient({
             </Card>
           </div>
 
-          <Card className="mt-6 rounded-2xl border-0 shadow-sm">
+          <Card className="mt-6">
             <CardHeader>
               <CardTitle>{t("courses.title")}</CardTitle>
             </CardHeader>

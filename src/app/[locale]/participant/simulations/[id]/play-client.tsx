@@ -264,10 +264,9 @@ export function SimulationPlayClient({
         {outcome && (
           <motion.div
             key="outcome"
-            initial={reducedMotion ? false : { opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, ease: [0, 0, 0.2, 1] }}
+            style={{ "--i": 0 } as React.CSSProperties}
             className={cn(
+              "ios-reveal",
               "rounded-2xl p-6 shadow-sm sm:p-8",
               outcome.completed
                 ? "bg-gradient-to-br from-primary/12 via-card to-card ring-1 ring-primary/20"
@@ -341,10 +340,8 @@ export function SimulationPlayClient({
         {!outcome && activeRun && currentRound && (
           <motion.div
             key={currentRound.order}
-            initial={reducedMotion ? false : { opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, ease: [0, 0, 0.2, 1] }}
-            className="rounded-2xl bg-card p-6 shadow-sm sm:p-8"
+            style={{ "--i": 0 } as React.CSSProperties}
+            className="ios-reveal rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60 p-6 sm:p-8"
           >
             <p className="text-[12px] font-semibold uppercase tracking-[0.6px] text-muted-foreground">
               {t("roundTitle", { number: currentRound.order })}
@@ -400,10 +397,8 @@ export function SimulationPlayClient({
         {/* ── Intro / result ──────────────────────────────────── */}
         {!outcome && !activeRun && (
           <motion.div
-            initial={reducedMotion ? false : { opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, ease: [0, 0, 0.2, 1] }}
-            className="rounded-2xl bg-card p-8 shadow-sm"
+            style={{ "--i": 0 } as React.CSSProperties}
+            className="ios-reveal rounded-2xl bg-card p-8 shadow-sm"
           >
             {lastCompleted ? (
               <div className="text-center">

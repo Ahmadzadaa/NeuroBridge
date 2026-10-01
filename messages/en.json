@@ -66,7 +66,8 @@
     "pageNumber": "Page {number}",
     "collapseSidebar": "Collapse sidebar",
     "expandSidebar": "Expand sidebar",
-    "account": "Account and security"
+    "account": "Account and security",
+    "comingSoon": "Coming soon"
   },
   "auth": {
     "login": "Log In",
@@ -328,6 +329,14 @@
         "PENDING": "Pending",
         "FAILED": "Failed"
       }
+    },
+    "placeholders": {
+      "content": "Central management of simulation modules, training content, AI Mentor instructions and badges will live here.",
+      "support": "You'll see and answer organisations' support requests here."
+    },
+    "pages": {
+      "auditSubtitle": "Who did what on the platform, and when — sign-ins, roles and payments.",
+      "systemSubtitle": "Registration flow, service health and queues, live."
     }
   },
   "tenant": {
@@ -368,7 +377,9 @@
       "buySubtitle": "Choose services and participant numbers; after payment the programme is added to your account and our team sets it up.",
       "statusPending": "Being set up",
       "pendingHint": "Payment received; our team is setting up the programme. The registration link will appear here once it is ready.",
-      "paymentSuccess": "Payment received. Your new programme is being set up."
+      "paymentSuccess": "Payment received. Your new programme is being set up.",
+      "subtitle": "Your programmes, their registration window and how full they are.",
+      "applicationWindow": "Registration"
     },
     "projectTypes": {
       "entrepreneurship_training": "Entrepreneurship Training",
@@ -411,7 +422,9 @@
       "university": "University",
       "studyYear": "Year",
       "profile": "Profile",
-      "noProfile": "No details"
+      "noProfile": "No details",
+      "subtitle": "Students registered for your programmes.",
+      "count": "{count, plural, one {# student} other {# students}}"
     },
     "reports": {
       "title": "Reports",
@@ -452,7 +465,8 @@
       "noPrograms": "No programs",
       "exported": "Your report is ready",
       "exportQueued": "Large export queued — preparing the file…",
-      "exportFailed": "Export failed. Please try again in a moment."
+      "exportFailed": "Export failed. Please try again in a moment.",
+      "subtitle": "Pick a programme and download its results as a report."
     },
     "settings": {
       "title": "Settings",
@@ -516,7 +530,14 @@
       "types": {
         "INITIAL": "Initial purchase",
         "UPGRADE": "Upgrade"
-      }
+      },
+      "title": "Billing",
+      "subtitle": "Your seats, new purchases and the history of every order.",
+      "buyHeading": "New programme",
+      "buyProgram": "Buy a programme",
+      "buyProgramHint": "Pick services, see the price and pay",
+      "buyFooter": "After payment our team sets the programme up and registration opens.",
+      "seatsHeading": "Extra seats"
     },
     "certificates": {
       "title": "Certificates",
@@ -630,7 +651,8 @@
         "coursesHint": "Courses appear here once your programmes include trainings.",
         "completions": "No courses completed yet",
         "completionsHint": "Appears here once students finish every lesson in a course."
-      }
+      },
+      "subtitle": "Student activity, simulation results and progress — filter by date."
     },
     "programBuilder": {
       "maxReached": "You can select at most {count}",
@@ -791,7 +813,8 @@
       "title": "My Badges",
       "earned": "Earned",
       "available": "Available",
-      "coinValue": "Coin Value"
+      "coinValue": "Coin Value",
+      "summary": "You've earned {earned} of {total} badges."
     },
     "leaderboard": {
       "title": "Leaderboard",
@@ -909,7 +932,8 @@
       "wallet": "Achievements",
       "coins": "Coin balance",
       "shortcuts": "Shortcuts"
-    }
+    },
+    "certificatesSubtitle": "Certificates you've earned — download the PDF to share it."
   },
   "landing": {
     "hero": "Start Your Entrepreneurship Journey",
@@ -1380,7 +1404,8 @@
     "cta1": "This is not just a training program. It is a journey where you will discover yourself, test your ideas and experience the world of entrepreneurship.",
     "cta2": "Sometimes you will make the right call, sometimes you will be wrong, and sometimes you will find a solution you never thought of. The goal is not to get everything right the first time; it is to think, try, learn and grow.",
     "cta3": "If you are ready, let us start by discovering your potential. Your first step is waiting.",
-    "start": "Go to the baseline tests"
+    "start": "Go to the baseline tests",
+    "openUnits": "Training units"
   },
   "assessments": {
     "title": "Baseline Competency Tests",
@@ -1459,7 +1484,8 @@
     "testRetry": "Your last score was {score}/100. You can take the test again.",
     "startTest": "Start the test",
     "retakeTest": "Retake the test",
-    "error": "Something went wrong. Please try again."
+    "error": "Something went wrong. Please try again.",
+    "pointsOf": "of {total} pts"
   },
   "security": {
     "title": "Two-factor authentication",
@@ -1611,9 +1637,10 @@
         }
       },
       "pricingPreview": {
-        "title": "Transparent pricing",
-        "description": "You pay per seat per month. No hidden setup fee.",
-        "cta": "See all plans"
+        "title": "Build your programme from services",
+        "description": "Pick the modules you need — pricing is per participant and drops as numbers grow. No hidden fees.",
+        "cta": "Calculate your price",
+        "from": "per participant from"
       },
       "cta": {
         "title": "See the platform on your own scenario",
@@ -1739,7 +1766,7 @@
           "bullets": {
             "a": "Everything in Starter",
             "b": "Hackathon and judging module",
-            "c": "AI tools",
+            "c": "AI Mentor",
             "d": "Full analytics and CSV export"
           }
         },
@@ -1765,7 +1792,7 @@
           "hackathon": "Hackathon and judging",
           "certificates": "Certificates",
           "analytics": "Analytics dashboard",
-          "aiTools": "AI tools",
+          "aiTools": "AI Mentor",
           "support": "Support",
           "gamification": "Gamification (badges, coins, leaderboard)"
         },

@@ -48,14 +48,14 @@ export function RankingsTable({ rankings, highlightTeamId }: RankingsTableProps)
 
   if (rankings.length === 0) {
     return (
-      <div className="rounded-2xl bg-card shadow-sm">
+      <div className="rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60">
         <EmptyState title={tc("noData")} />
       </div>
     );
   }
 
   return (
-    <div className="overflow-hidden rounded-2xl bg-card shadow-sm">
+    <div className="overflow-hidden rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60">
       <div className="flex items-center gap-4 border-b border-border px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.6px] text-muted-foreground">
         <span className="w-10">{t("rank")}</span>
         <span className="flex-1">{t("team")}</span>

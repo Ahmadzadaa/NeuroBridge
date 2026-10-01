@@ -188,7 +188,7 @@ export function ScenarioEditor({
         )}
 
         {/* ── Meta ────────────────────────────────────────────── */}
-        <div className="rounded-2xl bg-card p-6 shadow-sm">
+        <div className="rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60 p-6">
           <h3 className="text-[15px] font-semibold">{t("metaHeading")}</h3>
           <div className="mt-4 space-y-4">
             <div className="space-y-1.5">
@@ -255,7 +255,7 @@ export function ScenarioEditor({
             <div
               key={roundIndex}
               className={cn(
-                "overflow-hidden rounded-2xl bg-card shadow-sm",
+                "overflow-hidden rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60",
                 !ok && "ring-1 ring-warning/40"
               )}
             >

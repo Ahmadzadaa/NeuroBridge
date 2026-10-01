@@ -97,7 +97,7 @@ export function ScoreSubmissionClient({
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1fr_420px]">
         {/* ── PDF viewer ──────────────────────────────────────── */}
-        <div className="overflow-hidden rounded-2xl bg-card shadow-sm">
+        <div className="overflow-hidden rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-5 py-4">
             <div className="min-w-0">
               <p className="truncate text-[15px] font-semibold">
@@ -141,7 +141,7 @@ export function ScoreSubmissionClient({
 
         {/* ── Scoring panel ───────────────────────────────────── */}
         <div className="space-y-4 self-start">
-          <div className="rounded-2xl bg-card p-5 shadow-sm">
+          <div className="rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60 p-5">
             <h3 className="text-[15px] font-semibold">{t("scoringHeading")}</h3>
             <p className="mt-1 text-[12px] text-muted-foreground">
               {t("scoringHint")}

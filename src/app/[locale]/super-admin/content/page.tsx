@@ -17,7 +17,7 @@ export default async function ContentPage({
       panel="super-admin"
       title={t("content")}
       userName={session.user.name ?? "Admin"}
-      description="Global content management — simulation modules, training content, AI prompts, and badge definitions."
+      description={(await getTranslations("superAdmin.placeholders"))("content")}
     />
   );
 }

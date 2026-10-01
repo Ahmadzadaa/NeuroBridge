@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
+import { LargeTitle } from "@/components/ui/ios";
 import {
   Table,
   TableBody,
@@ -42,6 +43,7 @@ interface AuditClientProps {
 
 export function AuditClient({ userName, title }: AuditClientProps) {
   const t = useTranslations("superAdmin.audit");
+  const tPage = useTranslations("superAdmin.pages");
   const tc = useTranslations("common");
   const [items, setItems] = useState<AuditItem[]>([]);
   const [total, setTotal] = useState(0);
@@ -91,6 +93,7 @@ export function AuditClient({ userName, title }: AuditClientProps) {
 
   return (
     <DashboardLayout panel="super-admin" title={title} userName={userName}>
+      <LargeTitle className="mb-6" title={title} subtitle={tPage("auditSubtitle")} />
       <div className="mb-4 flex flex-wrap items-center gap-3">
         <Select value={action} onValueChange={(v) => changeAction(v ?? "all")}>
           <SelectTrigger className="w-56 rounded-xl">

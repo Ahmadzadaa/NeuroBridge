@@ -170,7 +170,6 @@ export function HackathonClient({
   const tc = useTranslations("common");
   const apiError = useApiErrorMessage();
   const router = useRouter();
-  const reducedMotion = useReducedMotion();
 
   const [teamName, setTeamName] = useState("");
   const [slogan, setSlogan] = useState("");
@@ -271,7 +270,7 @@ export function HackathonClient({
         userName={userName}
         coinBalance={coinBalance}
       >
-        <div className="rounded-2xl bg-card shadow-sm">
+        <div className="rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60">
           <EmptyState title={t("noProgram")} description={t("noProgramHint")} />
         </div>
       </DashboardLayout>
@@ -287,10 +286,8 @@ export function HackathonClient({
     >
       {/* ── Program hero ───────────────────────────────────────── */}
       <motion.div
-        initial={reducedMotion ? false : { opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35, ease: [0, 0, 0.2, 1] }}
-        className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/12 via-card to-card p-6 shadow-sm ring-1 ring-primary/15 sm:p-8"
+        style={{ "--i": 0 } as React.CSSProperties}
+        className="ios-reveal relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/12 via-card to-card p-6 shadow-sm ring-1 ring-primary/15 sm:p-8"
       >
         <div className="flex items-start gap-4">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
@@ -325,7 +322,7 @@ export function HackathonClient({
           {myTeam ? (
             <>
               {/* Submission upload */}
-              <div className="rounded-2xl bg-card p-6 shadow-sm">
+              <div className="rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60 p-6">
                 <h3 className="flex items-center gap-2 text-[15px] font-semibold">
                   <FileUp className="h-4.5 w-4.5 text-primary" aria-hidden="true" />
                   {t("submission.heading")}
@@ -456,7 +453,7 @@ export function HackathonClient({
           ) : (
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               {/* Create team */}
-              <div className="rounded-2xl bg-card p-6 shadow-sm">
+              <div className="rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60 p-6">
                 <h3 className="flex items-center gap-2 text-[15px] font-semibold">
                   <Plus className="h-4.5 w-4.5 text-primary" aria-hidden="true" />
                   {t("team.createHeading")}
@@ -501,7 +498,7 @@ export function HackathonClient({
               </div>
 
               {/* Join team */}
-              <div className="rounded-2xl bg-card p-6 shadow-sm">
+              <div className="rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60 p-6">
                 <h3 className="flex items-center gap-2 text-[15px] font-semibold">
                   <UserPlus className="h-4.5 w-4.5 text-primary" aria-hidden="true" />
                   {t("team.joinHeading")}
@@ -560,7 +557,7 @@ export function HackathonClient({
                 {feedback.map((criterion) => (
                   <div
                     key={criterion.criterionId}
-                    className="rounded-2xl bg-card p-5 shadow-sm"
+                    className="rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60 p-5"
                   >
                     <div className="flex items-baseline justify-between gap-3">
                       <p className="text-[14px] font-semibold">{criterion.name}</p>
@@ -610,7 +607,7 @@ export function HackathonClient({
         {/* ── Right column ────────────────────────────────────── */}
         <div className="space-y-4">
           {myTeam && (
-            <div className="rounded-2xl bg-card p-5 shadow-sm">
+            <div className="rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60 p-5">
               <p className="text-[12px] font-semibold uppercase tracking-[0.6px] text-muted-foreground">
                 {t("team.myTeam")}
               </p>
@@ -648,7 +645,7 @@ export function HackathonClient({
 
           {/* Criteria overview */}
           {criteria.length > 0 && (
-            <div className="rounded-2xl bg-card p-5 shadow-sm">
+            <div className="rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60 p-5">
               <p className="text-[12px] font-semibold uppercase tracking-[0.6px] text-muted-foreground">
                 {t("criteria.heading")}
               </p>

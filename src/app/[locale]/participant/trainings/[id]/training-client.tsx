@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   ArrowLeft,
   CheckCircle2,
@@ -64,7 +64,6 @@ export function TrainingDetailClient({
 }: TrainingDetailClientProps) {
   const t = useTranslations("participant.trainings");
   const router = useRouter();
-  const reducedMotion = useReducedMotion();
 
   const [completed, setCompleted] = useState<Set<string>>(
     () => new Set(lessons.filter((l) => l.completed).map((l) => l.id))
@@ -146,10 +145,8 @@ export function TrainingDetailClient({
           {active && (
               <motion.div
                 key={active.id}
-                initial={reducedMotion ? false : { opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.25, ease: [0, 0, 0.2, 1] }}
-                className="overflow-hidden rounded-2xl bg-card shadow-sm"
+                style={{ "--i": 0 } as React.CSSProperties}
+                className="ios-reveal overflow-hidden rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60"
               >
                 {active.videoUrl && (
                   <div className="aspect-video w-full bg-black">
@@ -224,7 +221,7 @@ export function TrainingDetailClient({
 
         {/* ── Playlist + exam ─────────────────────────────────── */}
         <div className="space-y-4">
-          <div className="overflow-hidden rounded-2xl bg-card shadow-sm">
+          <div className="overflow-hidden rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60">
             <div className="border-b border-border px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.6px] text-muted-foreground">
               {t("lessonsHeading")} · {completed.size}/{lessons.length}
             </div>

@@ -45,7 +45,7 @@ export default async function AssessmentResultsPage({ params }: Params) {
         )}
 
         {results.assessments.map((a) => (
-          <section key={a.code} aria-labelledby={`h-${a.code}`} className="rounded-2xl bg-card p-5 shadow-sm sm:p-6">
+          <section key={a.code} aria-labelledby={`h-${a.code}`} className="rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60 p-5 sm:p-6">
             <h2 id={`h-${a.code}`} className="text-base font-semibold text-foreground">{a.title}</h2>
             <ul className="mt-4 space-y-5">
               {a.dimensions.map((d) => (
@@ -58,7 +58,7 @@ export default async function AssessmentResultsPage({ params }: Params) {
           </section>
         ))}
 
-        <section aria-labelledby="plan-heading" className="rounded-2xl bg-card p-5 shadow-sm sm:p-6">
+        <section aria-labelledby="plan-heading" className="rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60 p-5 sm:p-6">
           <h2 id="plan-heading" className="text-base font-semibold text-foreground">{t("planHeading")}</h2>
           <div className="mt-4 grid gap-6 sm:grid-cols-2">
             <PlanList title={t("strengths")} items={results.strengths} />

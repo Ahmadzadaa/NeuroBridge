@@ -47,7 +47,7 @@ export function JuryDashboardClient({
         key={entry.submissionId}
         href={`/${locale}/jury/submissions/${entry.submissionId}`}
         className={cn(
-          "animate-enter group flex items-center gap-4 rounded-2xl bg-card p-5 shadow-sm ring-1 ring-transparent",
+          "animate-enter group flex items-center gap-4 rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60 p-5 ring-1 ring-transparent",
           "transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:ring-primary/20"
         )}
       >
@@ -122,7 +122,7 @@ export function JuryDashboardClient({
       </div>
 
       {entries.length === 0 ? (
-        <div className="rounded-2xl bg-card shadow-sm">
+        <div className="rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60">
           <EmptyState title={tc("noData")} description={t("noSubmissions")} />
         </div>
       ) : (

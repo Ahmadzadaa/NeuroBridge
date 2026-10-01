@@ -9,20 +9,8 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
-import {
-  BookOpen,
-  Briefcase,
-  GraduationCap,
-  Layers,
-  Loader2,
-  Lock,
-  Minus,
-  Plus,
-  ShieldCheck,
-  Sparkles,
-  Trophy,
-  type LucideIcon,
-} from "lucide-react";
+import { Layers, Loader2, Lock, Minus, Plus, ShieldCheck } from "lucide-react";
+import { serviceIcon } from "@/lib/billing/service-icons";
 import { cn } from "@/lib/utils";
 import { formatKurus } from "@/lib/billing/money";
 
@@ -56,15 +44,6 @@ const PRICING_ERRORS = [
 ] as const;
 
 /** iOS-style app icons: one glyph on a gradient squircle per service. */
-const SERVICE_ICONS: Record<string, { icon: LucideIcon; gradient: string }> = {
-  HACKATHON: { icon: Trophy, gradient: "from-orange-400 to-rose-500" },
-  TEACHERS: { icon: GraduationCap, gradient: "from-sky-400 to-blue-600" },
-  SIMULATIONS: { icon: Briefcase, gradient: "from-violet-500 to-indigo-600" },
-  TRAININGS: { icon: BookOpen, gradient: "from-emerald-400 to-teal-600" },
-  AI_TOOLS: { icon: Sparkles, gradient: "from-fuchsia-500 to-purple-600" },
-};
-const FALLBACK_ICON = { icon: Layers, gradient: "from-slate-400 to-slate-600" };
-
 /** Apple's default sheet curve. */
 const EASE = [0.32, 0.72, 0, 1] as const;
 
@@ -312,7 +291,7 @@ function ServiceRow({
   const t = useTranslations("pricing");
   const reduced = useReducedMotion();
   const selected = value !== undefined;
-  const { icon: Icon, gradient } = SERVICE_ICONS[service.code] ?? FALLBACK_ICON;
+  const { icon: Icon, gradient } = serviceIcon(service.code);
   const cheapest = service.tiers.reduce<Tier | null>(
     (min, tier) => (!min || tier.pricePerParticipant < min.pricePerParticipant ? tier : min),
     null
@@ -521,7 +500,7 @@ function Summary({
               <AnimatePresence initial={false}>
                 {quote?.items.map((line) => {
                   const service = services.find((s) => s.code === line.serviceCode);
-                  const { icon: Icon, gradient } = SERVICE_ICONS[line.serviceCode] ?? FALLBACK_ICON;
+                  const { icon: Icon, gradient } = serviceIcon(line.serviceCode);
                   return (
                     <motion.li
                       key={line.serviceCode}

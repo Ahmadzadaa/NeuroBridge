@@ -6,7 +6,6 @@ import { useTranslations } from "next-intl";
 import { useApiErrorMessage } from "@/lib/api/api-error";
 import {
   FileText,
-  GraduationCap,
   Loader2,
   Mail,
   Plus,
@@ -19,6 +18,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { EmptyState } from "@/components/ui/empty-state";
+import { LargeTitle } from "@/components/ui/ios";
+import { avatarTone } from "@/components/ui/avatar-tone";
 import {
   Dialog,
   DialogContent,
@@ -44,7 +45,6 @@ interface TeachersPageClientProps {
 }
 
 export function TeachersPageClient({
-  locale,
   userName,
   canManage,
   teachers,
@@ -122,63 +122,70 @@ export function TeachersPageClient({
 
   return (
     <DashboardLayout panel="tenant" title={t("title")} userName={userName}>
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <p className="max-w-2xl text-[14px] text-muted-foreground">
-          {t("subtitle")}
-        </p>
-        {canManage && (
-          <Button className="rounded-xl" onClick={() => setDialogOpen(true)}>
-            <Plus className="h-4 w-4" aria-hidden="true" />
-            {t("addTeacher")}
-          </Button>
-        )}
-      </div>
+      <LargeTitle
+        className="mb-6"
+        title={t("title")}
+        subtitle={t("subtitle")}
+        actions={
+          canManage && (
+            <Button size="lg" onClick={() => setDialogOpen(true)}>
+              <Plus className="h-4 w-4" aria-hidden="true" />
+              {t("addTeacher")}
+            </Button>
+          )
+        }
+      />
 
       {teachers.length === 0 ? (
-        <div className="rounded-2xl bg-card shadow-sm">
+        <div className="rounded-[22px] bg-card ring-1 ring-border/60">
           <EmptyState title={tc("noData")} description={t("empty")} />
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {teachers.map((teacher) => (
+          {teachers.map((teacher, i) => (
             <div
               key={teacher.id}
-              className="group rounded-2xl bg-card p-5 shadow-sm ring-1 ring-transparent transition-all hover:ring-primary/15"
+              style={{ "--i": i + 1 } as React.CSSProperties}
+              className="ios-reveal group rounded-[22px] bg-card p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60 transition-transform duration-300 hover:-translate-y-0.5"
             >
               <div className="flex items-start justify-between">
-                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                  <GraduationCap className="h-5 w-5" aria-hidden="true" />
+                <span
+                  aria-hidden="true"
+                  className={`flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br text-[15px] font-semibold uppercase text-white ${avatarTone(teacher.id)}`}
+                >
+                  {teacher.name
+                    .split(" ")
+                    .map((part) => part[0])
+                    .slice(0, 2)
+                    .join("")}
                 </span>
                 {canManage && (
                   <button
                     type="button"
                     aria-label={t("remove")}
                     onClick={() => removeTeacher(teacher.email)}
-                    className="rounded-lg p-1.5 text-muted-foreground opacity-0 transition-all hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100"
+                    className="rounded-lg p-1.5 text-muted-foreground transition-all hover:bg-destructive/10 hover:text-destructive sm:opacity-0 sm:group-hover:opacity-100 sm:focus-visible:opacity-100"
                   >
                     <Trash2 className="h-4 w-4" aria-hidden="true" />
                   </button>
                 )}
               </div>
-              <p className="mt-3 truncate text-[15px] font-semibold">
+              <p className="mt-3 truncate text-[17px] font-semibold tracking-[-0.3px]">
                 {teacher.name}
               </p>
-              <p className="truncate text-[12px] text-muted-foreground">
+              <p className="truncate text-[13px] text-muted-foreground">
                 {teacher.email}
               </p>
-              <div className="mt-4 flex items-center gap-4 text-[12px] text-muted-foreground">
-                <span className="flex items-center gap-1.5">
+              <div className="mt-4 flex items-center gap-2 text-[12px] font-medium text-muted-foreground">
+                <span className="flex items-center gap-1.5 rounded-full bg-muted/70 px-2.5 py-1">
                   <Users className="h-3.5 w-3.5" aria-hidden="true" />
                   {t("studentCount", { count: teacher.studentCount })}
                 </span>
-                <span className="flex items-center gap-1.5">
+                <span className="flex items-center gap-1.5 rounded-full bg-muted/70 px-2.5 py-1">
                   <FileText className="h-3.5 w-3.5" aria-hidden="true" />
                   {t("scenarioCount", { count: teacher.scenarioCount })}
                 </span>
               </div>
-              <p className="mt-2 text-[11px] text-muted-foreground">
-                {new Date(teacher.createdAt).toLocaleDateString(locale)}
-              </p>
             </div>
           ))}
         </div>

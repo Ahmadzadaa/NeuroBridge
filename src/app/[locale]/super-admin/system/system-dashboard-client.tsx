@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
+import { LargeTitle } from "@/components/ui/ios";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatCard } from "@/components/ui/stat-card";
 import {
@@ -35,6 +36,7 @@ export function SystemDashboardClient({
   title,
 }: SystemDashboardClientProps) {
   const t = useTranslations("superAdmin.system");
+  const tPage = useTranslations("superAdmin.pages");
   const [metrics, setMetrics] = useState<BusinessMetrics | null>(null);
   const [health, setHealth] = useState<HealthStatus | null>(null);
 
@@ -66,6 +68,7 @@ export function SystemDashboardClient({
 
   return (
     <DashboardLayout panel="super-admin" title={title} userName={userName}>
+      <LargeTitle className="mb-6" title={title} subtitle={tPage("systemSubtitle")} />
       <div className="mb-6 grid grid-cols-2 gap-4 xl:grid-cols-4">
         <StatCard
           title={t("registrations24h")}
@@ -94,7 +97,7 @@ export function SystemDashboardClient({
       </div>
 
       <div className="mb-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
-        <Card className="rounded-2xl border-0 shadow-sm lg:col-span-1">
+        <Card className="lg:col-span-1">
           <CardHeader>
             <CardTitle>{t("health")}</CardTitle>
           </CardHeader>
@@ -124,7 +127,7 @@ export function SystemDashboardClient({
           </CardContent>
         </Card>
 
-        <Card className="rounded-2xl border-0 shadow-sm lg:col-span-2">
+        <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle>{t("registrationRate7d")}</CardTitle>
           </CardHeader>
@@ -148,7 +151,7 @@ export function SystemDashboardClient({
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <Card className="rounded-2xl border-0 shadow-sm">
+        <Card>
           <CardHeader>
             <CardTitle>{t("aiUsage7d")}</CardTitle>
           </CardHeader>
@@ -169,7 +172,7 @@ export function SystemDashboardClient({
           </CardContent>
         </Card>
 
-        <Card className="rounded-2xl border-0 shadow-sm">
+        <Card>
           <CardHeader>
             <CardTitle>{t("seatByTenant")}</CardTitle>
           </CardHeader>

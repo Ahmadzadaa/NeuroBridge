@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useApiErrorMessage } from "@/lib/api/api-error";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { CheckCircle2, GraduationCap, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -29,7 +29,6 @@ export function JoinClient({
   const t = useTranslations("teacher.join");
   const apiError = useApiErrorMessage();
   const tc = useTranslations("common");
-  const reducedMotion = useReducedMotion();
 
   const [form, setForm] = useState({
     firstName: "",
@@ -96,10 +95,8 @@ export function JoinClient({
   return (
     <AuthShell width="sm">
       <motion.div
-        initial={reducedMotion ? false : { opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35, ease: [0, 0, 0.2, 1] }}
-        className="w-full rounded-[28px] bg-card/85 p-6 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_30px_80px_-30px_rgba(15,23,42,0.35)] ring-1 ring-border/60 backdrop-blur-xl sm:p-8"
+        style={{ "--i": 0 } as React.CSSProperties}
+        className="ios-reveal w-full rounded-[28px] bg-card/85 p-6 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_30px_80px_-30px_rgba(15,23,42,0.35)] ring-1 ring-border/60 backdrop-blur-xl sm:p-8"
       >
         {done ? (
           <div className="text-center">

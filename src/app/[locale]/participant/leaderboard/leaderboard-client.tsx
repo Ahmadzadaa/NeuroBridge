@@ -1,9 +1,10 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { Crown, Award } from "lucide-react";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
+import { LargeTitle } from "@/components/ui/ios";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { EmptyState } from "@/components/ui/empty-state";
 import { cn } from "@/lib/utils";
@@ -64,7 +65,6 @@ export function LeaderboardClient({
 }: LeaderboardClientProps) {
   const t = useTranslations("participant.leaderboard");
   const tc = useTranslations("common");
-  const reducedMotion = useReducedMotion();
 
   const podium = entries.slice(0, 3);
   const rest = entries.slice(3);
@@ -78,13 +78,13 @@ export function LeaderboardClient({
       userName={userName}
       coinBalance={coinBalance}
     >
-      {myRank !== null && (
-        <p className="mb-4 rounded-2xl bg-card p-4 text-sm text-foreground shadow-sm">
-          {t("myStanding", { coins: coinBalance, rank: myRank, total: totalParticipants })}
-        </p>
-      )}
+      <LargeTitle
+        className="mb-6"
+        title={t("title")}
+        subtitle={myRank !== null ? t("myStanding", { coins: coinBalance, rank: myRank, total: totalParticipants }) : undefined}
+      />
       {entries.length === 0 ? (
-        <div className="rounded-2xl bg-card shadow-sm">
+        <div className="rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60">
           <EmptyState title={tc("noData")} />
         </div>
       ) : (
@@ -97,10 +97,9 @@ export function LeaderboardClient({
               return (
                 <motion.div
                   key={entry.id}
-                  initial={reducedMotion ? false : { opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.1, duration: 0.35, ease: [0, 0, 0.2, 1] }}
+                  style={{ "--i": i } as React.CSSProperties}
                   className={cn(
+                    "ios-reveal",
                     "flex flex-col items-center rounded-2xl p-6 text-center",
                     style.card,
                     isFirst && "sm:pb-10"
@@ -134,7 +133,7 @@ export function LeaderboardClient({
 
           {/* ── Ranks 4+ ────────────────────────────────────────── */}
           {rest.length > 0 && (
-            <div className="mt-6 overflow-hidden rounded-2xl bg-card shadow-sm">
+            <div className="mt-6 overflow-hidden rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60">
               <div className="flex items-center gap-4 border-b border-border px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.6px] text-muted-foreground">
                 <span className="w-8">{t("rank")}</span>
                 <span className="flex-1">{t("name")}</span>

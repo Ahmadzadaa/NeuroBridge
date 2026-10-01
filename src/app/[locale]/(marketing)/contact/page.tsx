@@ -35,7 +35,7 @@ export default async function ContactPage({
       <SectionHeading title={t("title")} description={t("description")} />
 
       <div className="mx-auto mt-10 grid max-w-5xl gap-8 lg:grid-cols-[1.4fr_1fr]">
-        <Card className="rounded-2xl border-0 shadow-sm">
+        <Card>
           <CardContent className="p-6 sm:p-8">
             <ContactForm />
           </CardContent>
