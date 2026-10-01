@@ -102,7 +102,8 @@
       "audit": "Audit Log",
       "pricing": "Services & Pricing",
       "programs": "Programmes",
-      "aiUsage": "AI usage"
+      "aiUsage": "AI usage",
+      "leads": "Demo requests"
     },
     "tenant": {
       "dashboard": "Dashboard",
@@ -133,7 +134,7 @@
     },
     "jury": {
       "dashboard": "Dashboard",
-      "rankings": "Rankings",
+      "rankings": "Live ranking",
       "profile": "My profile"
     },
     "teacher": {
@@ -330,7 +331,8 @@
         "PAID": "Paid",
         "PENDING": "Pending",
         "FAILED": "Failed"
-      }
+      },
+      "newLeads": "{count, plural, one {# new demo request} other {# new demo requests}}"
     },
     "placeholders": {
       "content": "Central management of simulation modules, training content, AI Mentor instructions and badges will live here.",
@@ -339,6 +341,33 @@
     "pages": {
       "auditSubtitle": "Who did what on the platform, and when — sign-ins, roles and payments.",
       "systemSubtitle": "Registration flow, service health and queues, live."
+    },
+    "leads": {
+      "title": "Demo requests",
+      "subtitle": "Every request from the website's \"Request a demo\" form. Move the status along as you follow up.",
+      "noEmailNote": "Email alerts for new requests are not set up (LEADS_NOTIFICATION_EMAIL). Requests are not lost: they all appear on this page.",
+      "filterLabel": "Filter by status",
+      "all": "All",
+      "status": {
+        "NEW": "New",
+        "CONTACTED": "Contacted",
+        "QUALIFIED": "Qualified",
+        "CLOSED": "Closed"
+      },
+      "statusLabel": "Request status",
+      "statusSaved": "Status updated",
+      "email": "Email",
+      "phone": "Phone",
+      "seats": "Expected participants",
+      "seatsValue": "{count} participants",
+      "language": "Form language",
+      "source": "Source",
+      "empty": "No demo requests yet.",
+      "emptyFiltered": "No requests with this status.",
+      "pagination": "Pages",
+      "previous": "Previous",
+      "next": "Next",
+      "pageOf": "{page} / {pages}"
     }
   },
   "tenant": {
@@ -1702,7 +1731,9 @@
     "planHeading": "Your Personal Development Plan",
     "strengths": "Your strengths",
     "developmentAreas": "Your development areas",
-    "continueToTraining": "Continue to the training"
+    "continueToTraining": "Continue to the training",
+    "back": "Back",
+    "next": "Next"
   },
   "tenantAssessments": {
     "title": "Baseline Tests",
@@ -2435,5 +2466,15 @@
       "AI_BAD_REQUEST": "The message could not be sent.",
       "AI_PROVIDER_ERROR": "The mentor stopped unexpectedly. Please try again."
     }
+  },
+  "juryRankings": {
+    "title": "Live ranking",
+    "subtitle": "Finalists ordered by the jury's submitted scores. The page refreshes every 30 seconds.",
+    "empty": "No finalists to rank yet. They appear here once the organisation confirms them.",
+    "jurorsScored": "{done} of {total} jurors scored",
+    "noScores": "No scores yet",
+    "rank": "Rank {rank}",
+    "notRanked": "Not ranked yet",
+    "note": "Only submitted evaluations count; drafts do not affect the ranking. Scores are weighted by criterion, out of 100."
   }
 }

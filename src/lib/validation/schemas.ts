@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { ValidationError } from "@/lib/auth/permissions";
 import { UNIVERSITY_REPORTS } from "@/lib/reports/university-types";
+import { LEAD_STATUSES } from "@/lib/leads/lead-status";
 import {
   AI_TOOLS,
   PROJECT_TYPES,
@@ -219,6 +220,8 @@ export const analyticsQuerySchema = z.object({
  * assistive technology by aria-hidden, that only an automated form-filler
  * completes. Anything non-empty there is a bot.
  */
+export const leadStatusSchema = z.object({ status: z.enum(LEAD_STATUSES) });
+
 export const leadSchema = z.object({
   name: safeString(120),
   company: safeString(160),

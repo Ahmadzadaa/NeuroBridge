@@ -19,6 +19,7 @@ import {
   CalendarDays,
   ClipboardCheck,
   BookOpen,
+  Inbox,
 } from "lucide-react";
 
 type PanelType = "super-admin" | "tenant" | "participant" | "jury" | "teacher";
@@ -36,7 +37,7 @@ const mobileNavConfig: Record<PanelType, MobileNavItem[]> = {
     { href: "/super-admin", labelKey: "dashboard", icon: LayoutDashboard },
     { href: "/super-admin/tenants", labelKey: "tenants", icon: Users },
     { href: "/super-admin/billing", labelKey: "billing", icon: BarChart3 },
-    { href: "/super-admin/support", labelKey: "support", icon: Settings },
+    { href: "/super-admin/leads", labelKey: "leads", icon: Inbox },
   ],
   tenant: [
     { href: "/tenant", labelKey: "dashboard", icon: LayoutDashboard },
@@ -74,7 +75,7 @@ const mobileNavConfig: Record<PanelType, MobileNavItem[]> = {
   ],
   jury: [
     { href: "/jury", labelKey: "dashboard", icon: LayoutDashboard },
-    { href: "/jury/rankings", labelKey: "rankings", icon: Award, feature: "hackathon" },
+    { href: "/jury/rankings", labelKey: "rankings", icon: Award },
     { href: "/jury/profile", labelKey: "profile", icon: Settings },
   ],
   teacher: [

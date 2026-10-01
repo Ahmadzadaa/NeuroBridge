@@ -30,6 +30,7 @@ import {
   CalendarDays,
   ClipboardCheck,
   BookOpen,
+  Inbox,
 } from "lucide-react";
 
 type PanelType = "super-admin" | "tenant" | "participant" | "jury" | "teacher";
@@ -46,6 +47,7 @@ const navConfig: Record<PanelType, NavItem[]> = {
   "super-admin": [
     { href: "/super-admin", labelKey: "dashboard", icon: LayoutDashboard },
     { href: "/super-admin/tenants", labelKey: "tenants", icon: Building2 },
+    { href: "/super-admin/leads", labelKey: "leads", icon: Inbox },
     { href: "/super-admin/programs", labelKey: "programs", icon: FileText },
     { href: "/super-admin/billing", labelKey: "billing", icon: CreditCard },
     { href: "/super-admin/pricing", labelKey: "pricing", icon: Tag },
@@ -114,7 +116,7 @@ const navConfig: Record<PanelType, NavItem[]> = {
   ],
   jury: [
     { href: "/jury", labelKey: "dashboard", icon: LayoutDashboard },
-    { href: "/jury/rankings", labelKey: "rankings", icon: Scale, feature: "hackathon" },
+    { href: "/jury/rankings", labelKey: "rankings", icon: Scale },
     { href: "/jury/profile", labelKey: "profile", icon: User },
   ],
   teacher: [

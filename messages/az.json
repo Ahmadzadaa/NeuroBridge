@@ -102,7 +102,8 @@
       "audit": "Audit Jurnalı",
       "pricing": "Xidmətlər və Qiymətlər",
       "programs": "Proqramlar",
-      "aiUsage": "AI istifadəsi"
+      "aiUsage": "AI istifadəsi",
+      "leads": "Demo sorğuları"
     },
     "tenant": {
       "dashboard": "Panel",
@@ -133,7 +134,7 @@
     },
     "jury": {
       "dashboard": "İdarə Paneli",
-      "rankings": "Sıralama",
+      "rankings": "Canlı sıralama",
       "profile": "Profilim"
     },
     "teacher": {
@@ -330,7 +331,8 @@
         "PAID": "Ödənilib",
         "PENDING": "Gözləyir",
         "FAILED": "Uğursuz"
-      }
+      },
+      "newLeads": "{count, plural, one {# yeni demo sorğusu} other {# yeni demo sorğusu}}"
     },
     "placeholders": {
       "content": "Simulyasiya modulları, təlim məzmunu, AI Mentor təlimatları və nişanların mərkəzi idarəsi burada olacaq.",
@@ -339,6 +341,33 @@
     "pages": {
       "auditSubtitle": "Platformada kim, nə vaxt, nə etdi — giriş, rol və ödəniş hadisələri.",
       "systemSubtitle": "Qeydiyyat axını, xidmətlərin vəziyyəti və növbələr canlı."
+    },
+    "leads": {
+      "title": "Demo sorğuları",
+      "subtitle": "Saytdakı \"Demo istə\" formundan gələn bütün sorğular. Əlaqə saxladıqca statusu dəyişin.",
+      "noEmailNote": "Yeni sorğular üçün e-poçt bildirişi qurulmayıb (LEADS_NOTIFICATION_EMAIL). Sorğular itmir: hamısı bu səhifədə görünür.",
+      "filterLabel": "Statusa görə süz",
+      "all": "Hamısı",
+      "status": {
+        "NEW": "Yeni",
+        "CONTACTED": "Əlaqə saxlanılıb",
+        "QUALIFIED": "Uyğundur",
+        "CLOSED": "Bağlanıb"
+      },
+      "statusLabel": "Sorğunun statusu",
+      "statusSaved": "Status yeniləndi",
+      "email": "E-poçt",
+      "phone": "Telefon",
+      "seats": "Təxmini iştirakçı sayı",
+      "seatsValue": "{count} iştirakçı",
+      "language": "Formun dili",
+      "source": "Mənbə",
+      "empty": "Hələ demo sorğusu yoxdur.",
+      "emptyFiltered": "Bu statusda sorğu yoxdur.",
+      "pagination": "Səhifələr",
+      "previous": "Əvvəlki",
+      "next": "Növbəti",
+      "pageOf": "{page} / {pages}"
     }
   },
   "tenant": {
@@ -1702,7 +1731,9 @@
     "planHeading": "Şəxsi İnkişaf Planın",
     "strengths": "Güclü tərəflərin",
     "developmentAreas": "İnkişaf sahələrin",
-    "continueToTraining": "Təlimlərə davam et"
+    "continueToTraining": "Təlimlərə davam et",
+    "back": "Geri",
+    "next": "Növbəti"
   },
   "tenantAssessments": {
     "title": "Başlanğıc Testləri",
@@ -2435,5 +2466,15 @@
       "AI_BAD_REQUEST": "Mesaj göndərilə bilmədi.",
       "AI_PROVIDER_ERROR": "Mentor gözlənilmədən dayandı. Yenidən cəhd edin."
     }
+  },
+  "juryRankings": {
+    "title": "Canlı sıralama",
+    "subtitle": "Finalçılar təqdim edilmiş jüri qiymətlərinə görə sıralanır. Səhifə hər 30 saniyədən bir yenilənir.",
+    "empty": "Hələ sıralanacaq finalçı yoxdur. Təşkilat finalçıları təsdiqləyəndə burada görünəcək.",
+    "jurorsScored": "{total} jüridən {done} qiymət verib",
+    "noScores": "Hələ qiymət yoxdur",
+    "rank": "{rank}-ci yer",
+    "notRanked": "Hələ sıralanmayıb",
+    "note": "Yalnız təqdim edilmiş qiymətləndirmələr sayılır; qaralamalar sıralamaya təsir etmir. Bal meyarların çəkisinə görə 100 üzərindən hesablanır."
   }
 }

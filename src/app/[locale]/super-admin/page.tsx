@@ -12,6 +12,7 @@ import {
   Tag,
   Users,
   Wallet,
+  Inbox,
 } from "lucide-react";
 import { requireRole } from "@/lib/auth-utils";
 import { prisma } from "@/lib/prisma";
@@ -43,7 +44,7 @@ export default async function SuperAdminPage({ params }: { params: Promise<{ loc
   const monthStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
   const windowStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - (MONTHS - 1), 1));
 
-  const [t, tNav, tenants, newTenants, students, paidOrders, revenue, recentOrders, pending] = await Promise.all([
+  const [t, tNav, tenants, newTenants, students, paidOrders, revenue, recentOrders, pending, newLeads] = await Promise.all([
     getTranslations("superAdmin.home"),
     getTranslations("nav.superAdmin"),
     prisma.tenant.count(),
@@ -65,6 +66,7 @@ export default async function SuperAdminPage({ params }: { params: Promise<{ loc
       take: 5,
       select: { id: true, name: true, tenant: { select: { name: true } } },
     }),
+    prisma.lead.count({ where: { status: "NEW" } }),
   ]);
 
   const nf = INTL[locale] ?? "tr-TR";
@@ -84,6 +86,7 @@ export default async function SuperAdminPage({ params }: { params: Promise<{ loc
 
   const shortcuts: ShortcutItem[] = [
     { href: "/super-admin/tenants", icon: Building2, tone: "indigo", label: tNav("tenants") },
+    { href: "/super-admin/leads", icon: Inbox, tone: "fuchsia", label: tNav("leads") },
     { href: "/super-admin/programs", icon: FolderKanban, tone: "violet", label: tNav("programs") },
     { href: "/super-admin/billing", icon: CreditCard, tone: "emerald", label: tNav("billing") },
     { href: "/super-admin/pricing", icon: Tag, tone: "amber", label: tNav("pricing") },
@@ -100,8 +103,14 @@ export default async function SuperAdminPage({ params }: { params: Promise<{ loc
           title={t("greeting", { name: firstName })}
           subtitle={pending.length ? t("pendingNote", { count: pending.length }) : t("subtitle")}
         >
+          {newLeads > 0 && (
+            <HeroAction href="/super-admin/leads?status=NEW" primary>
+              <Inbox className="h-4 w-4" aria-hidden="true" />
+              {t("newLeads", { count: newLeads })}
+            </HeroAction>
+          )}
           {pending.length > 0 && (
-            <HeroAction href="/super-admin/programs" primary>
+            <HeroAction href="/super-admin/programs" primary={newLeads === 0}>
               {t("reviewPending")}
             </HeroAction>
           )}
