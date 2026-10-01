@@ -55,6 +55,7 @@ model Tenant {
 
   certificates         Certificate[]
   certificateSequences CertificateSequence[]
+  aiMessages           AiMessage[]
 
   @@map("tenants")
 }
@@ -146,6 +147,7 @@ model User {
   finalistEntries     ProgramFinalist[]
   finalistScores      FinalistScore[]
   finalistReviews     FinalistReview[]
+  aiMessages          AiMessage[]
   universityRef       University?               @relation(fields: [universityId], references: [id])
   departmentRef       Department?               @relation(fields: [departmentId], references: [id])
 
@@ -1416,4 +1418,86 @@ model Lead {
   @@index([status, createdAt])
   @@index([email])
   @@map("leads")
+}
+
+/// One turn of a participant's AI Mentor conversation, scoped to a tenant, a
+/// user and a simulation. Kept only as the mentor's memory: never logged, and
+/// only ever sent back with the same participant's own next request.
+model AiMessage {
+  id           String   @id @default(cuid())
+  tenantId     String   @map("tenant_id")
+  userId       String   @map("user_id")
+  simulationId String   @map("simulation_id")
+  /// user | assistant
+  role         String
+  content      String
+  /// Private storage key of an attached image, never a public URL.
+  imageKey     String?  @map("image_key")
+  /// ok | off_topic | blocked | error — how this turn was handled.
+  status       String   @default("ok")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, userId, simulationId, createdAt])
+  @@index([tenantId, createdAt])
+  @@map("ai_messages")
+}
+
+/// Rolling summary of the turns older than the verbatim window.
+model AiConversationSummary {
+  id           String   @id @default(cuid())
+  tenantId     String   @map("tenant_id")
+  userId       String   @map("user_id")
+  simulationId String   @map("simulation_id")
+  summary      String
+  /// createdAt of the newest message folded into the summary.
+  coveredUntil DateTime @map("covered_until")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@unique([tenantId, userId, simulationId])
+  @@map("ai_conversation_summaries")
+}
+
+/// One LLM call: who (hashed), which model, how many tokens, what it cost.
+/// No message content and no names.
+model AiUsageLog {
+  id               String   @id @default(cuid())
+  tenantId         String?  @map("tenant_id")
+  userHash         String   @map("user_hash")
+  simulationId     String?  @map("simulation_id")
+  /// topic_check | mentor | summary
+  purpose          String
+  model            String
+  inputTokens      Int      @default(0) @map("input_tokens")
+  outputTokens     Int      @default(0) @map("output_tokens")
+  cacheReadTokens  Int      @default(0) @map("cache_read_tokens")
+  cacheWriteTokens Int      @default(0) @map("cache_write_tokens")
+  costUsd          Float    @default(0) @map("cost_usd")
+  /// Pre-filter verdict of the request: on_topic | off_topic | invalid.
+  prefilter        String?
+  rejectReason     String?  @map("reject_reason")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId, createdAt])
+  @@index([createdAt])
+  @@map("ai_usage_logs")
+}
+
+/// Security-relevant AI events, kept apart from usage: off-topic and
+/// injection rejections, canary triggers, limits, redactions, budget alerts.
+model AiSecurityEvent {
+  id           String   @id @default(cuid())
+  tenantId     String?  @map("tenant_id")
+  userHash     String?  @map("user_hash")
+  simulationId String?  @map("simulation_id")
+  type         String
+  reason       String?
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId, createdAt])
+  @@index([type, createdAt])
+  @@index([userHash, type, createdAt])
+  @@map("ai_security_events")
 }
