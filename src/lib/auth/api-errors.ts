@@ -36,7 +36,7 @@ export function apiErrorResponse(error: unknown): Response {
     );
   }
   if (error instanceof RateLimitError) {
-    return Response.json({ error: error.message }, { status: 429 });
+    return Response.json({ error: error.message, code: "RATE_LIMITED" }, { status: 429 });
   }
 
   // Domain errors know their own status; without this they would all surface

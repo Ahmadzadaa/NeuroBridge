@@ -9,6 +9,7 @@ export type RateLimitBucket =
   | "twoFactor"
   | "export"
   | "ai"
+  | "aiTenant"
   | "webhook"
   | "leads"
   | "api";
@@ -19,6 +20,7 @@ const WINDOW_SECONDS: Record<RateLimitBucket, number> = {
   twoFactor: 60,
   export: 60,
   ai: 60,
+  aiTenant: 60,
   webhook: 60,
   // An hour, not a minute: a demo form is filled in once, and a spammer
   // throttled per minute can still post 60 times an hour.
@@ -32,6 +34,8 @@ const LIMITS: Record<RateLimitBucket, number> = {
   twoFactor: 5,
   export: 5,
   ai: 20,
+  // A whole organisation's AI traffic: a full class asking at once, not one user.
+  aiTenant: 300,
   webhook: 100,
   leads: 5,
   api: 120,
