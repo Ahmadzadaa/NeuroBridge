@@ -6,6 +6,8 @@ import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { Link } from "@/i18n/navigation";
 import { getUnit, UnitError } from "@/lib/training/units-service";
 import { MarkVideoWatched, ProjectForm } from "./unit-actions";
+import { MentorPanel } from "@/components/mentor/mentor-panel";
+import { prisma } from "@/lib/prisma";
 
 type Params = { params: Promise<{ locale: string; lessonId: string }> };
 
@@ -31,7 +33,11 @@ export default async function UnitPage({ params }: Params) {
   setRequestLocale(locale);
   const session = await requireRole(locale, ["PARTICIPANT"]);
   const t = await getTranslations("units");
-  const unit = await load(session.user.id, lessonId, locale);
+  const [unit, ideaSimulation] = await Promise.all([
+    load(session.user.id, lessonId, locale),
+    // The units are the Idea Development simulation's content, so its mentor lives here.
+    prisma.simulation.findUnique({ where: { key: "idea_development" }, select: { id: true } }),
+  ]);
 
   return (
     <DashboardLayout panel="participant" title={unit.title} userName={session.user.name ?? ""}>
@@ -90,6 +96,7 @@ export default async function UnitPage({ params }: Params) {
           )}
         </Section>
       </div>
+      {ideaSimulation && <MentorPanel simulationId={ideaSimulation.id} />}
     </DashboardLayout>
   );
 }

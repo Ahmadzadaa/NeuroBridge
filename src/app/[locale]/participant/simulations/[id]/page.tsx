@@ -5,6 +5,7 @@ import { requireFeature } from "@/lib/tenant/require-feature";
 import { prisma } from "@/lib/prisma";
 import { localized, localizedText } from "@/lib/i18n-content";
 import { SimulationPlayClient } from "./play-client";
+import { MentorPanel } from "@/components/mentor/mentor-panel";
 
 export default async function SimulationPlayPage({
   params,
@@ -31,7 +32,11 @@ export default async function SimulationPlayPage({
 
   const [activeRun, lastCompleted, me] = await Promise.all([
     prisma.simulationRun.findFirst({
-      where: { simulationId: id, userId: session.user.id, status: "IN_PROGRESS" },
+      where: {
+        simulationId: id,
+        userId: session.user.id,
+        status: "IN_PROGRESS",
+      },
     }),
     prisma.simulationRun.findFirst({
       where: { simulationId: id, userId: session.user.id, status: "COMPLETED" },
@@ -64,56 +69,59 @@ export default async function SimulationPlayPage({
     : null;
 
   return (
-    <SimulationPlayClient
-      locale={locale}
-      userName={session.user.name ?? "Participant"}
-      coinBalance={me?.coinBalance ?? 0}
-      simulation={{
-        id: simulation.id,
-        name: localized(simulation, "name", locale),
-        description: localizedText(simulation.description, locale),
-        startCash: simulation.startCash,
-        targetCash: simulation.targetCash,
-        totalRounds: simulation._count.rounds,
-      }}
-      activeRun={
-        activeRun
-          ? {
-              id: activeRun.id,
-              currentRound: activeRun.currentRound,
-              cash: activeRun.cash,
-              satisfaction: activeRun.satisfaction,
-              reputation: activeRun.reputation,
-            }
-          : null
-      }
-      currentRound={
-        currentRound
-          ? {
-              order: currentRound.order,
-              title: localizedText(currentRound.title, locale),
-              context: localizedText(currentRound.context, locale),
-              choices: currentRound.choices.map((c) => ({
-                id: c.id,
-                label: localizedText(c.label, locale),
-                detail: c.detail ? localizedText(c.detail, locale) : null,
-              })),
-            }
-          : null
-      }
-      lastCompleted={
-        lastCompleted
-          ? {
-              score: lastCompleted.score ?? 0,
-              cash: lastCompleted.cash,
-              satisfaction: lastCompleted.satisfaction,
-              reputation: lastCompleted.reputation,
-              teacherGrade: lastCompleted.teacherGrade,
-              teacherMaxGrade: lastCompleted.teacherMaxGrade,
-              teacherComment: lastCompleted.teacherComment,
-            }
-          : null
-      }
-    />
+    <>
+      <SimulationPlayClient
+        locale={locale}
+        userName={session.user.name ?? "Participant"}
+        coinBalance={me?.coinBalance ?? 0}
+        simulation={{
+          id: simulation.id,
+          name: localized(simulation, "name", locale),
+          description: localizedText(simulation.description, locale),
+          startCash: simulation.startCash,
+          targetCash: simulation.targetCash,
+          totalRounds: simulation._count.rounds,
+        }}
+        activeRun={
+          activeRun
+            ? {
+                id: activeRun.id,
+                currentRound: activeRun.currentRound,
+                cash: activeRun.cash,
+                satisfaction: activeRun.satisfaction,
+                reputation: activeRun.reputation,
+              }
+            : null
+        }
+        currentRound={
+          currentRound
+            ? {
+                order: currentRound.order,
+                title: localizedText(currentRound.title, locale),
+                context: localizedText(currentRound.context, locale),
+                choices: currentRound.choices.map((c) => ({
+                  id: c.id,
+                  label: localizedText(c.label, locale),
+                  detail: c.detail ? localizedText(c.detail, locale) : null,
+                })),
+              }
+            : null
+        }
+        lastCompleted={
+          lastCompleted
+            ? {
+                score: lastCompleted.score ?? 0,
+                cash: lastCompleted.cash,
+                satisfaction: lastCompleted.satisfaction,
+                reputation: lastCompleted.reputation,
+                teacherGrade: lastCompleted.teacherGrade,
+                teacherMaxGrade: lastCompleted.teacherMaxGrade,
+                teacherComment: lastCompleted.teacherComment,
+              }
+            : null
+        }
+      />
+      <MentorPanel simulationId={simulation.id} />
+    </>
   );
 }

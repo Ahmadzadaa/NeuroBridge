@@ -101,7 +101,8 @@
       "system": "System Health",
       "audit": "Audit Log",
       "pricing": "Services & Pricing",
-      "programs": "Programmes"
+      "programs": "Programmes",
+      "aiUsage": "AI usage"
     },
     "tenant": {
       "dashboard": "Dashboard",
@@ -430,7 +431,7 @@
     },
     "reports": {
       "title": "Reports",
-      "subtitle": "Eight reports on your students, trainings and results. View them here or download as Excel or PDF.",
+      "subtitle": "Reports on your students, trainings, results and AI Mentor usage. View them here or download as Excel or PDF.",
       "exportExcel": "Excel",
       "exportPdf": "PDF",
       "pickReport": "Choose a report",
@@ -480,6 +481,10 @@
         "yoy": {
           "title": "Year-over-year comparison",
           "description": "Two academic years side by side, for example 2025–26 against 2026–27."
+        },
+        "aiMentor": {
+          "title": "AI Mentor usage",
+          "description": "How participants use the AI Mentor this month: messages, active users, tokens and estimated cost, limits reached and rejected requests. No message content is shown."
         }
       },
       "kpi": {
@@ -513,7 +518,13 @@
         "baselineAverage": "Average baseline score",
         "unitAverage": "Average unit test score",
         "allUnits": "Passed every unit",
-        "studentGrowth": "Change in students"
+        "studentGrowth": "Change in students",
+        "aiMessages": "Messages",
+        "aiActiveUsers": "Active users",
+        "aiTokens": "Tokens",
+        "aiCost": "Estimated cost",
+        "aiLimitUsers": "Users who reached a limit",
+        "aiRejected": "Off-topic or rejected"
       },
       "col": {
         "program": "Programme",
@@ -574,7 +585,16 @@
         "metric": "Metric",
         "change": "Change",
         "mvps": "MVPs",
-        "programs": "Programmes"
+        "programs": "Programmes",
+        "date": "Date",
+        "messages": "Messages",
+        "activeUsers": "Active users",
+        "tokens": "Tokens",
+        "costUsd": "Cost (USD)",
+        "tenant": "Organisation",
+        "limitUsers": "Reached a limit",
+        "eventType": "Event",
+        "count": "Count"
       },
       "tables": {
         "byProgram": "By programme",
@@ -589,7 +609,11 @@
         "finalists": "Finalists and jury evaluation",
         "development": "Start and current state per student",
         "compare": "{a} vs {b}",
-        "allYears": "All academic years"
+        "allYears": "All academic years",
+        "aiByTenant": "By organisation",
+        "aiByDay": "Last 30 days",
+        "aiBySimulation": "By simulation",
+        "aiSecurity": "Safety events"
       },
       "bars": {
         "completionByProgram": "Training completion by programme",
@@ -616,8 +640,20 @@
         "scoreboard": "Ranked by training-unit points, then by total unit test score. Students with the same result share a rank.",
         "noHackathon": "This organisation has not run a hackathon yet.",
         "development": "Start is the baseline test result at registration. Current is training-unit progress and test results today.",
-        "yoy": "Academic years run from September to August. A programme belongs to the year its start date falls in. Changes in percentages are in percentage points."
-      }
+        "yoy": "Academic years run from September to August. A programme belongs to the year its start date falls in. Changes in percentages are in percentage points.",
+        "aiMentor": "This month in UTC. Costs are estimates from token counts. Users are counted by an anonymous key; names and message content are never stored in these records."
+      },
+      "aiEvent": {
+        "OFF_TOPIC": "Off-topic question",
+        "INJECTION_SUSPECTED": "Suspected instruction injection",
+        "CANARY_TRIGGERED": "Blocked reply (prompt leak attempt)",
+        "OUTPUT_REDACTED": "Reply with removed links or data",
+        "LIMIT_EXCEEDED": "Limit reached",
+        "TEMPORARY_BLOCK": "Temporary block",
+        "TENANT_BUDGET_EXHAUSTED": "Monthly allowance used up",
+        "PROVIDER_ERROR": "AI service error"
+      },
+      "allTenants": "All organisations"
     },
     "settings": {
       "title": "Settings",
@@ -1761,7 +1797,8 @@
     "INCOMPLETE_EVALUATION": "Score every criterion before submitting.",
     "WEEKEND_JURY_DATE": "The jury day can't be on a weekend.",
     "OUT_OF_RANGE": "The date must be within the programme period.",
-    "VALIDATION_FAILED": "Some fields are not filled in correctly. Check the form and try again."
+    "VALIDATION_FAILED": "Some fields are not filled in correctly. Check the form and try again.",
+    "RATE_LIMITED": "Too many requests. Please wait a moment and try again."
   },
   "marketing": {
     "nav": {
@@ -2346,5 +2383,57 @@
     "saving": "Saving…",
     "draftSaved": "Draft saved",
     "submittedToast": "Evaluation submitted"
+  },
+  "mentor": {
+    "title": "AI Mentor",
+    "open": "Open the AI Mentor",
+    "close": "Close",
+    "aiNotice": "You are chatting with AI. It can be wrong; don't share personal information.",
+    "empty": "Ask about your current stage. The mentor will help you think it through rather than give you the answer.",
+    "placeholder": "Ask the mentor…",
+    "send": "Send",
+    "typing": "The mentor is writing",
+    "attachImage": "Attach an image ({count} left today)",
+    "removeImage": "Remove image",
+    "imageAttached": "Image attached",
+    "mic": "Voice (coming soon)",
+    "remaining": "{count} of {total} messages left today",
+    "limitReached": "You have used today's mentor messages. You can continue tomorrow.",
+    "offTopic": "This question is outside the simulation topic. Let’s return to the current stage: {stage}. What decision are you weighing right now?",
+    "offTopicNoStage": "This question is outside the simulation topic. Let’s return to your simulation: what are you working on right now?",
+    "blocked": "I can't show that answer. Let's get back to your simulation: what decision are you working on?",
+    "budgetEmail": {
+      "subject": "BizSim: this month's AI Mentor allowance has been used",
+      "body": "Your organisation has used its AI Mentor allowance for this month. Participants will see a message until the allowance renews next month. Contact BizSim if you need a larger allowance."
+    },
+    "hub": {
+      "title": "AI Mentor",
+      "subtitle": "Your mentor for the simulations: it asks the right questions and helps you decide, without giving away the answers.",
+      "notice": "You are chatting with an AI, not a person. It only helps with entrepreneurship and your current simulation. Don't share personal information such as your phone number or address.",
+      "openWithMentor": "Open with the mentor",
+      "empty": "No simulations in your programmes yet.",
+      "disabled": "The AI Mentor is switched off at the moment."
+    },
+    "errors": {
+      "generic": "The mentor could not answer right now. Please try again in a moment.",
+      "AI_NOT_AVAILABLE": "The AI Mentor is not available at the moment.",
+      "AI_FORBIDDEN": "The AI Mentor is available to participants only.",
+      "AI_SIMULATION_FORBIDDEN": "The mentor is not available for this simulation.",
+      "MODULE_NOT_ENABLED": "AI tools are not enabled for your organisation.",
+      "AI_TEMPORARILY_BLOCKED": "Too many requests in a short time. The mentor is paused for you for a few minutes.",
+      "AI_TOO_FAST": "Please wait a few seconds before sending another message.",
+      "RATE_LIMITED": "Too many requests. Please wait a moment and try again.",
+      "AI_LIMIT_DAILY_MESSAGES": "You have used all of today's mentor messages. You can continue tomorrow.",
+      "AI_LIMIT_DAILY_IMAGES": "You have used all of today's image uploads.",
+      "AI_IMAGES_DISABLED": "Image uploads are switched off for the rest of the day.",
+      "AI_TENANT_BUDGET": "Your organisation's AI Mentor allowance for this month has been used. Your administrator has been told.",
+      "AI_MESSAGE_EMPTY": "Write a message first.",
+      "AI_MESSAGE_TOO_LONG": "The message is too long. Please shorten it.",
+      "AI_IMAGES_NOT_ALLOWED": "Images cannot be sent at this stage.",
+      "AI_IMAGE_INVALID": "Only JPG, PNG or WebP images can be sent.",
+      "AI_IMAGE_TOO_LARGE": "The image is too large.",
+      "AI_BAD_REQUEST": "The message could not be sent.",
+      "AI_PROVIDER_ERROR": "The mentor stopped unexpectedly. Please try again."
+    }
   }
 }

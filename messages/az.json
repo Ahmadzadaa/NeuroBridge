@@ -101,7 +101,8 @@
       "system": "Sistem Sağlamlığı",
       "audit": "Audit Jurnalı",
       "pricing": "Xidmətlər və Qiymətlər",
-      "programs": "Proqramlar"
+      "programs": "Proqramlar",
+      "aiUsage": "AI istifadəsi"
     },
     "tenant": {
       "dashboard": "Panel",
@@ -430,7 +431,7 @@
     },
     "reports": {
       "title": "Hesabatlar",
-      "subtitle": "Tələbələr, təlimlər və nəticələr üzrə səkkiz hesabat. Burada baxın və ya Excel/PDF kimi yükləyin.",
+      "subtitle": "Tələbələr, təlimlər, nəticələr və AI Mentor istifadəsi üzrə hesabatlar. Burada baxın və ya Excel/PDF kimi yükləyin.",
       "exportExcel": "Excel",
       "exportPdf": "PDF",
       "pickReport": "Hesabat seçin",
@@ -480,6 +481,10 @@
         "yoy": {
           "title": "İllər üzrə müqayisə",
           "description": "İki tədris ili yan-yana, məsələn 2025–26 ilə 2026–27."
+        },
+        "aiMentor": {
+          "title": "AI Mentor istifadəsi",
+          "description": "İştirakçıların bu ay AI Mentordan necə istifadə etdiyi: mesajlar, aktiv istifadəçilər, tokenlər və təxmini xərc, limitə çatanlar və rədd edilən sorğular. Mesajların məzmunu göstərilmir."
         }
       },
       "kpi": {
@@ -513,7 +518,13 @@
         "baselineAverage": "Orta ilkin bal",
         "unitAverage": "Bölmə testlərinin orta balı",
         "allUnits": "Bütün bölmələri keçib",
-        "studentGrowth": "Tələbə sayında dəyişiklik"
+        "studentGrowth": "Tələbə sayında dəyişiklik",
+        "aiMessages": "Mesajlar",
+        "aiActiveUsers": "Aktiv istifadəçilər",
+        "aiTokens": "Tokenlər",
+        "aiCost": "Təxmini xərc",
+        "aiLimitUsers": "Limitə çatan istifadəçilər",
+        "aiRejected": "Mövzudan kənar və ya rədd edilən"
       },
       "col": {
         "program": "Proqram",
@@ -574,7 +585,16 @@
         "metric": "Göstərici",
         "change": "Dəyişiklik",
         "mvps": "MVP-lər",
-        "programs": "Proqramlar"
+        "programs": "Proqramlar",
+        "date": "Tarix",
+        "messages": "Mesajlar",
+        "activeUsers": "Aktiv istifadəçilər",
+        "tokens": "Tokenlər",
+        "costUsd": "Xərc (USD)",
+        "tenant": "Təşkilat",
+        "limitUsers": "Limitə çatıb",
+        "eventType": "Hadisə",
+        "count": "Say"
       },
       "tables": {
         "byProgram": "Proqramlar üzrə",
@@ -589,7 +609,11 @@
         "finalists": "Finalçılar və jüri qiymətləndirməsi",
         "development": "Hər tələbənin başlanğıc və indiki vəziyyəti",
         "compare": "{a} və {b}",
-        "allYears": "Bütün tədris illəri"
+        "allYears": "Bütün tədris illəri",
+        "aiByTenant": "Təşkilatlar üzrə",
+        "aiByDay": "Son 30 gün",
+        "aiBySimulation": "Simulyasiyalar üzrə",
+        "aiSecurity": "Təhlükəsizlik hadisələri"
       },
       "bars": {
         "completionByProgram": "Proqramlar üzrə təlim tamamlanması",
@@ -616,8 +640,20 @@
         "scoreboard": "Sıralama təlim bölmələrindən toplanan xala, sonra bölmə testlərinin cəmi bala görədir. Eyni nəticəli tələbələr eyni yeri bölüşür.",
         "noHackathon": "Bu təşkilat hələ hakaton keçirməyib.",
         "development": "Başlanğıc – qeydiyyat zamanı ilkin testlərin nəticəsidir. İndiki vəziyyət – bu günə qədər təlim bölmələrindəki irəliləyiş və test nəticələridir.",
-        "yoy": "Tədris ili sentyabrdan avqusta qədərdir. Proqram başlanğıc tarixinin düşdüyü ilə aiddir. Faizlərdəki dəyişiklik faiz bəndi ilə göstərilir."
-      }
+        "yoy": "Tədris ili sentyabrdan avqusta qədərdir. Proqram başlanğıc tarixinin düşdüyü ilə aiddir. Faizlərdəki dəyişiklik faiz bəndi ilə göstərilir.",
+        "aiMentor": "Bu ay, UTC vaxtı ilə. Xərclər token sayına görə təxminidir. İstifadəçilər anonim açarla sayılır; bu qeydlərdə ad və mesaj məzmunu saxlanmır."
+      },
+      "aiEvent": {
+        "OFF_TOPIC": "Mövzudan kənar sual",
+        "INJECTION_SUSPECTED": "Göstəriş yeritmə cəhdi şübhəsi",
+        "CANARY_TRIGGERED": "Bloklanmış cavab (prompt sızdırma cəhdi)",
+        "OUTPUT_REDACTED": "Link və ya məlumatı silinmiş cavab",
+        "LIMIT_EXCEEDED": "Limitə çatılıb",
+        "TEMPORARY_BLOCK": "Müvəqqəti blok",
+        "TENANT_BUDGET_EXHAUSTED": "Aylıq limit bitib",
+        "PROVIDER_ERROR": "AI xidməti xətası"
+      },
+      "allTenants": "Bütün təşkilatlar"
     },
     "settings": {
       "title": "Parametrlər",
@@ -1761,7 +1797,8 @@
     "INCOMPLETE_EVALUATION": "Təqdim etmək üçün bütün meyarları qiymətləndirin.",
     "WEEKEND_JURY_DATE": "Jüri günü həftə sonuna düşə bilməz.",
     "OUT_OF_RANGE": "Tarix proqram dövrünün daxilində olmalıdır.",
-    "VALIDATION_FAILED": "Bəzi sahələr düzgün doldurulmayıb. Formu yoxlayıb yenidən cəhd edin."
+    "VALIDATION_FAILED": "Bəzi sahələr düzgün doldurulmayıb. Formu yoxlayıb yenidən cəhd edin.",
+    "RATE_LIMITED": "Çox sorğu göndərildi. Bir az gözləyib yenidən cəhd edin."
   },
   "marketing": {
     "nav": {
@@ -2346,5 +2383,57 @@
     "saving": "Saxlanılır…",
     "draftSaved": "Qaralama saxlanıldı",
     "submittedToast": "Qiymətləndirmə təqdim edildi"
+  },
+  "mentor": {
+    "title": "AI Mentor",
+    "open": "AI Mentoru aç",
+    "close": "Bağla",
+    "aiNotice": "Siz süni intellektlə danışırsınız. O səhv edə bilər; şəxsi məlumat paylaşmayın.",
+    "empty": "Cari mərhələ haqqında soruşun. Mentor cavabı vermək əvəzinə düşünməyinizə kömək edəcək.",
+    "placeholder": "Mentordan soruşun…",
+    "send": "Göndər",
+    "typing": "Mentor yazır",
+    "attachImage": "Şəkil əlavə et (bu gün {count} qalıb)",
+    "removeImage": "Şəkli sil",
+    "imageAttached": "Şəkil əlavə olunub",
+    "mic": "Səs (tezliklə)",
+    "remaining": "Bu gün {total} mesajdan {count} qalıb",
+    "limitReached": "Bugünkü mentor mesajlarınızı istifadə etdiniz. Sabah davam edə bilərsiniz.",
+    "offTopic": "Bu sual simulyasiya mövzusundan kənardır. Gəlin cari mərhələyə qayıdaq: {stage}. Hazırda hansı qərar üzərində düşünürsünüz?",
+    "offTopicNoStage": "Bu sual simulyasiya mövzusundan kənardır. Gəlin simulyasiyanıza qayıdaq: hazırda nə üzərində işləyirsiniz?",
+    "blocked": "Bu cavabı göstərə bilmirəm. Gəlin simulyasiyanıza qayıdaq: hansı qərar üzərində işləyirsiniz?",
+    "budgetEmail": {
+      "subject": "BizSim: bu ayın AI Mentor limiti bitdi",
+      "body": "Təşkilatınız bu ay üçün AI Mentor limitini istifadə edib. Limit gələn ay yenilənənədək iştirakçılar müvafiq mesaj görəcək. Daha böyük limit lazımdırsa, BizSim ilə əlaqə saxlayın."
+    },
+    "hub": {
+      "title": "AI Mentor",
+      "subtitle": "Simulyasiyalar üçün mentorunuz: düzgün suallar verir və qərar verməyinizə kömək edir, hazır cavab vermir.",
+      "notice": "Siz insanla deyil, süni intellektlə danışırsınız. O yalnız sahibkarlıq və cari simulyasiyanızla bağlı kömək edir. Telefon nömrəsi, ünvan kimi şəxsi məlumat paylaşmayın.",
+      "openWithMentor": "Mentorla aç",
+      "empty": "Proqramlarınızda hələ simulyasiya yoxdur.",
+      "disabled": "AI Mentor hazırda söndürülüb."
+    },
+    "errors": {
+      "generic": "Mentor indi cavab verə bilmədi. Bir az sonra yenidən cəhd edin.",
+      "AI_NOT_AVAILABLE": "AI Mentor hazırda əlçatan deyil.",
+      "AI_FORBIDDEN": "AI Mentor yalnız iştirakçılar üçündür.",
+      "AI_SIMULATION_FORBIDDEN": "Bu simulyasiya üçün mentor əlçatan deyil.",
+      "MODULE_NOT_ENABLED": "Təşkilatınız üçün AI alətləri aktiv deyil.",
+      "AI_TEMPORARILY_BLOCKED": "Qısa müddətdə çox sorğu göndərildi. Mentor sizin üçün bir neçə dəqiqəlik dayandırıldı.",
+      "AI_TOO_FAST": "Növbəti mesajdan əvvəl bir neçə saniyə gözləyin.",
+      "RATE_LIMITED": "Çox sorğu göndərildi. Bir az gözləyib yenidən cəhd edin.",
+      "AI_LIMIT_DAILY_MESSAGES": "Bugünkü mentor mesajlarınızın hamısını istifadə etdiniz. Sabah davam edə bilərsiniz.",
+      "AI_LIMIT_DAILY_IMAGES": "Bugünkü şəkil göndərmə limitiniz bitdi.",
+      "AI_IMAGES_DISABLED": "Şəkil göndərmə günün qalan hissəsi üçün bağlıdır.",
+      "AI_TENANT_BUDGET": "Təşkilatınızın bu ay üçün AI Mentor limiti bitib. Administratorunuza məlumat verildi.",
+      "AI_MESSAGE_EMPTY": "Əvvəlcə mesaj yazın.",
+      "AI_MESSAGE_TOO_LONG": "Mesaj çox uzundur. Zəhmət olmasa qısaldın.",
+      "AI_IMAGES_NOT_ALLOWED": "Bu mərhələdə şəkil göndərmək olmaz.",
+      "AI_IMAGE_INVALID": "Yalnız JPG, PNG və ya WebP şəkil göndərmək olar.",
+      "AI_IMAGE_TOO_LARGE": "Şəkil çox böyükdür.",
+      "AI_BAD_REQUEST": "Mesaj göndərilə bilmədi.",
+      "AI_PROVIDER_ERROR": "Mentor gözlənilmədən dayandı. Yenidən cəhd edin."
+    }
   }
 }

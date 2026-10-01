@@ -93,11 +93,6 @@ export const createProgramSchema = z
     path: ["programEnd"],
   });
 
-export const aiChatSchema = z.object({
-  tool: z.enum(AI_TOOLS),
-  message: safeString(4000),
-});
-
 export const loginSchema = z.object({
   email: z.string().trim().email().max(320),
   password: z.string().trim().min(8).max(128),
