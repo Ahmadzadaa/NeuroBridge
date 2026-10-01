@@ -112,6 +112,25 @@ The task role needs object-level access to one prefix, and nothing else:
 covered by `s3:GetObject`, so the role cannot enumerate the bucket. Add
 `arn:aws:s3:::<bucket>/exports/*` only once something writes export archives.
 
+## AI Mentor
+
+The mentor lives in `src/ai/` (providers, prompts, guards, mentor flow; voice
+interfaces are stubs). Setup:
+
+1. Choose a provider: `AI_PROVIDER=anthropic` with `ANTHROPIC_API_KEY`, or
+   `AI_PROVIDER=bedrock` with model access enabled in the Bedrock console and
+   an instance role allowed to invoke the models (`AI_BEDROCK_REGION`).
+2. Apply the `ai_mentor` migration; for Postgres RLS also run
+   `prisma/migrations/rls/002_ai_mentor_rls.sql` after `001_enable_rls.sql`.
+3. With `STORAGE_DRIVER=s3`, add `arn:aws:s3:::<S3_DOCUMENTS_BUCKET>/ai-mentor/*`
+   (`PutObject`) to the app role: uploaded images go to the private bucket.
+4. Optional: tune the `AI_*` limits in `.env.example`; set `AI_ALERT_EMAIL`.
+5. Check the guards against the real model:
+   `npx tsx --env-file=.env scripts/ai-attack-scenarios.ts`.
+
+Organisations need the AI tools module (`aiTools`). Usage is under
+Reports → "AI Mentor usage" (own tenant) and Super Admin → "AI usage".
+
 ## Panel Architecture
 
 | Panel | Route | Roles |
