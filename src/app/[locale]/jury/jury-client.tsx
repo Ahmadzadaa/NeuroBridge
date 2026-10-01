@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { CheckCircle2, ChevronRight, Clock3, FileText, Users } from "lucide-react";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { EmptyState } from "@/components/ui/empty-state";
+import { ProgressRing, WelcomeHero } from "@/components/dashboard/dashboard-kit";
 import { cn } from "@/lib/utils";
 
 export interface JuryEntry {
@@ -100,9 +101,25 @@ export function JuryDashboardClient({
 
   return (
     <DashboardLayout panel="jury" title={t("dashboardTitle")} userName={userName}>
-      <p className="mb-6 max-w-2xl text-[14px] text-muted-foreground">
-        {t("dashboardSubtitle")}
-      </p>
+      <div className="mb-8">
+        <WelcomeHero
+          eyebrow={t("dashboardTitle")}
+          title={t("greeting", { name: userName.split(" ")[0] })}
+          subtitle={t("dashboardSubtitle")}
+          aside={
+            entries.length > 0 && (
+              <ProgressRing
+                value={(completed.length / entries.length) * 100}
+                label={`${completed.length}/${entries.length}`}
+                caption={t("scored")}
+                onDark
+                responsive
+                size={120}
+              />
+            )
+          }
+        />
+      </div>
 
       {entries.length === 0 ? (
         <div className="rounded-2xl bg-card shadow-sm">

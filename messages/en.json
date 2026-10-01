@@ -298,6 +298,34 @@
       "statusPending": "Being set up",
       "statusReady": "Live",
       "participants": "{count} participants"
+    },
+    "home": {
+      "greeting": "Hi, {name}",
+      "subtitle": "Where the platform stands today.",
+      "pendingNote": "{count, plural, one {# paid programme is} other {# paid programmes are}} waiting for you to set up.",
+      "reviewPending": "Review pending",
+      "newProgram": "New programme",
+      "tenants": "Organisations",
+      "newThisMonth": "+{count} this month",
+      "students": "Students",
+      "revenue": "Total revenue",
+      "thisMonth": "Revenue this month",
+      "revenueChart": "Revenue, last 6 months",
+      "pendingPrograms": "Awaiting setup",
+      "noPending": "Nothing waiting.",
+      "recentOrders": "Recent orders",
+      "noOrders": "No orders yet.",
+      "seeAll": "See all",
+      "shortcuts": "Shortcuts",
+      "kind": {
+        "NEW_TENANT": "New organisation",
+        "ADD_PROGRAM": "Extra programme"
+      },
+      "status": {
+        "PAID": "Paid",
+        "PENDING": "Pending",
+        "FAILED": "Failed"
+      }
     }
   },
   "tenant": {
@@ -686,6 +714,24 @@
           "description": "A weekly progress summary for participants."
         }
       }
+    },
+    "home": {
+      "greeting": "Hi, {name}",
+      "subtitle": "Your programmes, students and seats at a glance.",
+      "pendingNote": "{count, plural, one {# programme is} other {# programmes are}} being set up by our team — registration opens when ready.",
+      "seats": "Seats",
+      "buyProgram": "Buy a programme",
+      "viewParticipants": "Students",
+      "activeStudents": "Active students",
+      "simCompletion": "Simulation completion",
+      "seeAll": "See all",
+      "noPrograms": "No programmes yet.",
+      "students": "{count}/{limit} students",
+      "pendingSetup": "Being set up",
+      "seatsUsed": "In use",
+      "seatsLeft": "Available",
+      "seatsFooter": "Each registered student takes one seat.",
+      "shortcuts": "Shortcuts"
     }
   },
   "participant": {
@@ -838,7 +884,30 @@
       "completion": "Certificate of Completion"
     },
     "downloadCertificate": "Download",
-    "certificateRevoked": "Revoked"
+    "certificateRevoked": "Revoked",
+    "home": {
+      "greeting": "Hi, {name}",
+      "programLabel": "programme",
+      "continue": "Continue learning",
+      "openProgram": "View programme",
+      "noProgramText": "You haven't joined a programme yet.",
+      "startsIn": "Programme starts in {count} days",
+      "finished": "Programme completed — congratulations!",
+      "weekStatus": "Week {week} of {total} · {days} days left",
+      "undated": "Dates will be announced soon",
+      "lessons": "Lessons completed",
+      "simulations": "Simulations completed",
+      "badges": "Badges",
+      "certificates": "Certificates",
+      "upcoming": "Coming up",
+      "seeAll": "See all",
+      "weekN": "Week {n}",
+      "now": "Now",
+      "nothingUpcoming": "Nothing else is scheduled.",
+      "wallet": "Achievements",
+      "coins": "Coin balance",
+      "shortcuts": "Shortcuts"
+    }
   },
   "landing": {
     "hero": "Start Your Entrepreneurship Journey",
@@ -936,7 +1005,8 @@
       "saveScores": "Save scores",
       "scoresSaved": "Your scores were saved",
       "alreadyScored": "You have scored this project",
-      "weightLabel": "Weight"
+      "weightLabel": "Weight",
+      "greeting": "Hi, {name}"
     },
     "reveal": {
       "heading": "Results announcement",
@@ -1056,7 +1126,10 @@
         "simScore": "Sim score",
         "grade": "Grade",
         "studyYearUnit": "Year {year}"
-      }
+      },
+      "greeting": "Hi, {name}",
+      "heroSubtitle": "Invite your students, write scenarios and grade their results.",
+      "pendingNote": "{count, plural, one {# simulation result is} other {# simulation results are}} waiting for your grade."
     },
     "join": {
       "title": "Join the group",

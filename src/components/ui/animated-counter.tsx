@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useInView, useReducedMotion } from "framer-motion";
+import { useLocale } from "next-intl";
 
 interface AnimatedCounterProps {
   value: number;
@@ -11,6 +12,14 @@ interface AnimatedCounterProps {
   className?: string;
 }
 
+/**
+ * A number that counts up once when it scrolls into view.
+ *
+ * Its resting state is the real value: it used to start at 0 and rely on
+ * `requestAnimationFrame`, which does not run in a hidden tab, so a page
+ * opened in the background showed a coin balance of 0. The count-up now only
+ * runs when the document is visible, and otherwise the value is simply there.
+ */
 export function AnimatedCounter({
   value,
   duration = 1200,
@@ -18,43 +27,41 @@ export function AnimatedCounter({
   prefix = "",
   className,
 }: AnimatedCounterProps) {
-  const [displayValue, setDisplayValue] = useState(0);
+  // Set only from animation frames; while it is null the real value shows.
+  const [frame, setFrame] = useState<{ target: number; shown: number } | null>(null);
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
   const reducedMotion = useReducedMotion();
+  const locale = useLocale();
+  // tr-TR for az: Node and browsers ship different az number data, which would break hydration.
+  const format = new Intl.NumberFormat(locale === "en" ? "en-GB" : "tr-TR");
 
   useEffect(() => {
-    if (!isInView || reducedMotion) return;
+    if (!isInView || reducedMotion || document.visibilityState !== "visible") return;
 
-    let startTime: number;
-    let frame: number;
-    const startValue = 0;
-
+    let startTime: number | undefined;
+    let handle: number;
     const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4);
 
     const animate = (currentTime: number) => {
-      if (!startTime) startTime = currentTime;
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const easedProgress = easeOutQuart(progress);
-
-      setDisplayValue(Math.round(startValue + (value - startValue) * easedProgress));
-
+      startTime ??= currentTime;
+      const progress = Math.min((currentTime - startTime) / duration, 1);
       if (progress < 1) {
-        frame = requestAnimationFrame(animate);
+        setFrame({ target: value, shown: Math.round(value * easeOutQuart(progress)) });
+        handle = requestAnimationFrame(animate);
+      } else {
+        setFrame(null);
       }
     };
 
-    frame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(frame);
+    handle = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(handle);
   }, [isInView, value, duration, reducedMotion]);
-
-  const shown = reducedMotion ? value : displayValue;
 
   return (
     <span ref={ref} className={className}>
       {prefix}
-      {shown.toLocaleString()}
+      {format.format(!reducedMotion && frame?.target === value ? frame.shown : value)}
       {suffix}
     </span>
   );

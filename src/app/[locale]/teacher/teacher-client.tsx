@@ -17,7 +17,7 @@ import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
-import { StatCard } from "@/components/ui/stat-card";
+import { HeroAction, MetricTile, WelcomeHero } from "@/components/dashboard/dashboard-kit";
 import { cn } from "@/lib/utils";
 
 interface StudentRow {
@@ -55,6 +55,7 @@ export function TeacherDashboardClient({
 }: TeacherDashboardClientProps) {
   const t = useTranslations("teacher.dashboard");
   const tc = useTranslations("common");
+  const tNav = useTranslations("nav.teacher");
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
 
   /**
@@ -97,15 +98,21 @@ export function TeacherDashboardClient({
 
   return (
     <DashboardLayout panel="teacher" title={t("title")} userName={userName}>
-      {/* ── Stats ─────────────────────────────────────────────── */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <StatCard title={t("stats.students")} value={students.length} icon={Users} />
-        <StatCard title={t("stats.scenarios")} value={scenarioCount} icon={FileText} />
-        <StatCard
-          title={t("stats.pendingGrades")}
-          value={pendingGrades}
-          icon={ClipboardCheck}
-        />
+      <WelcomeHero
+        eyebrow={t("title")}
+        title={t("greeting", { name: userName.split(" ")[0] })}
+        subtitle={pendingGrades ? t("pendingNote", { count: pendingGrades }) : t("heroSubtitle")}
+      >
+        <HeroAction href="/teacher/grading" primary>
+          {tNav("grading")}
+        </HeroAction>
+        <HeroAction href="/teacher/scenarios">{tNav("scenarios")}</HeroAction>
+      </WelcomeHero>
+
+      <div className="mt-6 grid grid-cols-3 gap-3 sm:gap-4">
+        <MetricTile index={1} icon={Users} tone="indigo" value={students.length} label={t("stats.students")} />
+        <MetricTile index={2} icon={FileText} tone="violet" value={scenarioCount} label={t("stats.scenarios")} href="/teacher/scenarios" />
+        <MetricTile index={3} icon={ClipboardCheck} tone="amber" value={pendingGrades} label={t("stats.pendingGrades")} href="/teacher/grading" />
       </div>
 
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[380px_1fr]">

@@ -298,6 +298,34 @@
       "statusPending": "Hazırlanır",
       "statusReady": "Aktiv",
       "participants": "{count} iştirakçı"
+    },
+    "home": {
+      "greeting": "Salam, {name}",
+      "subtitle": "Platformun bu günkü vəziyyəti.",
+      "pendingNote": "{count, plural, one {# ödənilmiş proqram} other {# ödənilmiş proqram}} qurulmağınızı gözləyir.",
+      "reviewPending": "Gözləyənlərə bax",
+      "newProgram": "Yeni proqram",
+      "tenants": "Təşkilatlar",
+      "newThisMonth": "Bu ay +{count}",
+      "students": "Tələbələr",
+      "revenue": "Ümumi gəlir",
+      "thisMonth": "Bu ayın gəliri",
+      "revenueChart": "Son 6 ayın gəliri",
+      "pendingPrograms": "Qurulacaq proqramlar",
+      "noPending": "Gözləyən proqram yoxdur.",
+      "recentOrders": "Son sifarişlər",
+      "noOrders": "Hələ sifariş yoxdur.",
+      "seeAll": "Hamısı",
+      "shortcuts": "Tez keçidlər",
+      "kind": {
+        "NEW_TENANT": "Yeni təşkilat",
+        "ADD_PROGRAM": "Əlavə proqram"
+      },
+      "status": {
+        "PAID": "Ödənilib",
+        "PENDING": "Gözləyir",
+        "FAILED": "Uğursuz"
+      }
     }
   },
   "tenant": {
@@ -686,6 +714,24 @@
           "description": "İştirakçılara həftədə bir dəfə irəliləyiş xülasəsi."
         }
       }
+    },
+    "home": {
+      "greeting": "Salam, {name}",
+      "subtitle": "Proqramlarınız, tələbələriniz və oturacaqlarınız bir baxışda.",
+      "pendingNote": "{count, plural, one {# proqram} other {# proqram}} komandamız tərəfindən qurulur — hazır olanda qeydiyyat açılacaq.",
+      "seats": "Oturacaqlar",
+      "buyProgram": "Yeni proqram al",
+      "viewParticipants": "Tələbələr",
+      "activeStudents": "Aktiv tələbələr",
+      "simCompletion": "Simulyasiya tamamlama",
+      "seeAll": "Hamısı",
+      "noPrograms": "Hələ proqramınız yoxdur.",
+      "students": "{count}/{limit} tələbə",
+      "pendingSetup": "Qurulur",
+      "seatsUsed": "İstifadə olunan",
+      "seatsLeft": "Boş qalan",
+      "seatsFooter": "Hər qeydiyyatdan keçən tələbə bir oturacaq tutur.",
+      "shortcuts": "Tez keçidlər"
     }
   },
   "participant": {
@@ -838,7 +884,30 @@
       "completion": "Proqram Tamamlama Sertifikatı"
     },
     "downloadCertificate": "Endir",
-    "certificateRevoked": "Ləğv edilib"
+    "certificateRevoked": "Ləğv edilib",
+    "home": {
+      "greeting": "Salam, {name}",
+      "programLabel": "proqram",
+      "continue": "Öyrənməyə davam et",
+      "openProgram": "Proqrama bax",
+      "noProgramText": "Hələ heç bir proqrama qoşulmamısınız.",
+      "startsIn": "Proqram {count} gün sonra başlayır",
+      "finished": "Proqram tamamlandı — təbriklər!",
+      "weekStatus": "{week}/{total}-cı həftə · {days} gün qalıb",
+      "undated": "Tarixlər tezliklə açıqlanacaq",
+      "lessons": "Tamamlanan dərslər",
+      "simulations": "Tamamlanan simulyasiyalar",
+      "badges": "Nişanlar",
+      "certificates": "Sertifikatlar",
+      "upcoming": "Qarşıdakılar",
+      "seeAll": "Hamısı",
+      "weekN": "{n}. həftə",
+      "now": "İndi",
+      "nothingUpcoming": "Qarşıda planlaşdırılmış mərhələ yoxdur.",
+      "wallet": "Nailiyyətlər",
+      "coins": "Coin balansı",
+      "shortcuts": "Tez keçidlər"
+    }
   },
   "landing": {
     "hero": "Sahibkarlıq Səyahətiniz Başlasın",
@@ -936,7 +1005,8 @@
       "saveScores": "Xalları yadda saxla",
       "scoresSaved": "Xallarınız yadda saxlanıldı",
       "alreadyScored": "Bu layihəni qiymətləndirmisiniz",
-      "weightLabel": "Çəki"
+      "weightLabel": "Çəki",
+      "greeting": "Salam, {name}"
     },
     "reveal": {
       "heading": "Nəticələrin açıqlanması",
@@ -1056,7 +1126,10 @@
         "simScore": "Sim. balı",
         "grade": "Qiymət",
         "studyYearUnit": "{year}-ci kurs"
-      }
+      },
+      "greeting": "Salam, {name}",
+      "heroSubtitle": "Tələbələrinizi dəvət edin, ssenarilər yazın və nəticələri qiymətləndirin.",
+      "pendingNote": "{count} simulyasiya nəticəsi qiymətləndirməni gözləyir."
     },
     "join": {
       "title": "Qrupa qoşul",
