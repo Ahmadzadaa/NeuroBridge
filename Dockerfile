@@ -42,6 +42,8 @@ COPY --from=builder /app/prisma ./prisma
 # `process.cwd()/assets`. Next's standalone tracing cannot see a path built at
 # runtime, so without this line certificate rendering fails in production.
 COPY --from=builder /app/assets ./assets
+# The AI system prompts are Markdown files read at runtime, for the same reason.
+COPY --from=builder /app/src/ai/prompts ./src/ai/prompts
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 # The Prisma CLI, so the entrypoint can bring the schema up to date on start.
