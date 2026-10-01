@@ -7,6 +7,7 @@ const numberLocale = (locale: string) => (locale === "en" ? "en-GB" : "tr-TR");
 export function formatReportValue(value: Cell, kind: ValueKind, locale: string): string {
   if (value === null || value === "") return "—";
   if (typeof value === "string") return kind === "date" ? formatDate(value, locale, "medium") : value;
+  if (kind === "usd") return `$${value.toLocaleString(numberLocale(locale), { minimumFractionDigits: 2, maximumFractionDigits: 4 })}`;
   const n = value.toLocaleString(numberLocale(locale), { maximumFractionDigits: 1 });
   return kind === "percent" ? `${n}%` : n;
 }

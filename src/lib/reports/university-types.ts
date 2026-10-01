@@ -12,6 +12,7 @@ export const UNIVERSITY_REPORTS = [
   "hackathon",
   "development",
   "yoy",
+  "aiMentor",
 ] as const;
 
 export type UniversityReportType = (typeof UNIVERSITY_REPORTS)[number];
@@ -22,8 +23,8 @@ export function isUniversityReport(value: string | null | undefined): value is U
 
 export type Cell = string | number | null;
 
-/** How a value is shown: percents and scores are 0–100 with one decimal, dates are ISO days. */
-export type ValueKind = "text" | "number" | "percent" | "score" | "date";
+/** How a value is shown: percents and scores are 0–100 with one decimal, dates are ISO days, usd up to four decimals. */
+export type ValueKind = "text" | "number" | "percent" | "score" | "date" | "usd";
 
 export interface ReportColumn {
   key: string;

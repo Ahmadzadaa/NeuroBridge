@@ -7,6 +7,8 @@ import { formatReportValue } from "@/lib/reports/report-format";
 import { renderReportPdf } from "@/lib/reports/report-pdf";
 import { buildXlsx, type XlsxCell, type XlsxSheet } from "@/lib/reports/xlsx";
 import type { Translate, UniversityReport, UniversityReportType } from "@/lib/reports/university-types";
+import { withTenantContext } from "@/lib/db/tenant-context";
+import { buildAiUsageReport } from "@/ai/mentor/usage-report";
 
 export class ReportScopeError extends Error {
   readonly statusCode = 404;
@@ -33,6 +35,15 @@ export async function getUniversityReport(params: {
     ? await prisma.program.findFirst({ where: { id: programId, tenantId: params.tenantId }, select: { name: true } })
     : null;
   if (programId && !program) throw new ReportScopeError("Program not found");
+
+  if (params.type === "aiMentor") {
+    // Tenant-scoped, and read in the tenant's database context.
+    const report = await withTenantContext(
+      { tenantId: params.tenantId, userId: "report:ai-usage", role: "TENANT_ADMIN", isSuperAdmin: false },
+      (tx) => buildAiUsageReport(tx, { tenantId: params.tenantId, t, locale: params.locale, scope: t("allPrograms"), now: params.now })
+    );
+    return { report, years: [] as number[], picked: [0, 0] as [number, number], t };
+  }
 
   const ds = await loadReportDataset(params.tenantId, params.locale, programId, params.now);
   const years = availableYears(ds);

@@ -202,7 +202,10 @@ function helpers(t: Translate) {
   };
 }
 
-export function buildUniversityReport(type: UniversityReportType, ds: ReportDataset, ctx: BuildContext): UniversityReport {
+/** The student reports; "aiMentor" is built from the AI usage log instead (ai/mentor/usage-report). */
+export type DatasetReportType = Exclude<UniversityReportType, "aiMentor">;
+
+export function buildUniversityReport(type: DatasetReportType, ds: ReportDataset, ctx: BuildContext): UniversityReport {
   const ix = new Index(ds);
   const parts = BUILDERS[type](ix, ctx);
   return {
@@ -216,7 +219,7 @@ export function buildUniversityReport(type: UniversityReportType, ds: ReportData
 
 const allPrograms = (ix: Index) => new Set(ix.ds.programs.map((p) => p.id));
 
-const BUILDERS: Record<UniversityReportType, (ix: Index, ctx: BuildContext) => Parts> = {
+const BUILDERS: Record<DatasetReportType, (ix: Index, ctx: BuildContext) => Parts> = {
   general(ix, { t }) {
     const { col, kpi, table } = helpers(t);
     const m = cohortMetrics(ix, allPrograms(ix));

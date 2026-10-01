@@ -51,6 +51,7 @@ const navConfig: Record<PanelType, NavItem[]> = {
     { href: "/super-admin/pricing", labelKey: "pricing", icon: Tag },
     { href: "/super-admin/content", labelKey: "content", icon: FileText },
     { href: "/super-admin/support", labelKey: "support", icon: Headphones },
+    { href: "/super-admin/ai-usage", labelKey: "aiUsage", icon: Bot },
     { href: "/super-admin/system", labelKey: "system", icon: Activity },
     { href: "/super-admin/audit", labelKey: "audit", icon: ClipboardList },
   ],
