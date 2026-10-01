@@ -244,6 +244,8 @@ export const addJurySchema = z.object({
   email: z.string().trim().toLowerCase().email().max(255),
   firstName: safeString(100).optional(),
   lastName: safeString(100).optional(),
+  /** The admin's UI language, used for the invitation email. */
+  locale: z.enum(["az", "en", "tr"]).optional(),
 });
 
 /**

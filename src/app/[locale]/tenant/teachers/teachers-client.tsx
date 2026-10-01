@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useApiErrorMessage } from "@/lib/api/api-error";
 import {
   FileText,
@@ -52,6 +52,7 @@ export function TeachersPageClient({
   const t = useTranslations("teacher.manage");
   const apiError = useApiErrorMessage();
   const tc = useTranslations("common");
+  const locale = useLocale();
   const router = useRouter();
 
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -77,6 +78,7 @@ export function TeachersPageClient({
           email: form.email.trim().toLowerCase(),
           firstName: form.firstName.trim(),
           lastName: form.lastName.trim(),
+          locale,
         }),
       });
       const data = (await res.json().catch(() => null)) as {

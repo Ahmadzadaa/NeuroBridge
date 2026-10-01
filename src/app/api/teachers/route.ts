@@ -24,6 +24,8 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: "Tenant required" }, { status: 400 });
       }
       const body = parseBody(addJurySchema, await request.json());
+      // The language the admin is working in: the invite should read the same.
+      const language = body.locale ?? session.language ?? routing.defaultLocale;
 
       const existing = await prisma.user.findUnique({
         where: {
@@ -66,9 +68,8 @@ export async function POST(request: Request) {
             firstName: body.firstName,
             lastName: body.lastName,
             role: "TEACHER",
-            // The teacher has no preference yet; the admin creating the account
-            // is working in some language, and that is the best guess we have.
-            language: session.language ?? routing.defaultLocale,
+            // The teacher has no preference yet; the admin's UI language is the best guess.
+            language,
             inviteToken: randomUUID(),
           },
         });
@@ -96,7 +97,7 @@ export async function POST(request: Request) {
             email: body.email,
             role: "TEACHER",
             tenantId: session.tenantId,
-            language: session.language,
+            language,
           })
         : false;
 
