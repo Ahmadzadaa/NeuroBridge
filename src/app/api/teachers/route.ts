@@ -1,30 +1,19 @@
-import { localeUrl } from "@/lib/app-url";
 import { routing } from "@/i18n/routing";
-import { randomBytes, randomUUID } from "crypto";
+import { randomUUID } from "crypto";
 import { NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
 import { withAuthorizedHandler } from "@/lib/auth/authorize";
 import { assertFeatureEnabled } from "@/lib/tenant/features";
 import { addJurySchema, parseBody } from "@/lib/validation/schemas";
 import { prisma } from "@/lib/prisma";
 import { recordAudit, getClientIp } from "@/lib/audit/audit-service";
 import { AUDIT_ACTIONS } from "@/lib/audit/actions";
-import { sendEmail } from "@/lib/email/email-service";
-import { teacherCredentialsEmail } from "@/lib/email/templates";
-
-function generateTempPassword(): string {
-  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789";
-  const pick = () =>
-    Array.from(randomBytes(3))
-      .map((b) => alphabet[b % alphabet.length])
-      .join("");
-  return `${pick()}-${pick()}-${pick()}`;
-}
+import { unusablePasswordHash } from "@/lib/onboarding/activation-token";
+import { sendMemberInvitation } from "@/lib/onboarding/member-invitation";
 
 /**
  * Dean flow: creates a TEACHER account (or promotes an existing participant),
- * assigns a student-invite token, emails credentials, returns the one-time
- * password once. The dean manages teachers — never their students.
+ * assigns a student-invite token and emails a one-time set-password link.
+ * The dean manages teachers — never their students.
  */
 export async function POST(request: Request) {
   return withAuthorizedHandler(
@@ -44,7 +33,6 @@ export async function POST(request: Request) {
       });
 
       let teacherId: string;
-      let tempPassword: string | null = null;
       let created = false;
 
       if (existing) {
@@ -69,13 +57,12 @@ export async function POST(request: Request) {
         });
         teacherId = existing.id;
       } else {
-        tempPassword = generateTempPassword();
-        const passwordHash = await bcrypt.hash(tempPassword, 12);
         const user = await prisma.user.create({
           data: {
             tenantId: session.tenantId,
             email: body.email,
-            passwordHash,
+            // Unusable until the invitee sets their own password from the email link.
+            passwordHash: await unusablePasswordHash(),
             firstName: body.firstName,
             lastName: body.lastName,
             role: "TEACHER",
@@ -103,26 +90,18 @@ export async function POST(request: Request) {
         },
       });
 
-      if (created && tempPassword) {
-        const tenant = await prisma.tenant.findUnique({
-          where: { id: session.tenantId },
-          select: { name: true },
-        });
-        const origin = process.env.APP_BASE_URL ?? new URL(request.url).origin;
-        await sendEmail({
-          to: body.email,
-          ...teacherCredentialsEmail({
+      const emailed = created
+        ? await sendMemberInvitation({
+            userId: teacherId,
             email: body.email,
-            tempPassword,
-            loginUrl: localeUrl(origin, "/login", session.language),
-            organizationName: tenant?.name,
+            role: "TEACHER",
+            tenantId: session.tenantId,
             language: session.language,
-          }),
-        });
-      }
+          })
+        : false;
 
       return NextResponse.json(
-        { id: teacherId, created, tempPassword },
+        { id: teacherId, created, emailed },
         { status: 201 }
       );
     },

@@ -65,7 +65,8 @@
     "previousPage": "Önceki sayfa",
     "pageNumber": "Sayfa {number}",
     "collapseSidebar": "Yan paneli daralt",
-    "expandSidebar": "Yan paneli genişlet"
+    "expandSidebar": "Yan paneli genişlet",
+    "account": "Hesap ve güvenlik"
   },
   "auth": {
     "login": "Giriş Yap",
@@ -86,7 +87,8 @@
     "trustEncryption": "256-bit şifreleme",
     "trustCompliance": "KVKK/GDPR uyumlu",
     "trustEnterprise": "Enterprise SaaS",
-    "allRightsReserved": "Tüm hakları saklıdır"
+    "allRightsReserved": "Tüm hakları saklıdır",
+    "forgotPassword": "Şifrenizi mi unuttunuz?"
   },
   "nav": {
     "superAdmin": {
@@ -981,13 +983,13 @@
       "empty": "Henüz jüri üyesi yok. Katılımcılar bölümünden JURY rolü atayın.",
       "addLabel": "E-posta ile jüri ata",
       "emailPlaceholder": "juri@ornek.com",
-      "addHint": "Mevcut katılımcı jüriye dönüştürülür; bulunamazsa yeni jüri hesabı oluşturulur ve tek seferlik şifre gösterilir.",
+      "addHint": "Mevcut katılımcı jüriye dönüştürülür; bulunamazsa yeni jüri hesabı oluşturulur ve şifre belirlemesi için e-posta ile bağlantı gönderilir.",
       "added": "Jüri üyesi atandı",
       "removed": "Jüri üyesi çıkarıldı",
       "remove": "Jüriden çıkar",
-      "accountCreated": "Yeni hesap oluşturuldu — şifreyi jüri üyesine iletin:",
-      "passwordCopied": "Şifre kopyalandı",
-      "passwordHint": "Bu şifre yalnızca bir kez gösterilir. Jüri ilk girişten sonra değiştirebilir."
+      "inviteSent": "Jüri hesabı oluşturuldu, davet e-postayla gönderildi.",
+      "inviteNotSent": "Jüri hesabı oluşturuldu ancak e-posta gönderilemedi.",
+      "inviteHint": "Jüri e-postadaki bağlantıyla kendi şifresini belirler. E-posta ulaşmazsa giriş sayfasındaki \"Şifrenizi mi unuttunuz?\" ile yeni bağlantı alabilir."
     },
     "jury": {
       "dashboardTitle": "Jüri Paneli",
@@ -1090,7 +1092,7 @@
       "title": "Öğretmenler",
       "subtitle": "Öğretmen hesabı oluşturup teslim edin — öğretmen kendi öğrencilerini davet eder, senaryolar kurar ve notlandırır.",
       "addTeacher": "Yeni öğretmen",
-      "addDescription": "Öğretmen hesabı oluşturulur ve giriş bilgileri e-postasına gönderilir.",
+      "addDescription": "Öğretmen hesabı oluşturulur ve şifre belirlemesi için tek kullanımlık bağlantı e-postasına gönderilir.",
       "firstName": "Ad",
       "lastName": "Soyad",
       "email": "E-posta",
@@ -1101,9 +1103,9 @@
       "empty": "Henüz öğretmen yok — ilk öğretmeni ekleyin.",
       "studentCount": "{count} öğrenci",
       "scenarioCount": "{count} senaryo",
-      "credentialsEmailed": "Giriş bilgileri {email} adresine gönderildi",
-      "passwordCopied": "Şifre kopyalandı",
-      "passwordShownOnce": "Bu geçici şifre yalnızca bir kez gösterilir. Öğretmen ilk girişten sonra değiştirmelidir."
+      "inviteSent": "Davet {email} adresine gönderildi",
+      "inviteNotSent": "Hesap oluşturuldu ancak e-posta gönderilemedi",
+      "inviteHint": "Öğretmen e-postadaki bağlantıyla kendi şifresini belirler. Bağlantı 48 saat geçerlidir; e-posta ulaşmazsa giriş sayfasındaki \"Şifrenizi mi unuttunuz?\" ile yeni bağlantı alabilir."
     },
     "dashboard": {
       "title": "Öğretmen Paneli",
@@ -1475,7 +1477,8 @@
     "setupFailed": "Kurulum başlatılamadı. Biraz sonra tekrar deneyin.",
     "invalidCode": "Kod hatalı. Uygulamadaki güncel kodu kontrol edin.",
     "enabledToast": "İki adımlı doğrulama etkinleştirildi",
-    "tooManyAttempts": "Çok fazla deneme yapıldı. Yaklaşık bir dakika bekleyip tekrar deneyin."
+    "tooManyAttempts": "Çok fazla deneme yapıldı. Yaklaşık bir dakika bekleyip tekrar deneyin.",
+    "enabledStatus": "İki adımlı doğrulama açık. Girişte doğrulayıcı uygulamanızdaki kod istenir."
   },
   "errors": {
     "generic": "İşlem tamamlanamadı. Biraz sonra tekrar deneyin.",
@@ -1975,6 +1978,50 @@
           "body": "Şartlarla ilgili sorular için iletişim sayfasındaki formu kullanın."
         }
       }
+    }
+  },
+  "passwordReset": {
+    "title": "Şifre sıfırla",
+    "subtitle": "Hesabınızın e-postasını yazın — şifre yenileme bağlantısı gönderelim.",
+    "email": "E-posta",
+    "submit": "Bağlantı gönder",
+    "sending": "Gönderiliyor…",
+    "sentTitle": "E-postanızı kontrol edin",
+    "sentText": "{email} adresine ait bir hesap varsa şifre yenileme bağlantısı gönderildi. Bağlantı 1 saat geçerlidir.",
+    "backToLogin": "Girişe dön",
+    "rateLimited": "Çok fazla deneme. Birkaç dakika sonra tekrar deneyin.",
+    "invalidEmail": "Geçerli bir e-posta adresi girin.",
+    "generic": "Bir hata oluştu. Tekrar deneyin.",
+    "newTitle": "Yeni şifre",
+    "newSubtitle": "Hesabınız için yeni bir şifre belirleyin.",
+    "requestNew": "Yeni bağlantı iste",
+    "state": {
+      "INVALID": "Bu bağlantı geçersiz.",
+      "EXPIRED": "Bu bağlantının süresi doldu. Yeni bir bağlantı isteyin.",
+      "USED": "Bu bağlantı zaten kullanıldı. Gerekirse yeni bir bağlantı isteyin."
+    }
+  },
+  "account": {
+    "title": "Hesap ve güvenlik",
+    "subtitle": "Giriş bilgilerinizi ve hesabınızın korunmasını yönetin.",
+    "profile": "Hesap",
+    "email": "E-posta",
+    "organisation": "Kurum",
+    "password": {
+      "title": "Şifre değiştir",
+      "subtitle": "Mevcut şifrenizi doğrulayıp yenisini belirleyin.",
+      "current": "Mevcut şifre",
+      "new": "Yeni şifre",
+      "confirm": "Yeni şifre (tekrar)",
+      "hint": "En az 8 karakter; büyük ve küçük harf ile rakam.",
+      "submit": "Şifreyi güncelle",
+      "saving": "Kaydediliyor…",
+      "changed": "Şifreniz güncellendi",
+      "weak": "Şifre en az 8 karakter olmalı; büyük ve küçük harf ile rakam içermelidir.",
+      "mismatch": "Yeni şifreler eşleşmiyor.",
+      "wrongCurrent": "Mevcut şifre yanlış.",
+      "rateLimited": "Çok fazla deneme. Biraz sonra tekrar deneyin.",
+      "generic": "Bir hata oluştu. Tekrar deneyin."
     }
   }
 }

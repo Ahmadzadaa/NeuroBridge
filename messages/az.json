@@ -65,7 +65,8 @@
     "previousPage": "Əvvəlki səhifə",
     "pageNumber": "Səhifə {number}",
     "collapseSidebar": "Yan paneli yığ",
-    "expandSidebar": "Yan paneli aç"
+    "expandSidebar": "Yan paneli aç",
+    "account": "Hesab və təhlükəsizlik"
   },
   "auth": {
     "login": "Daxil ol",
@@ -86,7 +87,8 @@
     "trustEncryption": "256-bit şifrələmə",
     "trustCompliance": "KVKK/GDPR uyğun",
     "trustEnterprise": "Enterprise SaaS",
-    "allRightsReserved": "Bütün hüquqlar qorunur"
+    "allRightsReserved": "Bütün hüquqlar qorunur",
+    "forgotPassword": "Şifrəni unutmusunuz?"
   },
   "nav": {
     "superAdmin": {
@@ -981,13 +983,13 @@
       "empty": "Hələ jüri üzvü yoxdur. İştirakçılar bölməsindən JURY rolu təyin edin.",
       "addLabel": "E-poçt ilə jüri təyin et",
       "emailPlaceholder": "juri@nümunə.com",
-      "addHint": "Mövcud iştirakçı jüriyə çevrilir; tapılmasa, yeni jüri hesabı yaradılır və birdəfəlik şifrə göstərilir.",
+      "addHint": "Mövcud iştirakçı jüriyə çevrilir; tapılmasa, yeni jüri hesabı yaradılır və şifrə təyin etmək üçün e-poçtla link göndərilir.",
       "added": "Jüri üzvü təyin olundu",
       "removed": "Jüri üzvü çıxarıldı",
       "remove": "Jüridən çıxar",
-      "accountCreated": "Yeni hesab yaradıldı — şifrəni jüri üzvünə ötürün:",
-      "passwordCopied": "Şifrə kopyalandı",
-      "passwordHint": "Bu şifrə yalnız bir dəfə göstərilir. Jüri ilk girişdən sonra dəyişə bilər."
+      "inviteSent": "Jüri hesabı yaradıldı, dəvət e-poçtla göndərildi.",
+      "inviteNotSent": "Jüri hesabı yaradıldı, amma e-poçt göndərilə bilmədi.",
+      "inviteHint": "Jüri e-poçtdakı linklə öz şifrəsini təyin edir. Məktub çatmasa, giriş səhifəsində \"Şifrəni unutmusunuz?\" ilə yeni link ala bilər."
     },
     "jury": {
       "dashboardTitle": "Jüri Paneli",
@@ -1090,7 +1092,7 @@
       "title": "Müəllimlər",
       "subtitle": "Müəllim hesabı yaradın və təhvil verin — müəllim öz tələbələrini dəvət edir, ssenarilər qurur və qiymətləndirir.",
       "addTeacher": "Yeni müəllim",
-      "addDescription": "Müəllim hesabı yaradılır və giriş məlumatları e-poçtuna göndərilir.",
+      "addDescription": "Müəllim hesabı yaradılır və şifrə təyin etmək üçün birdəfəlik link e-poçtuna göndərilir.",
       "firstName": "Ad",
       "lastName": "Soyad",
       "email": "E-poçt",
@@ -1101,9 +1103,9 @@
       "empty": "Hələ müəllim yoxdur — ilk müəllimi əlavə edin.",
       "studentCount": "{count} tələbə",
       "scenarioCount": "{count} ssenari",
-      "credentialsEmailed": "Giriş məlumatları {email} ünvanına göndərildi",
-      "passwordCopied": "Şifrə kopyalandı",
-      "passwordShownOnce": "Bu müvəqqəti şifrə yalnız bir dəfə göstərilir. Müəllim ilk girişdən sonra dəyişməlidir."
+      "inviteSent": "Dəvət {email} ünvanına göndərildi",
+      "inviteNotSent": "Hesab yaradıldı, amma e-poçt göndərilə bilmədi",
+      "inviteHint": "Müəllim e-poçtdakı linklə öz şifrəsini təyin edib daxil olur. Link 48 saat etibarlıdır; məktub çatmasa, giriş səhifəsində \"Şifrəni unutmusunuz?\" ilə yeni link ala bilər."
     },
     "dashboard": {
       "title": "Müəllim Paneli",
@@ -1475,7 +1477,8 @@
     "setupFailed": "Quraşdırma başlamadı. Bir az sonra yenidən cəhd edin.",
     "invalidCode": "Kod yanlışdır. Tətbiqdəki cari kodu yoxlayın.",
     "enabledToast": "İki mərhələli doğrulama aktivləşdirildi",
-    "tooManyAttempts": "Çox sayda cəhd edildi. Təxminən bir dəqiqə gözləyib yenidən yoxlayın."
+    "tooManyAttempts": "Çox sayda cəhd edildi. Təxminən bir dəqiqə gözləyib yenidən yoxlayın.",
+    "enabledStatus": "İki mərhələli doğrulama aktivdir. Girişdə autentifikator tətbiqindəki kod soruşulur."
   },
   "errors": {
     "generic": "Əməliyyat alınmadı. Bir az sonra yenidən cəhd edin.",
@@ -1975,6 +1978,50 @@
           "body": "Şərtlərlə bağlı suallar üçün əlaqə səhifəsindəki formdan istifadə edin."
         }
       }
+    }
+  },
+  "passwordReset": {
+    "title": "Şifrəni bərpa et",
+    "subtitle": "Hesabınızın e-poçtunu yazın — şifrə yeniləmə linkini göndərək.",
+    "email": "E-poçt",
+    "submit": "Link göndər",
+    "sending": "Göndərilir…",
+    "sentTitle": "E-poçtunuzu yoxlayın",
+    "sentText": "{email} ünvanında hesab varsa, şifrə yeniləmə linki göndərildi. Link 1 saat etibarlıdır.",
+    "backToLogin": "Girişə qayıt",
+    "rateLimited": "Çox cəhd edildi. Bir neçə dəqiqə sonra yenidən yoxlayın.",
+    "invalidEmail": "Düzgün e-poçt ünvanı yazın.",
+    "generic": "Xəta baş verdi. Yenidən yoxlayın.",
+    "newTitle": "Yeni şifrə",
+    "newSubtitle": "Hesabınız üçün yeni şifrə təyin edin.",
+    "requestNew": "Yeni link istə",
+    "state": {
+      "INVALID": "Bu link etibarsızdır.",
+      "EXPIRED": "Bu linkin vaxtı bitib. Yeni link istəyin.",
+      "USED": "Bu link artıq istifadə olunub. Lazımdırsa yeni link istəyin."
+    }
+  },
+  "account": {
+    "title": "Hesab və təhlükəsizlik",
+    "subtitle": "Giriş məlumatlarınızı və hesabın qorunmasını idarə edin.",
+    "profile": "Hesab",
+    "email": "E-poçt",
+    "organisation": "Təşkilat",
+    "password": {
+      "title": "Şifrəni dəyiş",
+      "subtitle": "Cari şifrənizi təsdiqləyib yenisini təyin edin.",
+      "current": "Cari şifrə",
+      "new": "Yeni şifrə",
+      "confirm": "Yeni şifrə (təkrar)",
+      "hint": "Ən azı 8 simvol, böyük və kiçik hərf, rəqəm.",
+      "submit": "Şifrəni yenilə",
+      "saving": "Saxlanılır…",
+      "changed": "Şifrəniz yeniləndi",
+      "weak": "Şifrə ən azı 8 simvol olmalı, böyük və kiçik hərf və rəqəm içərməlidir.",
+      "mismatch": "Yeni şifrələr eyni deyil.",
+      "wrongCurrent": "Cari şifrə yanlışdır.",
+      "rateLimited": "Çox cəhd edildi. Bir az sonra yenidən yoxlayın.",
+      "generic": "Xəta baş verdi. Yenidən yoxlayın."
     }
   }
 }

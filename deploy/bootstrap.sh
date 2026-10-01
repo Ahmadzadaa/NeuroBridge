@@ -63,7 +63,7 @@ NEXT_PUBLIC_APP_URL=${PUBLIC_URL}
 # One server: in-memory rate limiting is fine (no Redis needed).
 ALLOW_IN_MEMORY_RATE_LIMIT=true
 STORAGE_DRIVER=local
-# Emails are only logged until a provider (e.g. SES) is configured.
+# Emails are only logged until SES is configured (vars.EMAIL_FROM, see configure-email.sh).
 EMAIL_PROVIDER=console
 EMAIL_FROM=BizSim <no-reply@bizsim.az>
 # PayTR: sandbox until the site has a domain with HTTPS (live requires https).

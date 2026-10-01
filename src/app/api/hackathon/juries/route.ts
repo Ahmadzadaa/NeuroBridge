@@ -1,26 +1,13 @@
-import { localeUrl } from "@/lib/app-url";
 import { routing } from "@/i18n/routing";
-import { randomBytes } from "crypto";
 import { NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
 import { withAuthorizedHandler } from "@/lib/auth/authorize";
 import { assertFeatureEnabled } from "@/lib/tenant/features";
 import { addJurySchema, parseBody } from "@/lib/validation/schemas";
 import { prisma } from "@/lib/prisma";
 import { recordAudit, getClientIp } from "@/lib/audit/audit-service";
 import { AUDIT_ACTIONS } from "@/lib/audit/actions";
-import { sendEmail } from "@/lib/email/email-service";
-import { juryCredentialsEmail } from "@/lib/email/templates";
-
-/** Readable one-time password like "Kx7-Qm2-Rp9". */
-function generateTempPassword(): string {
-  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789";
-  const pick = () =>
-    Array.from(randomBytes(3))
-      .map((b) => alphabet[b % alphabet.length])
-      .join("");
-  return `${pick()}-${pick()}-${pick()}`;
-}
+import { unusablePasswordHash } from "@/lib/onboarding/activation-token";
+import { sendMemberInvitation } from "@/lib/onboarding/member-invitation";
 
 export async function POST(request: Request) {
   return withAuthorizedHandler(
@@ -40,7 +27,6 @@ export async function POST(request: Request) {
       });
 
       let juryUserId: string;
-      let tempPassword: string | null = null;
       let created = false;
 
       if (existing) {
@@ -63,13 +49,12 @@ export async function POST(request: Request) {
         });
         juryUserId = existing.id;
       } else {
-        tempPassword = generateTempPassword();
-        const passwordHash = await bcrypt.hash(tempPassword, 12);
         const user = await prisma.user.create({
           data: {
             tenantId: session.tenantId,
             email: body.email,
-            passwordHash,
+            // Unusable until the invitee sets their own password from the email link.
+            passwordHash: await unusablePasswordHash(),
             firstName: body.firstName,
             lastName: body.lastName,
             role: "JURY",
@@ -94,24 +79,18 @@ export async function POST(request: Request) {
         },
       });
 
-      // New accounts also get their credentials by email (dev: uploads/dev-emails).
-      if (created && tempPassword) {
-        const origin =
-          process.env.APP_BASE_URL ?? new URL(request.url).origin;
-        await sendEmail({
-          to: body.email,
-          ...juryCredentialsEmail({
+      const emailed = created
+        ? await sendMemberInvitation({
+            userId: juryUserId,
             email: body.email,
-            tempPassword,
-            loginUrl: localeUrl(origin, "/login", session.language),
+            role: "JURY",
+            tenantId: session.tenantId,
             language: session.language,
-          }),
-        });
-      }
+          })
+        : false;
 
-      // tempPassword is returned exactly once so the admin can hand it over.
       return NextResponse.json(
-        { id: juryUserId, created, tempPassword },
+        { id: juryUserId, created, emailed },
         { status: 201 }
       );
     },

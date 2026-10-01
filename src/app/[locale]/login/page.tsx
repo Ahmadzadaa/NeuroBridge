@@ -4,8 +4,8 @@ import { useState } from "react";
 import { signIn, getSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
-import { Eye, EyeOff, Loader2, CheckCircle2, Lock } from "lucide-react";
-import { useRouter } from "@/i18n/navigation";
+import { Eye, EyeOff, Loader2, CheckCircle2 } from "lucide-react";
+import { Link, useRouter } from "@/i18n/navigation";
 import type { UserRole } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
@@ -169,7 +169,12 @@ export default function LoginPage() {
 
           {/* Password */}
           <div className="mb-6">
-            <FieldLabel htmlFor="password">{t("password")}</FieldLabel>
+            <div className="flex items-baseline justify-between">
+              <FieldLabel htmlFor="password">{t("password")}</FieldLabel>
+              <Link href="/forgot-password" className="mb-1.5 px-1 text-[13px] font-medium text-primary hover:underline">
+                {t("forgotPassword")}
+              </Link>
+            </div>
             <div className="relative">
               <input
                 id="password"
@@ -194,9 +199,9 @@ export default function LoginPage() {
                 className="absolute right-3.5 top-1/2 -translate-y-1/2 text-tertiary transition-colors duration-150 hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
               >
                 {showPassword ? (
-                  <Eye className="h-5 w-5" />
-                ) : (
                   <EyeOff className="h-5 w-5" />
+                ) : (
+                  <Eye className="h-5 w-5" />
                 )}
               </button>
             </div>
@@ -274,28 +279,6 @@ export default function LoginPage() {
             {t("login")}
           </Button>
 
-          {/* Institution trust badge — desktop only */}
-          <div className="mt-5 hidden items-center justify-center gap-1.5 text-[11px] text-tertiary sm:flex">
-            <Lock className="h-2.5 w-2.5" aria-hidden="true" />
-            <span>{t("trustEncryption")}</span>
-            <span aria-hidden="true">·</span>
-            <span>{t("trustCompliance")}</span>
-            <span aria-hidden="true">·</span>
-            <span>{t("trustEnterprise")}</span>
-          </div>
-
-          {/* Demo accounts — development only, zero DOM presence in production */}
-          {process.env.NODE_ENV === "development" && (
-            <div className="mt-5 rounded-2xl bg-muted/50 p-3.5 text-[12px] text-tertiary ring-1 ring-border/60">
-              <p className="mb-1 font-semibold uppercase tracking-[0.5px] text-muted-foreground">
-                Dev only
-              </p>
-              <p>ahmet.yilmaz0@demo.com · iştirakçı</p>
-              <p>admin@demo-teknopark.com · admin</p>
-              <p>jury@demo-teknopark.com · jüri</p>
-              <p className="mt-1 font-mono">Şifrə: Demo123!</p>
-            </div>
-          )}
         </form>
       </div>
 

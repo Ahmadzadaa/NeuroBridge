@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useApiErrorMessage } from "@/lib/api/api-error";
 import {
-  Copy,
   FileText,
   GraduationCap,
   Loader2,
@@ -58,7 +57,8 @@ export function TeachersPageClient({
   const [dialogOpen, setDialogOpen] = useState(false);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({ email: "", firstName: "", lastName: "" });
-  const [tempPassword, setTempPassword] = useState<string | null>(null);
+  // Set after a new account was created: whether its set-password link went out.
+  const [invite, setInvite] = useState<{ emailed: boolean } | null>(null);
 
   const formValid =
     form.email.includes("@") &&
@@ -80,15 +80,17 @@ export function TeachersPageClient({
         }),
       });
       const data = (await res.json().catch(() => null)) as {
-        tempPassword?: string | null;
+        created?: boolean;
+        emailed?: boolean;
         error?: string;
       } | null;
       if (!res.ok) {
         toast.error(apiError(data));
         return;
       }
-      if (data?.tempPassword) setTempPassword(data.tempPassword);
       toast.success(t("created"));
+      if (data?.created) setInvite({ emailed: Boolean(data.emailed) });
+      else closeDialog();
       router.refresh();
     } catch {
       toast.error(tc("error"));
@@ -114,7 +116,7 @@ export function TeachersPageClient({
 
   function closeDialog() {
     setDialogOpen(false);
-    setTempPassword(null);
+    setInvite(null);
     setForm({ email: "", firstName: "", lastName: "" });
   }
 
@@ -190,35 +192,17 @@ export function TeachersPageClient({
             <DialogDescription>{t("addDescription")}</DialogDescription>
           </DialogHeader>
 
-          {tempPassword ? (
+          {invite ? (
             <div className="space-y-4 py-2">
-              <div className="rounded-xl bg-success/10 p-4">
-                <p className="flex items-center gap-2 text-[14px] font-semibold text-success">
+              <div className={invite.emailed ? "rounded-2xl bg-success/10 p-4" : "rounded-2xl bg-warning/10 p-4"}>
+                <p className={`flex items-center gap-2 text-[14px] font-semibold ${invite.emailed ? "text-success" : "text-warning-dark"}`}>
                   <Mail className="h-4 w-4" aria-hidden="true" />
-                  {t("credentialsEmailed", { email: form.email })}
+                  {invite.emailed ? t("inviteSent", { email: form.email }) : t("inviteNotSent")}
                 </p>
-                <div className="mt-3 flex items-center gap-2">
-                  <code className="rounded-lg bg-card px-3 py-1.5 font-mono text-[15px]">
-                    {tempPassword}
-                  </code>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="rounded-lg"
-                    onClick={() => {
-                      navigator.clipboard.writeText(tempPassword);
-                      toast.success(t("passwordCopied"));
-                    }}
-                  >
-                    <Copy className="h-3.5 w-3.5" aria-hidden="true" />
-                  </Button>
-                </div>
-                <p className="mt-2 text-[12px] text-muted-foreground">
-                  {t("passwordShownOnce")}
-                </p>
+                <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">{t("inviteHint")}</p>
               </div>
               <Button className="w-full rounded-xl" onClick={closeDialog}>
-                {tc("save")}
+                {tc("close")}
               </Button>
             </div>
           ) : (

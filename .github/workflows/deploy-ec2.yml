@@ -86,7 +86,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "deploy/docker-compose.yml,deploy/Caddyfile,deploy/deploy.sh,deploy/bootstrap.sh"
+          source: "deploy/docker-compose.yml,deploy/Caddyfile,deploy/deploy.sh,deploy/bootstrap.sh,deploy/configure-email.sh"
           target: bizsim-deploy
           strip_components: 1
       - name: Deploy on the server
@@ -101,6 +101,8 @@ jobs:
             # Idempotent: installs Docker and creates /opt/bizsim + secrets on a fresh server.
             bash ~/bizsim-deploy/bootstrap.sh "${{ vars.PUBLIC_APP_URL }}"
             cp ~/bizsim-deploy/docker-compose.yml ~/bizsim-deploy/Caddyfile ~/bizsim-deploy/deploy.sh /opt/bizsim/
+            # Amazon SES once vars.EMAIL_FROM is set; until then emails are only logged.
+            EMAIL_FROM="${{ vars.EMAIL_FROM }}" SES_REGION="${{ vars.SES_REGION }}" SES_ACCESS_KEY_ID="${{ secrets.SES_ACCESS_KEY_ID }}" SES_SECRET_ACCESS_KEY="${{ secrets.SES_SECRET_ACCESS_KEY }}" bash ~/bizsim-deploy/configure-email.sh
             cd /opt/bizsim
             # The job token is valid for this run only; the server keeps no registry password.
             echo "${{ secrets.GITHUB_TOKEN }}" | sudo docker login ghcr.io -u "${{ github.actor }}" --password-stdin

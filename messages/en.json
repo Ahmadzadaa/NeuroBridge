@@ -65,7 +65,8 @@
     "previousPage": "Previous page",
     "pageNumber": "Page {number}",
     "collapseSidebar": "Collapse sidebar",
-    "expandSidebar": "Expand sidebar"
+    "expandSidebar": "Expand sidebar",
+    "account": "Account and security"
   },
   "auth": {
     "login": "Log In",
@@ -86,7 +87,8 @@
     "trustEncryption": "256-bit encryption",
     "trustCompliance": "KVKK/GDPR compliant",
     "trustEnterprise": "Enterprise SaaS",
-    "allRightsReserved": "All rights reserved"
+    "allRightsReserved": "All rights reserved",
+    "forgotPassword": "Forgot password?"
   },
   "nav": {
     "superAdmin": {
@@ -981,13 +983,13 @@
       "empty": "No jury members yet. Assign the JURY role from the Participants section.",
       "addLabel": "Assign a jury by email",
       "emailPlaceholder": "jury@example.com",
-      "addHint": "An existing participant is promoted to jury; otherwise a new jury account is created and a one-time password is shown.",
+      "addHint": "An existing participant becomes a juror; otherwise a new juror account is created and emailed a link to set a password.",
       "added": "Jury member assigned",
       "removed": "Jury member removed",
       "remove": "Remove from jury",
-      "accountCreated": "New account created — hand this password to the jury member:",
-      "passwordCopied": "Password copied",
-      "passwordHint": "This password is shown only once. The jury member can change it after first login."
+      "inviteSent": "Juror account created and invitation emailed.",
+      "inviteNotSent": "Juror account created, but the email could not be sent.",
+      "inviteHint": "The juror sets their own password from the emailed link. If it doesn't arrive, they can use \"Forgot password?\" on the sign-in page."
     },
     "jury": {
       "dashboardTitle": "Jury Panel",
@@ -1090,7 +1092,7 @@
       "title": "Teachers",
       "subtitle": "Create and hand over teacher accounts — teachers invite their own students, build scenarios and grade results.",
       "addTeacher": "New teacher",
-      "addDescription": "Creates a teacher account and emails the credentials to them.",
+      "addDescription": "A teacher account is created and a one-time link to set a password is emailed to them.",
       "firstName": "First name",
       "lastName": "Last name",
       "email": "Email",
@@ -1101,9 +1103,9 @@
       "empty": "No teachers yet — add the first one.",
       "studentCount": "{count} students",
       "scenarioCount": "{count} scenarios",
-      "credentialsEmailed": "Credentials were emailed to {email}",
-      "passwordCopied": "Password copied",
-      "passwordShownOnce": "This temporary password is shown only once. The teacher should change it after first login."
+      "inviteSent": "Invitation sent to {email}",
+      "inviteNotSent": "The account was created, but the email could not be sent",
+      "inviteHint": "The teacher sets their own password from the emailed link. It is valid for 48 hours; if it doesn't arrive, they can use \"Forgot password?\" on the sign-in page."
     },
     "dashboard": {
       "title": "Teacher Panel",
@@ -1475,7 +1477,8 @@
     "setupFailed": "Setup could not be started. Please try again in a moment.",
     "invalidCode": "That code is wrong. Check the current code in your app.",
     "enabledToast": "Two-factor authentication enabled",
-    "tooManyAttempts": "Too many attempts. Wait about a minute and try again."
+    "tooManyAttempts": "Too many attempts. Wait about a minute and try again.",
+    "enabledStatus": "Two-factor authentication is on. Sign-in asks for the code from your authenticator app."
   },
   "errors": {
     "generic": "That did not go through. Please try again in a moment.",
@@ -1975,6 +1978,50 @@
           "body": "For questions about these terms, use the form on the contact page."
         }
       }
+    }
+  },
+  "passwordReset": {
+    "title": "Reset password",
+    "subtitle": "Enter your account email and we'll send you a link to choose a new password.",
+    "email": "Email",
+    "submit": "Send link",
+    "sending": "Sending…",
+    "sentTitle": "Check your email",
+    "sentText": "If an account exists for {email}, we've sent a reset link. It is valid for 1 hour.",
+    "backToLogin": "Back to sign in",
+    "rateLimited": "Too many attempts. Try again in a few minutes.",
+    "invalidEmail": "Enter a valid email address.",
+    "generic": "Something went wrong. Please try again.",
+    "newTitle": "New password",
+    "newSubtitle": "Choose a new password for your account.",
+    "requestNew": "Request a new link",
+    "state": {
+      "INVALID": "This link is not valid.",
+      "EXPIRED": "This link has expired. Request a new one.",
+      "USED": "This link has already been used. Request a new one if you need to."
+    }
+  },
+  "account": {
+    "title": "Account and security",
+    "subtitle": "Manage your sign-in details and how your account is protected.",
+    "profile": "Account",
+    "email": "Email",
+    "organisation": "Organisation",
+    "password": {
+      "title": "Change password",
+      "subtitle": "Confirm your current password and choose a new one.",
+      "current": "Current password",
+      "new": "New password",
+      "confirm": "Repeat new password",
+      "hint": "At least 8 characters, with upper and lower case letters and a number.",
+      "submit": "Update password",
+      "saving": "Saving…",
+      "changed": "Your password was updated",
+      "weak": "Use at least 8 characters, with upper and lower case letters and a number.",
+      "mismatch": "The new passwords don't match.",
+      "wrongCurrent": "The current password is incorrect.",
+      "rateLimited": "Too many attempts. Try again shortly.",
+      "generic": "Something went wrong. Please try again."
     }
   }
 }

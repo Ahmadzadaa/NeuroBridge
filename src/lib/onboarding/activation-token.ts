@@ -4,13 +4,16 @@ import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
 /**
- * One-time set-password links for newly provisioned admins.
+ * One-time set-password links: account activation for newly provisioned
+ * admins, teachers and jurors, and "forgot password" resets.
  *
  * Only the SHA-256 of the token is stored, so a database leak does not leak
  * usable links. Plaintext passwords are never generated, stored or emailed.
  */
 
 export const ACTIVATION_TTL_MS = 48 * 60 * 60 * 1000;
+/** "Forgot password" links are short-lived: they can take over an existing account. */
+export const PASSWORD_RESET_TTL_MS = 60 * 60 * 1000;
 
 export type ActivationTokenState = "VALID" | "INVALID" | "EXPIRED" | "USED";
 
@@ -33,10 +36,11 @@ export async function unusablePasswordHash(): Promise<string> {
 export async function createActivationToken(
   userId: string,
   db: Prisma.TransactionClient = prisma,
-  now = new Date()
+  now = new Date(),
+  ttlMs = ACTIVATION_TTL_MS
 ): Promise<{ token: string; expiresAt: Date }> {
   const token = randomBytes(32).toString("base64url");
-  const expiresAt = new Date(now.getTime() + ACTIVATION_TTL_MS);
+  const expiresAt = new Date(now.getTime() + ttlMs);
   await db.activationToken.create({
     data: { userId, tokenHash: hashActivationToken(token), expiresAt },
   });

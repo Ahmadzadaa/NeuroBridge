@@ -409,6 +409,13 @@
   animation-delay: calc(var(--i, 0) * 55ms);
 }
 
+/* Edge/IE draw their own reveal and clear buttons inside inputs; our fields
+   have their own show/hide toggle, so the native one showed a second eye. */
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
+
 /* Progress ring draws from empty to its value; the attribute holds the rest state. */
 .ring-draw {
   animation: ring-draw 1100ms cubic-bezier(0.32, 0.72, 0, 1) 150ms backwards;

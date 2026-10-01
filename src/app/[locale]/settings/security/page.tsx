@@ -1,146 +1,103 @@
-"use client";
+import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { AtSign, Building2, UserRound } from "lucide-react";
+import { auth } from "@/auth";
+import { prisma } from "@/lib/prisma";
+import { ADMIN_ROLES, type UserRole } from "@/lib/types";
+import { isTwoFactorEnabled } from "@/lib/security/two-factor";
+import { DashboardLayout } from "@/components/layout/dashboard-layout";
+import { AuthShell } from "@/components/layout/auth-shell";
+import { InsetGroup, InsetRow, LargeTitle, Reveal } from "@/components/ui/ios";
+import { TwoFactorCard } from "./two-factor-card";
+import { ChangePasswordCard } from "./change-password-card";
 
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import { useTranslations } from "next-intl";
-import { useRouter } from "@/i18n/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { toast } from "sonner";
+type Params = { params: Promise<{ locale: string }> };
+type Panel = "super-admin" | "tenant" | "participant" | "jury" | "teacher";
 
-export default function SecuritySettingsPage() {
-  const { data: session, status } = useSession();
-  const router = useRouter();
-  const t = useTranslations("security");
-  const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
-  const [totpCode, setTotpCode] = useState("");
-  const [recoveryCodes, setRecoveryCodes] = useState<string[] | null>(null);
-  const [loading, setLoading] = useState(false);
+const PANEL: Record<UserRole, Panel> = {
+  SUPER_ADMIN: "super-admin",
+  TENANT_ADMIN: "tenant",
+  TENANT_VIEWER: "tenant",
+  PARTICIPANT: "participant",
+  JURY: "jury",
+  TEACHER: "teacher",
+};
+const ROLE_KEY: Record<Panel, string> = {
+  "super-admin": "superAdmin",
+  tenant: "tenant",
+  participant: "participant",
+  jury: "jury",
+  teacher: "teacher",
+};
 
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/login");
-    }
-  }, [status, router]);
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "account" });
+  return { title: `${t("title")} · BizSim`, robots: { index: false } };
+}
 
-  async function startSetup() {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/auth/2fa/setup", { method: "POST" });
-      if (!res.ok) {
-        // Setup is rate limited to a few attempts a minute. Showing the same
-        // "it failed" message for that as for a real error left people
-        // retrying a button that could not succeed yet.
-        toast.error(res.status === 429 ? t("tooManyAttempts") : t("setupFailed"));
-        return;
-      }
-      const data = await res.json();
-      setQrDataUrl(data.qrDataUrl);
-    } catch {
-      toast.error(t("setupFailed"));
-    } finally {
-      setLoading(false);
-    }
+/**
+ * Account and security for every role: password change and two-factor.
+ * Deliberately not behind requireAuth, which sends admins without 2FA here —
+ * this page is where they finish that setup.
+ */
+export default async function AccountSecurityPage({ params }: Params) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const session = await auth();
+  if (!session?.user) redirect(`/${locale}/login`);
+
+  const [t, tc, user] = await Promise.all([
+    getTranslations("account"),
+    getTranslations("common"),
+    prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: {
+        email: true,
+        firstName: true,
+        lastName: true,
+        role: true,
+        twoFactorEnabled: true,
+        tenant: { select: { name: true } },
+      },
+    }),
+  ]);
+  if (!user) redirect(`/${locale}/login`);
+
+  const role = user.role as UserRole;
+  const setupRequired =
+    isTwoFactorEnabled() && Boolean(session.user.requires2FASetup) && ADMIN_ROLES.includes(role);
+  if (setupRequired) {
+    return (
+      <AuthShell width="sm">
+        <TwoFactorCard enabled={false} required />
+      </AuthShell>
+    );
   }
 
-  async function enable2FA() {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/auth/2fa/enable", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ totpCode }),
-      });
-      if (!res.ok) {
-        // Same distinction here: a throttled request is not a wrong code, and
-        // telling someone their correct code is invalid sends them in circles.
-        toast.error(res.status === 429 ? t("tooManyAttempts") : t("invalidCode"));
-        return;
-      }
-      const data = await res.json();
-      setRecoveryCodes(data.recoveryCodes);
-      toast.success(t("enabledToast"));
-      router.refresh();
-    } catch {
-      toast.error(t("setupFailed"));
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  if (status === "loading") return null;
-
-  const needsSetup = session?.user?.requires2FASetup;
-
+  const panel = PANEL[role];
+  const name = [user.firstName, user.lastName].filter(Boolean).join(" ") || user.email;
   return (
-    <div className="flex min-h-screen items-center justify-center p-4">
-      <Card className="w-full max-w-lg">
-        <CardHeader>
-          <CardTitle>{t("title")}</CardTitle>
-          <CardDescription>
-            {needsSetup ? t("subtitleRequired") : t("subtitleManage")}
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {!qrDataUrl && !recoveryCodes && (
-            <Button onClick={startSetup} disabled={loading}>
-              {loading ? t("working") : t("generateQr")}
-            </Button>
-          )}
-          {qrDataUrl && !recoveryCodes && (
-            <>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={qrDataUrl}
-                alt={t("qrAlt")}
-                className="mx-auto h-48 w-48"
-              />
-              <p className="text-center text-sm text-muted-foreground">
-                {t("qrHint")}
-              </p>
-              <div className="space-y-2">
-                <Label htmlFor="enableTotp">{t("verificationCode")}</Label>
-                <Input
-                  id="enableTotp"
-                  value={totpCode}
-                  onChange={(e) => setTotpCode(e.target.value)}
-                  inputMode="numeric"
-                  maxLength={6}
-                  placeholder="000000"
-                />
-              </div>
-              <Button
-                onClick={enable2FA}
-                disabled={loading || totpCode.length !== 6}
-              >
-                {loading ? t("working") : t("enable")}
-              </Button>
-            </>
-          )}
-          {recoveryCodes && (
-            <div className="space-y-2">
-              <p className="text-sm font-medium">{t("recoveryTitle")}</p>
-              <ul className="rounded-md bg-muted p-4 font-mono text-sm">
-                {recoveryCodes.map((code) => (
-                  <li key={code}>{code}</li>
-                ))}
-              </ul>
-              <p className="text-xs text-muted-foreground">
-                {t("recoveryHint")}
-              </p>
-              <Button onClick={() => router.push("/")}>{t("continue")}</Button>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-    </div>
+    <DashboardLayout panel={panel} title={t("title")} userName={name}>
+      <div className="mx-auto max-w-2xl space-y-8">
+        <LargeTitle title={t("title")} subtitle={t("subtitle")} />
+        <Reveal index={1}>
+          <InsetGroup header={t("profile")}>
+            <InsetRow icon={UserRound} tone="indigo" title={name} subtitle={tc(`roles.${ROLE_KEY[panel]}`)} />
+            <InsetRow icon={AtSign} tone="sky" title={t("email")} subtitle={<span className="break-all">{user.email}</span>} />
+            {user.tenant && (
+              <InsetRow icon={Building2} tone="violet" title={t("organisation")} subtitle={user.tenant.name} />
+            )}
+          </InsetGroup>
+        </Reveal>
+        <Reveal index={2}>
+          <ChangePasswordCard />
+        </Reveal>
+        <Reveal index={3}>
+          <TwoFactorCard enabled={user.twoFactorEnabled} required={false} />
+        </Reveal>
+      </div>
+    </DashboardLayout>
   );
 }

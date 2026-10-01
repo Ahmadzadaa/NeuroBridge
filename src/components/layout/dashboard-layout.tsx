@@ -15,6 +15,7 @@ import { SidebarNav } from "./sidebar-nav";
 import { MobileNav } from "./mobile-nav";
 import { PageTransition } from "./page-transition";
 import { cn } from "@/lib/utils";
+import { Link } from "@/i18n/navigation";
 
 type PanelType = "super-admin" | "tenant" | "participant" | "jury" | "teacher";
 
@@ -197,14 +198,18 @@ export function DashboardLayout({
             </Button>
             <LanguageSwitcher />
             <ThemeToggle />
-            <div className="hidden items-center gap-2 sm:flex">
+            <Link
+              href={panel === "participant" ? "/participant/profile" : "/settings/security"}
+              aria-label={t("account")}
+              className="flex items-center gap-2 rounded-full py-1 pl-1 pr-1 transition-colors hover:bg-muted sm:pr-3"
+            >
               <Avatar className="h-8 w-8">
                 <AvatarFallback className="bg-primary/10 text-xs font-semibold text-primary">
                   {initials}
                 </AvatarFallback>
               </Avatar>
-              <span className="text-sm font-medium">{userName}</span>
-            </div>
+              <span className="hidden text-sm font-medium sm:inline">{userName}</span>
+            </Link>
             <Button
               variant="ghost"
               size="icon"

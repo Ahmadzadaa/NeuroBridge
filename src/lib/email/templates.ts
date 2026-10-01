@@ -30,21 +30,6 @@ const TAGLINE: Copy<string> = {
   en: "Entrepreneurship Simulation Platform",
 };
 
-const CREDENTIALS_LINE: Copy<(email: string, password: string) => string> = {
-  az: (email, password) =>
-    `Giriş məlumatlarınız:<br/>E-poçt: <strong>${email}</strong><br/>Müvəqqəti şifrə: ${code(password)}`,
-  tr: (email, password) =>
-    `Giriş bilgileriniz:<br/>E-posta: <strong>${email}</strong><br/>Geçici şifre: ${code(password)}`,
-  en: (email, password) =>
-    `Your sign-in details:<br/>Email: <strong>${email}</strong><br/>Temporary password: ${code(password)}`,
-};
-
-const OPEN_PANEL: Copy<string> = {
-  az: "Panelə daxil ol",
-  tr: "Panele giriş yap",
-  en: "Open the dashboard",
-};
-
 function layout(title: string, bodyHtml: string, locale: EmailLocale): string {
   return `<!doctype html>
 <html lang="${locale}">
@@ -67,9 +52,6 @@ function layout(title: string, bodyHtml: string, locale: EmailLocale): string {
 
 const paragraph = (text: string) =>
   `<p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:#334155;">${text}</p>`;
-
-const code = (text: string) =>
-  `<code style="background:#f1f5f9;border-radius:6px;padding:2px 8px;font-size:14px;">${text}</code>`;
 
 const button = (href: string, label: string) =>
   `<p style="margin:22px 0 8px;text-align:center;">
@@ -100,109 +82,6 @@ function formatDateTime(date: Date, locale: EmailLocale): string {
 
 function formatDate(date: Date, locale: EmailLocale): string {
   return date.toLocaleDateString(INTL_TAG[locale]);
-}
-
-/* ------------------------------------------------------------------ */
-/* Account credentials                                                 */
-/* ------------------------------------------------------------------ */
-
-export function juryCredentialsEmail(params: {
-  email: string;
-  tempPassword: string;
-  loginUrl: string;
-  programName?: string;
-  language?: string | null;
-}): { subject: string; html: string } {
-  const locale = resolveLocale(params.language);
-  const copy: Copy<{ subject: string; title: string; intro: string; hint: string }> = {
-    az: {
-      subject: "BizSim — Jüri hesabınız hazırdır",
-      title: "Jüri panelinə dəvət olunmusunuz",
-      intro: params.programName
-        ? `<strong>${params.programName}</strong> üçün jüri üzvü təyin olundunuz.`
-        : "Hakaton jürisinə üzv təyin olundunuz.",
-      hint: "İlk girişdən sonra profil bölməsindən şifrənizi dəyişməyi tövsiyə edirik.",
-    },
-    tr: {
-      subject: "BizSim — Jüri hesabınız hazır",
-      title: "Jüri paneline davet edildiniz",
-      intro: params.programName
-        ? `<strong>${params.programName}</strong> için jüri üyesi olarak atandınız.`
-        : "Hackathon jürisine üye olarak atandınız.",
-      hint: "İlk girişten sonra profil bölümünden şifrenizi değiştirmenizi öneririz.",
-    },
-    en: {
-      subject: "BizSim — your jury account is ready",
-      title: "You have been invited to the jury panel",
-      intro: params.programName
-        ? `You have been appointed to the jury for <strong>${params.programName}</strong>.`
-        : "You have been appointed to the hackathon jury.",
-      hint: "We recommend changing your password from your profile after the first sign-in.",
-    },
-  };
-  const c = copy[locale];
-  return {
-    subject: c.subject,
-    html: layout(
-      c.title,
-      paragraph(c.intro) +
-        paragraph(CREDENTIALS_LINE[locale](params.email, params.tempPassword)) +
-        paragraph(c.hint) +
-        button(params.loginUrl, OPEN_PANEL[locale]),
-      locale
-    ),
-  };
-}
-
-export function teacherCredentialsEmail(params: {
-  email: string;
-  tempPassword: string;
-  loginUrl: string;
-  organizationName?: string;
-  language?: string | null;
-}): { subject: string; html: string } {
-  const locale = resolveLocale(params.language);
-  const copy: Copy<{ subject: string; title: string; intro: string; steps: string }> = {
-    az: {
-      subject: "BizSim — Müəllim hesabınız hazırdır",
-      title: "Müəllim panelinə xoş gəlmisiniz 👩‍🏫",
-      intro: params.organizationName
-        ? `<strong>${params.organizationName}</strong> sizin üçün BizSim-də müəllim hesabı yaratdı.`
-        : "Sizin üçün BizSim-də müəllim hesabı yaradıldı.",
-      steps:
-        "Panelinizdə: tələbələrinizi QR kod və ya dəvət linki ilə qeydiyyata dəvət edin, öz biznes ssenarilərinizi yaradın və tələbələrin simulyasiya nəticələrini qiymətləndirin.",
-    },
-    tr: {
-      subject: "BizSim — Öğretmen hesabınız hazır",
-      title: "Öğretmen paneline hoş geldiniz 👩‍🏫",
-      intro: params.organizationName
-        ? `<strong>${params.organizationName}</strong> sizin için BizSim'de bir öğretmen hesabı oluşturdu.`
-        : "Sizin için BizSim'de bir öğretmen hesabı oluşturuldu.",
-      steps:
-        "Panelinizde: öğrencilerinizi QR kod veya davet bağlantısıyla kayda davet edin, kendi iş senaryolarınızı oluşturun ve öğrencilerin simülasyon sonuçlarını notlandırın.",
-    },
-    en: {
-      subject: "BizSim — your teacher account is ready",
-      title: "Welcome to the teacher panel 👩‍🏫",
-      intro: params.organizationName
-        ? `<strong>${params.organizationName}</strong> has created a teacher account for you on BizSim.`
-        : "A teacher account has been created for you on BizSim.",
-      steps:
-        "From your panel you can invite students with a QR code or an invitation link, build your own business scenarios, and grade your students' simulation runs.",
-    },
-  };
-  const c = copy[locale];
-  return {
-    subject: c.subject,
-    html: layout(
-      c.title,
-      paragraph(c.intro) +
-        paragraph(CREDENTIALS_LINE[locale](params.email, params.tempPassword)) +
-        paragraph(c.steps) +
-        button(params.loginUrl, OPEN_PANEL[locale]),
-      locale
-    ),
-  };
 }
 
 /* ------------------------------------------------------------------ */
@@ -669,6 +548,103 @@ export function activationEmail(params: {
     html: layout(
       copy.title,
       paragraph(copy.intro(org)) +
+        paragraph(copy.action) +
+        button(params.activationUrl, copy.button) +
+        paragraph(`<span style="color:#94a3b8;font-size:12px;">${copy.ignore}</span>`),
+      locale
+    ),
+  };
+}
+
+const RESET_COPY = {
+  az: {
+    subject: "BizSim — şifrənin bərpası",
+    title: "Şifrənizi yeniləyin",
+    intro: "Hesabınız üçün şifrə bərpası istənildi. Yeni şifrə təyin etmək üçün aşağıdakı düyməyə basın.",
+    validity: "Link 1 saat etibarlıdır və yalnız bir dəfə istifadə olunur.",
+    button: "Yeni şifrə təyin et",
+    ignore: "Bu sorğunu siz etməmisinizsə, bu məktubu nəzərə almayın — şifrəniz dəyişməyəcək.",
+  },
+  en: {
+    subject: "BizSim — reset your password",
+    title: "Reset your password",
+    intro: "Someone asked to reset the password for your account. Use the button below to choose a new one.",
+    validity: "The link is valid for 1 hour and can be used once.",
+    button: "Choose a new password",
+    ignore: "If you did not ask for this, ignore this email — your password will not change.",
+  },
+  tr: {
+    subject: "BizSim — şifre sıfırlama",
+    title: "Şifrenizi yenileyin",
+    intro: "Hesabınız için şifre sıfırlama istendi. Yeni şifre belirlemek için aşağıdaki düğmeye tıklayın.",
+    validity: "Bağlantı 1 saat geçerlidir ve yalnızca bir kez kullanılabilir.",
+    button: "Yeni şifre belirle",
+    ignore: "Bu isteği siz yapmadıysanız bu e-postayı dikkate almayın — şifreniz değişmeyecek.",
+  },
+} as const;
+
+/** One-time "forgot password" link. */
+export function passwordResetEmail(params: { resetUrl: string; locale?: string | null }): { subject: string; html: string } {
+  const locale = resolveLocale(params.locale);
+  const copy = RESET_COPY[locale];
+  return {
+    subject: copy.subject,
+    html: layout(
+      copy.title,
+      paragraph(copy.intro) +
+        button(params.resetUrl, copy.button) +
+        paragraph(copy.validity) +
+        paragraph(`<span style="color:#94a3b8;font-size:12px;">${copy.ignore}</span>`),
+      locale
+    ),
+  };
+}
+
+const INVITE_COPY = {
+  az: {
+    roles: { TEACHER: "müəllim", JURY: "jüri üzvü" },
+    subject: (org: string) => `BizSim — "${org}" sizi dəvət edir`,
+    title: "Hesabınız yaradıldı",
+    intro: (org: string, role: string) => `<strong>${org}</strong> sizi BizSim platformasına <strong>${role}</strong> kimi əlavə etdi.`,
+    action: "Hesabınızı açmaq üçün aşağıdakı düymə ilə şifrənizi təyin edin. Link 48 saat etibarlıdır və yalnız bir dəfə istifadə olunur.",
+    button: "Hesabımı aç",
+    ignore: "Bu dəvəti gözləmirdinizsə, bu məktubu nəzərə almayın.",
+  },
+  en: {
+    roles: { TEACHER: "a teacher", JURY: "a jury member" },
+    subject: (org: string) => `BizSim — ${org} invited you`,
+    title: "Your account is ready",
+    intro: (org: string, role: string) => `<strong>${org}</strong> added you to BizSim as <strong>${role}</strong>.`,
+    action: "Set your password with the button below to open your account. The link is valid for 48 hours and can be used once.",
+    button: "Open my account",
+    ignore: "If you were not expecting this invitation, you can ignore this email.",
+  },
+  tr: {
+    roles: { TEACHER: "öğretmen", JURY: "jüri üyesi" },
+    subject: (org: string) => `BizSim — "${org}" sizi davet ediyor`,
+    title: "Hesabınız oluşturuldu",
+    intro: (org: string, role: string) => `<strong>${org}</strong> sizi BizSim platformuna <strong>${role}</strong> olarak ekledi.`,
+    action: "Hesabınızı açmak için aşağıdaki düğmeyle şifrenizi belirleyin. Bağlantı 48 saat geçerlidir ve yalnızca bir kez kullanılabilir.",
+    button: "Hesabımı aç",
+    ignore: "Bu daveti beklemiyorsanız bu e-postayı dikkate almayın.",
+  },
+} as const;
+
+/** Set-password link for a teacher or juror an organisation added. No password travels by email. */
+export function invitationEmail(params: {
+  organizationName: string;
+  role: "TEACHER" | "JURY";
+  activationUrl: string;
+  locale?: string | null;
+}): { subject: string; html: string } {
+  const locale = resolveLocale(params.locale);
+  const copy = INVITE_COPY[locale];
+  const org = escapeHtml(params.organizationName);
+  return {
+    subject: copy.subject(params.organizationName),
+    html: layout(
+      copy.title,
+      paragraph(copy.intro(org, copy.roles[params.role])) +
         paragraph(copy.action) +
         button(params.activationUrl, copy.button) +
         paragraph(`<span style="color:#94a3b8;font-size:12px;">${copy.ignore}</span>`),

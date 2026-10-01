@@ -82,10 +82,13 @@ export function ProgressRing({
   const pct = Math.max(0, Math.min(100, Math.round(value)));
   const r = (size - stroke) / 2;
   const circ = 2 * Math.PI * r;
+  // A responsive ring takes its desktop size from a CSS variable; a fixed one is sized inline.
+  const boxStyle: Record<string, string | number> = { width: size, height: size };
+  if (responsive) boxStyle["--ring"] = `${size}px`;
   return (
     <div
       className={cn("relative inline-flex items-center justify-center", responsive && "h-[88px] w-[88px] sm:h-[var(--ring)] sm:w-[var(--ring)]")}
-      style={responsive ? ({ "--ring": `${size}px` } as CSSProperties) : { width: size, height: size }}
+      style={responsive ? { "--ring": boxStyle["--ring"] } : boxStyle}
     >
       <svg viewBox={`0 0 ${size} ${size}`} className="h-full w-full -rotate-90" role="img" aria-label={`${pct}%`}>
         <circle cx={size / 2} cy={size / 2} r={r} fill="none" strokeWidth={stroke} className={onDark ? "stroke-white/20" : "stroke-muted"} />

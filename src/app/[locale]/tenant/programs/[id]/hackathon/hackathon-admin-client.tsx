@@ -7,7 +7,6 @@ import { useTranslations } from "next-intl";
 import { useApiErrorMessage } from "@/lib/api/api-error";
 import {
   ArrowLeft,
-  Copy,
   EyeOff,
   GripVertical,
   Loader2,
@@ -80,7 +79,7 @@ export function HackathonAdminClient({
   const [saving, setSaving] = useState(false);
   const [juryEmail, setJuryEmail] = useState("");
   const [addingJury, setAddingJury] = useState(false);
-  const [tempPassword, setTempPassword] = useState<string | null>(null);
+  const [invite, setInvite] = useState<{ emailed: boolean } | null>(null);
   const [revealDraft, setRevealDraft] = useState(() =>
     program.resultsRevealAt ? program.resultsRevealAt.slice(0, 16) : ""
   );
@@ -136,7 +135,7 @@ export function HackathonAdminClient({
     e.preventDefault();
     if (addingJury) return;
     setAddingJury(true);
-    setTempPassword(null);
+    setInvite(null);
     try {
       const res = await fetch("/api/hackathon/juries", {
         method: "POST",
@@ -144,14 +143,15 @@ export function HackathonAdminClient({
         body: JSON.stringify({ email: juryEmail.trim().toLowerCase() }),
       });
       const data = (await res.json().catch(() => null)) as {
-        tempPassword?: string | null;
+        created?: boolean;
+        emailed?: boolean;
         error?: string;
       } | null;
       if (!res.ok) {
         toast.error(apiError(data));
         return;
       }
-      if (data?.tempPassword) setTempPassword(data.tempPassword);
+      if (data?.created) setInvite({ emailed: Boolean(data.emailed) });
       toast.success(t("juries.added"));
       setJuryEmail("");
       router.refresh();
@@ -534,30 +534,12 @@ export function HackathonAdminClient({
                 <p className="mt-1.5 text-[11px] leading-relaxed text-muted-foreground">
                   {t("juries.addHint")}
                 </p>
-                {tempPassword && (
-                  <div className="mt-3 rounded-xl bg-success/10 p-3 text-[12px]">
-                    <p className="font-semibold text-success">
-                      {t("juries.accountCreated")}
+                {invite && (
+                  <div className={`mt-3 rounded-xl p-3 text-[12px] ${invite.emailed ? "bg-success/10" : "bg-warning/10"}`}>
+                    <p className={`font-semibold ${invite.emailed ? "text-success" : "text-warning-dark"}`}>
+                      {invite.emailed ? t("juries.inviteSent") : t("juries.inviteNotSent")}
                     </p>
-                    <p className="mt-1 flex items-center gap-2">
-                      <code className="rounded bg-card px-2 py-0.5 font-mono text-[13px]">
-                        {tempPassword}
-                      </code>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          navigator.clipboard.writeText(tempPassword);
-                          toast.success(t("juries.passwordCopied"));
-                        }}
-                        className="text-muted-foreground transition-colors hover:text-foreground"
-                        aria-label={tc("copyLink")}
-                      >
-                        <Copy className="h-3.5 w-3.5" aria-hidden="true" />
-                      </button>
-                    </p>
-                    <p className="mt-1 text-muted-foreground">
-                      {t("juries.passwordHint")}
-                    </p>
+                    <p className="mt-1 text-muted-foreground">{t("juries.inviteHint")}</p>
                   </div>
                 )}
               </form>
