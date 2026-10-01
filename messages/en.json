@@ -1299,13 +1299,28 @@
       "backToDashboard": "Back to dashboard",
       "openPdf": "Open PDF",
       "scoringHeading": "Scoring",
-      "scoringHint": "Score each criterion. You can update your scores at any time.",
+      "scoringHint": "Your score is a weighted total out of 100. You can update it at any time.",
       "commentPlaceholder": "Comment (optional)",
       "saveScores": "Save scores",
       "scoresSaved": "Your scores were saved",
       "alreadyScored": "You have scored this project",
       "weightLabel": "Weight",
-      "greeting": "Hi, {name}"
+      "greeting": "Hi, {name}",
+      "submissionNav": "Move between projects",
+      "previous": "Previous project",
+      "next": "Next project",
+      "position": "{n} / {total}",
+      "version": "version",
+      "yourScore": "your score",
+      "document": "Project document",
+      "download": "Download",
+      "summary": "Summary",
+      "noCriteria": "No criteria have been added for this hackathon yet.",
+      "commentFor": "Comment: {criterion}",
+      "addComment": "Add a comment",
+      "saving": "Saving…",
+      "saveAndNext": "Save and next",
+      "saveAndFinish": "Save and finish"
     },
     "reveal": {
       "heading": "Results announcement",
@@ -2373,8 +2388,15 @@
       "DRAFT": "Draft",
       "TODO": "To do"
     },
-    "hackathon": "Hackathon submissions",
-    "empty": "Nothing to evaluate right now."
+    "hackathon": "Hackathon",
+    "empty": "Nothing to evaluate right now.",
+    "hackathonProgress": "You have scored {done} of {total} projects",
+    "criteriaProgress": "{scored}/{total} criteria",
+    "hackathonStatus": {
+      "DONE": "Scored",
+      "PARTIAL": "Incomplete",
+      "TODO": "To do"
+    }
   },
   "juryProfile": {
     "title": "Juror profile",
@@ -2475,6 +2497,9 @@
     "noScores": "No scores yet",
     "rank": "Rank {rank}",
     "notRanked": "Not ranked yet",
-    "note": "Only submitted evaluations count; drafts do not affect the ranking. Scores are weighted by criterion, out of 100."
+    "note": "Only submitted evaluations count; drafts do not affect the ranking. Scores are weighted by criterion, out of 100.",
+    "hackathon": "Hackathon",
+    "noSubmission": "No project submitted yet",
+    "teamJurors": "{count, plural, one {# juror has scored} other {# jurors have scored}}"
   }
 }

@@ -1299,13 +1299,28 @@
       "backToDashboard": "Panele dön",
       "openPdf": "PDF'yi aç",
       "scoringHeading": "Değerlendirme",
-      "scoringHint": "Her kriter için puan verin. Puanlarınızı istediğiniz zaman güncelleyebilirsiniz.",
+      "scoringHint": "Puan 100 üzerinden ağırlıklı hesaplanır. Puanlarınızı istediğiniz zaman güncelleyebilirsiniz.",
       "commentPlaceholder": "Yorum (isteğe bağlı)",
       "saveScores": "Puanları kaydet",
       "scoresSaved": "Puanlarınız kaydedildi",
       "alreadyScored": "Bu projeyi puanladınız",
       "weightLabel": "Ağırlık",
-      "greeting": "Merhaba, {name}"
+      "greeting": "Merhaba, {name}",
+      "submissionNav": "Projeler arasında geçiş",
+      "previous": "Önceki proje",
+      "next": "Sonraki proje",
+      "position": "{n} / {total}",
+      "version": "sürüm",
+      "yourScore": "puanınız",
+      "document": "Proje dokümanı",
+      "download": "İndir",
+      "summary": "Kısa açıklama",
+      "noCriteria": "Bu hackathon için henüz kriter eklenmedi.",
+      "commentFor": "Yorum: {criterion}",
+      "addComment": "Yorum ekle",
+      "saving": "Kaydediliyor…",
+      "saveAndNext": "Kaydet ve sonraki",
+      "saveAndFinish": "Kaydet ve bitir"
     },
     "reveal": {
       "heading": "Sonuçların açıklanması",
@@ -2373,8 +2388,15 @@
       "DRAFT": "Taslak",
       "TODO": "Bekliyor"
     },
-    "hackathon": "Hackathon başvuruları",
-    "empty": "Şu anda değerlendirilecek bir şey yok."
+    "hackathon": "Hackathon",
+    "empty": "Şu anda değerlendirilecek bir şey yok.",
+    "hackathonProgress": "{total} projeden {done} tanesini puanladınız",
+    "criteriaProgress": "{scored}/{total} kriter",
+    "hackathonStatus": {
+      "DONE": "Puanlandı",
+      "PARTIAL": "Eksik",
+      "TODO": "Bekliyor"
+    }
   },
   "juryProfile": {
     "title": "Jüri profili",
@@ -2475,6 +2497,9 @@
     "noScores": "Henüz puan yok",
     "rank": "{rank}. sıra",
     "notRanked": "Henüz sıralanmadı",
-    "note": "Yalnızca gönderilen değerlendirmeler sayılır; taslaklar sıralamayı etkilemez. Puan, kriter ağırlıklarına göre 100 üzerinden hesaplanır."
+    "note": "Yalnızca gönderilen değerlendirmeler sayılır; taslaklar sıralamayı etkilemez. Puan, kriter ağırlıklarına göre 100 üzerinden hesaplanır.",
+    "hackathon": "Hackathon",
+    "noSubmission": "Henüz proje teslim edilmedi",
+    "teamJurors": "{count, plural, one {# jüri puanladı} other {# jüri puanladı}}"
   }
 }

@@ -1299,13 +1299,28 @@
       "backToDashboard": "Panelə qayıt",
       "openPdf": "PDF-i aç",
       "scoringHeading": "Qiymətləndirmə",
-      "scoringHint": "Hər meyar üzrə bal verin. Xallarınızı istənilən vaxt yeniləyə bilərsiniz.",
+      "scoringHint": "Bal 100 üzərindən çəkili hesablanır. Xallarınızı istənilən vaxt yeniləyə bilərsiniz.",
       "commentPlaceholder": "Şərh (istəyə bağlı)",
       "saveScores": "Xalları yadda saxla",
       "scoresSaved": "Xallarınız yadda saxlanıldı",
       "alreadyScored": "Bu layihəni qiymətləndirmisiniz",
       "weightLabel": "Çəki",
-      "greeting": "Salam, {name}"
+      "greeting": "Salam, {name}",
+      "submissionNav": "Layihələr arasında keçid",
+      "previous": "Əvvəlki layihə",
+      "next": "Növbəti layihə",
+      "position": "{n} / {total}",
+      "version": "versiya",
+      "yourScore": "sizin bal",
+      "document": "Layihə sənədi",
+      "download": "Yüklə",
+      "summary": "Qısa təsvir",
+      "noCriteria": "Bu hakaton üçün meyarlar hələ əlavə edilməyib.",
+      "commentFor": "Şərh: {criterion}",
+      "addComment": "Şərh əlavə et",
+      "saving": "Saxlanılır…",
+      "saveAndNext": "Saxla və növbəti",
+      "saveAndFinish": "Saxla və bitir"
     },
     "reveal": {
       "heading": "Nəticələrin açıqlanması",
@@ -2373,8 +2388,15 @@
       "DRAFT": "Qaralama",
       "TODO": "Gözləyir"
     },
-    "hackathon": "Hakaton təqdimatları",
-    "empty": "Hazırda qiymətləndirəcəyiniz heç nə yoxdur."
+    "hackathon": "Hakaton",
+    "empty": "Hazırda qiymətləndirəcəyiniz heç nə yoxdur.",
+    "hackathonProgress": "{total} layihədən {done}-ni qiymətləndirmisiniz",
+    "criteriaProgress": "{scored}/{total} meyar",
+    "hackathonStatus": {
+      "DONE": "Qiymətləndirilib",
+      "PARTIAL": "Yarımçıq",
+      "TODO": "Gözləyir"
+    }
   },
   "juryProfile": {
     "title": "Jüri profili",
@@ -2475,6 +2497,9 @@
     "noScores": "Hələ qiymət yoxdur",
     "rank": "{rank}-ci yer",
     "notRanked": "Hələ sıralanmayıb",
-    "note": "Yalnız təqdim edilmiş qiymətləndirmələr sayılır; qaralamalar sıralamaya təsir etmir. Bal meyarların çəkisinə görə 100 üzərindən hesablanır."
+    "note": "Yalnız təqdim edilmiş qiymətləndirmələr sayılır; qaralamalar sıralamaya təsir etmir. Bal meyarların çəkisinə görə 100 üzərindən hesablanır.",
+    "hackathon": "Hakaton",
+    "noSubmission": "Layihə hələ təqdim edilməyib",
+    "teamJurors": "{count, plural, one {# jüri qiymət verib} other {# jüri qiymət verib}}"
   }
 }

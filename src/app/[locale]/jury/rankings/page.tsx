@@ -12,7 +12,6 @@ import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { LargeTitle } from "@/components/ui/ios";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import { LiveRefresh } from "@/components/ui/live-refresh";
-import { RankingsTable } from "@/components/hackathon/rankings-table";
 import { cn } from "@/lib/utils";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -34,8 +33,10 @@ export default async function JuryRankingsPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const session = await requireRole(locale, ["JURY"]);
-  const [t, th] = await Promise.all([getTranslations("juryRankings"), getTranslations("hackathon.rankings")]);
+  const t = await getTranslations("juryRankings");
   const tenantId = session.user.tenantId ?? null;
+  const number = new Intl.NumberFormat(locale === "en" ? "en-GB" : "tr-TR", { maximumFractionDigits: 1 });
+  const formatScore = (value: number) => number.format(value);
 
   const [programs, hackathonOn] = await Promise.all([getJurorRankings(session.user.id), hasFeature(tenantId, "hackathon")]);
   const hackathons = hackathonOn
@@ -95,7 +96,7 @@ export default async function JuryRankingsPage({ params }: Props) {
                         <span className="text-[13px] text-muted-foreground">{t("noScores")}</span>
                       ) : (
                         <span className="flex items-baseline gap-1">
-                          <span className="text-[22px] font-bold tabular-nums tracking-[-0.5px]">{row.total.toLocaleString(locale === "en" ? "en-GB" : "tr-TR")}</span>
+                          <span className="text-[22px] font-bold tabular-nums tracking-[-0.5px]">{formatScore(row.total)}</span>
                           <span className="text-[12px] text-muted-foreground">/100</span>
                         </span>
                       )}
@@ -109,12 +110,66 @@ export default async function JuryRankingsPage({ params }: Props) {
 
         {hackathons.map(({ program, rankings }) => (
           <section key={program.id} className="space-y-3">
-            <h2 className="flex items-center gap-2 px-1 text-[20px] font-bold tracking-[-0.4px]">
-              <Trophy className="h-5 w-5 text-amber-500" aria-hidden="true" />
-              {program.name}
-              <span className="text-[13px] font-medium text-muted-foreground">· {th("heading")}</span>
-            </h2>
-            <RankingsTable rankings={rankings} />
+            <div className="px-1">
+              <p className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-primary">
+                <Trophy className="h-3.5 w-3.5" aria-hidden="true" />
+                {t("hackathon")}
+              </p>
+              <h2 className="text-[20px] font-bold tracking-[-0.4px]">{program.name}</h2>
+            </div>
+            <ol className="overflow-hidden rounded-[22px] bg-card ring-1 ring-border/60">
+              {rankings.map((row, i) => {
+                const ranked = row.total !== null;
+                const content = (
+                  <>
+                    <span
+                      className={cn(
+                        "flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[13px] font-bold tabular-nums",
+                        ranked && row.rank <= 3 ? cn("bg-gradient-to-br", MEDAL[row.rank - 1]) : "bg-muted text-muted-foreground"
+                      )}
+                      aria-label={ranked ? t("rank", { rank: row.rank }) : t("notRanked")}
+                    >
+                      {ranked ? row.rank : "–"}
+                    </span>
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] bg-gradient-to-br from-sky-400 to-indigo-600 text-[14px] font-bold text-white" aria-hidden="true">
+                      {row.teamName.slice(0, 1).toUpperCase()}
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-[15px] font-semibold">{row.teamName}</span>
+                      <span className="block truncate text-[12px] text-muted-foreground">
+                        {row.submissionTitle ?? t("noSubmission")}
+                        {row.submissionTitle && ` · ${t("teamJurors", { count: row.juryCount })}`}
+                      </span>
+                    </span>
+                    <span className="text-right">
+                      {row.total === null ? (
+                        <span className="text-[13px] text-muted-foreground">{t("noScores")}</span>
+                      ) : (
+                        <span className="flex items-baseline gap-1">
+                          <span className="text-[22px] font-bold tabular-nums tracking-[-0.5px]">{formatScore(row.total)}</span>
+                          <span className="text-[12px] text-muted-foreground">/100</span>
+                        </span>
+                      )}
+                    </span>
+                  </>
+                );
+                return (
+                  <li
+                    key={row.teamId}
+                    style={{ "--i": i } as CSSProperties}
+                    className={cn("ios-reveal border-t border-border/60 first:border-t-0", !ranked && "opacity-70")}
+                  >
+                    {row.submissionId ? (
+                      <Link href={`/jury/submissions/${row.submissionId}`} className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-muted/40">
+                        {content}
+                      </Link>
+                    ) : (
+                      <div className="flex items-center gap-3 px-4 py-3">{content}</div>
+                    )}
+                  </li>
+                );
+              })}
+            </ol>
           </section>
         ))}
 

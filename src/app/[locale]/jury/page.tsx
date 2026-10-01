@@ -1,10 +1,11 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { CheckCircle2, ChevronRight, CircleDashed, FileText, PenLine, UserRound, Users } from "lucide-react";
+import { CheckCircle2, ChevronRight, CircleDashed, FileText, PenLine, Trophy, UserRound } from "lucide-react";
 import { requireRole } from "@/lib/auth-utils";
-import { hasFeature } from "@/lib/tenant/features";
 import { prisma } from "@/lib/prisma";
 import { Link } from "@/i18n/navigation";
 import { getJurorWorkload } from "@/lib/jury/juror-service";
+import { getHackathonQueue } from "@/lib/jury/hackathon-queue";
+import { AvatarStack } from "@/components/jury/avatar-stack";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { InsetGroup, InsetRow, Reveal } from "@/components/ui/ios";
 import { HeroAction, ProgressRing, WelcomeHero } from "@/components/dashboard/dashboard-kit";
@@ -12,56 +13,21 @@ import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import { formatDate } from "@/lib/format-date";
 
-/** Hackathon submissions this juror still has to score, when the organisation runs hackathons. */
-async function hackathonEntries(tenantId: string | null, juryUserId: string) {
-  if (!(await hasFeature(tenantId, "hackathon"))) return [];
-  const programs = await prisma.program.findMany({
-    where: { type: "hackathon", ...(tenantId ? { tenantId } : {}) },
-    select: { id: true, name: true },
-  });
-  const programIds = programs.map((p) => p.id);
-  const [teams, criteria, myScores] = await Promise.all([
-    prisma.hackathonTeam.findMany({
-      where: { programId: { in: programIds } },
-      include: { submissions: { orderBy: { version: "desc" }, take: 1 }, _count: { select: { members: true } } },
-      orderBy: { createdAt: "asc" },
-    }),
-    prisma.juryCriterion.findMany({ where: { programId: { in: programIds } }, select: { programId: true } }),
-    prisma.juryScore.findMany({ where: { juryUserId }, select: { submissionId: true } }),
-  ]);
-  const criteriaCount = (programId: string) => criteria.filter((c) => c.programId === programId).length;
-  const scored = (submissionId: string) => myScores.filter((s) => s.submissionId === submissionId).length;
-  const programName = new Map(programs.map((p) => [p.id, p.name]));
-  return teams
-    .filter((team) => team.submissions.length > 0)
-    .map((team) => {
-      const submission = team.submissions[0];
-      const total = criteriaCount(team.programId);
-      return {
-        submissionId: submission.id,
-        title: submission.title,
-        teamName: team.name,
-        memberCount: team._count.members,
-        programName: programName.get(team.programId) ?? "",
-        done: total > 0 && scored(submission.id) >= total,
-      };
-    });
-}
-
 /** The juror's home: finalists to evaluate, profile status and any hackathon work. */
 export default async function JuryDashboardPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
   const session = await requireRole(locale, ["JURY"]);
-  const [t, me, programs, entries] = await Promise.all([
+  const [t, me, programs, hackathons] = await Promise.all([
     getTranslations("juryHome"),
     prisma.user.findUniqueOrThrow({ where: { id: session.user.id }, select: { headline: true, bio: true, avatarPath: true } }),
     getJurorWorkload(session.user.id),
-    hackathonEntries(session.user.tenantId ?? null, session.user.id),
+    getHackathonQueue(session.user.tenantId ?? null, session.user.id),
   ]);
 
   const finalists = programs.flatMap((p) => p.finalists);
-  const done = finalists.filter((f) => f.status === "SUBMITTED").length + entries.filter((e) => e.done).length;
+  const entries = hackathons.flatMap((h) => h.entries);
+  const done = finalists.filter((f) => f.status === "SUBMITTED").length + entries.filter((e) => e.status === "DONE").length;
   const total = finalists.length + entries.length;
   const profileComplete = Boolean(me.avatarPath && me.headline && me.bio);
   const firstName = (session.user.name ?? "").split(" ")[0];
@@ -71,6 +37,7 @@ export default async function JuryDashboardPage({ params }: { params: Promise<{ 
     DRAFT: { icon: PenLine, cls: "bg-warning/15 text-warning-dark" },
     TODO: { icon: CircleDashed, cls: "bg-muted text-muted-foreground" },
   } as const;
+  const HACKATHON_STATUS = { DONE: STATUS.SUBMITTED, PARTIAL: STATUS.DRAFT, TODO: STATUS.TODO } as const;
 
   return (
     <DashboardLayout panel="jury" title={t("title")} userName={session.user.name ?? ""}>
@@ -130,28 +97,50 @@ export default async function JuryDashboardPage({ params }: { params: Promise<{ 
           </Reveal>
         ))}
 
-        {entries.length > 0 && (
-          <Reveal index={programs.length + 2}>
-            <InsetGroup header={t("hackathon")}>
-              {entries.map((e) => (
-                <InsetRow
-                  key={e.submissionId}
-                  href={`/jury/submissions/${e.submissionId}`}
-                  icon={e.done ? CheckCircle2 : FileText}
-                  tone={e.done ? "emerald" : "indigo"}
-                  title={e.title}
-                  subtitle={`${e.teamName} · ${e.programName}`}
-                  trailing={
-                    <span className="inline-flex shrink-0 items-center gap-1 text-[12px] text-muted-foreground">
-                      <Users className="h-3.5 w-3.5" aria-hidden="true" />
-                      {e.memberCount}
-                    </span>
-                  }
-                />
-              ))}
-            </InsetGroup>
+        {hackathons.map((hackathon, i) => (
+          <Reveal key={hackathon.programId} index={programs.length + i + 2} as="section">
+            <div className="mb-3 px-1">
+              <p className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-primary">
+                <Trophy className="h-3.5 w-3.5" aria-hidden="true" />
+                {t("hackathon")}
+              </p>
+              <h2 className="text-[20px] font-bold tracking-[-0.4px]">{hackathon.programName}</h2>
+              <p className="text-[13px] text-muted-foreground">
+                {t("hackathonProgress", {
+                  done: hackathon.entries.filter((e) => e.status === "DONE").length,
+                  total: hackathon.entries.length,
+                })}
+              </p>
+            </div>
+            <ul className="space-y-2.5">
+              {hackathon.entries.map((e) => {
+                const s = HACKATHON_STATUS[e.status];
+                return (
+                  <li key={e.submissionId}>
+                    <Link
+                      href={`/jury/submissions/${e.submissionId}`}
+                      className="group flex items-center gap-3 rounded-[20px] bg-card p-3.5 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60 transition-transform duration-300 hover:-translate-y-0.5"
+                    >
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] bg-gradient-to-br from-sky-400 to-indigo-600 text-white">
+                        <FileText className="h-5 w-5" aria-hidden="true" />
+                      </span>
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate text-[15px] font-semibold">{e.title}</span>
+                        <span className="block truncate text-[13px] text-muted-foreground">{e.teamName}</span>
+                      </span>
+                      <AvatarStack members={e.members} max={3} className="hidden sm:flex" />
+                      <span className={cn("inline-flex shrink-0 items-center gap-1 rounded-full px-2.5 py-1 text-[12px] font-semibold tabular-nums", s.cls)}>
+                        <s.icon className="h-3.5 w-3.5" aria-hidden="true" />
+                        {e.status === "PARTIAL" ? t("criteriaProgress", { scored: e.scored, total: e.total }) : t(`hackathonStatus.${e.status}`)}
+                      </span>
+                      <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/60 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
           </Reveal>
-        )}
+        ))}
 
         {total === 0 && (
           <p className="rounded-[22px] bg-card px-6 py-12 text-center text-[14px] text-muted-foreground ring-1 ring-border/60">{t("empty")}</p>
