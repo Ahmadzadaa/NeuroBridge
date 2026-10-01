@@ -31,7 +31,7 @@ export function apiErrorResponse(error: unknown): Response {
   }
   if (error instanceof ValidationError) {
     return Response.json(
-      { error: error.message, issues: error.issues },
+      { error: error.message, code: "VALIDATION_FAILED", issues: error.issues },
       { status: 400 }
     );
   }

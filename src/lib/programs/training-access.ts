@@ -6,6 +6,18 @@ const SIMULATION_UNIT_TRAININGS: Record<string, string> = {
   [IDEA_DEV_TRAINING_KEY]: "idea_development",
 };
 
+/** Every training a programme opens, including units reached through its simulations. */
+export function programTrainingKeys(program: {
+  programTrainings: { trainingType: string }[];
+  programSimulations: { simulationType: string }[];
+}): string[] {
+  const simulations = new Set(program.programSimulations.map((s) => s.simulationType));
+  const units = Object.entries(SIMULATION_UNIT_TRAININGS)
+    .filter(([, simulationType]) => simulations.has(simulationType))
+    .map(([trainingKey]) => trainingKey);
+  return [...new Set([...program.programTrainings.map((t) => t.trainingType), ...units])];
+}
+
 /**
  * Thrown when a user tries to act on training content that no programme of
  * theirs includes.

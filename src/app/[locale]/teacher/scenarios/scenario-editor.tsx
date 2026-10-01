@@ -24,7 +24,9 @@ import { cn } from "@/lib/utils";
 import {
   emptyChoice,
   emptyRound,
+  scenarioProblem,
   type ChoiceDraft,
+  type ScenarioProblem,
   type RoundDraft,
   type ScenarioDraft,
 } from "./scenario-draft";
@@ -64,11 +66,19 @@ export function ScenarioEditor({
       (c) => c.label.trim().length > 0 && c.feedback.trim().length > 0
     );
 
-  const valid =
-    draft.name.trim().length >= 3 &&
-    draft.targetCash > 0 &&
-    draft.rounds.length >= 2 &&
-    draft.rounds.every(roundValid);
+  // Mirrors the server schema, so a draft that would be rejected never reaches save.
+  const problem = scenarioProblem(draft);
+  const valid = problem === null;
+
+  function problemText(p: ScenarioProblem) {
+    const where =
+      p.choice !== undefined
+        ? t("problems.atChoice", { round: p.round ?? 0, choice: p.choice })
+        : p.round !== undefined
+          ? t("problems.atRound", { round: p.round })
+          : null;
+    return where ? `${where}: ${t(`problems.${p.kind}`)}` : t(`problems.${p.kind}`);
+  }
 
   function patchRound(index: number, patch: Partial<RoundDraft>) {
     setDraft((prev) => ({
@@ -250,7 +260,7 @@ export function ScenarioEditor({
         {/* ── Rounds ──────────────────────────────────────────── */}
         {draft.rounds.map((round, roundIndex) => {
           const isOpen = openRound === roundIndex;
-          const ok = roundValid(round);
+          const ok = roundValid(round) && problem?.round !== roundIndex + 1;
           return (
             <div
               key={roundIndex}
@@ -483,9 +493,9 @@ export function ScenarioEditor({
             )}
           </Button>
         </div>
-        {!valid && (
-          <p className="text-center text-[12px] text-muted-foreground">
-            {t("validationHint")}
+        {problem && (
+          <p role="status" className="text-center text-[12px] text-muted-foreground">
+            {problemText(problem)}
           </p>
         )}
       </div>

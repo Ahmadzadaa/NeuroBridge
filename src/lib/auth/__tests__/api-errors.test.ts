@@ -27,6 +27,7 @@ describe("apiErrorResponse", () => {
     expect(response.status).toBe(400);
     const body = await response.json();
     expect(body.issues).toBeDefined();
+    expect(body.code).toBe("VALIDATION_FAILED");
   });
 
   it("maps rate limit errors to 429", async () => {

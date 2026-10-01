@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { ValidationError } from "@/lib/auth/permissions";
+import { UNIVERSITY_REPORTS } from "@/lib/reports/university-types";
 import {
   AI_TOOLS,
   PROJECT_TYPES,
@@ -178,6 +179,16 @@ export const reportExportSchema = z.object({
   programId: z.string().cuid(),
   format: z.enum(["csv", "pdf"]),
   reportType: z.enum(["general", "training", "test", "certificate"]).default("general"),
+});
+
+/** A university report download; a and b pick the academic years to compare. */
+export const universityReportQuerySchema = z.object({
+  type: z.enum(UNIVERSITY_REPORTS),
+  format: z.enum(["xlsx", "pdf"]),
+  program: z.string().cuid().optional(),
+  locale: z.enum(["az", "en", "tr"]).optional(),
+  a: z.coerce.number().int().min(2000).max(2100).optional(),
+  b: z.coerce.number().int().min(2000).max(2100).optional(),
 });
 
 /**
