@@ -1,20 +1,15 @@
 import { getTranslations } from "next-intl/server";
 import type { ScheduleItem } from "@/lib/programs/schedule";
 import { PROGRAM_WEEKS } from "@/lib/programs/schedule";
+import { formatDate } from "@/lib/format-date";
 
-const INTL: Record<string, string> = { tr: "tr-TR", en: "en-GB", az: "az-Latn-AZ" };
 
 /** The 6-week plan as a table: one row per week, the jury day called out. */
 export async function ScheduleTable({ items, locale }: { items: ScheduleItem[]; locale: string }) {
   const t = await getTranslations("programSchedule");
   // UTC: schedule dates are calendar days stored at UTC midnight.
-  const fmt = new Intl.DateTimeFormat(INTL[locale] ?? "tr-TR", { day: "numeric", month: "short", timeZone: "UTC" });
-  const fmtLong = new Intl.DateTimeFormat(INTL[locale] ?? "tr-TR", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    timeZone: "UTC",
-  });
+  const fmt = { format: (value: Date | string) => formatDate(value, locale, "dayMonth") };
+  const fmtLong = { format: (value: Date | string) => formatDate(value, locale, "weekdayLong") };
 
   const weeks = PROGRAM_WEEKS.map((_, i) => items.filter((item) => item.week === i + 1));
   const jury = items.find((i) => i.activity === "JURY_PRESENTATION");

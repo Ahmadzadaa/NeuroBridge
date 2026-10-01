@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { buttonVariants } from "@/components/ui/button";
 import { InsetGroup, InsetRow, LargeTitle, Reveal } from "@/components/ui/ios";
+import { formatDate } from "@/lib/format-date";
 
 /** Every organisation's programmes; the paid-but-unbuilt ones come first. */
 export default async function SuperAdminProgramsPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -26,7 +27,7 @@ export default async function SuperAdminProgramsPage({ params }: { params: Promi
     },
   });
   const pending = programs.filter((p) => p.setupStatus === "PENDING_SETUP");
-  const date = new Intl.DateTimeFormat("tr-TR", { dateStyle: "medium", timeZone: "UTC" });
+  const date = { format: (value: Date | string) => formatDate(value, locale, "medium") };
 
   return (
     <DashboardLayout panel="super-admin" title={t("title")} userName={session.user.name ?? "Admin"}>

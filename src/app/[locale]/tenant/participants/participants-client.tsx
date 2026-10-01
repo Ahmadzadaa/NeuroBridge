@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { formatDate } from "@/lib/format-date";
 
 interface ProgramOption {
   id: string;
@@ -55,11 +56,7 @@ export function ParticipantsPageClient({
   const tc = useTranslations("common");
   const locale = useLocale();
   // tr-TR for az: Node and browsers format az dates differently.
-  const dateFmt = new Intl.DateTimeFormat(locale === "en" ? "en-GB" : "tr-TR", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
+  const dateFmt = { format: (value: Date | string) => formatDate(value, locale, "medium") };
   const [programFilter, setProgramFilter] = useState<string>("all");
   const [items, setItems] = useState<ParticipantItem[]>([]);
   const [total, setTotal] = useState(0);

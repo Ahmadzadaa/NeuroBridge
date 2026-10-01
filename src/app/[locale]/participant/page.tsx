@@ -16,7 +16,7 @@ import { requireRole } from "@/lib/auth-utils";
 import { getTenantFeatures } from "@/lib/tenant/features";
 import { getParticipantHome } from "@/lib/participants/home";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
-import { InsetGroup, InsetRow, Reveal } from "@/components/ui/ios";
+import { IconTile, InsetGroup, InsetRow, Reveal } from "@/components/ui/ios";
 import {
   HeroAction,
   MetricGrid,
@@ -28,6 +28,7 @@ import {
   WelcomeHero,
   type ShortcutItem,
 } from "@/components/dashboard/dashboard-kit";
+import { formatDate } from "@/lib/format-date";
 
 const INTL: Record<string, string> = { tr: "tr-TR", en: "en-GB", az: "az-Latn-AZ" };
 
@@ -48,11 +49,7 @@ export default async function ParticipantPage({ params }: { params: Promise<{ lo
   const firstName = userName.split(" ")[0] || userName;
   const { program, timeline, lessons } = home;
   // tr-TR for az too: az-Latn month names differ between Node and browsers' ICU builds.
-  const date = new Intl.DateTimeFormat(INTL[locale] === "az-Latn-AZ" ? "tr-TR" : INTL[locale] ?? "tr-TR", {
-    day: "numeric",
-    month: "short",
-    timeZone: "UTC",
-  });
+  const date = { format: (value: Date | string) => formatDate(value, locale, "dayMonth") };
 
   const status = !timeline
     ? t("noProgramText")
@@ -95,6 +92,18 @@ export default async function ParticipantPage({ params }: { params: Promise<{ lo
             </>
           )}
         </WelcomeHero>
+
+        {home.isFinalist && (
+          <Reveal index={1} className="flex items-center gap-4 rounded-[22px] bg-gradient-to-r from-amber-400/15 via-orange-400/10 to-rose-400/10 p-5 ring-1 ring-amber-400/30">
+            <IconTile icon={Trophy} tone="amber" size="lg" />
+            <div className="min-w-0">
+              <p className="text-[17px] font-bold tracking-[-0.3px]">{t("finalistTitle")}</p>
+              <p className="text-[14px] text-muted-foreground">
+                {home.juryDay ? t("finalistJuryDay", { date: formatDate(home.juryDay, locale, "long") }) : t("finalistText")}
+              </p>
+            </div>
+          </Reveal>
+        )}
 
         <MetricGrid>
           <MetricTile

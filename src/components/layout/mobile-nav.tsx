@@ -74,7 +74,8 @@ const mobileNavConfig: Record<PanelType, MobileNavItem[]> = {
   ],
   jury: [
     { href: "/jury", labelKey: "dashboard", icon: LayoutDashboard },
-    { href: "/jury/rankings", labelKey: "rankings", icon: Award },
+    { href: "/jury/rankings", labelKey: "rankings", icon: Award, feature: "hackathon" },
+    { href: "/jury/profile", labelKey: "profile", icon: Settings },
   ],
   teacher: [
     { href: "/teacher", labelKey: "dashboard", icon: LayoutDashboard },

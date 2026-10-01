@@ -39,6 +39,8 @@ const TENANT_CONTENT_PERMISSIONS = [
   "hackathon:manage",
   "hackathon:submit",
   "hackathon:score",
+  "jury:manage",
+  "jury:score",
   "ai:use",
 ] as const;
 

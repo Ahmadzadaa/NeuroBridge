@@ -449,3 +449,55 @@ export const activateAccountSchema = z.object({
       "Password must contain uppercase, lowercase and a number"
     ),
 });
+
+// ---------------------------------------------------------------------------
+// Jury module
+// ---------------------------------------------------------------------------
+
+export const jurySettingsSchema = z
+  .object({
+    juryEnabled: z.boolean().optional(),
+    finalistCount: z.number().int().min(1).max(100).nullable().optional(),
+  })
+  .refine((v) => v.juryEnabled !== undefined || v.finalistCount !== undefined, "Nothing to update");
+
+export const juryCriteriaSchema = z.object({
+  criteria: z
+    .array(
+      z.object({
+        id: z.string().max(40).optional(),
+        nameAz: safeString(120),
+        nameEn: safeString(120),
+        nameTr: safeString(120),
+        maxScore: z.number().int().min(1).max(100),
+        weight: z.number().int().min(1).max(10),
+      })
+    )
+    .min(1)
+    .max(12),
+});
+
+/** `locale` is the language the admin is working in; the invitation goes out in it. */
+export const addJurorSchema = z.object({
+  email: z.string().trim().toLowerCase().email().max(254),
+  firstName: safeString(100),
+  lastName: safeString(100),
+  locale: z.enum(["az", "en", "tr"]).optional(),
+});
+
+export const jurorActionSchema = z.object({ userId: z.string().min(1).max(40), locale: z.enum(["az", "en", "tr"]).optional() });
+
+export const finalistsSchema = z.object({ userIds: z.array(z.string().min(1).max(40)).max(100) });
+
+export const evaluationSchema = z.object({
+  scores: z.record(z.string().max(40), z.number().int().min(0).max(100)),
+  comment: z.string().trim().max(2000).optional(),
+  submit: z.boolean().default(false),
+});
+
+export const juryProfileSchema = z.object({
+  firstName: safeString(100),
+  lastName: safeString(100),
+  headline: z.string().trim().max(160).optional().or(z.literal("")),
+  bio: z.string().trim().max(1500).optional().or(z.literal("")),
+});

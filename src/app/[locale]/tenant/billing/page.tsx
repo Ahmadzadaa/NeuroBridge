@@ -9,6 +9,7 @@ import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { InsetGroup, InsetRow, LargeTitle, Reveal } from "@/components/ui/ios";
 import { MetricGrid, MetricTile } from "@/components/dashboard/dashboard-kit";
 import { BillingClient } from "./billing-client";
+import { formatDate } from "@/lib/format-date";
 
 /** Seats, buying more programmes or seats, and every order and payment the organisation made. */
 export default async function TenantBillingPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -33,7 +34,7 @@ export default async function TenantBillingPage({ params }: { params: Promise<{ 
 
   // tr-TR for az: Node and browsers format az numbers and dates differently.
   const intl = locale === "en" ? "en-GB" : "tr-TR";
-  const date = new Intl.DateTimeFormat(intl, { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+  const date = { format: (value: Date | string) => formatDate(value, locale, "medium") };
   const limit = seats?.seatLimit ?? 0;
   const used = seats?.seatsUsed ?? 0;
   const statusTone = (status: string) =>

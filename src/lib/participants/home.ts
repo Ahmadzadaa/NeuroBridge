@@ -36,7 +36,7 @@ export async function getParticipantHome(userId: string) {
   const program = await getCurrentProgramForUser(userId);
   const trainingKeys = program?.programTrainings.map((p) => p.trainingType) ?? [];
 
-  const [user, schedule, lessons, completedSimulations] = await Promise.all([
+  const [user, schedule, lessons, completedSimulations, finalist] = await Promise.all([
     prisma.user.findUnique({
       where: { id: userId },
       select: { coinBalance: true, _count: { select: { userBadges: true, certificates: true } } },
@@ -49,6 +49,13 @@ export async function getParticipantHome(userId: string) {
         })
       : Promise.resolve([]),
     prisma.simulationRun.count({ where: { userId, status: "COMPLETED" } }),
+    // Shown only once the organisation has confirmed the list and the jury round is on.
+    program
+      ? prisma.programFinalist.findFirst({
+          where: { userId, programId: program.id, program: { juryEnabled: true, finalistsConfirmedAt: { not: null } } },
+          select: { id: true },
+        })
+      : Promise.resolve(null),
   ]);
 
   return {
@@ -59,5 +66,7 @@ export async function getParticipantHome(userId: string) {
     badges: user?._count.userBadges ?? 0,
     certificates: user?._count.certificates ?? 0,
     completedSimulations,
+    isFinalist: Boolean(finalist),
+    juryDay: schedule.find((i) => i.activity === "JURY_PRESENTATION")?.startsOn ?? null,
   };
 }

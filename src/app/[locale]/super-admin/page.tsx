@@ -28,6 +28,7 @@ import {
   WelcomeHero,
   type ShortcutItem,
 } from "@/components/dashboard/dashboard-kit";
+import { formatDate } from "@/lib/format-date";
 
 const INTL: Record<string, string> = { tr: "tr-TR", en: "en-GB", az: "tr-TR" };
 const MONTHS = 6;
@@ -70,7 +71,7 @@ export default async function SuperAdminPage({ params }: { params: Promise<{ loc
   // Tiles and bars show whole lira; the order list keeps exact amounts.
   const whole = new Intl.NumberFormat(nf, { style: "currency", currency: "TRY", maximumFractionDigits: 0 });
   const money = (kurus: number) => whole.format(kurus / 100);
-  const monthFmt = new Intl.DateTimeFormat(nf, { month: "short", timeZone: "UTC" });
+  const monthFmt = { format: (value: Date | string) => formatDate(value, locale, "monthShort") };
   const months = Array.from({ length: MONTHS }, (_, i) => {
     const start = new Date(Date.UTC(windowStart.getUTCFullYear(), windowStart.getUTCMonth() + i, 1));
     const end = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth() + 1, 1));

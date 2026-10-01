@@ -6,6 +6,7 @@ import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { LargeTitle, Reveal } from "@/components/ui/ios";
 import { CheckCircle2 } from "lucide-react";
 import { getTenantAssessmentOverview } from "@/lib/assessments/assessment-service";
+import { formatDate } from "@/lib/format-date";
 
 type Params = { params: Promise<{ locale: string }> };
 
@@ -42,9 +43,7 @@ export default async function TenantAssessmentsPage({ params }: Params) {
     });
   }
 
-  const fmt = new Intl.DateTimeFormat(locale === "en" ? "en-GB" : locale === "az" ? "az-Latn-AZ" : "tr-TR", {
-    dateStyle: "medium",
-  });
+  const fmt = { format: (value: Date | string) => formatDate(value, locale, "medium") };
 
   return (
     <DashboardLayout panel="tenant" title={t("title")} userName={session.user.name ?? ""}>

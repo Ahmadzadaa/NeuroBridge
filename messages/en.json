@@ -132,7 +132,8 @@
     },
     "jury": {
       "dashboard": "Dashboard",
-      "rankings": "Rankings"
+      "rankings": "Rankings",
+      "profile": "My profile"
     },
     "teacher": {
       "dashboard": "Dashboard",
@@ -379,7 +380,8 @@
       "pendingHint": "Payment received; our team is setting up the programme. The registration link will appear here once it is ready.",
       "paymentSuccess": "Payment received. Your new programme is being set up.",
       "subtitle": "Your programmes, their registration window and how full they are.",
-      "applicationWindow": "Registration"
+      "applicationWindow": "Registration",
+      "jury": "Jury"
     },
     "projectTypes": {
       "entrepreneurship_training": "Entrepreneurship Training",
@@ -756,6 +758,60 @@
       "seatsLeft": "Available",
       "seatsFooter": "Each registered student takes one seat.",
       "shortcuts": "Shortcuts"
+    },
+    "jury": {
+      "title": "Jury round",
+      "subtitle": "Choose the finalists, invite jurors and follow the evaluation results.",
+      "back": "Programmes",
+      "settings": "Settings",
+      "settingsFooter": "The jury round is optional. When it is off, the programme ends with the platform evaluation.",
+      "enable": "Jury evaluation",
+      "enableHint": "Finalists present to a jury",
+      "finalistCount": "Number of finalists",
+      "juryDate": "Jury day",
+      "juryDateHint": "Weekdays only, within the programme dates",
+      "saved": "Saved",
+      "finalists": "Finalists",
+      "finalistsHint": "The top {count} students of the platform evaluation are proposed — adjust the list and confirm it.",
+      "confirmedOn": "Confirmed on {date} — the jury can see the finalists.",
+      "confirmFinalists": "Confirm finalists ({count})",
+      "finalistsConfirmed": "Finalists confirmed",
+      "noParticipants": "This programme has no active students yet.",
+      "points": "pts",
+      "jurors": "Jurors",
+      "noJurors": "No jurors added yet.",
+      "profileIncomplete": "Profile incomplete",
+      "resend": "Resend invitation",
+      "resent": "A new invitation link was sent",
+      "remove": "Remove from jury",
+      "removed": "Juror removed",
+      "addJuror": "Add a juror",
+      "addHint": "They'll get a one-time link by email to set their password.",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "invited": "Invitation sent to {email}",
+      "inviteNotSent": "Juror added, but the email could not be sent",
+      "added": "Juror added to this programme",
+      "criteria": "Evaluation criteria",
+      "criteriaHint": "These are provisional — you can change their names, scale and weight.",
+      "criteriaLocked": "Scoring has started: only names can change.",
+      "addCriterion": "Add criterion",
+      "removeCriterion": "Remove criterion",
+      "name": {
+        "nameAz": "Name (AZ)",
+        "nameEn": "Name (EN)",
+        "nameTr": "Name (TR)"
+      },
+      "maxScore": "Max score",
+      "weight": "Weight",
+      "results": "Results",
+      "resultsHint": "Each criterion is the jurors' average; the total is weighted, out of 100.",
+      "noResults": "Results appear here once finalists are confirmed.",
+      "finalist": "Finalist",
+      "total": "Total",
+      "submitted": "Submitted",
+      "platformRank": "Platform rank: {rank}"
     }
   },
   "participant": {
@@ -931,7 +987,10 @@
       "nothingUpcoming": "Nothing else is scheduled.",
       "wallet": "Achievements",
       "coins": "Coin balance",
-      "shortcuts": "Shortcuts"
+      "shortcuts": "Shortcuts",
+      "finalistTitle": "You're a finalist! 🎉",
+      "finalistText": "You'll present your project to the jury. The date will be announced soon.",
+      "finalistJuryDay": "You'll present your project to the jury on {date}."
     },
     "certificatesSubtitle": "Certificates you've earned — download the PDF to share it."
   },
@@ -1523,7 +1582,21 @@
     "WRONG_CURRENT_PASSWORD": "That is not your current password.",
     "INVALID_APPLICATION_TOKEN": "This invitation link is invalid or has expired.",
     "PAYMENT_UNAVAILABLE": "The payment system is unavailable right now. Please try again in a moment.",
-    "PAYMENT_VERIFICATION_FAILED": "The payment could not be verified."
+    "PAYMENT_VERIFICATION_FAILED": "The payment could not be verified.",
+    "CRITERIA_LOCKED": "Scoring has started — only criterion names can change.",
+    "INVALID_CRITERIA": "Between 1 and 12 criteria are required.",
+    "USER_HAS_OTHER_ROLE": "An account with another role already uses this email.",
+    "ALREADY_JUROR": "This person is already on this programme's jury.",
+    "JUROR_NOT_FOUND": "Juror not found.",
+    "JURY_DISABLED": "Turn on the jury round first.",
+    "NOT_A_PARTICIPANT": "One of the selected people is not an active student of this programme.",
+    "FINALIST_SCORED": "A finalist who has been scored can't be removed.",
+    "TOO_MANY_FINALISTS": "Too many finalists.",
+    "FINALIST_NOT_FOUND": "Finalist not found.",
+    "INVALID_SCORE": "The score is outside the criterion's scale.",
+    "INCOMPLETE_EVALUATION": "Score every criterion before submitting.",
+    "WEEKEND_JURY_DATE": "The jury day can't be on a weekend.",
+    "OUT_OF_RANGE": "The date must be within the programme period."
   },
   "marketing": {
     "nav": {
@@ -2050,5 +2123,63 @@
       "rateLimited": "Too many attempts. Try again shortly.",
       "generic": "Something went wrong. Please try again."
     }
+  },
+  "juryHome": {
+    "title": "Jury panel",
+    "greeting": "Hi, {name}",
+    "progress": "You've completed {done} of {total} evaluations.",
+    "nothingYet": "Once finalists are confirmed, the people you evaluate will appear here.",
+    "evaluated": "done",
+    "completeProfile": "Complete your profile",
+    "profileTitle": "Complete your profile",
+    "profileHint": "Add a photo, your role and experience",
+    "profileFooter": "The organisation and students see who is judging from your profile.",
+    "juryDay": "Jury day: {date}",
+    "status": {
+      "SUBMITTED": "Submitted",
+      "DRAFT": "Draft",
+      "TODO": "To do"
+    },
+    "hackathon": "Hackathon submissions",
+    "empty": "Nothing to evaluate right now."
+  },
+  "juryProfile": {
+    "title": "Juror profile",
+    "subtitle": "This is how the organisation and finalists will know you.",
+    "photoAlt": "Profile photo",
+    "changePhoto": "Change photo",
+    "removePhoto": "Remove photo",
+    "photoUpdated": "Photo updated",
+    "complete": "Profile complete",
+    "incomplete": "Add a photo, your role and experience",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "headline": "Role",
+    "headlineHint": "E.g. \"Founder, X Ventures\" or \"Investment manager\"",
+    "bio": "Experience",
+    "bioHint": "Field, years, projects you've worked on",
+    "saving": "Saving…",
+    "saved": "Profile updated"
+  },
+  "juryScore": {
+    "title": "Evaluation",
+    "back": "Jury panel",
+    "studyYear": "Year {year}",
+    "platformRank": "platform rank",
+    "points": "points",
+    "projects": "Project work",
+    "noProjects": "This finalist hasn't submitted any project work yet.",
+    "projectsHint": "These are the project answers the student wrote in the training units. Score after the jury presentation.",
+    "sheet": "Score sheet",
+    "scored": "{done} of {total} criteria scored",
+    "submitted": "Submitted",
+    "comment": "Comment (optional)",
+    "commentPlaceholder": "Strengths, areas to develop…",
+    "saveDraft": "Save draft",
+    "submit": "Submit",
+    "update": "Update",
+    "saving": "Saving…",
+    "draftSaved": "Draft saved",
+    "submittedToast": "Evaluation submitted"
   }
 }

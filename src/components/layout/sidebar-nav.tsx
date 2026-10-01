@@ -113,7 +113,8 @@ const navConfig: Record<PanelType, NavItem[]> = {
   ],
   jury: [
     { href: "/jury", labelKey: "dashboard", icon: LayoutDashboard },
-    { href: "/jury/rankings", labelKey: "rankings", icon: Scale },
+    { href: "/jury/rankings", labelKey: "rankings", icon: Scale, feature: "hackathon" },
+    { href: "/jury/profile", labelKey: "profile", icon: User },
   ],
   teacher: [
     { href: "/teacher", labelKey: "dashboard", icon: LayoutDashboard },

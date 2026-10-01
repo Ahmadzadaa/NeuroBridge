@@ -27,7 +27,9 @@ import {
   CalendarDays,
   FolderKanban,
   CircleDashed,
+  Scale,
 } from "lucide-react";
+import { formatDate } from "@/lib/format-date";
 
 export interface ProgramRow {
   id: string;
@@ -65,12 +67,7 @@ export function ProgramsPageClient({
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
 
   // tr-TR for az: Node and browsers format az dates differently, which breaks hydration.
-  const dateFmt = new Intl.DateTimeFormat(locale === "en" ? "en-GB" : "tr-TR", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    timeZone: "UTC",
-  });
+  const dateFmt = { format: (value: Date | string) => formatDate(value, locale, "medium") };
 
   const applyUrl = (token: string) =>
     `${window.location.origin}/${locale}/apply/${token}`;
@@ -212,6 +209,15 @@ export function ProgramsPageClient({
                       <QrCode className="h-4 w-4" aria-hidden="true" />
                       {tq("invite")}
                     </Button>
+                    {program.type !== "hackathon" && !program.pendingSetup && (
+                      <Link href={`/tenant/programs/${program.id}/jury`}>
+                        <Button variant="outline" size="sm">
+                          <Scale className="h-4 w-4" aria-hidden="true" />
+                          {t("jury")}
+                          <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
+                        </Button>
+                      </Link>
+                    )}
                     {program.type === "hackathon" && !program.pendingSetup && (
                       <Link href={`/tenant/programs/${program.id}/hackathon`}>
                         <Button variant="outline" size="sm">

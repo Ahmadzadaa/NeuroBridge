@@ -132,7 +132,8 @@
     },
     "jury": {
       "dashboard": "İdarə Paneli",
-      "rankings": "Sıralama"
+      "rankings": "Sıralama",
+      "profile": "Profilim"
     },
     "teacher": {
       "dashboard": "İdarə Paneli",
@@ -379,7 +380,8 @@
       "pendingHint": "Ödəniş alınıb, komandamız proqramı hazırlayır. Hazır olanda qeydiyyat linki burada görünəcək.",
       "paymentSuccess": "Ödəniş alındı. Yeni proqramınız hazırlanır.",
       "subtitle": "Aldığınız proqramlar, qeydiyyat dövrü və doluluq.",
-      "applicationWindow": "Qeydiyyat"
+      "applicationWindow": "Qeydiyyat",
+      "jury": "Jüri"
     },
     "projectTypes": {
       "entrepreneurship_training": "Sahibkarlıq Təlimi",
@@ -756,6 +758,60 @@
       "seatsLeft": "Boş qalan",
       "seatsFooter": "Hər qeydiyyatdan keçən tələbə bir oturacaq tutur.",
       "shortcuts": "Tez keçidlər"
+    },
+    "jury": {
+      "title": "Jüri mərhələsi",
+      "subtitle": "Finalçıları seçin, jüri üzvlərini dəvət edin və qiymətləndirmə nəticələrini izləyin.",
+      "back": "Proqramlar",
+      "settings": "Parametrlər",
+      "settingsFooter": "Jüri mərhələsi istəyə bağlıdır. Söndürülsə, proqram platforma qiymətləndirməsi ilə bitir.",
+      "enable": "Jüri qiymətləndirməsi",
+      "enableHint": "Finalçılar jüri qarşısında təqdimat edir",
+      "finalistCount": "Finalçı sayı",
+      "juryDate": "Jüri günü",
+      "juryDateHint": "Yalnız iş günü, proqram tarixləri daxilində",
+      "saved": "Yadda saxlanıldı",
+      "finalists": "Finalçılar",
+      "finalistsHint": "Platforma qiymətləndirməsinə görə ilk {count} tələbə təklif olunur — siyahını dəyişib təsdiqləyin.",
+      "confirmedOn": "{date} tarixində təsdiqlənib — jüri finalçıları görür.",
+      "confirmFinalists": "Finalçıları təsdiqlə ({count})",
+      "finalistsConfirmed": "Finalçılar təsdiqləndi",
+      "noParticipants": "Bu proqramda hələ aktiv tələbə yoxdur.",
+      "points": "bal",
+      "jurors": "Jüri üzvləri",
+      "noJurors": "Hələ jüri üzvü əlavə edilməyib.",
+      "profileIncomplete": "Profil natamamdır",
+      "resend": "Dəvəti yenidən göndər",
+      "resent": "Yeni dəvət linki göndərildi",
+      "remove": "Jüridən çıxar",
+      "removed": "Jüri üzvü çıxarıldı",
+      "addJuror": "Jüri üzvü əlavə et",
+      "addHint": "Şifrə təyin etmək üçün e-poçtuna birdəfəlik link göndəriləcək.",
+      "firstName": "Ad",
+      "lastName": "Soyad",
+      "email": "E-poçt",
+      "invited": "Dəvət {email} ünvanına göndərildi",
+      "inviteNotSent": "Jüri üzvü əlavə edildi, amma e-poçt göndərilə bilmədi",
+      "added": "Jüri üzvü bu proqrama əlavə edildi",
+      "criteria": "Qiymətləndirmə meyarları",
+      "criteriaHint": "Müvəqqəti meyarlardır — adlarını, bal şkalasını və çəkisini dəyişə bilərsiniz.",
+      "criteriaLocked": "Qiymətləndirmə başlayıb: yalnız adlar dəyişə bilər.",
+      "addCriterion": "Meyar əlavə et",
+      "removeCriterion": "Meyarı sil",
+      "name": {
+        "nameAz": "Ad (AZ)",
+        "nameEn": "Ad (EN)",
+        "nameTr": "Ad (TR)"
+      },
+      "maxScore": "Maksimum bal",
+      "weight": "Çəki",
+      "results": "Nəticələr",
+      "resultsHint": "Hər meyar jüri üzvlərinin ortalamasıdır; ümumi bal çəkiyə görə 100 üzərindən hesablanır.",
+      "noResults": "Finalçılar təsdiqlənəndən sonra nəticələr burada görünəcək.",
+      "finalist": "Finalçı",
+      "total": "Ümumi",
+      "submitted": "Təqdim edib",
+      "platformRank": "Platforma sırası: {rank}"
     }
   },
   "participant": {
@@ -931,7 +987,10 @@
       "nothingUpcoming": "Qarşıda planlaşdırılmış mərhələ yoxdur.",
       "wallet": "Nailiyyətlər",
       "coins": "Coin balansı",
-      "shortcuts": "Tez keçidlər"
+      "shortcuts": "Tez keçidlər",
+      "finalistTitle": "Siz finalçısınız! 🎉",
+      "finalistText": "Layihənizi jüri qarşısında təqdim edəcəksiniz. Tarix tezliklə açıqlanacaq.",
+      "finalistJuryDay": "Layihənizi {date} tarixində jüri qarşısında təqdim edəcəksiniz."
     },
     "certificatesSubtitle": "Qazandığınız sertifikatlar — PDF-i yükləyib paylaşa bilərsiniz."
   },
@@ -1523,7 +1582,21 @@
     "WRONG_CURRENT_PASSWORD": "Cari şifrə yanlışdır.",
     "INVALID_APPLICATION_TOKEN": "Dəvət linki etibarsızdır və ya müddəti bitib.",
     "PAYMENT_UNAVAILABLE": "Ödəniş sistemi hazırda əlçatan deyil. Bir az sonra yenidən cəhd edin.",
-    "PAYMENT_VERIFICATION_FAILED": "Ödəniş təsdiqlənmədi."
+    "PAYMENT_VERIFICATION_FAILED": "Ödəniş təsdiqlənmədi.",
+    "CRITERIA_LOCKED": "Qiymətləndirmə başlayıb — meyarların yalnız adını dəyişmək olar.",
+    "INVALID_CRITERIA": "1-12 arası meyar olmalıdır.",
+    "USER_HAS_OTHER_ROLE": "Bu e-poçtla başqa rolda hesab var.",
+    "ALREADY_JUROR": "Bu şəxs artıq bu proqramın jürisindədir.",
+    "JUROR_NOT_FOUND": "Jüri üzvü tapılmadı.",
+    "JURY_DISABLED": "Əvvəlcə jüri mərhələsini aktivləşdirin.",
+    "NOT_A_PARTICIPANT": "Seçilənlərdən biri bu proqramın aktiv tələbəsi deyil.",
+    "FINALIST_SCORED": "Qiymətləndirilmiş finalçını siyahıdan çıxarmaq olmaz.",
+    "TOO_MANY_FINALISTS": "Finalçı sayı çox böyükdür.",
+    "FINALIST_NOT_FOUND": "Finalçı tapılmadı.",
+    "INVALID_SCORE": "Bal meyarın şkalasından kənardadır.",
+    "INCOMPLETE_EVALUATION": "Təqdim etmək üçün bütün meyarları qiymətləndirin.",
+    "WEEKEND_JURY_DATE": "Jüri günü həftə sonuna düşə bilməz.",
+    "OUT_OF_RANGE": "Tarix proqram dövrünün daxilində olmalıdır."
   },
   "marketing": {
     "nav": {
@@ -2050,5 +2123,63 @@
       "rateLimited": "Çox cəhd edildi. Bir az sonra yenidən yoxlayın.",
       "generic": "Xəta baş verdi. Yenidən yoxlayın."
     }
+  },
+  "juryHome": {
+    "title": "Jüri paneli",
+    "greeting": "Salam, {name}",
+    "progress": "{total} qiymətləndirmədən {done}-ni tamamlamısınız.",
+    "nothingYet": "Finalçılar təsdiqlənəndə qiymətləndirəcəkləriniz burada görünəcək.",
+    "evaluated": "tamamlandı",
+    "completeProfile": "Profili tamamla",
+    "profileTitle": "Profilinizi tamamlayın",
+    "profileHint": "Şəkil, vəzifə və təcrübənizi əlavə edin",
+    "profileFooter": "Təşkilat və tələbələr kimin qiymətləndirdiyini profilinizdən görür.",
+    "juryDay": "Jüri günü: {date}",
+    "status": {
+      "SUBMITTED": "Təqdim edilib",
+      "DRAFT": "Qaralama",
+      "TODO": "Gözləyir"
+    },
+    "hackathon": "Hakaton təqdimatları",
+    "empty": "Hazırda qiymətləndirəcəyiniz heç nə yoxdur."
+  },
+  "juryProfile": {
+    "title": "Jüri profili",
+    "subtitle": "Təşkilat və finalçılar sizi bu profillə tanıyacaq.",
+    "photoAlt": "Profil şəkli",
+    "changePhoto": "Şəkli dəyiş",
+    "removePhoto": "Şəkli sil",
+    "photoUpdated": "Şəkil yeniləndi",
+    "complete": "Profil tamamdır",
+    "incomplete": "Şəkil, vəzifə və təcrübə əlavə edin",
+    "firstName": "Ad",
+    "lastName": "Soyad",
+    "headline": "Vəzifə",
+    "headlineHint": "Məs. \"Təsisçi, X Ventures\" və ya \"İnvestisiya meneceri\"",
+    "bio": "Təcrübə",
+    "bioHint": "Sahə, illər, gördüyünüz layihələr",
+    "saving": "Saxlanılır…",
+    "saved": "Profil yeniləndi"
+  },
+  "juryScore": {
+    "title": "Qiymətləndirmə",
+    "back": "Jüri paneli",
+    "studyYear": "{year}-ci kurs",
+    "platformRank": "platforma sırası",
+    "points": "bal",
+    "projects": "Layihə işləri",
+    "noProjects": "Finalçı hələ layihə işi təhvil verməyib.",
+    "projectsHint": "Bunlar tələbənin təlim bölmələrində yazdığı layihə cavablarıdır. Qiyməti jüri təqdimatından sonra verin.",
+    "sheet": "Qiymət vərəqəsi",
+    "scored": "{total} meyardan {done}-i qiymətləndirilib",
+    "submitted": "Təqdim edilib",
+    "comment": "Şərh (istəyə bağlı)",
+    "commentPlaceholder": "Güclü tərəflər, inkişaf ediləsi sahələr…",
+    "saveDraft": "Qaralama saxla",
+    "submit": "Təqdim et",
+    "update": "Yenilə",
+    "saving": "Saxlanılır…",
+    "draftSaved": "Qaralama saxlanıldı",
+    "submittedToast": "Qiymətləndirmə təqdim edildi"
   }
 }

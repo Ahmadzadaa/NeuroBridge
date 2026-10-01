@@ -6,6 +6,7 @@ import { Award } from "lucide-react";
 import { LargeTitle } from "@/components/ui/ios";
 import { listUserCertificates } from "@/lib/certificates/certificate-service";
 import { Download, ShieldOff } from "lucide-react";
+import { formatDate } from "@/lib/format-date";
 
 export default async function CertificatesPage({
   params,
@@ -20,7 +21,7 @@ export default async function CertificatesPage({
   const certificates = await listUserCertificates(session.user.id);
 
   // tr-TR for az: same month names on server and client.
-  const date = new Intl.DateTimeFormat(locale === "en" ? "en-GB" : "tr-TR", { dateStyle: "long" });
+  const date = { format: (value: Date | string) => formatDate(value, locale, "long") };
   const PASS: Record<string, string> = {
     ACHIEVEMENT: "from-amber-400 via-orange-500 to-rose-500",
     COMPLETION: "from-emerald-400 via-teal-500 to-sky-600",

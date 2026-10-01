@@ -132,7 +132,8 @@
     },
     "jury": {
       "dashboard": "Kontrol Paneli",
-      "rankings": "Sıralama"
+      "rankings": "Sıralama",
+      "profile": "Profilim"
     },
     "teacher": {
       "dashboard": "Kontrol Paneli",
@@ -379,7 +380,8 @@
       "pendingHint": "Ödeme alındı, ekibimiz programı hazırlıyor. Hazır olduğunda kayıt bağlantısı burada görünecek.",
       "paymentSuccess": "Ödeme alındı. Yeni programınız hazırlanıyor.",
       "subtitle": "Aldığınız programlar, kayıt dönemi ve doluluk.",
-      "applicationWindow": "Kayıt"
+      "applicationWindow": "Kayıt",
+      "jury": "Jüri"
     },
     "projectTypes": {
       "entrepreneurship_training": "Girişimcilik Eğitimi",
@@ -756,6 +758,60 @@
       "seatsLeft": "Boş",
       "seatsFooter": "Kayıt olan her öğrenci bir koltuk kullanır.",
       "shortcuts": "Kısayollar"
+    },
+    "jury": {
+      "title": "Jüri aşaması",
+      "subtitle": "Finalistleri seçin, jüri üyelerini davet edin ve değerlendirme sonuçlarını izleyin.",
+      "back": "Programlar",
+      "settings": "Ayarlar",
+      "settingsFooter": "Jüri aşaması isteğe bağlıdır. Kapalıysa program platform değerlendirmesiyle biter.",
+      "enable": "Jüri değerlendirmesi",
+      "enableHint": "Finalistler jüriye sunum yapar",
+      "finalistCount": "Finalist sayısı",
+      "juryDate": "Jüri günü",
+      "juryDateHint": "Yalnızca hafta içi, program tarihleri içinde",
+      "saved": "Kaydedildi",
+      "finalists": "Finalistler",
+      "finalistsHint": "Platform değerlendirmesine göre ilk {count} öğrenci önerilir — listeyi düzenleyip onaylayın.",
+      "confirmedOn": "{date} tarihinde onaylandı — jüri finalistleri görüyor.",
+      "confirmFinalists": "Finalistleri onayla ({count})",
+      "finalistsConfirmed": "Finalistler onaylandı",
+      "noParticipants": "Bu programda henüz aktif öğrenci yok.",
+      "points": "puan",
+      "jurors": "Jüri üyeleri",
+      "noJurors": "Henüz jüri üyesi eklenmedi.",
+      "profileIncomplete": "Profil eksik",
+      "resend": "Daveti yeniden gönder",
+      "resent": "Yeni davet bağlantısı gönderildi",
+      "remove": "Jüriden çıkar",
+      "removed": "Jüri üyesi çıkarıldı",
+      "addJuror": "Jüri üyesi ekle",
+      "addHint": "Şifre belirlemesi için e-postasına tek kullanımlık bağlantı gönderilir.",
+      "firstName": "Ad",
+      "lastName": "Soyad",
+      "email": "E-posta",
+      "invited": "Davet {email} adresine gönderildi",
+      "inviteNotSent": "Jüri üyesi eklendi ancak e-posta gönderilemedi",
+      "added": "Jüri üyesi bu programa eklendi",
+      "criteria": "Değerlendirme kriterleri",
+      "criteriaHint": "Geçici kriterlerdir — adlarını, puan ölçeğini ve ağırlığını değiştirebilirsiniz.",
+      "criteriaLocked": "Değerlendirme başladı: yalnızca adlar değiştirilebilir.",
+      "addCriterion": "Kriter ekle",
+      "removeCriterion": "Kriteri sil",
+      "name": {
+        "nameAz": "Ad (AZ)",
+        "nameEn": "Ad (EN)",
+        "nameTr": "Ad (TR)"
+      },
+      "maxScore": "Maksimum puan",
+      "weight": "Ağırlık",
+      "results": "Sonuçlar",
+      "resultsHint": "Her kriter jüri üyelerinin ortalamasıdır; toplam puan ağırlıklı olarak 100 üzerinden hesaplanır.",
+      "noResults": "Finalistler onaylandıktan sonra sonuçlar burada görünür.",
+      "finalist": "Finalist",
+      "total": "Toplam",
+      "submitted": "Gönderen",
+      "platformRank": "Platform sırası: {rank}"
     }
   },
   "participant": {
@@ -931,7 +987,10 @@
       "nothingUpcoming": "Planlanmış başka aşama yok.",
       "wallet": "Başarılar",
       "coins": "Coin bakiyesi",
-      "shortcuts": "Kısayollar"
+      "shortcuts": "Kısayollar",
+      "finalistTitle": "Finalistsiniz! 🎉",
+      "finalistText": "Projenizi jüriye sunacaksınız. Tarih yakında açıklanacak.",
+      "finalistJuryDay": "Projenizi {date} tarihinde jüriye sunacaksınız."
     },
     "certificatesSubtitle": "Kazandığınız sertifikalar — PDF'i indirip paylaşabilirsiniz."
   },
@@ -1523,7 +1582,21 @@
     "WRONG_CURRENT_PASSWORD": "Mevcut şifre hatalı.",
     "INVALID_APPLICATION_TOKEN": "Davet bağlantısı geçersiz veya süresi dolmuş.",
     "PAYMENT_UNAVAILABLE": "Ödeme sistemi şu anda kullanılamıyor. Biraz sonra tekrar deneyin.",
-    "PAYMENT_VERIFICATION_FAILED": "Ödeme doğrulanamadı."
+    "PAYMENT_VERIFICATION_FAILED": "Ödeme doğrulanamadı.",
+    "CRITERIA_LOCKED": "Değerlendirme başladı — kriterlerin yalnızca adı değiştirilebilir.",
+    "INVALID_CRITERIA": "1 ile 12 arasında kriter gerekir.",
+    "USER_HAS_OTHER_ROLE": "Bu e-postayla başka rolde bir hesap var.",
+    "ALREADY_JUROR": "Bu kişi zaten bu programın jürisinde.",
+    "JUROR_NOT_FOUND": "Jüri üyesi bulunamadı.",
+    "JURY_DISABLED": "Önce jüri aşamasını açın.",
+    "NOT_A_PARTICIPANT": "Seçilenlerden biri bu programın aktif öğrencisi değil.",
+    "FINALIST_SCORED": "Puanlanmış bir finalist listeden çıkarılamaz.",
+    "TOO_MANY_FINALISTS": "Finalist sayısı çok fazla.",
+    "FINALIST_NOT_FOUND": "Finalist bulunamadı.",
+    "INVALID_SCORE": "Puan kriterin ölçeği dışında.",
+    "INCOMPLETE_EVALUATION": "Göndermek için tüm kriterleri puanlayın.",
+    "WEEKEND_JURY_DATE": "Jüri günü hafta sonuna denk gelemez.",
+    "OUT_OF_RANGE": "Tarih program dönemi içinde olmalıdır."
   },
   "marketing": {
     "nav": {
@@ -2050,5 +2123,63 @@
       "rateLimited": "Çok fazla deneme. Biraz sonra tekrar deneyin.",
       "generic": "Bir hata oluştu. Tekrar deneyin."
     }
+  },
+  "juryHome": {
+    "title": "Jüri paneli",
+    "greeting": "Merhaba, {name}",
+    "progress": "{total} değerlendirmeden {done} tanesini tamamladınız.",
+    "nothingYet": "Finalistler onaylandığında değerlendireceğiniz kişiler burada görünecek.",
+    "evaluated": "tamamlandı",
+    "completeProfile": "Profili tamamla",
+    "profileTitle": "Profilinizi tamamlayın",
+    "profileHint": "Fotoğraf, unvan ve deneyiminizi ekleyin",
+    "profileFooter": "Kurum ve öğrenciler kimin değerlendirdiğini profilinizden görür.",
+    "juryDay": "Jüri günü: {date}",
+    "status": {
+      "SUBMITTED": "Gönderildi",
+      "DRAFT": "Taslak",
+      "TODO": "Bekliyor"
+    },
+    "hackathon": "Hackathon başvuruları",
+    "empty": "Şu anda değerlendirilecek bir şey yok."
+  },
+  "juryProfile": {
+    "title": "Jüri profili",
+    "subtitle": "Kurum ve finalistler sizi bu profille tanıyacak.",
+    "photoAlt": "Profil fotoğrafı",
+    "changePhoto": "Fotoğrafı değiştir",
+    "removePhoto": "Fotoğrafı kaldır",
+    "photoUpdated": "Fotoğraf güncellendi",
+    "complete": "Profil tamam",
+    "incomplete": "Fotoğraf, unvan ve deneyim ekleyin",
+    "firstName": "Ad",
+    "lastName": "Soyad",
+    "headline": "Unvan",
+    "headlineHint": "Örn. \"Kurucu, X Ventures\" veya \"Yatırım yöneticisi\"",
+    "bio": "Deneyim",
+    "bioHint": "Alan, yıllar, yer aldığınız projeler",
+    "saving": "Kaydediliyor…",
+    "saved": "Profil güncellendi"
+  },
+  "juryScore": {
+    "title": "Değerlendirme",
+    "back": "Jüri paneli",
+    "studyYear": "{year}. sınıf",
+    "platformRank": "platform sırası",
+    "points": "puan",
+    "projects": "Proje çalışmaları",
+    "noProjects": "Finalist henüz proje çalışması teslim etmedi.",
+    "projectsHint": "Bunlar öğrencinin eğitim bölümlerinde yazdığı proje cevaplarıdır. Puanı jüri sunumundan sonra verin.",
+    "sheet": "Puan formu",
+    "scored": "{total} kriterden {done} tanesi puanlandı",
+    "submitted": "Gönderildi",
+    "comment": "Yorum (isteğe bağlı)",
+    "commentPlaceholder": "Güçlü yönler, gelişime açık alanlar…",
+    "saveDraft": "Taslağı kaydet",
+    "submit": "Gönder",
+    "update": "Güncelle",
+    "saving": "Kaydediliyor…",
+    "draftSaved": "Taslak kaydedildi",
+    "submittedToast": "Değerlendirme gönderildi"
   }
 }

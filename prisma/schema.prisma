@@ -107,6 +107,11 @@ model User {
   /// authenticated route — never exposed as a public static path.
   avatarPath String? @map("avatar_path")
 
+  /// Juror profile shown to the organisation and on the jury screen:
+  /// current role ("Founder, X Ventures") and a few lines of experience.
+  headline String?
+  bio      String?
+
   teacherId           String?   @map("teacher_id")
   inviteToken         String?   @unique @map("invite_token")
   twoFactorEnabled    Boolean   @default(false) @map("two_factor_enabled")
@@ -137,6 +142,10 @@ model User {
   consents            UserConsent[]
   assessmentResults   AssessmentResult[]
   projectSubmissions  LessonProjectSubmission[]
+  juryAssignments     ProgramJuror[]
+  finalistEntries     ProgramFinalist[]
+  finalistScores      FinalistScore[]
+  finalistReviews     FinalistReview[]
   universityRef       University?               @relation(fields: [universityId], references: [id])
   departmentRef       Department?               @relation(fields: [departmentId], references: [id])
 
@@ -161,32 +170,34 @@ model UserRecoveryCode {
 }
 
 model Program {
-  id               String    @id @default(cuid())
-  tenantId         String    @map("tenant_id")
-  name             String
-  description      String?
-  type             String
-  applicationStart DateTime  @map("application_start")
-  applicationEnd   DateTime  @map("application_end")
-  simulationStart  DateTime? @map("simulation_start")
-  simulationEnd    DateTime? @map("simulation_end")
+  id                   String    @id @default(cuid())
+  tenantId             String    @map("tenant_id")
+  name                 String
+  description          String?
+  type                 String
+  applicationStart     DateTime  @map("application_start")
+  applicationEnd       DateTime  @map("application_end")
+  simulationStart      DateTime? @map("simulation_start")
+  simulationEnd        DateTime? @map("simulation_end")
   /// Calendar dates (UTC midnight) bounding the 6-week plan.
-  programStart     DateTime? @map("program_start")
-  programEnd       DateTime? @map("program_end")
-  finalistCount    Int?      @map("finalist_count")
-  juryEnabled      Boolean   @default(false) @map("jury_enabled")
+  programStart         DateTime? @map("program_start")
+  programEnd           DateTime? @map("program_end")
+  finalistCount        Int?      @map("finalist_count")
+  juryEnabled          Boolean   @default(false) @map("jury_enabled")
+  /// Set when the organisation confirms the finalist list; jurors see finalists only after this.
+  finalistsConfirmedAt DateTime? @map("finalists_confirmed_at")
   /// Name printed on the completion certificate, shown on the program info screen.
-  certificateName  String?   @map("certificate_name")
-  participantLimit Int       @map("participant_limit")
-  applicationToken String    @unique @default(cuid()) @map("application_token")
-  resultsRevealAt  DateTime? @map("results_reveal_at")
+  certificateName      String?   @map("certificate_name")
+  participantLimit     Int       @map("participant_limit")
+  applicationToken     String    @unique @default(cuid()) @map("application_token")
+  resultsRevealAt      DateTime? @map("results_reveal_at")
   /// PENDING_SETUP: created from a paid order, waiting for the platform team
   /// to fill in name, dates and content; applications stay closed. READY: live.
-  setupStatus      String    @default("READY") @map("setup_status")
+  setupStatus          String    @default("READY") @map("setup_status")
   /// The purchase that paid for this programme (null for ones made by hand).
-  orderId          String?   @map("order_id")
-  createdAt        DateTime  @default(now()) @map("created_at")
-  updatedAt        DateTime  @updatedAt @map("updated_at")
+  orderId              String?   @map("order_id")
+  createdAt            DateTime  @default(now()) @map("created_at")
+  updatedAt            DateTime  @updatedAt @map("updated_at")
 
   tenant             Tenant                @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   order              Order?                @relation(fields: [orderId], references: [id], onDelete: SetNull)
@@ -196,6 +207,8 @@ model Program {
   programAiTools     ProgramAiTool[]
   hackathonTeams     HackathonTeam[]
   scheduleItems      ProgramScheduleItem[]
+  jurors             ProgramJuror[]
+  finalists          ProgramFinalist[]
   assessmentResults  AssessmentResult[]
 
   certificates Certificate[]
@@ -567,10 +580,82 @@ model JuryCriterion {
   weight    Int     @default(1)
   order     Int     @default(0)
 
-  scores JuryScore[]
+  scores         JuryScore[]
+  finalistScores FinalistScore[]
 
   @@index([programId])
   @@map("jury_criteria")
+}
+
+/// A juror invited to evaluate one programme's finalists.
+model ProgramJuror {
+  id        String   @id @default(cuid())
+  programId String   @map("program_id")
+  userId    String   @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  program Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([programId, userId])
+  @@index([userId])
+  @@map("program_jurors")
+}
+
+/// A student chosen for the jury round, with the platform evaluation that put them there.
+model ProgramFinalist {
+  id            String   @id @default(cuid())
+  programId     String   @map("program_id")
+  userId        String   @map("user_id")
+  /// Unit points at selection time, and the student's place in the programme by them.
+  platformScore Int      @map("platform_score")
+  platformRank  Int      @map("platform_rank")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  program Program          @relation(fields: [programId], references: [id], onDelete: Cascade)
+  user    User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scores  FinalistScore[]
+  reviews FinalistReview[]
+
+  @@unique([programId, userId])
+  @@index([userId])
+  @@map("program_finalists")
+}
+
+/// One juror's score for one finalist on one criterion.
+model FinalistScore {
+  id          String   @id @default(cuid())
+  finalistId  String   @map("finalist_id")
+  criterionId String   @map("criterion_id")
+  juryUserId  String   @map("jury_user_id")
+  score       Int
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  finalist  ProgramFinalist @relation(fields: [finalistId], references: [id], onDelete: Cascade)
+  criterion JuryCriterion   @relation(fields: [criterionId], references: [id], onDelete: Cascade)
+  jury      User            @relation(fields: [juryUserId], references: [id], onDelete: Cascade)
+
+  @@unique([finalistId, criterionId, juryUserId])
+  @@index([juryUserId])
+  @@map("finalist_scores")
+}
+
+/// A juror's overall note on a finalist; `submittedAt` marks their evaluation as final.
+model FinalistReview {
+  id          String    @id @default(cuid())
+  finalistId  String    @map("finalist_id")
+  juryUserId  String    @map("jury_user_id")
+  comment     String?
+  submittedAt DateTime? @map("submitted_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  finalist ProgramFinalist @relation(fields: [finalistId], references: [id], onDelete: Cascade)
+  jury     User            @relation(fields: [juryUserId], references: [id], onDelete: Cascade)
+
+  @@unique([finalistId, juryUserId])
+  @@index([juryUserId])
+  @@map("finalist_reviews")
 }
 
 model JuryScore {

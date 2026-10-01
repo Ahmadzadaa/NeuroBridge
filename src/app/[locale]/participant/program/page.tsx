@@ -10,10 +10,10 @@ import { HeroAction, WelcomeHero } from "@/components/dashboard/dashboard-kit";
 import { getCurrentProgramForUser } from "@/lib/programs/participant-program";
 import { getProgramSchedule } from "@/lib/programs/schedule-service";
 import { programContentNames } from "@/lib/programs/content-names";
+import { formatDate } from "@/lib/format-date";
 
 type Params = { params: Promise<{ locale: string }> };
 
-const INTL: Record<string, string> = { tr: "tr-TR", en: "en-GB", az: "az-Latn-AZ" };
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { locale } = await params;
@@ -42,7 +42,7 @@ export default async function ParticipantProgramPage({ params }: Params) {
   }
 
   const schedule = await getProgramSchedule(program.id);
-  const date = new Intl.DateTimeFormat(INTL[locale] ?? "tr-TR", { dateStyle: "long", timeZone: "UTC" });
+  const date = { format: (value: Date | string) => formatDate(value, locale, "long") };
   const content = await programContentNames(program, locale, { trainings: tTrain, simulations: tSim });
   const vars = {
     org: program.tenant.name,
