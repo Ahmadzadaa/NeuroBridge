@@ -5,6 +5,7 @@ import { setProviderForTests } from "@/ai/providers";
 import { promptCanary } from "@/ai/prompts";
 import { handleMentorChat, type MentorChatResult } from "@/ai/mentor/service";
 import { buildAiUsageReport } from "@/ai/mentor/usage-report";
+import { startOfUtcDay } from "@/ai/mentor/limits";
 import type { AiRequest, LlmProvider } from "@/ai/types";
 
 vi.mock("next-intl/server", () => ({
@@ -58,8 +59,30 @@ describe.skipIf(!hasTestDb)("AI Mentor isolation and limits (database)", () => {
 
   beforeAll(async () => {
     setProviderForTests(fake);
-    const platform = await prisma.simulation.findUniqueOrThrow({ where: { key: "startup_management" }, select: { id: true } });
-    ids.platformSim = platform.id;
+    // Two platform simulations of our own, so the test needs no seeded content:
+    // one in both programmes, one in neither.
+    const platformSim = (key: string) =>
+      prisma.simulation.create({
+        data: {
+          key,
+          nameAz: key,
+          nameEn: key,
+          nameTr: key,
+          category: "test",
+          rounds: {
+            create: [1, 2].map((order) => ({
+              order,
+              title: `Round ${order}`,
+              context: "What do you do?",
+              choices: { create: [{ label: "a", feedback: "b" }, { label: "c", feedback: "d" }] },
+            })),
+          },
+        },
+        select: { id: true },
+      });
+    ids.platformKey = `mentor_platform_${suffix}`;
+    ids.platformSim = (await platformSim(ids.platformKey)).id;
+    ids.unassignedSim = (await platformSim(`mentor_unassigned_${suffix}`)).id;
 
     for (const label of ["a", "b"] as const) {
       const tenant = await prisma.tenant.create({
@@ -74,7 +97,7 @@ describe.skipIf(!hasTestDb)("AI Mentor isolation and limits (database)", () => {
           applicationStart: new Date("2026-01-01"),
           applicationEnd: new Date("2027-01-01"),
           participantLimit: 10,
-          programSimulations: { create: [{ simulationType: "startup_management" }] },
+          programSimulations: { create: [{ simulationType: ids.platformKey }] },
         },
       });
       const user = await prisma.user.create({
@@ -117,7 +140,7 @@ describe.skipIf(!hasTestDb)("AI Mentor isolation and limits (database)", () => {
     await prisma.aiUsageLog.deleteMany({ where: { tenantId: { in: tenantIds } } });
     await prisma.aiSecurityEvent.deleteMany({ where: { tenantId: { in: tenantIds } } });
     await prisma.aiConversationSummary.deleteMany({ where: { tenantId: { in: tenantIds } } });
-    if (ids.privateSim) await prisma.simulation.delete({ where: { id: ids.privateSim } });
+    await prisma.simulation.deleteMany({ where: { id: { in: [ids.privateSim, ids.platformSim, ids.unassignedSim].filter(Boolean) } } });
     await prisma.tenant.deleteMany({ where: { id: { in: tenantIds } } });
   });
 
@@ -145,8 +168,7 @@ describe.skipIf(!hasTestDb)("AI Mentor isolation and limits (database)", () => {
   });
 
   it("refuses a simulation that is not in the participant's programme", async () => {
-    const leadership = await prisma.simulation.findUniqueOrThrow({ where: { key: "leadership" }, select: { id: true } });
-    expect(await chat("a", "Help", leadership.id)).toMatchObject({ kind: "error", status: 403 });
+    expect(await chat("a", "Help", ids.unassignedSim)).toMatchObject({ kind: "error", status: 403 });
     expect(calls).toHaveLength(0);
   });
 
@@ -195,6 +217,8 @@ describe.skipIf(!hasTestDb)("AI Mentor isolation and limits (database)", () => {
         simulationId: ids.platformSim,
         role: "user",
         content: "filler",
+        // Earlier today, so the minimum-interval rule cannot fire first.
+        createdAt: new Date(Math.max(Date.now() - 60_000, startOfUtcDay(new Date()).getTime())),
       })),
     });
     expect(await chat("a", "One more question")).toMatchObject({ kind: "error", status: 429, code: "AI_LIMIT_DAILY_MESSAGES" });
