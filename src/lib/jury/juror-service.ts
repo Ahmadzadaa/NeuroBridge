@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { localized } from "@/lib/i18n-content";
 import { ensureProgramCriteria, criterionLabel } from "@/lib/jury/criteria";
-import { validateScores } from "@/lib/jury/scoring";
+import { computeFinalistResults, validateScores } from "@/lib/jury/scoring";
 import { JuryError } from "@/lib/jury/jury-error";
 
 /**
@@ -148,4 +148,68 @@ export async function saveEvaluation(
     });
   });
   return { submitted: input.submit };
+}
+
+/**
+ * Live finalist ranking for each programme the juror sits on. Only submitted
+ * evaluations count, so a half-filled draft never moves anyone up or down;
+ * totals are the weighted, scale-normalised averages the organisation sees.
+ */
+export async function getJurorRankings(juryUserId: string) {
+  const assignments = await prisma.programJuror.findMany({
+    where: { userId: juryUserId, program: OPEN_PROGRAM },
+    orderBy: { createdAt: "desc" },
+    select: {
+      program: {
+        select: {
+          id: true,
+          name: true,
+          tenant: { select: { name: true } },
+          jurors: { select: { userId: true } },
+          finalists: {
+            orderBy: { platformRank: "asc" },
+            select: {
+              id: true,
+              user: { select: { id: true, firstName: true, lastName: true, email: true, avatarPath: true } },
+              scores: { select: { criterionId: true, juryUserId: true, score: true } },
+              reviews: { where: { submittedAt: { not: null } }, select: { juryUserId: true } },
+            },
+          },
+        },
+      },
+    },
+  });
+  const programIds = assignments.map((a) => a.program.id);
+  const criteria = programIds.length
+    ? await prisma.juryCriterion.findMany({ where: { programId: { in: programIds } }, select: { id: true, programId: true, maxScore: true, weight: true } })
+    : [];
+
+  return assignments.map(({ program }) => {
+    const jurorIds = program.jurors.map((j) => j.userId);
+    const scores = program.finalists.flatMap((f) => {
+      const submitted = new Set(f.reviews.map((r) => r.juryUserId));
+      return f.scores.filter((s) => submitted.has(s.juryUserId)).map((s) => ({ ...s, finalistId: f.id }));
+    });
+    const results = computeFinalistResults({
+      criteria: criteria.filter((c) => c.programId === program.id),
+      finalistIds: program.finalists.map((f) => f.id),
+      jurorIds,
+      scores,
+    });
+    const rows = results.map((r) => {
+      const f = program.finalists.find((x) => x.id === r.finalistId)!;
+      return {
+        finalistId: f.id,
+        userId: f.user.id,
+        name: [f.user.firstName, f.user.lastName].filter(Boolean).join(" ") || f.user.email,
+        hasAvatar: Boolean(f.user.avatarPath),
+        total: r.total,
+        rank: r.rank,
+        jurorsScored: r.jurorsScored,
+      };
+    });
+    // Scored finalists by rank, then the rest in their platform order.
+    rows.sort((a, b) => (a.rank ?? Infinity) - (b.rank ?? Infinity));
+    return { id: program.id, name: program.name, organisation: program.tenant.name, jurors: jurorIds.length, rows };
+  });
 }
