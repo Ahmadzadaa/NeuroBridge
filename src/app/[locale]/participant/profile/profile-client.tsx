@@ -135,7 +135,7 @@ export function ProfileClient({ locale, profile }: ProfileClientProps) {
       toast.success(t("profileSaved"));
       if (language !== locale) {
         // Language switch takes effect via the locale segment.
-        window.location.href = `/${language}/participant/profile`;
+        router.replace(`/${language}/participant/profile`);
         return;
       }
       router.refresh();
