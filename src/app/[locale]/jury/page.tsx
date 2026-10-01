@@ -8,8 +8,8 @@ import { getJurorWorkload } from "@/lib/jury/juror-service";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { InsetGroup, InsetRow, Reveal } from "@/components/ui/ios";
 import { HeroAction, ProgressRing, WelcomeHero } from "@/components/dashboard/dashboard-kit";
-import { avatarTone } from "@/components/ui/avatar-tone";
 import { cn } from "@/lib/utils";
+import { UserAvatar } from "@/components/ui/user-avatar";
 import { formatDate } from "@/lib/format-date";
 
 /** Hackathon submissions this juror still has to score, when the organisation runs hackathons. */
@@ -112,21 +112,7 @@ export default async function JuryDashboardPage({ params }: { params: Promise<{ 
                       href={`/jury/finalists/${f.id}`}
                       className="group flex items-center gap-3 rounded-[20px] bg-card p-3.5 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60 transition-transform duration-300 hover:-translate-y-0.5"
                     >
-                      {f.hasAvatar ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={`/api/profile/avatar/${f.userId}`} alt="" className="h-11 w-11 shrink-0 rounded-full object-cover" />
-                      ) : (
-                        <span
-                          aria-hidden="true"
-                          className={cn("flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br text-[14px] font-semibold uppercase text-white", avatarTone(f.userId))}
-                        >
-                          {f.name
-                            .split(" ")
-                            .map((p) => p[0])
-                            .slice(0, 2)
-                            .join("")}
-                        </span>
-                      )}
+                      <UserAvatar userId={f.userId} name={f.name} hasAvatar={f.hasAvatar} className="h-11 w-11 text-[14px]" />
                       <span className="min-w-0 flex-1">
                         <span className="block truncate text-[15px] font-semibold">{f.name}</span>
                         {f.university && <span className="block truncate text-[13px] text-muted-foreground">{f.university}</span>}

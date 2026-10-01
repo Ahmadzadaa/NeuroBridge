@@ -23,8 +23,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Field, IconTile, InsetGroup, LargeTitle, Reveal } from "@/components/ui/ios";
-import { avatarTone } from "@/components/ui/avatar-tone";
 import { cn } from "@/lib/utils";
+import { UserAvatar } from "@/components/ui/user-avatar";
 import { formatDate } from "@/lib/format-date";
 
 type RankingRow = { userId: string; name: string; email: string; university: string | null; points: number; rank: number; selected: boolean };
@@ -59,24 +59,8 @@ export interface JuryAdminClientProps {
 const SURFACE =
   "rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60";
 
-function Avatar({ id, name, hasAvatar, size = 40 }: { id: string; name: string; hasAvatar: boolean; size?: number }) {
-  const initials = name
-    .split(" ")
-    .map((p) => p[0])
-    .slice(0, 2)
-    .join("");
-  return hasAvatar ? (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img src={`/api/profile/avatar/${id}`} alt="" className="shrink-0 rounded-full object-cover" style={{ width: size, height: size }} />
-  ) : (
-    <span
-      aria-hidden="true"
-      className={cn("flex shrink-0 items-center justify-center rounded-full bg-gradient-to-br text-[13px] font-semibold uppercase text-white", avatarTone(id))}
-      style={{ width: size, height: size }}
-    >
-      {initials}
-    </span>
-  );
+function Avatar({ id, name, hasAvatar }: { id: string; name: string; hasAvatar: boolean }) {
+  return <UserAvatar userId={id} name={name} hasAvatar={hasAvatar} className="h-10 w-10 text-[13px]" />;
 }
 
 export function JuryAdminClient(props: JuryAdminClientProps) {
@@ -249,7 +233,7 @@ export function JuryAdminClient(props: JuryAdminClientProps) {
                             }
                           />
                           <span className="w-8 shrink-0 text-center text-[13px] font-bold tabular-nums text-muted-foreground">#{r.rank}</span>
-                          <Avatar id={r.userId} name={r.name} hasAvatar={false} size={36} />
+                          <Avatar id={r.userId} name={r.name} hasAvatar={false} />
                           <span className="min-w-0 flex-1">
                             <span className="block truncate text-[15px] font-medium">{r.name}</span>
                             <span className="block truncate text-[12px] text-muted-foreground">{r.university ?? r.email}</span>

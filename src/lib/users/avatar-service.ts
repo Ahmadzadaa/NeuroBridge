@@ -2,6 +2,7 @@ import { randomUUID } from "crypto";
 import { mkdir, unlink, writeFile } from "fs/promises";
 import path from "path";
 import { prisma } from "@/lib/prisma";
+import sharp from "sharp";
 
 /**
  * Profile picture storage.
@@ -14,6 +15,7 @@ import { prisma } from "@/lib/prisma";
 
 export const AVATAR_ROOT = path.join(process.cwd(), "uploads", "avatars");
 export const MAX_AVATAR_BYTES = 2 * 1024 * 1024; // 2 MB
+const AVATAR_SIZE = 512;
 
 export class InvalidAvatarError extends Error {
   readonly statusCode = 400;
@@ -103,14 +105,27 @@ export async function saveAvatar(
     throw new InvalidAvatarError("Image must be a JPEG, PNG or WebP file");
   }
 
+  // Re-encoded to a 512px square WebP: an avatar is shown at most 112px wide,
+  // and a fresh encode drops EXIF (GPS, device) and anything appended to the file.
+  let image: Buffer;
+  try {
+    image = await sharp(buffer, { limitInputPixels: 40_000_000, failOn: "error" })
+      .rotate()
+      .resize(AVATAR_SIZE, AVATAR_SIZE, { fit: "cover" })
+      .webp({ quality: 85 })
+      .toBuffer();
+  } catch {
+    throw new InvalidAvatarError("Image could not be read");
+  }
+
   const previous = await prisma.user.findUnique({
     where: { id: userId },
     select: { avatarPath: true },
   });
 
   await mkdir(AVATAR_ROOT, { recursive: true });
-  const storedPath = `${userId}-${randomUUID()}.${kind.extension}`;
-  await writeFile(path.join(AVATAR_ROOT, storedPath), buffer);
+  const storedPath = `${userId}-${randomUUID()}.webp`;
+  await writeFile(path.join(AVATAR_ROOT, storedPath), image);
 
   await prisma.user.update({
     where: { id: userId },
@@ -120,7 +135,7 @@ export async function saveAvatar(
   // Best-effort cleanup; a leftover file is harmless, a failed upload is not.
   await removeAvatarFile(previous?.avatarPath);
 
-  return { storedPath, contentType: kind.contentType, bytes: buffer.length };
+  return { storedPath, contentType: "image/webp", bytes: image.length };
 }
 
 export async function deleteAvatar(userId: string): Promise<void> {

@@ -9,8 +9,8 @@ import { Link } from "@/i18n/navigation";
 import { useApiErrorMessage } from "@/lib/api/api-error";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { avatarTone } from "@/components/ui/avatar-tone";
 import { cn } from "@/lib/utils";
+import { UserAvatar } from "@/components/ui/user-avatar";
 
 type Criterion = { id: string; label: string; maxScore: number; weight: number };
 type Project = { id: string; order: number; title: string; content: string; updatedAt: string };
@@ -118,12 +118,6 @@ export function ScoreSheet(props: ScoreSheetProps) {
     }
   }
 
-  const initials = props.finalist.name
-    .split(" ")
-    .map((p) => p[0])
-    .slice(0, 2)
-    .join("");
-
   return (
     <div className="mx-auto max-w-5xl space-y-6 pb-28 lg:pb-0">
       <Link href="/jury" className="inline-flex items-center gap-1 text-[14px] font-medium text-primary hover:underline">
@@ -135,14 +129,12 @@ export function ScoreSheet(props: ScoreSheetProps) {
       <section className="ios-reveal relative overflow-hidden rounded-[26px] bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 p-6 text-white shadow-[0_20px_50px_-24px_rgba(79,70,229,0.7)] sm:p-8">
         <span aria-hidden="true" className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-white/15 blur-3xl" />
         <div className="relative flex flex-wrap items-center gap-5">
-          {props.finalist.hasAvatar ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={`/api/profile/avatar/${props.finalist.userId}`} alt="" className="h-20 w-20 rounded-full object-cover ring-4 ring-white/30" />
-          ) : (
-            <span className={cn("flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br text-[26px] font-semibold uppercase ring-4 ring-white/30", avatarTone(props.finalist.userId))}>
-              {initials}
-            </span>
-          )}
+          <UserAvatar
+            userId={props.finalist.userId}
+            name={props.finalist.name}
+            hasAvatar={props.finalist.hasAvatar}
+            className="h-20 w-20 text-[26px] ring-4 ring-white/30"
+          />
           <div className="min-w-0 flex-1">
             <p className="text-[13px] font-semibold uppercase tracking-[0.6px] text-white/70">{props.programName}</p>
             <h1 className="text-[26px] font-bold leading-tight tracking-[-0.6px] sm:text-[30px]">{props.finalist.name}</h1>
