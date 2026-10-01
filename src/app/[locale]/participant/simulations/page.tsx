@@ -4,6 +4,7 @@ import { requireRole } from "@/lib/auth-utils";
 import { requireFeature } from "@/lib/tenant/require-feature";
 import { prisma } from "@/lib/prisma";
 import { localized } from "@/lib/i18n-content";
+import { accessibleSimulationsWhere } from "@/lib/programs/simulation-access";
 import { SimulationsPageClient } from "./simulations-client";
 
 export default async function SimulationsPage({
@@ -16,17 +17,11 @@ export default async function SimulationsPage({
   const session = await requireRole(locale, ["PARTICIPANT"]);
   await requireFeature(session.user.tenantId, "simulations");
 
+  // Platform scenarios of the participant's programmes + this tenant's own scenarios.
+  const visible = await accessibleSimulationsWhere(prisma, session.user.id, session.user.tenantId ?? null);
   const [simulations, runs, me] = await Promise.all([
-    // Platform scenarios + this tenant's teacher-authored scenarios.
     prisma.simulation.findMany({
-      where: {
-        OR: [
-          { tenantId: null },
-          ...(session.user.tenantId
-            ? [{ tenantId: session.user.tenantId }]
-            : []),
-        ],
-      },
+      where: visible,
       include: { _count: { select: { rounds: true } } },
     }),
     prisma.simulationRun.findMany({

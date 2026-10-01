@@ -9,6 +9,7 @@ import { Link } from "@/i18n/navigation";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { IconTile, LargeTitle, Reveal } from "@/components/ui/ios";
 import { loadAiConfig } from "@/ai/config";
+import { accessibleSimulationsWhere } from "@/lib/programs/simulation-access";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -29,14 +30,8 @@ export default async function MentorHubPage({ params }: Props) {
   const session = await requireRole(locale, ["PARTICIPANT"]);
   await requireFeature(session.user.tenantId, "aiTools");
   const t = await getTranslations("mentor.hub");
-  const tenantId = session.user.tenantId ?? "__none__";
-
-  const assigned = await prisma.programSimulation.findMany({
-    where: { program: { tenantId, participants: { some: { userId: session.user.id, status: "ACTIVE" } } } },
-    select: { simulationType: true },
-  });
   const simulations = await prisma.simulation.findMany({
-    where: { OR: [{ tenantId: null, key: { in: [...new Set(assigned.map((a) => a.simulationType))] } }, { tenantId }] },
+    where: await accessibleSimulationsWhere(prisma, session.user.id, session.user.tenantId ?? null),
     select: { id: true, key: true, nameAz: true, nameEn: true, nameTr: true, _count: { select: { rounds: true } } },
     orderBy: { key: "asc" },
   });

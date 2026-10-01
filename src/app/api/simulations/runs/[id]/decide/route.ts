@@ -3,6 +3,7 @@ import { withAuthorizedHandler } from "@/lib/auth/authorize";
 import { assertFeatureEnabled } from "@/lib/tenant/features";
 import { simulationDecideSchema, parseBody } from "@/lib/validation/schemas";
 import { prisma } from "@/lib/prisma";
+import { canAccessSimulation } from "@/lib/programs/simulation-access";
 import { localizedText } from "@/lib/i18n-content";
 import {
   applyChoice,
@@ -27,6 +28,8 @@ export async function POST(
       include: {
         simulation: {
           select: {
+            key: true,
+            tenantId: true,
             targetCash: true,
             rounds: { select: { id: true, order: true }, orderBy: { order: "asc" } },
           },
@@ -34,6 +37,10 @@ export async function POST(
       },
     });
     if (!run || run.userId !== session.id) {
+      return NextResponse.json({ error: "Run not found" }, { status: 404 });
+    }
+    // Access is re-checked on every move: leaving the programme ends access.
+    if (!(await canAccessSimulation(prisma, { userId: session.id, tenantId: session.tenantId, simulation: run.simulation }))) {
       return NextResponse.json({ error: "Run not found" }, { status: 404 });
     }
     if (run.status !== "IN_PROGRESS") {

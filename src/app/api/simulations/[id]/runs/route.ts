@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { withAuthorizedHandler } from "@/lib/auth/authorize";
 import { assertFeatureEnabled } from "@/lib/tenant/features";
 import { prisma } from "@/lib/prisma";
+import { canAccessSimulation } from "@/lib/programs/simulation-access";
 import {
   START_SATISFACTION,
   START_REPUTATION,
@@ -20,15 +21,17 @@ export async function POST(
       where: { id },
       select: {
         id: true,
+        key: true,
         startCash: true,
         tenantId: true,
         _count: { select: { rounds: true } },
       },
     });
+    // Platform simulations only when the participant's programme includes them.
     if (
       !simulation ||
       simulation._count.rounds === 0 ||
-      (simulation.tenantId !== null && simulation.tenantId !== session.tenantId)
+      !(await canAccessSimulation(prisma, { userId: session.id, tenantId: session.tenantId, simulation }))
     ) {
       return NextResponse.json(
         { error: "Simulation is not playable" },

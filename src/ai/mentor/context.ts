@@ -1,6 +1,7 @@
 import type { Prisma } from "@prisma/client";
 import { localized, localizedText } from "@/lib/i18n-content";
 import { IDEA_DEV_TRAINING_KEY } from "@/lib/training/units-service";
+import { canAccessSimulation } from "@/lib/programs/simulation-access";
 
 type Tx = Prisma.TransactionClient;
 
@@ -43,22 +44,7 @@ export async function resolveMentorScope(
     },
   });
   if (!simulation) return null;
-  if (simulation.tenantId !== null && simulation.tenantId !== params.tenantId) return null;
-
-  const enrolment = await tx.participant.findFirst({
-    where: {
-      userId: params.userId,
-      status: "ACTIVE",
-      program: {
-        tenantId: params.tenantId,
-        // Platform simulations must be part of the programme; a tenant's own
-        // scenarios are open to all of its active participants.
-        ...(simulation.tenantId === null ? { programSimulations: { some: { simulationType: simulation.key } } } : {}),
-      },
-    },
-    select: { id: true },
-  });
-  if (!enrolment) return null;
+  if (!(await canAccessSimulation(tx, { userId: params.userId, tenantId: params.tenantId, simulation }))) return null;
 
   const base = { simulationId: simulation.id, simulationName: localized(simulation, "name", params.locale) };
   if (simulation._count.rounds > 0) {

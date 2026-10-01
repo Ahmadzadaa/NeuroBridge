@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { requireRole } from "@/lib/auth-utils";
 import { requireFeature } from "@/lib/tenant/require-feature";
 import { prisma } from "@/lib/prisma";
+import { canAccessSimulation } from "@/lib/programs/simulation-access";
 import { localized, localizedText } from "@/lib/i18n-content";
 import { SimulationPlayClient } from "./play-client";
 import { MentorPanel } from "@/components/mentor/mentor-panel";
@@ -24,8 +25,11 @@ export default async function SimulationPlayPage({
   if (
     !simulation ||
     simulation._count.rounds === 0 ||
-    (simulation.tenantId !== null &&
-      simulation.tenantId !== session.user.tenantId)
+    !(await canAccessSimulation(prisma, {
+      userId: session.user.id,
+      tenantId: session.user.tenantId ?? null,
+      simulation,
+    }))
   ) {
     notFound();
   }
