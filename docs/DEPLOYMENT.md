@@ -1,5 +1,10 @@
 # BizSim AWS Deployment Guide
 
+> Production today runs on a single EC2 server: Caddy, app, worker and Postgres via
+> `deploy/docker-compose.yml`, deployed by `.github/workflows/deploy-ec2.yml`, with a daily
+> backup from `deploy/backup.sh`. The ECS / Terraform setup below (`infra/`) is the
+> scale-out plan and has no deploy workflow yet.
+
 ## Architecture
 
 ```
@@ -84,7 +89,6 @@ docker compose up postgres -d
 | Workflow | Trigger |
 |----------|---------|
 | `ci.yml` | PR / push — test, coverage, Terraform validate, Docker build |
-| `deploy-staging.yml` | Push to `develop` |
-| `deploy-production.yml` | Tag `v*.*.*` or manual with confirmation |
+| `deploy-ec2.yml` | Push to `main` or manual — lint, unit + PostgreSQL integration tests, image build, EC2 deploy |
 
 See [PRODUCTION_AUDIT_REPORT.md](./PRODUCTION_AUDIT_REPORT.md) for full readiness assessment.
