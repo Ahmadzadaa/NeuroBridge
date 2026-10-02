@@ -68,6 +68,19 @@ interface AnalyticsClientProps {
 /** Sentinel for "no filter" — Select cannot hold an empty string value. */
 const ALL = "__all__";
 
+/** Polls a background export until it is ready; null when it failed or took too long. */
+async function waitForExport(pollUrl: string): Promise<string | null> {
+  for (let attempt = 0; attempt < 90; attempt++) {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    const res = await fetch(pollUrl);
+    if (!res.ok) return null;
+    const job = (await res.json()) as { status: string; downloadUrl?: string };
+    if (job.status === "COMPLETED" && job.downloadUrl) return job.downloadUrl;
+    if (job.status === "FAILED") return null;
+  }
+  return null;
+}
+
 type SortKey = keyof Pick<
   CourseBreakdownRow,
   "title" | "enrolled" | "completed" | "completionPercent" | "averageScore" | "averageActiveDays"
@@ -200,13 +213,25 @@ export function AnalyticsClient({
         return;
       }
 
+      let file: Response = res;
       if (res.status === 202) {
+        // Large programmes are exported in the background: wait for the job.
         toast.message(t("csvQueued"));
-        return;
+        const { pollUrl } = (await res.json()) as { pollUrl: string };
+        const downloadUrl = await waitForExport(pollUrl);
+        if (!downloadUrl) {
+          toast.error(t("csvFailed"));
+          return;
+        }
+        file = await fetch(downloadUrl);
+        if (!file.ok) {
+          toast.error(t("csvFailed"));
+          return;
+        }
       }
 
-      const blob = await res.blob();
-      const disposition = res.headers.get("Content-Disposition");
+      const blob = await file.blob();
+      const disposition = file.headers.get("Content-Disposition");
       const filename = disposition?.match(/filename="(.+)"/)?.[1] ?? "report.csv";
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");

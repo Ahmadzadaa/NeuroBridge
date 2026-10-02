@@ -79,9 +79,17 @@ export async function processNextJob(
 ): Promise<boolean> {
   const jobId = await dequeueJob();
   if (!jobId) return false;
+  await processJob(jobId, handler);
+  return true;
+}
 
+/** Runs one job by id; a job that is not PENDING (already taken) is left alone. */
+export async function processJob(
+  jobId: string,
+  handler: (job: JobRecord) => Promise<string>
+): Promise<void> {
   const job = await getJob(jobId);
-  if (!job || job.status !== "PENDING") return true;
+  if (!job || job.status !== "PENDING") return;
 
   await updateJobStatus(jobId, "PROCESSING");
 
@@ -93,6 +101,4 @@ export async function processNextJob(
       error: error instanceof Error ? error.message : "Job failed",
     });
   }
-
-  return true;
 }

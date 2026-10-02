@@ -1,9 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { withAuthorizedHandler } from "@/lib/auth/authorize";
 import { reportExportSchema, parseBody } from "@/lib/validation/schemas";
 import { recordAudit, getClientIp } from "@/lib/audit/audit-service";
 import { AUDIT_ACTIONS } from "@/lib/audit/actions";
-import { enqueueJob } from "@/lib/queue/queue";
+import { enqueueJob, processJob } from "@/lib/queue/queue";
+import { handleJob } from "@/lib/queue/handlers";
+import { isRedisAvailable } from "@/lib/redis/client";
 import type { ReportExportPayload } from "@/lib/queue/types";
 import { exportProgramReportCsv } from "@/lib/reports/export-service";
 import { enforceRateLimit } from "@/lib/security/rate-limit";
@@ -76,6 +78,9 @@ export async function POST(request: Request) {
       };
 
       const jobId = await enqueueJob("REPORT_EXPORT", payload);
+      // Without Redis the queue lives in this process's memory, out of the
+      // worker's reach, so the app builds the file itself once it has replied.
+      if (!isRedisAvailable()) after(() => processJob(jobId, handleJob));
 
       await recordAudit({
         action: AUDIT_ACTIONS.REPORT_EXPORTED,

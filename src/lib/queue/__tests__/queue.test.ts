@@ -3,6 +3,7 @@ import {
   dequeueJob,
   enqueueJob,
   getJob,
+  processJob,
   processNextJob,
   updateJobStatus,
 } from "@/lib/queue/queue";
@@ -49,6 +50,20 @@ describe("queue", () => {
 
     const job = await getJob(jobId);
     expect(job?.status).toBe("COMPLETED");
+  });
+
+  it("runs a job by id once, without the worker", async () => {
+    const jobId = await enqueueJob("METRICS_ROLLUP", {});
+    let runs = 0;
+    const handler = async () => {
+      runs++;
+      return "{}";
+    };
+    await processJob(jobId, handler);
+    await processJob(jobId, handler);
+
+    expect((await getJob(jobId))?.status).toBe("COMPLETED");
+    expect(runs).toBe(1);
   });
 
   it("marks failed jobs when handler throws", async () => {
