@@ -79,6 +79,7 @@ const navConfig: Record<PanelType, NavItem[]> = {
     { href: "/tenant/reports", labelKey: "reports", icon: BarChart3 },
     { href: "/tenant/settings", labelKey: "settings", icon: Settings },
     { href: "/tenant/billing", labelKey: "billing", icon: CreditCard },
+    { href: "/tenant/support", labelKey: "support", icon: Headphones },
   ],
   participant: [
     { href: "/participant", labelKey: "dashboard", icon: LayoutDashboard },

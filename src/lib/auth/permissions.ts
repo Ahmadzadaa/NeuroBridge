@@ -34,6 +34,8 @@ export type Permission =
   | "teacher:manage"
   | "jury:manage"
   | "jury:score"
+  | "support:read"
+  | "support:write"
   | "platform:admin";
 
 // SUPER_ADMIN is the platform owner: provisions tenants, oversees billing
@@ -88,6 +90,8 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "simulation:author",
     "teacher:manage",
     "jury:manage",
+    "support:read",
+    "support:write",
   ],
   TENANT_VIEWER: [
     "tenant:read",
@@ -103,6 +107,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "coin:read",
     "training:read",
     "hackathon:read",
+    "support:read",
   ],
   PARTICIPANT: [
     "program:read",

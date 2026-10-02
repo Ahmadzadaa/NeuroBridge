@@ -49,9 +49,10 @@ model Tenant {
   services TenantService[]
   orders   Order[]
 
-  universities  University[]
-  departments   Department[]
-  notifications TenantNotification[]
+  universities   University[]
+  departments    Department[]
+  notifications  TenantNotification[]
+  supportTickets SupportTicket[]
 
   certificates         Certificate[]
   certificateSequences CertificateSequence[]
@@ -150,6 +151,8 @@ model User {
   finalistScores      FinalistScore[]
   finalistReviews     FinalistReview[]
   aiMessages          AiMessage[]
+  supportTickets      SupportTicket[]           @relation("SupportTicketCreator")
+  supportMessages     SupportMessage[]
   universityRef       University?               @relation(fields: [universityId], references: [id])
   departmentRef       Department?               @relation(fields: [departmentId], references: [id])
 
@@ -1566,4 +1569,44 @@ model AiSecurityEvent {
   @@index([type, createdAt])
   @@index([userHash, type, createdAt])
   @@map("ai_security_events")
+}
+
+/// A tenant admin's question to the platform team, with its conversation.
+model SupportTicket {
+  id            String    @id @default(cuid())
+  tenantId      String    @map("tenant_id")
+  createdById   String    @map("created_by_id")
+  subject       String
+  /// OPEN (the platform team owes a reply) | ANSWERED (the organisation does) | RESOLVED
+  status        String    @default("OPEN")
+  lastMessageAt DateTime  @default(now()) @map("last_message_at")
+  /// When each side last opened the thread; a newer message from the other side is unread.
+  tenantReadAt  DateTime? @map("tenant_read_at")
+  staffReadAt   DateTime? @map("staff_read_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  tenant    Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  createdBy User             @relation("SupportTicketCreator", fields: [createdById], references: [id], onDelete: Cascade)
+  messages  SupportMessage[]
+
+  @@index([status, lastMessageAt])
+  @@index([tenantId, lastMessageAt])
+  @@map("support_tickets")
+}
+
+model SupportMessage {
+  id        String   @id @default(cuid())
+  ticketId  String   @map("ticket_id")
+  authorId  String   @map("author_id")
+  /// Written by the platform team rather than the organisation.
+  fromStaff Boolean  @default(false) @map("from_staff")
+  body      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  ticket SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  author User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([ticketId, createdAt])
+  @@map("support_messages")
 }

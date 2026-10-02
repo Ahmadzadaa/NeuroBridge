@@ -117,7 +117,8 @@
       "teachers": "Teachers",
       "assessments": "Baseline tests",
       "certificates": "Certificates",
-      "analytics": "Analytics"
+      "analytics": "Analytics",
+      "support": "Support"
     },
     "participant": {
       "dashboard": "Dashboard",
@@ -2621,5 +2622,44 @@
     "completed": "Video fully watched",
     "rules": "No skipping ahead, up to 2x speed",
     "required": "To complete the lesson, watch the video to the end and answer its questions."
+  },
+  "support": {
+    "title": "Support",
+    "staffSubtitle": "Requests from organisations. Open ones are waiting for your reply.",
+    "tenantSubtitle": "Ask the platform team a question or report a problem.",
+    "filterLabel": "Filter by status",
+    "all": "All",
+    "status": {
+      "OPEN": "Open",
+      "ANSWERED": "Answered",
+      "RESOLVED": "Resolved"
+    },
+    "staffEmptyOpen": "No requests are waiting for a reply.",
+    "emptyFiltered": "No requests with this status.",
+    "tenantEmpty": "No requests yet. If you have a question or a problem, open a new request.",
+    "newTicket": "New request",
+    "newTicketSubtitle": "When the platform team replies, you will see it here.",
+    "subject": "Subject",
+    "subjectPlaceholder": "e.g. Students cannot download their certificate",
+    "message": "Message",
+    "messagePlaceholder": "Describe your question or the problem in detail…",
+    "messageHint": "Telling us on which page and at which step it happens helps us help you faster.",
+    "submit": "Send",
+    "created": "Request sent",
+    "sendError": "Could not send. Please try again.",
+    "back": "All requests",
+    "openedBy": "Opened by {name} · {date}",
+    "conversation": "Conversation",
+    "teamName": "{name} · BizSim team",
+    "replyLabel": "Reply",
+    "replyPlaceholder": "Write your reply…",
+    "replyReopens": "Writing here reopens the request…",
+    "send": "Send",
+    "markResolved": "Mark as resolved",
+    "reopen": "Reopen",
+    "resolvedToast": "Request marked as resolved",
+    "reopenedToast": "Request reopened",
+    "unread": "Unread",
+    "messageCount": "{count, plural, one {# message} other {# messages}}"
   }
 }

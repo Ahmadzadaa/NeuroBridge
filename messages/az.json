@@ -117,7 +117,8 @@
       "teachers": "Müəllimlər",
       "assessments": "Başlanğıc testləri",
       "certificates": "Sertifikatlar",
-      "analytics": "Analitika"
+      "analytics": "Analitika",
+      "support": "Dəstək"
     },
     "participant": {
       "dashboard": "Panel",
@@ -2621,5 +2622,44 @@
     "completed": "Video tam izlənildi",
     "rules": "İrəli çəkmək olmur, sürət 2x-ə qədər",
     "required": "Dərsi tamamlamaq üçün videonu sona qədər izləyin və suallara cavab verin."
+  },
+  "support": {
+    "title": "Dəstək",
+    "staffSubtitle": "Təşkilatların müraciətləri. Açıq olanlar sizin cavabınızı gözləyir.",
+    "tenantSubtitle": "Platforma komandasına sual verin və ya problemi bildirin.",
+    "filterLabel": "Statusa görə süzgəc",
+    "all": "Hamısı",
+    "status": {
+      "OPEN": "Açıq",
+      "ANSWERED": "Cavablandı",
+      "RESOLVED": "Həll olundu"
+    },
+    "staffEmptyOpen": "Cavab gözləyən müraciət yoxdur.",
+    "emptyFiltered": "Bu statusda müraciət yoxdur.",
+    "tenantEmpty": "Hələ müraciət yoxdur. Sualınız və ya probleminiz olsa, yeni müraciət yaradın.",
+    "newTicket": "Yeni müraciət",
+    "newTicketSubtitle": "Platforma komandası cavab verəndə onu burada görəcəksiniz.",
+    "subject": "Mövzu",
+    "subjectPlaceholder": "Məs.: Tələbələr sertifikatı yükləyə bilmir",
+    "message": "Mesaj",
+    "messagePlaceholder": "Sualınızı və ya problemi ətraflı yazın…",
+    "messageHint": "Problemin hansı səhifədə və hansı addımda yarandığını yazsanız, daha tez kömək edə bilərik.",
+    "submit": "Göndər",
+    "created": "Müraciət göndərildi",
+    "sendError": "Göndərilmədi. Yenidən cəhd edin.",
+    "back": "Bütün müraciətlər",
+    "openedBy": "{name} açıb · {date}",
+    "conversation": "Yazışma",
+    "teamName": "{name} · BizSim komandası",
+    "replyLabel": "Cavab",
+    "replyPlaceholder": "Cavabınızı yazın…",
+    "replyReopens": "Yazsanız, müraciət yenidən açılacaq…",
+    "send": "Göndər",
+    "markResolved": "Həll olundu kimi işarələ",
+    "reopen": "Yenidən aç",
+    "resolvedToast": "Müraciət həll olundu kimi işarələndi",
+    "reopenedToast": "Müraciət yenidən açıldı",
+    "unread": "Oxunmamış",
+    "messageCount": "{count} mesaj"
   }
 }

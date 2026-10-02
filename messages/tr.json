@@ -117,7 +117,8 @@
       "teachers": "Öğretmenler",
       "assessments": "Başlangıç testleri",
       "certificates": "Sertifikalar",
-      "analytics": "Analitik"
+      "analytics": "Analitik",
+      "support": "Destek"
     },
     "participant": {
       "dashboard": "Panel",
@@ -2621,5 +2622,44 @@
     "completed": "Video tamamen izlendi",
     "rules": "İleri sarma yok, hız en fazla 2x",
     "required": "Dersi tamamlamak için videoyu sonuna kadar izleyin ve sorularını cevaplayın."
+  },
+  "support": {
+    "title": "Destek",
+    "staffSubtitle": "Kurumlardan gelen talepler. Açık olanlar yanıtınızı bekliyor.",
+    "tenantSubtitle": "Platform ekibine soru sorun veya bir sorun bildirin.",
+    "filterLabel": "Duruma göre filtrele",
+    "all": "Tümü",
+    "status": {
+      "OPEN": "Açık",
+      "ANSWERED": "Yanıtlandı",
+      "RESOLVED": "Çözüldü"
+    },
+    "staffEmptyOpen": "Yanıt bekleyen talep yok.",
+    "emptyFiltered": "Bu durumda talep yok.",
+    "tenantEmpty": "Henüz talep yok. Bir sorunuz veya sorununuz varsa yeni bir talep oluşturun.",
+    "newTicket": "Yeni talep",
+    "newTicketSubtitle": "Platform ekibi yanıt verdiğinde burada göreceksiniz.",
+    "subject": "Konu",
+    "subjectPlaceholder": "Örn. Öğrenciler sertifikalarını indiremiyor",
+    "message": "Mesaj",
+    "messagePlaceholder": "Sorunuzu veya sorunu ayrıntılı yazın…",
+    "messageHint": "Sorunun hangi sayfada ve hangi adımda oluştuğunu yazarsanız daha hızlı yardımcı olabiliriz.",
+    "submit": "Gönder",
+    "created": "Talep gönderildi",
+    "sendError": "Gönderilemedi. Lütfen tekrar deneyin.",
+    "back": "Tüm talepler",
+    "openedBy": "{name} açtı · {date}",
+    "conversation": "Yazışma",
+    "teamName": "{name} · BizSim ekibi",
+    "replyLabel": "Yanıt",
+    "replyPlaceholder": "Yanıtınızı yazın…",
+    "replyReopens": "Buraya yazarsanız talep yeniden açılır…",
+    "send": "Gönder",
+    "markResolved": "Çözüldü olarak işaretle",
+    "reopen": "Yeniden aç",
+    "resolvedToast": "Talep çözüldü olarak işaretlendi",
+    "reopenedToast": "Talep yeniden açıldı",
+    "unread": "Okunmamış",
+    "messageCount": "{count} mesaj"
   }
 }

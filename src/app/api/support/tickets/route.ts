@@ -1,0 +1,27 @@
+import { withAuthorizedHandler } from "@/lib/auth/authorize";
+import { parseBody } from "@/lib/validation/schemas";
+import { enforceRateLimit } from "@/lib/security/rate-limit";
+import { createTicket, newTicketSchema } from "@/lib/support/support-service";
+import { recordAudit, getClientIp } from "@/lib/audit/audit-service";
+import { AUDIT_ACTIONS } from "@/lib/audit/actions";
+
+/** An organisation admin opens a support ticket with the platform team. */
+export async function POST(request: Request) {
+  return withAuthorizedHandler(
+    "support:write",
+    async ({ session }) => {
+      await enforceRateLimit("api", session.id);
+      const body = parseBody(newTicketSchema, await request.json());
+      const ticket = await createTicket({ ...session, tenantId: session.tenantId! }, body);
+      await recordAudit({
+        action: AUDIT_ACTIONS.SUPPORT_TICKET_CREATED,
+        userId: session.id,
+        tenantId: session.tenantId,
+        ip: getClientIp(request),
+        details: { ticketId: ticket.id },
+      });
+      return ticket;
+    },
+    { requireTenant: true }
+  );
+}
