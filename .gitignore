@@ -60,3 +60,18 @@ _cert_assets.tgz
 
 # Unrelated document that happened to be saved into the project root.
 DaCy_Azerbaijan.pdf
+
+# Private notes, plans and demo logins stay on this machine only; the
+# repository holds code, not descriptions of it.
+/docs/
+/DEMO_ACCOUNTS.md
+/DEMO_DATA.md
+/PROJECT_OVERVIEW.md
+/levelup.md
+/*PROMPT*.md
+/Cursor*.md
+/audit prompt.md
+/check-password.ts
+/check-demo-users.ts
+/test-auth.ts
+/scripts/test-http-login.ts
