@@ -384,7 +384,7 @@
       "back": "Back to content",
       "videoHeading": "Video",
       "videoUrl": "YouTube link",
-      "videoUrlHint": "Upload the video to YouTube (unlisted) and paste its link here. Uploading videos to our own storage comes in the next step.",
+      "videoUrlHint": "Link to an unlisted YouTube video. You can also upload your own file above.",
       "duration": "Length (min:sec)",
       "durationHint": "The server checks completion against this length; if empty, the length the browser reports is used.",
       "detect": "Read from video",
@@ -411,7 +411,20 @@
       "invalidTime": "Enter the length as min:sec, e.g. 12:30.",
       "questionTime": "Question {n}: enter the time as min:sec.",
       "azRequired": "Question {n}: the question and every option need Azerbaijani text.",
-      "questionsNeedVideo": "Add a YouTube link before adding questions."
+      "questionsNeedVideo": "Add a YouTube link before adding questions.",
+      "fileActive": "The uploaded file plays; the YouTube link is only used if the file is removed.",
+      "fileHeading": "Own video file",
+      "fileHint": "MP4, WebM or MOV, up to {max} MB. The video can only be watched on the platform; it has no public link.",
+      "upload": "Upload video",
+      "replace": "Replace",
+      "removeFile": "Remove video file",
+      "confirmRemove": "Remove the video file? This cannot be undone.",
+      "uploading": "Uploading… {percent}%",
+      "uploaded": "Video uploaded",
+      "removed": "Video file removed",
+      "uploadError": "The video could not be uploaded. Please try again.",
+      "unsupportedType": "This format is not supported. Choose MP4, WebM or MOV.",
+      "tooLarge": "The file is too large (up to {max} MB)."
     }
   },
   "tenant": {

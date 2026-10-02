@@ -384,7 +384,7 @@
       "back": "İçeriğe dön",
       "videoHeading": "Video",
       "videoUrl": "YouTube bağlantısı",
-      "videoUrlHint": "Videoyu YouTube'a (liste dışı) yükleyin ve bağlantısını buraya yapıştırın. Kendi depolamamıza video yükleme bir sonraki adımda eklenecek.",
+      "videoUrlHint": "Liste dışı bir YouTube videosunun bağlantısı. Kendi dosyanızı yukarıdan da yükleyebilirsiniz.",
       "duration": "Süre (dk:sn)",
       "durationHint": "Sunucu tamamlamayı bu süreye göre kontrol eder; boş bırakılırsa tarayıcının bildirdiği süre kullanılır.",
       "detect": "Videodan oku",
@@ -411,7 +411,20 @@
       "invalidTime": "Süreyi dk:sn olarak yazın, örn. 12:30.",
       "questionTime": "{n}. soru: zamanı dk:sn olarak yazın.",
       "azRequired": "{n}. soru: soru ve tüm seçenekler Azerbaycanca doldurulmalı.",
-      "questionsNeedVideo": "Soru eklemeden önce bir YouTube bağlantısı ekleyin."
+      "questionsNeedVideo": "Soru eklemeden önce bir YouTube bağlantısı ekleyin.",
+      "fileActive": "Yüklenen dosya oynatılır; YouTube bağlantısı yalnızca dosya silinirse kullanılır.",
+      "fileHeading": "Kendi video dosyası",
+      "fileHint": "MP4, WebM veya MOV, en fazla {max} MB. Video yalnızca platformda izlenebilir; herkese açık bağlantısı yoktur.",
+      "upload": "Video yükle",
+      "replace": "Değiştir",
+      "removeFile": "Video dosyasını sil",
+      "confirmRemove": "Video dosyası silinsin mi? Bu geri alınamaz.",
+      "uploading": "Yükleniyor… %{percent}",
+      "uploaded": "Video yüklendi",
+      "removed": "Video dosyası silindi",
+      "uploadError": "Video yüklenemedi. Lütfen tekrar deneyin.",
+      "unsupportedType": "Bu biçim desteklenmiyor. MP4, WebM veya MOV seçin.",
+      "tooLarge": "Dosya çok büyük (en fazla {max} MB)."
     }
   },
   "tenant": {

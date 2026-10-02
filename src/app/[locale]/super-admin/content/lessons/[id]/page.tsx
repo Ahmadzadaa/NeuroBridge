@@ -4,6 +4,7 @@ import { requireRole } from "@/lib/auth-utils";
 import { prisma } from "@/lib/prisma";
 import { localized } from "@/lib/i18n-content";
 import { editableText } from "@/lib/lessons/video-admin";
+import { maxVideoBytes } from "@/lib/lessons/video-file";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { LessonVideoEditor } from "./lesson-video-editor";
 
@@ -21,6 +22,7 @@ export default async function LessonVideoPage({ params }: { params: Promise<{ lo
       titleEn: true,
       titleTr: true,
       videoUrl: true,
+      videoKey: true,
       videoDurationSec: true,
       training: { select: { titleAz: true, titleEn: true, titleTr: true } },
       videoQuestions: { orderBy: { atSecond: "asc" }, select: { id: true, atSecond: true, prompt: true, options: true, correctIndex: true } },
@@ -34,8 +36,10 @@ export default async function LessonVideoPage({ params }: { params: Promise<{ lo
         lessonId={lesson.id}
         lessonTitle={localized(lesson, "title", locale)}
         trainingTitle={localized(lesson.training, "title", locale)}
+        maxVideoMb={Math.floor(maxVideoBytes() / 1024 / 1024)}
         initial={{
           videoUrl: lesson.videoUrl ?? "",
+          videoKey: lesson.videoKey,
           videoDurationSec: lesson.videoDurationSec,
           questions: lesson.videoQuestions.map((q) => ({
             id: q.id,

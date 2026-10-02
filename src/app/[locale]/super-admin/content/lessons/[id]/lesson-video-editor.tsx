@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { loadYouTubeApi } from "@/components/lessons/youtube-api";
 import { cn } from "@/lib/utils";
+import { VideoFileUpload } from "./video-file-upload";
 
 type Lang = "az" | "en" | "tr";
 type Text = Record<Lang, string>;
@@ -39,13 +40,16 @@ export function LessonVideoEditor({
   lessonId,
   lessonTitle,
   trainingTitle,
+  maxVideoMb,
   initial,
 }: {
   lessonId: string;
   lessonTitle: string;
   trainingTitle: string;
+  maxVideoMb: number;
   initial: {
     videoUrl: string;
+    videoKey: string | null;
     videoDurationSec: number | null;
     questions: { id: string; atSecond: number; prompt: Text; options: Text[]; correctIndex: number }[];
   };
@@ -53,6 +57,7 @@ export function LessonVideoEditor({
   const t = useTranslations("superAdmin.content");
   const router = useRouter();
   const [videoUrl, setVideoUrl] = useState(initial.videoUrl);
+  const [videoKey, setVideoKey] = useState(initial.videoKey);
   const [duration, setDuration] = useState(initial.videoDurationSec ? formatTime(initial.videoDurationSec) : "");
   const [lang, setLang] = useState<Lang>("az");
   const [questions, setQuestions] = useState<QuestionDraft[]>(() =>
@@ -110,7 +115,7 @@ export function LessonVideoEditor({
       if (!q.prompt.az.trim() || q.options.some((o) => !o.az.trim())) return setError(t("azRequired", { n: i + 1 }));
       payload.push({ id: q.id, atSecond: at, prompt: q.prompt, options: q.options, correctIndex: q.correctIndex });
     }
-    if (questions.length > 0 && !videoId) return setError(t("questionsNeedVideo"));
+    if (questions.length > 0 && !videoId && !videoKey) return setError(t("questionsNeedVideo"));
     setSaving(true);
     try {
       const res = await fetch(`/api/admin/lessons/${lessonId}/video`, {
@@ -146,10 +151,20 @@ export function LessonVideoEditor({
 
       <section className={cn(SURFACE, "space-y-4")} aria-labelledby="video-heading">
         <h2 id="video-heading" className="text-[17px] font-bold">{t("videoHeading")}</h2>
+        <VideoFileUpload
+          lessonId={lessonId}
+          videoKey={videoKey}
+          maxMb={maxVideoMb}
+          onChange={(next) => {
+            setVideoKey(next.videoKey);
+            if (next.durationSec) setDuration(formatTime(next.durationSec));
+            router.refresh();
+          }}
+        />
         <div className="space-y-1.5">
           <Label htmlFor="video-url">{t("videoUrl")}</Label>
           <Input id="video-url" value={videoUrl} placeholder="https://www.youtube.com/watch?v=…" onChange={(e) => setVideoUrl(e.target.value)} />
-          <p className="text-[12px] text-muted-foreground">{t("videoUrlHint")}</p>
+          <p className="text-[12px] text-muted-foreground">{videoKey ? t("fileActive") : t("videoUrlHint")}</p>
         </div>
         <div className="flex flex-wrap items-end gap-3">
           <div className="space-y-1.5">
@@ -163,7 +178,7 @@ export function LessonVideoEditor({
         </div>
         <p className="text-[12px] text-muted-foreground">{t("durationHint")}</p>
         <div ref={probeRef} className="hidden" aria-hidden="true" />
-        {videoId && (
+        {videoId && !videoKey && (
           <div className="aspect-video overflow-hidden rounded-xl bg-black">
             <iframe
               src={`https://www.youtube-nocookie.com/embed/${videoId}`}

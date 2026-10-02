@@ -384,7 +384,7 @@
       "back": "Məzmuna qayıt",
       "videoHeading": "Video",
       "videoUrl": "YouTube linki",
-      "videoUrlHint": "Videonu YouTube-a (gizli/unlisted) yükləyin və linki bura qoyun. Öz serverimizə video yükləmə növbəti mərhələdə əlavə olunacaq.",
+      "videoUrlHint": "Gizli (unlisted) YouTube videosunun linki. Öz faylınızı yuxarıdan yükləyə də bilərsiniz.",
       "duration": "Uzunluq (dəq:san)",
       "durationHint": "Server tamamlamanı bu uzunluğa görə yoxlayır; boş qalsa, brauzerin bildirdiyi uzunluq götürülür.",
       "detect": "Videodan götür",
@@ -411,7 +411,20 @@
       "invalidTime": "Uzunluğu dəq:san formatında yazın, məsələn 12:30.",
       "questionTime": "{n}-ci sualın vaxtını dəq:san formatında yazın.",
       "azRequired": "{n}-ci sual: sual və bütün variantlar AZ dilində doldurulmalıdır.",
-      "questionsNeedVideo": "Sual əlavə etmək üçün əvvəlcə YouTube linki qoyun."
+      "questionsNeedVideo": "Sual əlavə etmək üçün əvvəlcə YouTube linki qoyun.",
+      "fileActive": "Yüklənmiş fayl oynadılır; YouTube linki yalnız fayl silinsə istifadə olunur.",
+      "fileHeading": "Öz video faylı",
+      "fileHint": "MP4, WebM və ya MOV, {max} MB-a qədər. Video yalnız platformada izlənə bilər, ictimai linki olmur.",
+      "upload": "Video yüklə",
+      "replace": "Dəyiş",
+      "removeFile": "Video faylını sil",
+      "confirmRemove": "Video faylı silinsin? Bu geri qaytarılmır.",
+      "uploading": "Yüklənir… {percent}%",
+      "uploaded": "Video yükləndi",
+      "removed": "Video faylı silindi",
+      "uploadError": "Video yüklənmədi. Yenidən cəhd edin.",
+      "unsupportedType": "Bu format dəstəklənmir. MP4, WebM və ya MOV seçin.",
+      "tooLarge": "Fayl çox böyükdür ({max} MB-a qədər)."
     }
   },
   "tenant": {

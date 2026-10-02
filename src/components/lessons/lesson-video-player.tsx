@@ -202,7 +202,9 @@ export function LessonVideoPlayer({
       }
       // Seeking ahead of what was watched snaps back.
       if (now > furthestRef.current + 1.5 && now - last > 1.5 * maxRate) {
+        const playing = !m.paused();
         m.seek(furthestRef.current);
+        if (playing) m.play();
         setNotice(t("skipBlocked"));
         last = furthestRef.current;
         return;

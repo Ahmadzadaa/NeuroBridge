@@ -62,3 +62,8 @@ export function createLocalStorage(root: string = LOCAL_ROOT): StorageAdapter {
     },
   };
 }
+
+/** Absolute path of a key on local disk, for callers that stream instead of buffering. */
+export function localPath(key: string, root: string = LOCAL_ROOT): string {
+  return resolveWithinRoot(root, key);
+}
