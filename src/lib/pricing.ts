@@ -1,5 +1,6 @@
 import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+import { BASE_CURRENCY, type PriceCurrency } from "@/lib/billing/currency";
 
 // Service-based pricing: each service is priced per participant, with the
 // unit price picked by participant-count tier. All money is integer kuruş.
@@ -49,14 +50,21 @@ type PricedService = {
   }[];
 };
 
-/** Pure pricing step, separated from the DB lookup so it is easy to test. */
-export function priceItems(services: PricedService[], items: QuoteItemInput[]): Quote {
+/**
+ * Pure pricing step, separated from the DB lookup so it is easy to test.
+ * Only tiers in the requested currency count; a service without one is
+ * NO_MATCHING_TIER, so a quote is always in a single currency.
+ */
+export function priceItems(
+  services: PricedService[],
+  items: QuoteItemInput[],
+  currency: PriceCurrency = BASE_CURRENCY,
+): Quote {
   if (items.length === 0) throw new PricingError("EMPTY_QUOTE");
 
   const byCode = new Map(services.map((s) => [s.code, s]));
   const seen = new Set<string>();
   const lines: QuoteLine[] = [];
-  let currency: string | undefined;
 
   for (const { serviceCode, participantCount } of items) {
     if (!Number.isInteger(participantCount) || participantCount < 1) {
@@ -70,13 +78,11 @@ export function priceItems(services: PricedService[], items: QuoteItemInput[]): 
 
     const tier = service.tiers.find(
       (t) =>
+        t.currency === currency &&
         participantCount >= t.minParticipants &&
         (t.maxParticipants === null || participantCount <= t.maxParticipants),
     );
     if (!tier) throw new PricingError("NO_MATCHING_TIER", serviceCode);
-
-    currency ??= tier.currency;
-    if (tier.currency !== currency) throw new PricingError("CURRENCY_MISMATCH", serviceCode);
 
     lines.push({
       serviceId: service.id,
@@ -91,7 +97,7 @@ export function priceItems(services: PricedService[], items: QuoteItemInput[]): 
   return {
     items: lines,
     total: lines.reduce((sum, l) => sum + l.subtotal, 0),
-    currency: currency!,
+    currency,
   };
 }
 
@@ -101,6 +107,7 @@ export function priceItems(services: PricedService[], items: QuoteItemInput[]): 
  */
 export async function calculateQuote(
   items: QuoteItemInput[],
+  currency: PriceCurrency = BASE_CURRENCY,
   db: Prisma.TransactionClient = prisma,
 ): Promise<Quote> {
   const services = await db.service.findMany({
@@ -119,5 +126,5 @@ export async function calculateQuote(
       },
     },
   });
-  return priceItems(services, items);
+  return priceItems(services, items, currency);
 }

@@ -237,7 +237,7 @@
       "activate": "Aktivləşdir",
       "deactivate": "Deaktiv et",
       "tiers": "Qiymət aralıqları",
-      "tiersHint": "Yuxarı hədd yoxdursa, Maks sahəsini boş buraxın. Aralıqlar üst-üstə düşməməlidir.",
+      "tiersHint": "Qiymət hər iştirakçı üçündür. Yuxarı hədd yoxdursa, Maks sahəsini boş buraxın; aralıqlar üst-üstə düşməməlidir. $ qiyməti istəyə bağlıdır: doldursanız, bütün aralıqlar üçün doldurun. Türk dilində sayt ₺, Azərbaycan və ingilis dillərində $ göstərir ($ qiyməti yoxdursa, ₺).",
       "min": "Min iştirakçı",
       "max": "Maks iştirakçı",
       "price": "İştirakçı başına qiymət (TL)",
@@ -248,7 +248,11 @@
       "codeTaken": "Bu kodla xidmət artıq mövcuddur.",
       "tierOverlap": "Qiymət aralıqları üst-üstə düşür. Hər iştirakçı sayı yalnız bir aralığa aid olmalıdır.",
       "tierRange": "Aralıq başlamadan bitir. Maks, Min-dən kiçik ola bilməz.",
-      "codePlaceholder": "məs. HACKATHON"
+      "codePlaceholder": "məs. HACKATHON",
+      "priceTry": "Qiymət, ₺ (TRY)",
+      "priceUsd": "Qiymət, $ (USD)",
+      "usdIncomplete": "$ qiymətini ya bütün aralıqlar üçün doldurun, ya da heç birini doldurmayın.",
+      "tryRequired": "Hər xidmətin ₺ (TRY) qiymətləri olmalıdır."
     },
     "audit": {
       "filterByAction": "Əməliyyata görə süz",
@@ -332,7 +336,8 @@
         "PENDING": "Gözləyir",
         "FAILED": "Uğursuz"
       },
-      "newLeads": "{count, plural, one {# yeni demo sorğusu} other {# yeni demo sorğusu}}"
+      "newLeads": "{count, plural, one {# yeni demo sorğusu} other {# yeni demo sorğusu}}",
+      "chartCurrencyNote": "Qrafik ₺ ödənişlərini göstərir; $ ödənişləri yuxarıdakı xanalarda ayrıca verilib."
     },
     "placeholders": {
       "content": "Simulyasiya modulları, təlim məzmunu, AI Mentor təlimatları və nişanların mərkəzi idarəsi burada olacaq.",
@@ -1593,7 +1598,8 @@
       "TRAININGS": "Video dərslər, testlər və sertifikatlar",
       "AI_TOOLS": "Tələbələrə ideya və plan üzərində şəxsi AI mentor"
     },
-    "tenantNote": "Ödənişdən sonra proqram hesabınıza əlavə olunur, komandamız onu hazırlayıb aktivləşdirir."
+    "tenantNote": "Ödənişdən sonra proqram hesabınıza əlavə olunur, komandamız onu hazırlayıb aktivləşdirir.",
+    "currencyLabel": "Valyuta"
   },
   "activation": {
     "title": "Hesabınızı aktivləşdirin",

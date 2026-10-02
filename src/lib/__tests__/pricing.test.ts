@@ -7,11 +7,11 @@ vi.mock("@/lib/prisma", () => ({
 import { prisma } from "@/lib/prisma";
 import { calculateQuote, PricingError } from "@/lib/pricing";
 
-const tier = (min: number, max: number | null, price: number) => ({
+const tier = (min: number, max: number | null, price: number, currency = "TRY") => ({
   minParticipants: min,
   maxParticipants: max,
   pricePerParticipant: price,
-  currency: "TRY",
+  currency,
 });
 
 const catalogue = [
@@ -19,7 +19,7 @@ const catalogue = [
     id: "svc_hack",
     code: "HACKATHON",
     name: "Hackathon",
-    tiers: [tier(1, 50, 1000), tier(51, 100, 800), tier(101, null, 600)],
+    tiers: [tier(1, 50, 1000), tier(51, 100, 800), tier(101, null, 600), tier(1, 100, 30, "USD"), tier(101, null, 20, "USD")],
   },
   {
     id: "svc_teach",
@@ -95,6 +95,18 @@ describe("calculateQuote", () => {
         { serviceCode: "HACKATHON", participantCount: 20 },
       ]),
       "DUPLICATE_SERVICE",
+    );
+  });
+
+  it("prices in the requested currency, from that currency's tiers only", async () => {
+    const usd = await calculateQuote([{ serviceCode: "HACKATHON", participantCount: 60 }], "USD");
+    expect(usd).toMatchObject({ currency: "USD", total: 60 * 30 });
+    const lira = await calculateQuote([{ serviceCode: "HACKATHON", participantCount: 60 }]);
+    expect(lira).toMatchObject({ currency: "TRY", total: 60 * 800 });
+    // TEACHERS has no dollar prices, so it cannot be bought in USD.
+    await expectPricingError(
+      calculateQuote([{ serviceCode: "TEACHERS", participantCount: 10 }], "USD"),
+      "NO_MATCHING_TIER",
     );
   });
 

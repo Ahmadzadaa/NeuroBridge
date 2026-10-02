@@ -16,7 +16,8 @@ import { StatusChip } from "@/components/ui/status-chip";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { formatKurus } from "@/lib/billing/money";
 
-type Tier = { minParticipants: number; maxParticipants: number | null; pricePerParticipant: number };
+/** One participant range with its price in each currency (minor units); dollars are optional. */
+type Tier = { minParticipants: number; maxParticipants: number | null; priceTry: number; priceUsd: number | null };
 
 export type ServiceRow = {
   id: string;
@@ -27,8 +28,8 @@ export type ServiceRow = {
   tiers: Tier[];
 };
 
-/** Tier as typed in the form: counts as text, price in lira (not kuruş). */
-type TierDraft = { min: string; max: string; price: string };
+/** Tier as typed in the form: counts as text, prices in lira / dollars (not minor units). */
+type TierDraft = { min: string; max: string; price: string; usd: string };
 type Draft = { id: string | null; code: string; name: string; active: boolean; tiers: TierDraft[] };
 
 const EMPTY_DRAFT: Draft = {
@@ -36,7 +37,7 @@ const EMPTY_DRAFT: Draft = {
   code: "",
   name: "",
   active: true,
-  tiers: [{ min: "1", max: "", price: "" }],
+  tiers: [{ min: "1", max: "", price: "", usd: "" }],
 };
 
 const toDraft = (s: ServiceRow): Draft => ({
@@ -47,11 +48,13 @@ const toDraft = (s: ServiceRow): Draft => ({
   tiers: s.tiers.map((t) => ({
     min: String(t.minParticipants),
     max: t.maxParticipants === null ? "" : String(t.maxParticipants),
-    price: (t.pricePerParticipant / 100).toFixed(2),
+    price: (t.priceTry / 100).toFixed(2),
+    usd: t.priceUsd === null ? "" : (t.priceUsd / 100).toFixed(2),
   })),
 });
 
-const money = (kurus: number) => formatKurus(kurus, "TRY", "tr-TR");
+const money = (minor: number, currency = "TRY") => formatKurus(minor, currency, currency === "USD" ? "en-US" : "tr-TR");
+const toMinor = (value: string) => Math.round(Number(value.replace(",", ".")) * 100);
 
 export function ServicesClient({ userName, services }: { userName: string; services: ServiceRow[] }) {
   const t = useTranslations("superAdmin.services");
@@ -78,6 +81,7 @@ export function ServicesClient({ userName, services }: { userName: string; servi
       CODE_TAKEN: t("codeTaken"),
       TIER_OVERLAP: t("tierOverlap"),
       TIER_RANGE: t("tierRange"),
+      BASE_CURRENCY_REQUIRED: t("tryRequired"),
     };
     const message = known[data?.code] ?? data?.error ?? tc("error");
     setError(message);
@@ -90,12 +94,23 @@ export function ServicesClient({ userName, services }: { userName: string; servi
     if (!draft) return;
     setSaving(true);
     setError(null);
-    const tiers = draft.tiers.map((tier) => ({
-      minParticipants: Number(tier.min),
-      maxParticipants: tier.max.trim() === "" ? null : Number(tier.max),
-      // Lira in the form, integer kuruş on the wire.
-      pricePerParticipant: Math.round(Number(tier.price.replace(",", ".")) * 100),
-    }));
+    // Dollar prices are all-or-nothing: a partial list would leave some
+    // participant counts unbuyable in dollars.
+    const usdFilled = draft.tiers.filter((tier) => tier.usd.trim() !== "").length;
+    if (usdFilled > 0 && usdFilled < draft.tiers.length) {
+      setSaving(false);
+      setError(t("usdIncomplete"));
+      return;
+    }
+    const tiers = draft.tiers.flatMap((tier) => {
+      const range = {
+        minParticipants: Number(tier.min),
+        maxParticipants: tier.max.trim() === "" ? null : Number(tier.max),
+      };
+      // Major units in the form, integer minor units on the wire.
+      const lira = { ...range, pricePerParticipant: toMinor(tier.price), currency: "TRY" };
+      return usdFilled ? [lira, { ...range, pricePerParticipant: toMinor(tier.usd), currency: "USD" }] : [lira];
+    });
     const ok = draft.id
       ? await request(`/api/services/${draft.id}`, "PATCH", { name: draft.name, active: draft.active, tiers })
       : await request("/api/services", "POST", { code: draft.code, name: draft.name, active: draft.active, tiers });
@@ -159,7 +174,8 @@ export function ServicesClient({ userName, services }: { userName: string; servi
                   <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[12px] text-muted-foreground">
                     {service.tiers.map((tier) => (
                       <li key={tier.minParticipants} className="tabular-nums">
-                        {tier.minParticipants}–{tier.maxParticipants ?? "∞"}: {money(tier.pricePerParticipant)}
+                        {tier.minParticipants}–{tier.maxParticipants ?? "∞"}: {money(tier.priceTry)}
+                        {tier.priceUsd !== null && ` · ${money(tier.priceUsd, "USD")}`}
                       </li>
                     ))}
                   </ul>
@@ -201,7 +217,7 @@ export function ServicesClient({ userName, services }: { userName: string; servi
       </div>
 
       <Dialog open={!!draft} onOpenChange={(open) => !open && setDraft(null)}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>{draft?.id ? t("editTitle") : t("addTitle")}</DialogTitle>
           </DialogHeader>
@@ -240,14 +256,15 @@ export function ServicesClient({ userName, services }: { userName: string; servi
               <fieldset className="space-y-2">
                 <legend className="text-sm font-medium">{t("tiers")}</legend>
                 <p className="text-[11px] text-muted-foreground">{t("tiersHint")}</p>
-                <div className="grid grid-cols-[1fr_1fr_1fr_auto] gap-2 text-[11px] text-muted-foreground">
+                <div className="grid grid-cols-[1fr_1fr_1fr_1fr_auto] gap-2 text-[11px] text-muted-foreground">
                   <span>{t("min")}</span>
                   <span>{t("max")}</span>
-                  <span>{t("price")}</span>
+                  <span>{t("priceTry")}</span>
+                  <span>{t("priceUsd")}</span>
                   <span className="w-8" />
                 </div>
                 {draft.tiers.map((tier, i) => (
-                  <div key={i} className="grid grid-cols-[1fr_1fr_1fr_auto] items-center gap-2">
+                  <div key={i} className="grid grid-cols-[1fr_1fr_1fr_1fr_auto] items-center gap-2">
                     <Input
                       type="number"
                       min={1}
@@ -268,9 +285,17 @@ export function ServicesClient({ userName, services }: { userName: string; servi
                       inputMode="decimal"
                       required
                       pattern="\d+([.,]\d{1,2})?"
-                      aria-label={t("price")}
+                      aria-label={t("priceTry")}
                       value={tier.price}
                       onChange={(e) => setTier(i, { price: e.target.value })}
+                    />
+                    <Input
+                      inputMode="decimal"
+                      pattern="\d+([.,]\d{1,2})?"
+                      placeholder="—"
+                      aria-label={t("priceUsd")}
+                      value={tier.usd}
+                      onChange={(e) => setTier(i, { usd: e.target.value })}
                     />
                     <Button
                       type="button"
@@ -293,7 +318,7 @@ export function ServicesClient({ userName, services }: { userName: string; servi
                   onClick={() => {
                     const last = draft.tiers[draft.tiers.length - 1];
                     const nextMin = last?.max ? String(Number(last.max) + 1) : "";
-                    setDraft({ ...draft, tiers: [...draft.tiers, { min: nextMin, max: "", price: "" }] });
+                    setDraft({ ...draft, tiers: [...draft.tiers, { min: nextMin, max: "", price: "", usd: "" }] });
                   }}
                 >
                   <Plus className="h-3.5 w-3.5" aria-hidden="true" />

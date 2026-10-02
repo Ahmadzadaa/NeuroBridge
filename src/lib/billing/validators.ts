@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { BASE_CURRENCY, PRICE_CURRENCIES } from "@/lib/billing/currency";
 
 /**
  * Billing request schemas.
@@ -69,13 +70,16 @@ const quoteItems = z
   .min(1, "Select at least one service")
   .max(20);
 
-export const quoteSchema = z.object({ items: quoteItems });
+const priceCurrency = z.enum(PRICE_CURRENCIES).default(BASE_CURRENCY);
+
+export const quoteSchema = z.object({ items: quoteItems, currency: priceCurrency });
 
 export const createOrderSchema = z.object({
   institutionName: z.string().trim().min(2).max(200),
   contactName: z.string().trim().min(2).max(200),
   contactEmail: z.string().trim().toLowerCase().email().max(254),
   locale: z.enum(["tr", "en", "az"]).default("tr"),
+  currency: priceCurrency,
   items: quoteItems,
 });
 
@@ -90,7 +94,7 @@ const tierSchema = z.object({
   minParticipants: z.number().int().min(1).max(1_000_000),
   maxParticipants: z.number().int().min(1).max(1_000_000).nullable(),
   pricePerParticipant: z.number().int("Price must be whole kuruş").min(0).max(100_000_000),
-  currency: z.literal("TRY").default("TRY"),
+  currency: z.enum(PRICE_CURRENCIES).default(BASE_CURRENCY),
 });
 
 const tiersSchema = z.array(tierSchema).min(1, "At least one tier is required").max(20);

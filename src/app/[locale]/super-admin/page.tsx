@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { requireRole } from "@/lib/auth-utils";
 import { prisma } from "@/lib/prisma";
+import { BASE_CURRENCY, PRICE_CURRENCIES } from "@/lib/billing/currency";
 import { formatKurus } from "@/lib/billing/money";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { InsetGroup, InsetRow, Reveal } from "@/components/ui/ios";
@@ -52,9 +53,9 @@ export default async function SuperAdminPage({ params }: { params: Promise<{ loc
     prisma.user.count({ where: { role: "PARTICIPANT" } }),
     prisma.order.findMany({
       where: { status: "PAID", paidAt: { gte: windowStart } },
-      select: { total: true, paidAt: true },
+      select: { total: true, currency: true, paidAt: true },
     }),
-    prisma.order.aggregate({ where: { status: "PAID" }, _sum: { total: true } }),
+    prisma.order.groupBy({ by: ["currency"], where: { status: "PAID" }, _sum: { total: true } }),
     prisma.order.findMany({
       orderBy: { createdAt: "desc" },
       take: 5,
@@ -70,17 +71,29 @@ export default async function SuperAdminPage({ params }: { params: Promise<{ loc
   ]);
 
   const nf = INTL[locale] ?? "tr-TR";
-  // Tiles and bars show whole lira; the order list keeps exact amounts.
-  const whole = new Intl.NumberFormat(nf, { style: "currency", currency: "TRY", maximumFractionDigits: 0 });
-  const money = (kurus: number) => whole.format(kurus / 100);
+  // Tiles and bars show whole units; the order list keeps exact amounts.
+  // Lira and dollar orders are never added together.
+  const whole = (currency: string) => new Intl.NumberFormat(nf, { style: "currency", currency, maximumFractionDigits: 0 });
+  const money = (minor: number, currency = BASE_CURRENCY) => whole(currency).format(minor / 100);
+  const perCurrency = (sums: Map<string, number>) =>
+    PRICE_CURRENCIES.filter((c) => c === BASE_CURRENCY || (sums.get(c) ?? 0) > 0)
+      .map((c) => money(sums.get(c) ?? 0, c))
+      .join(" · ");
+  const revenueByCurrency = new Map(revenue.map((r) => [r.currency, r._sum.total ?? 0]));
+  const thisMonthByCurrency = new Map<string, number>();
+  for (const o of paidOrders) {
+    if (o.paidAt && o.paidAt >= monthStart) thisMonthByCurrency.set(o.currency, (thisMonthByCurrency.get(o.currency) ?? 0) + o.total);
+  }
+  const hasForeign = paidOrders.some((o) => o.currency !== BASE_CURRENCY);
   const monthFmt = { format: (value: Date | string) => formatDate(value, locale, "monthShort") };
   const months = Array.from({ length: MONTHS }, (_, i) => {
     const start = new Date(Date.UTC(windowStart.getUTCFullYear(), windowStart.getUTCMonth() + i, 1));
     const end = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth() + 1, 1));
-    const total = paidOrders.filter((o) => o.paidAt && o.paidAt >= start && o.paidAt < end).reduce((s, o) => s + o.total, 0);
+    const total = paidOrders
+      .filter((o) => o.currency === BASE_CURRENCY && o.paidAt && o.paidAt >= start && o.paidAt < end)
+      .reduce((s, o) => s + o.total, 0);
     return { label: monthFmt.format(start), total };
   });
-  const thisMonth = months[months.length - 1].total;
   const peak = Math.max(...months.map((m) => m.total), 1);
   const firstName = (session.user.name ?? "").split(" ")[0];
 
@@ -131,8 +144,8 @@ export default async function SuperAdminPage({ params }: { params: Promise<{ loc
             href="/super-admin/tenants"
           />
           <MetricTile index={2} icon={Users} tone="violet" value={students.toLocaleString(nf)} label={t("students")} />
-          <MetricTile index={3} icon={Wallet} tone="emerald" value={money(revenue._sum.total ?? 0)} label={t("revenue")} href="/super-admin/billing" />
-          <MetricTile index={4} icon={Receipt} tone="amber" value={money(thisMonth)} label={t("thisMonth")} href="/super-admin/billing" />
+          <MetricTile index={3} icon={Wallet} tone="emerald" value={perCurrency(revenueByCurrency)} label={t("revenue")} href="/super-admin/billing" />
+          <MetricTile index={4} icon={Receipt} tone="amber" value={perCurrency(thisMonthByCurrency)} label={t("thisMonth")} href="/super-admin/billing" />
         </MetricGrid>
 
         <Reveal as="section" index={5}>
@@ -155,6 +168,7 @@ export default async function SuperAdminPage({ params }: { params: Promise<{ loc
                 </li>
               ))}
             </ol>
+            {hasForeign && <p className="mt-3 text-[12px] text-muted-foreground">{t("chartCurrencyNote")}</p>}
           </div>
         </Reveal>
 

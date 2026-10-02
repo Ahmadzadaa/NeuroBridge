@@ -13,6 +13,7 @@ import { Layers, Loader2, Lock, Minus, Plus, ShieldCheck } from "lucide-react";
 import { serviceIcon } from "@/lib/billing/service-icons";
 import { cn } from "@/lib/utils";
 import { formatKurus } from "@/lib/billing/money";
+import { CURRENCY_SYMBOL, availableCurrencies, pickCurrency, type PriceCurrency } from "@/lib/billing/currency";
 
 export type CalculatorService = {
   code: string;
@@ -38,7 +39,6 @@ const PRICING_ERRORS = [
   "DUPLICATE_SERVICE",
   "UNKNOWN_SERVICE",
   "NO_MATCHING_TIER",
-  "CURRENCY_MISMATCH",
   "EMAIL_TAKEN",
   "PAYMENT_PROVIDER",
 ] as const;
@@ -47,9 +47,10 @@ const PRICING_ERRORS = [
 /** Apple's default sheet curve. */
 const EASE = [0.32, 0.72, 0, 1] as const;
 
-// A fixed locale: Node and browsers ship different ICU data for az-AZ, which
+// Fixed locales: Node and browsers ship different ICU data for az-AZ, which
 // made the server and client render different text (hydration mismatch).
-const money = (kurus: number, currency = "TRY") => formatKurus(kurus, currency, "tr-TR");
+// Dollars read the way dollar prices are usually written ($0.50).
+const money = (kurus: number, currency = "TRY") => formatKurus(kurus, currency, currency === "USD" ? "en-US" : "tr-TR");
 
 /** Display-only: the server quote stays the single source of prices. */
 function tierFor(tiers: Tier[], count: number): Tier | undefined {
@@ -71,6 +72,14 @@ export function PricingCalculator({
   mode?: "public" | "tenant";
 }) {
   const t = useTranslations("pricing");
+  // Each currency is its own price list; the locale picks the starting one
+  // (lira in Turkish, dollars otherwise) and the buyer can switch.
+  const currencies = useMemo(() => availableCurrencies(services), [services]);
+  const [currency, setCurrency] = useState<PriceCurrency>(() => pickCurrency(locale, currencies));
+  const priced = useMemo(
+    () => services.map((s) => ({ ...s, tiers: s.tiers.filter((tier) => tier.currency === currency) })),
+    [services, currency]
+  );
   const [counts, setCounts] = useState<Record<string, string>>({});
   const [contact, setContact] = useState({ institutionName: "", contactName: "", contactEmail: "" });
   // Keyed by the selection it was computed for, so a stale total is never shown.
@@ -82,7 +91,7 @@ export function PricingCalculator({
     () => Object.entries(counts).map(([serviceCode, value]) => ({ serviceCode, participantCount: Number(value) })),
     [counts]
   );
-  const itemsKey = JSON.stringify(items);
+  const itemsKey = JSON.stringify({ items, currency });
   const countsValid =
     items.length > 0 &&
     items.every(
@@ -104,7 +113,7 @@ export function PricingCalculator({
         const res = await fetch("/api/pricing/quote", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ items }),
+          body: JSON.stringify({ items, currency }),
           signal: controller.signal,
         });
         const data = await res.json();
@@ -149,7 +158,7 @@ export function PricingCalculator({
       const res = await fetch(mode === "tenant" ? "/api/tenant/program-orders" : "/api/pricing/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(mode === "tenant" ? { locale, items } : { ...contact, locale, items }),
+        body: JSON.stringify(mode === "tenant" ? { locale, currency, items } : { ...contact, locale, currency, items }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -169,10 +178,28 @@ export function PricingCalculator({
   return (
     <form onSubmit={handleSubmit} className="grid grid-cols-[minmax(0,1fr)] gap-8 pb-28 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:pb-0">
       <section aria-labelledby="services-heading">
-        <div className="mb-3 flex items-baseline justify-between px-1">
-          <h2 id="services-heading" className="text-[13px] font-semibold uppercase tracking-[0.6px] text-muted-foreground">
+        <div className="mb-3 flex items-center gap-2 px-1">
+          <h2 id="services-heading" className="flex-1 text-[13px] font-semibold uppercase tracking-[0.6px] text-muted-foreground">
             {t("servicesHeading")}
           </h2>
+          {currencies.length > 1 && (
+            <div role="group" aria-label={t("currencyLabel")} className="flex rounded-full bg-muted p-0.5 text-[12px] font-semibold">
+              {currencies.map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  aria-pressed={currency === c}
+                  onClick={() => setCurrency(c)}
+                  className={cn(
+                    "rounded-full px-3 py-1 transition-colors",
+                    currency === c ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {CURRENCY_SYMBOL[c]} {c}
+                </button>
+              ))}
+            </div>
+          )}
           <AnimatePresence initial={false}>
             {items.length > 0 && (
               <motion.span
@@ -189,7 +216,7 @@ export function PricingCalculator({
         </div>
 
         <ul className="overflow-hidden rounded-[22px] bg-card shadow-sm ring-1 ring-border/60">
-          {services.map((service, index) => (
+          {priced.map((service, index) => (
             <ServiceRow
               key={service.code}
               service={service}
@@ -203,7 +230,7 @@ export function PricingCalculator({
       </section>
 
       <aside id="checkout" className="space-y-4 lg:sticky lg:top-24">
-        <Summary services={services} itemsCount={items.length} quote={quote} error={quoteError} calculating={calculating} />
+        <Summary services={priced} itemsCount={items.length} quote={quote} error={quoteError} calculating={calculating} />
 
         {mode === "public" && (
         <fieldset className="space-y-2">

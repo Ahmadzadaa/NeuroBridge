@@ -31,7 +31,7 @@ export async function createOrder(input: CreateOrderInput) {
     });
     if (existing) throw new EmailTakenError();
 
-    const quote = await calculateQuote(input.items, tx);
+    const quote = await calculateQuote(input.items, input.currency, tx);
 
     return tx.order.create({
       data: {
@@ -66,10 +66,11 @@ export async function createProgramOrder(input: {
   contactName: string;
   contactEmail: string;
   locale: string;
+  currency: CreateOrderInput["currency"];
   items: CreateOrderInput["items"];
 }) {
   return prisma.$transaction(async (tx) => {
-    const quote = await calculateQuote(input.items, tx);
+    const quote = await calculateQuote(input.items, input.currency, tx);
     return tx.order.create({
       data: {
         kind: "ADD_PROGRAM",

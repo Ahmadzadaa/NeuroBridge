@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import type { ServiceInput, ServiceUpdateInput, TierInput } from "@/lib/billing/validators";
+import { BASE_CURRENCY, PRICE_CURRENCIES } from "@/lib/billing/currency";
 
 /**
  * Super-admin management of the priced service catalogue.
@@ -11,7 +12,7 @@ import type { ServiceInput, ServiceUpdateInput, TierInput } from "@/lib/billing/
 
 export class CatalogError extends Error {
   constructor(
-    public readonly code: "TIER_OVERLAP" | "TIER_RANGE" | "CODE_TAKEN" | "SERVICE_IN_USE" | "NOT_FOUND",
+    public readonly code: "TIER_OVERLAP" | "TIER_RANGE" | "CODE_TAKEN" | "SERVICE_IN_USE" | "NOT_FOUND" | "BASE_CURRENCY_REQUIRED",
     message: string,
     public readonly statusCode = 400
   ) {
@@ -21,10 +22,18 @@ export class CatalogError extends Error {
 }
 
 /**
- * Tiers may leave gaps but must never overlap, so every participant count
- * maps to at most one price. Returns the tiers sorted by lower bound.
+ * Each currency is its own price list: within one, tiers may leave gaps but
+ * must never overlap, so every participant count maps to at most one price.
+ * Every service needs base-currency (TRY) prices; dollar prices are optional.
  */
 export function validateTiers(tiers: TierInput[]): TierInput[] {
+  if (!tiers.some((t) => t.currency === BASE_CURRENCY)) {
+    throw new CatalogError("BASE_CURRENCY_REQUIRED", `Every service needs ${BASE_CURRENCY} prices`);
+  }
+  return PRICE_CURRENCIES.flatMap((currency) => validateCurrencyTiers(tiers.filter((t) => t.currency === currency)));
+}
+
+function validateCurrencyTiers(tiers: TierInput[]): TierInput[] {
   const sorted = [...tiers].sort((a, b) => a.minParticipants - b.minParticipants);
 
   for (const [i, tier] of sorted.entries()) {

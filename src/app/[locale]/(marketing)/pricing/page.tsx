@@ -7,6 +7,7 @@ import { JsonLd, productJsonLd } from "@/components/marketing/json-ld";
 import { buildMarketingMetadata, marketingUrl } from "@/lib/seo/marketing-metadata";
 import { getAppOrigin } from "@/lib/app-url";
 import { prisma } from "@/lib/prisma";
+import { availableCurrencies, pickCurrency } from "@/lib/billing/currency";
 import { PricingCalculator, type CalculatorService } from "./pricing-calculator";
 
 export async function generateMetadata({
@@ -64,9 +65,10 @@ export default async function PricingPage({
     name: t.has(`services.${s.code}`) ? t(`services.${s.code}`) : s.name,
   }));
 
-  // Advertise each service from its cheapest per-participant tier.
+  // Advertise each service from its cheapest tier, in the visitor's currency.
+  const offerCurrency = pickCurrency(locale, availableCurrencies(calculatorServices));
   const offers = calculatorServices.flatMap((s) => {
-    const cheapest = s.tiers.reduce<(typeof s.tiers)[number] | null>(
+    const cheapest = s.tiers.filter((tier) => tier.currency === offerCurrency).reduce<(typeof s.tiers)[number] | null>(
       (min, tier) => (!min || tier.pricePerParticipant < min.pricePerParticipant ? tier : min),
       null
     );

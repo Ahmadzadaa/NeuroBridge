@@ -10,11 +10,11 @@ import { prisma } from "@/lib/prisma";
 import { CatalogError, deleteService, validateTiers } from "@/lib/billing/service-catalog";
 import { serviceSchema } from "@/lib/billing/validators";
 
-const tier = (min: number, max: number | null, price = 1000) => ({
+const tier = (min: number, max: number | null, price = 1000, currency: "TRY" | "USD" = "TRY") => ({
   minParticipants: min,
   maxParticipants: max,
   pricePerParticipant: price,
-  currency: "TRY" as const,
+  currency,
 });
 
 function expectCatalogError(fn: () => unknown, code: string) {
@@ -48,6 +48,16 @@ describe("validateTiers", () => {
 
   it("rejects duplicated tiers", () => {
     expectCatalogError(() => validateTiers([tier(1, 50), tier(1, 50)]), "TIER_OVERLAP");
+  });
+
+  it("keeps each currency a separate price list", () => {
+    const tiers = validateTiers([tier(1, 50), tier(51, null), tier(1, 50, 30, "USD"), tier(51, null, 25, "USD")]);
+    expect(tiers.map((t) => `${t.currency}:${t.minParticipants}`)).toEqual(["TRY:1", "TRY:51", "USD:1", "USD:51"]);
+    expectCatalogError(() => validateTiers([tier(1, 50), tier(1, 50, 30, "USD"), tier(40, null, 25, "USD")]), "TIER_OVERLAP");
+  });
+
+  it("requires lira prices; dollars alone are not enough", () => {
+    expectCatalogError(() => validateTiers([tier(1, null, 30, "USD")]), "BASE_CURRENCY_REQUIRED");
   });
 
   it("rejects a tier whose max is below its min", () => {

@@ -237,7 +237,7 @@
       "activate": "Activate",
       "deactivate": "Deactivate",
       "tiers": "Price tiers",
-      "tiersHint": "Leave Max empty for no upper limit. Tiers must not overlap.",
+      "tiersHint": "Prices are per participant. Leave Max empty for no upper limit; ranges must not overlap. The $ price is optional: if you fill it in, fill it for every range. The site shows ₺ in Turkish and $ in Azerbaijani and English (₺ when there is no $ price).",
       "min": "Min participants",
       "max": "Max participants",
       "price": "Price / participant (TL)",
@@ -248,7 +248,11 @@
       "codeTaken": "A service with this code already exists.",
       "tierOverlap": "Price tiers overlap. Each participant count may belong to only one tier.",
       "tierRange": "A tier ends before it starts. Max must be at least Min.",
-      "codePlaceholder": "e.g. HACKATHON"
+      "codePlaceholder": "e.g. HACKATHON",
+      "priceTry": "Price, ₺ (TRY)",
+      "priceUsd": "Price, $ (USD)",
+      "usdIncomplete": "Fill in the $ price for every range, or for none of them.",
+      "tryRequired": "Every service needs ₺ (TRY) prices."
     },
     "audit": {
       "filterByAction": "Filter by action",
@@ -332,7 +336,8 @@
         "PENDING": "Pending",
         "FAILED": "Failed"
       },
-      "newLeads": "{count, plural, one {# new demo request} other {# new demo requests}}"
+      "newLeads": "{count, plural, one {# new demo request} other {# new demo requests}}",
+      "chartCurrencyNote": "The chart shows ₺ payments; $ payments are shown separately in the tiles above."
     },
     "placeholders": {
       "content": "Central management of simulation modules, training content, AI Mentor instructions and badges will live here.",
@@ -1593,7 +1598,8 @@
       "TRAININGS": "Video lessons, tests and certificates",
       "AI_TOOLS": "A personal AI mentor for students on ideas and plans"
     },
-    "tenantNote": "After payment the programme is added to your account; our team sets it up and activates it."
+    "tenantNote": "After payment the programme is added to your account; our team sets it up and activates it.",
+    "currencyLabel": "Currency"
   },
   "activation": {
     "title": "Activate your account",

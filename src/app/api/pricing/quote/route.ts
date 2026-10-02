@@ -14,8 +14,8 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { items } = parseBody(quoteSchema, await request.json());
-    return NextResponse.json(await calculateQuote(items));
+    const { items, currency } = parseBody(quoteSchema, await request.json());
+    return NextResponse.json(await calculateQuote(items, currency));
   } catch (error) {
     return mapPricingError(error, "Quote failed");
   }

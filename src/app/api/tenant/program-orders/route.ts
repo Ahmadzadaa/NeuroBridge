@@ -10,6 +10,7 @@ import { mapPricingError } from "@/app/api/pricing/errors";
 
 const programOrderSchema = z.object({
   locale: createOrderSchema.shape.locale,
+  currency: createOrderSchema.shape.currency,
   items: createOrderSchema.shape.items,
 });
 
@@ -36,6 +37,7 @@ export async function POST(request: Request) {
           contactName: session.name ?? tenant.name,
           contactEmail: session.email,
           locale: input.locale,
+          currency: input.currency,
           items: input.items,
         });
         const checkoutUrl = await startOrderCheckout(order, getClientIp(request));
