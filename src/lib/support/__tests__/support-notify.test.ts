@@ -4,6 +4,7 @@ const db = vi.hoisted(() => ({ supportTicket: { findUnique: vi.fn() } }));
 const mail = vi.hoisted(() => ({ sendEmail: vi.fn() }));
 vi.mock("@/lib/prisma", () => ({ prisma: db }));
 vi.mock("@/lib/email/email-service", () => mail);
+vi.mock("@/lib/notifications/notification-service", () => ({ notifyPlatformTeam: vi.fn(), notifyUsers: vi.fn() }));
 
 import { supportTicketEmail } from "@/lib/email/templates";
 import { notifyNewTicket } from "@/lib/support/support-notify";

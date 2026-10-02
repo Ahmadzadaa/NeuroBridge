@@ -105,8 +105,13 @@ export async function submitAssessment(userId: string, code: string, answers: Re
     ]);
     const analysisComplete = doneCount >= activeCount;
     if (analysisComplete) {
-      const user = await tx.user.findUnique({ where: { id: userId }, select: { tenantId: true } });
+      const user = await tx.user.findUnique({ where: { id: userId }, select: { tenantId: true, firstName: true, lastName: true, email: true } });
       if (user?.tenantId) {
+        const admins = await tx.user.findMany({ where: { tenantId: user.tenantId, role: { in: ["TENANT_ADMIN", "TENANT_VIEWER"] } }, select: { id: true } });
+        const student = [user.firstName, user.lastName].filter(Boolean).join(" ") || user.email;
+        await tx.notification.createMany({
+          data: admins.map((a) => ({ userId: a.id, type: "ASSESSMENTS_COMPLETED", params: JSON.stringify({ student }), link: "/tenant/assessments" })),
+        });
         await tx.tenantNotification.create({
           data: {
             tenantId: user.tenantId,

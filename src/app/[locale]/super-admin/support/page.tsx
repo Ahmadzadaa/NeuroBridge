@@ -55,6 +55,7 @@ export default async function SupportPage({
         <TicketList
           locale={locale}
           hrefBase="/super-admin/support"
+          viewer="staff"
           empty={status === "OPEN" ? t("staffEmptyOpen") : t("emptyFiltered")}
           rows={tickets.map((ticket) => ({
             id: ticket.id,
@@ -64,6 +65,7 @@ export default async function SupportPage({
             unread: isUnread(ticket.lastMessageAt, ticket.staffReadAt),
             meta: `${ticket.tenant.name} · ${personName(ticket.createdBy)}`,
             messages: ticket._count.messages,
+            preview: ticket.messages[0] ?? null,
             avatar: { id: ticket.tenant.id, name: ticket.tenant.name },
           }))}
         />

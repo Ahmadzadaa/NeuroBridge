@@ -116,6 +116,8 @@ const listSelect = {
   tenant: { select: { id: true, name: true } },
   createdBy: { select: { id: true, firstName: true, lastName: true, email: true } },
   _count: { select: { messages: true } },
+  // The newest message, for the preview line under the subject.
+  messages: { orderBy: { createdAt: "desc" }, take: 1, select: { body: true, fromStaff: true } },
 } as const;
 
 export async function listTenantTickets(tenantId: string) {

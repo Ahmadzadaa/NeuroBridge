@@ -2743,6 +2743,63 @@
       "tabPerson": "Şəxs",
       "tabOrganisation": "Təşkilat",
       "tabTechnical": "Texniki"
+    },
+    "previewYou": "Siz",
+    "previewTeam": "BizSim",
+    "resolvedBanner": "Bu müraciət həll olunub. Yeni mesaj yazsanız, yenidən açılacaq."
+  },
+  "notifications": {
+    "title": "Bildirişlər",
+    "bell": "Bildirişlər",
+    "bellUnread": "Bildirişlər, {count} oxunmamış",
+    "markAll": "Hamısını oxunmuş et",
+    "emptyTitle": "Bildiriş yoxdur",
+    "emptyBody": "Yeni bir şey olanda burada görəcəksiniz.",
+    "unread": "Oxunmamış",
+    "fallback": "Yeni bildiriş",
+    "types": {
+      "SUPPORT_TICKET_NEW": {
+        "title": "Yeni dəstək müraciəti",
+        "body": "{organisation}: {subject}"
+      },
+      "SUPPORT_MESSAGE_NEW": {
+        "title": "Müraciətdə yeni mesaj",
+        "body": "{organisation}: {subject}"
+      },
+      "SUPPORT_REPLY": {
+        "title": "Müraciətinizə cavab verildi",
+        "body": "{subject}"
+      },
+      "LEAD_NEW": {
+        "title": "Yeni demo sorğusu",
+        "body": "{company} · {name}"
+      },
+      "ASSESSMENTS_COMPLETED": {
+        "title": "Baza testləri tamamlandı",
+        "body": "{student} bütün baza testlərini bitirdi."
+      },
+      "AI_BUDGET_EXHAUSTED": {
+        "title": "AI Mentor limiti doldu",
+        "body": "{month} ayı üçün AI Mentor büdcəsi bitdi."
+      },
+      "CERTIFICATE_ISSUED": {
+        "title": "Yeni sertifikat",
+        "body": "“{title}” sertifikatınız hazırdır."
+      },
+      "SIMULATION_GRADED": {
+        "title": "Simulyasiyanız qiymətləndirildi",
+        "body": "Müəllimin qiyməti: {grade} / {max}"
+      },
+      "HACKATHON_RESULTS": {
+        "title": "Hakaton nəticələri elan olundu",
+        "body": "{program}"
+      }
+    },
+    "time": {
+      "now": "indicə",
+      "minutes": "{count} dəq əvvəl",
+      "hours": "{count} saat əvvəl",
+      "days": "{count} gün əvvəl"
     }
   }
 }

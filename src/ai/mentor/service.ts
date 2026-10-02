@@ -1,4 +1,5 @@
 import { randomUUID } from "crypto";
+import { notifyTenantAdmins } from "@/lib/notifications/notification-service";
 import { getTranslations } from "next-intl/server";
 import { loadAiConfig, type AiConfig } from "@/ai/config";
 import { getProvider } from "@/ai/providers";
@@ -354,6 +355,9 @@ async function notifyTenantBudget(tenantId: string, now: Date): Promise<void> {
     await recordSecurityEvent(tx, { tenantId, userHash: null, simulationId: null, type: "TENANT_BUDGET_EXHAUSTED" });
     return tx.user.findMany({ where: { tenantId, role: "TENANT_ADMIN" }, select: { email: true, language: true } });
   });
+  if (admins.length > 0) {
+    await notifyTenantAdmins(tenantId, { type: "AI_BUDGET_EXHAUSTED", params: { month: now.toISOString().slice(0, 7) }, link: "/tenant/settings" });
+  }
   for (const admin of admins) {
     const lang = admin.language === "az" || admin.language === "tr" ? admin.language : "en";
     const t = await getTranslations({ locale: lang, namespace: "mentor.budgetEmail" });

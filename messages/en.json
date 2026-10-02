@@ -2743,6 +2743,63 @@
       "tabPerson": "Person",
       "tabOrganisation": "Organisation",
       "tabTechnical": "Technical"
+    },
+    "previewYou": "You",
+    "previewTeam": "BizSim",
+    "resolvedBanner": "This request is resolved. Writing a new message reopens it."
+  },
+  "notifications": {
+    "title": "Notifications",
+    "bell": "Notifications",
+    "bellUnread": "Notifications, {count} unread",
+    "markAll": "Mark all as read",
+    "emptyTitle": "No notifications",
+    "emptyBody": "When something new happens, you will see it here.",
+    "unread": "Unread",
+    "fallback": "New notification",
+    "types": {
+      "SUPPORT_TICKET_NEW": {
+        "title": "New support request",
+        "body": "{organisation}: {subject}"
+      },
+      "SUPPORT_MESSAGE_NEW": {
+        "title": "New message in a request",
+        "body": "{organisation}: {subject}"
+      },
+      "SUPPORT_REPLY": {
+        "title": "Your request has a reply",
+        "body": "{subject}"
+      },
+      "LEAD_NEW": {
+        "title": "New demo request",
+        "body": "{company} · {name}"
+      },
+      "ASSESSMENTS_COMPLETED": {
+        "title": "Baseline tests completed",
+        "body": "{student} finished all baseline tests."
+      },
+      "AI_BUDGET_EXHAUSTED": {
+        "title": "AI Mentor limit reached",
+        "body": "The AI Mentor budget for {month} is used up."
+      },
+      "CERTIFICATE_ISSUED": {
+        "title": "New certificate",
+        "body": "Your “{title}” certificate is ready."
+      },
+      "SIMULATION_GRADED": {
+        "title": "Your simulation was graded",
+        "body": "Teacher grade: {grade} / {max}"
+      },
+      "HACKATHON_RESULTS": {
+        "title": "Hackathon results are out",
+        "body": "{program}"
+      }
+    },
+    "time": {
+      "now": "just now",
+      "minutes": "{count} min ago",
+      "hours": "{count, plural, one {# hour} other {# hours}} ago",
+      "days": "{count, plural, one {# day} other {# days}} ago"
     }
   }
 }

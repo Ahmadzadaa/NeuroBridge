@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { sendEmail } from "@/lib/email/email-service";
+import { notifyPlatformTeam } from "@/lib/notifications/notification-service";
 import { leadNotificationEmail } from "@/lib/email/templates";
 import { routing, type Locale } from "@/i18n/routing";
 
@@ -64,6 +65,8 @@ export async function createLead(input: LeadInput): Promise<LeadResult> {
     },
     select: { id: true, createdAt: true },
   });
+
+  await notifyPlatformTeam({ type: "LEAD_NEW", params: { company: input.company, name: input.name }, link: "/super-admin/leads" });
 
   // The row is already committed. A failed notification must never turn into
   // a failed submission — the visitor did their part, and the lead is safe.

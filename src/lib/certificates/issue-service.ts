@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { notifyUsers } from "@/lib/notifications/notification-service";
 import { recordAudit } from "@/lib/audit/audit-service";
 import { AUDIT_ACTIONS } from "@/lib/audit/actions";
 import { getTenantSettings } from "@/lib/tenant/settings-service";
@@ -202,6 +203,8 @@ export async function issueCertificates(
           type: template.type,
         },
       });
+
+      await notifyUsers([recipient.userId], { type: "CERTIFICATE_ISSUED", params: { title: input.title }, link: "/participant/certificates" });
 
       outcomes.push({
         userId: recipient.userId,

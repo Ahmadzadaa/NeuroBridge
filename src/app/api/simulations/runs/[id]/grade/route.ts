@@ -3,6 +3,7 @@ import { withAuthorizedHandler } from "@/lib/auth/authorize";
 import { assertFeatureEnabled } from "@/lib/tenant/features";
 import { simulationGradeSchema, parseBody } from "@/lib/validation/schemas";
 import { prisma } from "@/lib/prisma";
+import { notifyUsers } from "@/lib/notifications/notification-service";
 
 /** Teacher grading: tenant staff scores a completed student run. */
 export async function POST(
@@ -45,6 +46,11 @@ export async function POST(
           gradedAt: new Date(),
         },
         select: { teacherGrade: true, teacherMaxGrade: true },
+      });
+      await notifyUsers([run.userId], {
+        type: "SIMULATION_GRADED",
+        params: { grade: updated.teacherGrade ?? 0, max: updated.teacherMaxGrade ?? 0 },
+        link: "/participant/simulations",
       });
 
       return NextResponse.json(updated);

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { notifyUsers } from "@/lib/notifications/notification-service";
 import { withAuthorizedHandler } from "@/lib/auth/authorize";
 import { assertFeatureEnabled } from "@/lib/tenant/features";
 import { revealSchema, parseBody } from "@/lib/validation/schemas";
@@ -85,6 +86,10 @@ export async function PATCH(request: Request) {
               if (result.sent) emailed += 1;
             });
           })
+        );
+        await notifyUsers(
+          teams.flatMap((team) => team.members.map((member) => member.userId)),
+          { type: "HACKATHON_RESULTS", params: { program: program.name }, link: "/participant/hackathon" }
         );
       }
 

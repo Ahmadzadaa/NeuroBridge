@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { signOut } from "next-auth/react";
-import { LogOut, Bell, ChevronLeft, ChevronRight } from "lucide-react";
+import { LogOut, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { CoinDisplay } from "@/components/ui/coin-display";
@@ -13,6 +13,7 @@ import { LanguageSwitcher } from "./language-switcher";
 import { ThemeToggle } from "./theme-toggle";
 import { SidebarNav } from "./sidebar-nav";
 import { MobileNav } from "./mobile-nav";
+import { NotificationBell } from "./notification-bell";
 import { PageTransition } from "./page-transition";
 import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
@@ -188,14 +189,7 @@ export function DashboardLayout({
             {typeof coinBalance === "number" && (
               <CoinDisplay balance={coinBalance} />
             )}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="rounded-xl"
-              aria-label={t("notifications")}
-            >
-              <Bell className="h-5 w-5" />
-            </Button>
+            <NotificationBell />
             <LanguageSwitcher />
             <ThemeToggle />
             <Link

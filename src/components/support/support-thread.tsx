@@ -95,56 +95,81 @@ export function SupportThread({
     }
   }
 
+  const resolved = status === "RESOLVED";
+
   return (
-    <div className="overflow-hidden rounded-[24px] bg-card ring-1 ring-border/60 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)]">
-      <ol className="space-y-1 px-3 py-5 sm:px-5" aria-label={t("conversation")}>
-        {messages.map((m, i) => {
-          const prev = messages[i - 1];
-          const next = messages[i + 1];
-          const mine = (viewer === "staff") === m.fromStaff;
-          const newDay = !prev || prev.day !== m.day;
-          const firstOfGroup = newDay || prev.authorId !== m.authorId;
-          const lastOfGroup = !next || next.authorId !== m.authorId || next.day !== m.day;
-          return (
-            <li key={m.id}>
-              {newDay && (
-                <p className="py-3 text-center text-[12px] font-semibold text-muted-foreground">
-                  <span className="rounded-full bg-muted px-3 py-1">{m.day}</span>
-                </p>
-              )}
-              <div className={cn("flex items-end gap-2", mine ? "justify-end" : "justify-start", firstOfGroup && !newDay && "pt-2")}>
-                {!mine && (
-                  <span className="w-8 shrink-0">
-                    {lastOfGroup && <UserAvatar userId={m.authorId} name={m.author} hasAvatar={false} className="h-8 w-8 text-[12px]" />}
-                  </span>
-                )}
-                <div className={cn("flex max-w-[82%] flex-col sm:max-w-[72%]", mine ? "items-end" : "items-start")}>
-                  {firstOfGroup && !mine && (
-                    <span className="mb-1 px-3 text-[12px] font-semibold text-muted-foreground">
-                      {m.fromStaff ? t("teamName", { name: m.author }) : m.author}
+    <div className="space-y-3">
+      {/* The conversation sits on a soft surface, not in a box, like a messages app. */}
+      <div className="rounded-[26px] bg-muted/40 px-3 py-4 dark:bg-white/[0.025] sm:px-5">
+        <ol className="space-y-1" aria-label={t("conversation")}>
+          {messages.map((m, i) => {
+            const prev = messages[i - 1];
+            const next = messages[i + 1];
+            const mine = (viewer === "staff") === m.fromStaff;
+            const newDay = !prev || prev.day !== m.day;
+            const firstOfGroup = newDay || prev.authorId !== m.authorId;
+            const lastOfGroup = !next || next.authorId !== m.authorId || next.day !== m.day;
+            return (
+              <li key={m.id}>
+                {newDay && <p className="pb-3 pt-2 text-center text-[12px] font-medium text-muted-foreground">{m.day}</p>}
+                <div className={cn("flex items-end gap-2", mine ? "justify-end" : "justify-start", firstOfGroup && !newDay && "pt-3")}>
+                  {!mine && (
+                    <span className="w-8 shrink-0">
+                      {lastOfGroup && <UserAvatar userId={m.authorId} name={m.author} hasAvatar={false} className="h-8 w-8 text-[12px]" />}
                     </span>
                   )}
-                  <div
-                    className={cn(
-                      "whitespace-pre-wrap break-words rounded-[20px] px-3.5 py-2 text-[15px] leading-relaxed",
-                      mine ? "bg-primary text-primary-foreground" : "bg-muted text-foreground",
-                      lastOfGroup && (mine ? "rounded-br-[6px]" : "rounded-bl-[6px]")
+                  <div className={cn("flex max-w-[82%] flex-col sm:max-w-[70%]", mine ? "items-end" : "items-start")}>
+                    {firstOfGroup && !mine && (
+                      <span className="mb-1 px-3 text-[12px] font-medium text-muted-foreground">
+                        {m.fromStaff ? t("teamName", { name: m.author }) : m.author}
+                      </span>
                     )}
-                  >
-                    {m.body}
+                    <div
+                      className={cn(
+                        "whitespace-pre-wrap break-words rounded-[20px] px-4 py-2.5 text-[15px] leading-relaxed",
+                        mine
+                          ? "bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow-[0_6px_16px_-10px_rgba(91,91,214,0.9)]"
+                          : "bg-card text-foreground shadow-[0_1px_2px_rgba(15,23,42,0.06)] ring-1 ring-border/60",
+                        lastOfGroup && (mine ? "rounded-br-[6px]" : "rounded-bl-[6px]")
+                      )}
+                    >
+                      {m.body}
+                    </div>
+                    {lastOfGroup && <span className="mt-1 px-2 text-[11px] tabular-nums text-muted-foreground">{m.time}</span>}
                   </div>
-                  {lastOfGroup && <span className="mt-1 px-2 text-[11px] tabular-nums text-muted-foreground">{m.time}</span>}
                 </div>
-              </div>
-            </li>
-          );
-        })}
-      </ol>
-      <div ref={endRef} />
+              </li>
+            );
+          })}
+        </ol>
+        <div ref={endRef} />
+      </div>
+
+      {canWrite && resolved && (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-[18px] bg-emerald-500/10 px-4 py-3 ring-1 ring-emerald-500/20">
+          <span className="flex items-center gap-2 text-[14px] text-foreground">
+            <CheckCircle2 className="h-[18px] w-[18px] shrink-0 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
+            {t("resolvedBanner")}
+          </span>
+          <button
+            type="button"
+            disabled={changing}
+            onClick={() => changeStatus("OPEN")}
+            className="inline-flex items-center gap-1.5 rounded-full bg-card px-3 py-1.5 text-[13px] font-semibold text-primary shadow-sm ring-1 ring-border/60 transition-colors hover:bg-muted disabled:opacity-50"
+          >
+            {changing ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <RotateCcw className="h-4 w-4" aria-hidden="true" />}
+            {t("reopen")}
+          </button>
+        </div>
+      )}
 
       {canWrite && (
-        <div className="border-t border-border/60 bg-background/40 px-3 pb-3 pt-3 sm:px-5">
-          <form onSubmit={send} className="flex items-end gap-2 rounded-[22px] bg-card py-1.5 pl-4 pr-1.5 ring-1 ring-border transition-shadow focus-within:ring-2 focus-within:ring-primary/40">
+        // Stays in reach at the bottom of the screen while scrolling a long thread.
+        <div className="sticky bottom-3 z-10 lg:bottom-5">
+          <form
+            onSubmit={send}
+            className="flex items-end gap-2 rounded-[24px] bg-card/90 py-1.5 pl-4 pr-1.5 shadow-[0_12px_32px_-16px_rgba(15,23,42,0.45)] ring-1 ring-border/70 backdrop-blur-xl transition-shadow focus-within:ring-2 focus-within:ring-primary/40"
+          >
             <label htmlFor="support-reply" className="sr-only">
               {t("replyLabel")}
             </label>
@@ -155,39 +180,29 @@ export function SupportThread({
               rows={1}
               maxLength={5000}
               onChange={(e) => setBody(e.target.value)}
-              placeholder={status === "RESOLVED" ? t("replyReopens") : t("replyPlaceholder")}
+              placeholder={resolved ? t("replyReopens") : t("replyPlaceholder")}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) send(e);
               }}
-              className="max-h-[220px] min-h-[36px] flex-1 resize-none bg-transparent py-2 text-[15px] leading-relaxed outline-none placeholder:text-muted-foreground/70"
+              className="max-h-[220px] min-h-[40px] flex-1 resize-none bg-transparent py-2.5 text-[15px] leading-relaxed outline-none placeholder:text-muted-foreground/70"
             />
             <button
               type="submit"
               disabled={sending || !body.trim()}
               aria-label={t("send")}
-              className="mb-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-[opacity,transform] active:scale-95 disabled:opacity-30"
+              className="mb-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow-sm transition-[opacity,transform] active:scale-95 disabled:opacity-30"
             >
               {sending ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <ArrowUp className="h-[18px] w-[18px]" strokeWidth={2.5} aria-hidden="true" />}
             </button>
           </form>
-          <div className="mt-2 flex flex-wrap items-center justify-between gap-2 px-1">
+          <div className="mt-1.5 flex flex-wrap items-center justify-between gap-2 px-3">
             <span className="hidden text-[12px] text-muted-foreground sm:inline">{t("shortcut")}</span>
-            {status === "RESOLVED" ? (
-              <button
-                type="button"
-                disabled={changing}
-                onClick={() => changeStatus("OPEN")}
-                className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13px] font-semibold text-primary transition-colors hover:bg-primary/10 disabled:opacity-50"
-              >
-                {changing ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <RotateCcw className="h-4 w-4" aria-hidden="true" />}
-                {t("reopen")}
-              </button>
-            ) : (
+            {!resolved && (
               <button
                 type="button"
                 disabled={changing}
                 onClick={() => changeStatus("RESOLVED")}
-                className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13px] font-semibold text-emerald-700 transition-colors hover:bg-emerald-500/10 disabled:opacity-50 dark:text-emerald-400"
+                className="ml-auto inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[13px] font-semibold text-emerald-700 transition-colors hover:bg-emerald-500/10 disabled:opacity-50 dark:text-emerald-400"
               >
                 {changing ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <CheckCircle2 className="h-4 w-4" aria-hidden="true" />}
                 {t("markResolved")}

@@ -32,6 +32,7 @@ export default async function TenantSupportPage({ params }: { params: Promise<{ 
         <TicketList
           locale={locale}
           hrefBase="/tenant/support"
+          viewer="tenant"
           empty={t("tenantEmpty")}
           rows={tickets.map((ticket) => ({
             id: ticket.id,
@@ -41,7 +42,7 @@ export default async function TenantSupportPage({ params }: { params: Promise<{ 
             unread: isUnread(ticket.lastMessageAt, ticket.tenantReadAt),
             meta: personName(ticket.createdBy),
             messages: ticket._count.messages,
-            avatar: { id: ticket.createdBy.id, name: personName(ticket.createdBy) },
+            preview: ticket.messages[0] ?? null,
           }))}
         />
       </div>

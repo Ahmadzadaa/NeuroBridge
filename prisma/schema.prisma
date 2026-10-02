@@ -153,6 +153,7 @@ model User {
   aiMessages          AiMessage[]
   supportTickets      SupportTicket[]           @relation("SupportTicketCreator")
   supportMessages     SupportMessage[]
+  notifications       Notification[]
   universityRef       University?               @relation(fields: [universityId], references: [id])
   departmentRef       Department?               @relation(fields: [departmentId], references: [id])
 
@@ -1611,4 +1612,25 @@ model SupportMessage {
 
   @@index([ticketId, createdAt])
   @@map("support_messages")
+}
+
+/// Something one person should know about, shown under the bell. The text is
+/// rendered from `type` and `params` in the reader's language, so nothing
+/// user-facing is stored in a single language.
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String    @map("user_id")
+  /// e.g. SUPPORT_REPLY, CERTIFICATE_ISSUED — one i18n entry per type
+  type      String
+  /// JSON values for the message, e.g. {"subject": "..."}
+  params    String    @default("{}")
+  /// In-app path without the locale, e.g. /tenant/support/abc
+  link      String?
+  readAt    DateTime? @map("read_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt, createdAt])
+  @@map("notifications")
 }

@@ -737,3 +737,75 @@ export function supportTicketEmail(params: {
     ),
   };
 }
+
+const SUPPORT_REPLY_COPY = {
+  az: {
+    toTenant: { subject: (topic: string) => `Müraciətinizə cavab var: ${topic}`, title: "Müraciətinizə cavab verildi", intro: "BizSim komandası dəstək müraciətinizə cavab yazdı." },
+    toStaff: { subject: (topic: string) => `Müraciətdə yeni mesaj: ${topic}`, title: "Müraciətdə yeni mesaj", intro: "Təşkilat dəstək müraciətinə yeni mesaj yazdı." },
+    organisation: "Təşkilat",
+    author: "Yazan",
+    topic: "Mövzu",
+    message: "Mesaj",
+    button: "Yazışmanı aç",
+  },
+  en: {
+    toTenant: { subject: (topic: string) => `New reply to your request: ${topic}`, title: "Your request has a reply", intro: "The BizSim team replied to your support request." },
+    toStaff: { subject: (topic: string) => `New message in a request: ${topic}`, title: "New message in a request", intro: "An organisation wrote a new message in a support request." },
+    organisation: "Organisation",
+    author: "From",
+    topic: "Subject",
+    message: "Message",
+    button: "Open the conversation",
+  },
+  tr: {
+    toTenant: { subject: (topic: string) => `Talebinize yanıt var: ${topic}`, title: "Talebiniz yanıtlandı", intro: "BizSim ekibi destek talebinize yanıt yazdı." },
+    toStaff: { subject: (topic: string) => `Talepte yeni mesaj: ${topic}`, title: "Talepte yeni mesaj", intro: "Bir kurum destek talebine yeni bir mesaj yazdı." },
+    organisation: "Kurum",
+    author: "Gönderen",
+    topic: "Konu",
+    message: "Mesaj",
+    button: "Yazışmayı aç",
+  },
+} as const;
+
+/** A new message in a support conversation, for whichever side did not write it. */
+export function supportReplyEmail(params: {
+  audience: "tenant" | "staff";
+  organisation: string;
+  authorName: string;
+  topic: string;
+  message: string;
+  ticketUrl: string;
+  locale?: string | null;
+}): { subject: string; html: string } {
+  const locale = resolveLocale(params.locale);
+  const c = SUPPORT_REPLY_COPY[locale];
+  const side = params.audience === "tenant" ? c.toTenant : c.toStaff;
+  const message = params.message.length > 1200 ? `${params.message.slice(0, 1200)}…` : params.message;
+  const rows: [string, string][] = [
+    ...(params.audience === "staff" ? ([[c.organisation, params.organisation]] as [string, string][]) : []),
+    [c.author, params.authorName],
+    [c.topic, params.topic],
+  ];
+  const table = rows
+    .map(
+      ([label, value]) =>
+        `<tr>
+           <td style="padding:6px 12px 6px 0;font-size:13px;color:#64748b;vertical-align:top;white-space:nowrap;">${escapeHtml(label)}</td>
+           <td style="padding:6px 0;font-size:14px;color:#0f172a;">${escapeHtml(value)}</td>
+         </tr>`,
+    )
+    .join("");
+  return {
+    subject: side.subject(params.topic).replace(/[\r\n]+/g, " ").slice(0, 200),
+    html: layout(
+      side.title,
+      paragraph(side.intro) +
+        `<table style="width:100%;border-collapse:collapse;margin-top:8px;">${table}</table>` +
+        `<p style="margin:16px 0 6px;font-size:13px;color:#64748b;">${escapeHtml(c.message)}</p>` +
+        `<div style="white-space:pre-wrap;font-size:14px;line-height:1.6;color:#0f172a;background:#f4f5f7;border-radius:12px;padding:14px 16px;">${escapeHtml(message)}</div>` +
+        button(params.ticketUrl, c.button),
+      locale,
+    ),
+  };
+}

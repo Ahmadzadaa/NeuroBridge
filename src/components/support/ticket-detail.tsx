@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { ChevronLeft } from "lucide-react";
+import { CheckCircle2, ChevronLeft, Clock, MessageCircleReply } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { formatDate } from "@/lib/format-date";
 import { getThread, personName, SupportTicketNotFoundError, type SupportActor, type SupportStatus } from "@/lib/support/support-service";
@@ -35,6 +35,12 @@ export async function TicketDetail({
   });
   const time = new Intl.DateTimeFormat(locale === "en" ? "en-GB" : "tr-TR", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Baku" });
   const staff = viewer === "staff";
+  const look = {
+    OPEN: { icon: Clock, tile: "from-amber-400 to-orange-500" },
+    ANSWERED: { icon: MessageCircleReply, tile: "from-indigo-500 to-violet-600" },
+    RESOLVED: { icon: CheckCircle2, tile: "from-emerald-400 to-teal-600" },
+  }[ticket.status as SupportStatus] ?? { icon: Clock, tile: "from-amber-400 to-orange-500" };
+  const LookIcon = look.icon;
 
   return (
     <div className={cn("mx-auto space-y-5", staff ? "max-w-6xl" : "max-w-3xl")}>
@@ -45,15 +51,21 @@ export async function TicketDetail({
 
       <div className={cn(staff && "grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px]")}>
         <div className="min-w-0 space-y-5">
-          <header className="ios-reveal space-y-2">
-            <div className="flex flex-wrap items-center gap-2">
-              <SupportStatusPill status={ticket.status as SupportStatus} />
-              <span className="text-[13px] text-muted-foreground">
-                {staff ? `${ticket.tenant.name} · ` : ""}
-                {t("openedBy", { name: personName(ticket.createdBy), date: formatDate(ticket.createdAt, locale, "medium") })}
-              </span>
+          <header className="ios-reveal flex items-start gap-4 rounded-[22px] bg-card p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60">
+            <span className={cn("hidden h-12 w-12 shrink-0 items-center justify-center rounded-[14px] bg-gradient-to-br text-white shadow-sm sm:flex", look.tile)} aria-hidden="true">
+              <LookIcon className="h-6 w-6" strokeWidth={2.2} />
+            </span>
+            <div className="min-w-0 flex-1">
+              <h1 className="text-[22px] font-bold leading-tight tracking-[-0.4px] sm:text-[24px]">{ticket.subject}</h1>
+              <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px] text-muted-foreground">
+                {staff && <span className="font-medium text-foreground/80">{ticket.tenant.name}</span>}
+                {staff && <span aria-hidden="true">·</span>}
+                <span>{t("openedBy", { name: personName(ticket.createdBy), date: formatDate(ticket.createdAt, locale, "medium") })}</span>
+                <span aria-hidden="true">·</span>
+                <span>{t("messageCount", { count: ticket.messages.length })}</span>
+              </p>
             </div>
-            <h1 className="text-[26px] font-bold leading-tight tracking-[-0.6px] sm:text-[30px]">{ticket.subject}</h1>
+            <SupportStatusPill status={ticket.status as SupportStatus} />
           </header>
           <SupportThread
             ticketId={ticket.id}

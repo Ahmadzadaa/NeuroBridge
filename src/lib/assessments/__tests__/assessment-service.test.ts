@@ -4,8 +4,9 @@ vi.mock("@/lib/prisma", () => {
   const tx = {
     assessmentResult: { findUnique: vi.fn(), create: vi.fn(), count: vi.fn() },
     assessment: { count: vi.fn() },
-    user: { findUnique: vi.fn() },
+    user: { findUnique: vi.fn(), findMany: vi.fn() },
     tenantNotification: { create: vi.fn() },
+    notification: { createMany: vi.fn() },
   };
   return {
     prisma: {
@@ -92,7 +93,8 @@ describe("submitAssessment", () => {
       questions: [{ id: "q1", dimensionCode: "STRESS_BALANCE", reverse: false }],
     } as never);
     tx.assessmentResult.findUnique.mockResolvedValue(null);
-    tx.user.findUnique.mockResolvedValue({ tenantId: "ten_1" });
+    tx.user.findUnique.mockResolvedValue({ tenantId: "ten_1", firstName: "Aysel", lastName: "Ə", email: "a@example.com" });
+    tx.user.findMany.mockResolvedValue([{ id: "adm_1" }]);
   });
 
   it("notifies the university when the last baseline test is completed", async () => {
@@ -104,6 +106,10 @@ describe("submitAssessment", () => {
     expect(result).toEqual({ scores: { STRESS_BALANCE: 100 }, analysisComplete: true });
     expect(tx.tenantNotification.create).toHaveBeenCalledWith({
       data: { tenantId: "ten_1", type: "ASSESSMENTS_COMPLETED", payload: JSON.stringify({ userId: "usr_1", programId: "prg_1" }) },
+    });
+    // The admins also get it under the bell.
+    expect(tx.notification.createMany).toHaveBeenCalledWith({
+      data: [{ userId: "adm_1", type: "ASSESSMENTS_COMPLETED", params: JSON.stringify({ student: "Aysel Ə" }), link: "/tenant/assessments" }],
     });
   });
 

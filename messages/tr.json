@@ -2743,6 +2743,63 @@
       "tabPerson": "Kişi",
       "tabOrganisation": "Kurum",
       "tabTechnical": "Teknik"
+    },
+    "previewYou": "Siz",
+    "previewTeam": "BizSim",
+    "resolvedBanner": "Bu talep çözüldü. Yeni bir mesaj yazarsanız yeniden açılır."
+  },
+  "notifications": {
+    "title": "Bildirimler",
+    "bell": "Bildirimler",
+    "bellUnread": "Bildirimler, {count} okunmamış",
+    "markAll": "Tümünü okundu say",
+    "emptyTitle": "Bildirim yok",
+    "emptyBody": "Yeni bir şey olduğunda burada göreceksiniz.",
+    "unread": "Okunmamış",
+    "fallback": "Yeni bildirim",
+    "types": {
+      "SUPPORT_TICKET_NEW": {
+        "title": "Yeni destek talebi",
+        "body": "{organisation}: {subject}"
+      },
+      "SUPPORT_MESSAGE_NEW": {
+        "title": "Talepte yeni mesaj",
+        "body": "{organisation}: {subject}"
+      },
+      "SUPPORT_REPLY": {
+        "title": "Talebiniz yanıtlandı",
+        "body": "{subject}"
+      },
+      "LEAD_NEW": {
+        "title": "Yeni demo talebi",
+        "body": "{company} · {name}"
+      },
+      "ASSESSMENTS_COMPLETED": {
+        "title": "Temel testler tamamlandı",
+        "body": "{student} tüm temel testleri bitirdi."
+      },
+      "AI_BUDGET_EXHAUSTED": {
+        "title": "AI Mentor limiti doldu",
+        "body": "{month} ayı için AI Mentor bütçesi bitti."
+      },
+      "CERTIFICATE_ISSUED": {
+        "title": "Yeni sertifika",
+        "body": "“{title}” sertifikanız hazır."
+      },
+      "SIMULATION_GRADED": {
+        "title": "Simülasyonunuz değerlendirildi",
+        "body": "Öğretmen notu: {grade} / {max}"
+      },
+      "HACKATHON_RESULTS": {
+        "title": "Hackathon sonuçları açıklandı",
+        "body": "{program}"
+      }
+    },
+    "time": {
+      "now": "az önce",
+      "minutes": "{count} dk önce",
+      "hours": "{count} sa önce",
+      "days": "{count} gün önce"
     }
   }
 }
