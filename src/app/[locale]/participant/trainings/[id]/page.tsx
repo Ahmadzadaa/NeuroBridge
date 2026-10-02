@@ -72,7 +72,7 @@ export default async function TrainingDetailPage({
         id: lesson.id,
         title: localized(lesson, "title", locale),
         content: lesson.content,
-        videoUrl: lesson.videoUrl,
+        hasVideo: Boolean(lesson.videoUrl || lesson.videoKey),
         estimatedMinutes: lesson.estimatedMinutes,
         completed: completedIds.has(lesson.id),
       }))}

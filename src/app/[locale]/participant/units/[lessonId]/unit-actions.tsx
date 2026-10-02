@@ -5,10 +5,23 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { LessonVideoPlayer } from "@/components/lessons/lesson-video-player";
 
 /** Same bound as PROJECT_MAX_LENGTH in units-service (not imported: server module). */
 const MAX = 5000;
 const MIN = 20;
+
+/** The unit video under the watch rules; "watched" unlocks once the server agrees. */
+export function UnitVideo({ lessonId, locale, done }: { lessonId: string; locale: string; done: boolean }) {
+  const tv = useTranslations("lessonVideo");
+  const [watched, setWatched] = useState(false);
+  return (
+    <div className="space-y-3">
+      <LessonVideoPlayer lessonId={lessonId} locale={locale} onCompletedChange={setWatched} />
+      {!done && (watched ? <MarkVideoWatched lessonId={lessonId} /> : <p className="text-xs text-muted-foreground">{tv("required")}</p>)}
+    </div>
+  );
+}
 
 export function MarkVideoWatched({ lessonId }: { lessonId: string }) {
   const t = useTranslations("units");

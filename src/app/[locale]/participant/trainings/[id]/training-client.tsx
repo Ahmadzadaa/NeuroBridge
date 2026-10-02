@@ -21,12 +21,13 @@ import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
+import { LessonVideoPlayer } from "@/components/lessons/lesson-video-player";
 
 interface LessonItem {
   id: string;
   title: string;
   content: string;
-  videoUrl: string | null;
+  hasVideo: boolean;
   estimatedMinutes: number;
   completed: boolean;
 }
@@ -45,14 +46,6 @@ interface TrainingDetailClientProps {
   } | null;
 }
 
-/** Normalizes YouTube watch/short URLs to embeddable form. */
-function toEmbedUrl(url: string): string {
-  const watch = url.match(/youtube\.com\/watch\?v=([\w-]{6,})/);
-  if (watch) return `https://www.youtube.com/embed/${watch[1]}`;
-  const short = url.match(/youtu\.be\/([\w-]{6,})/);
-  if (short) return `https://www.youtube.com/embed/${short[1]}`;
-  return url;
-}
 
 export function TrainingDetailClient({
   locale,
@@ -63,6 +56,7 @@ export function TrainingDetailClient({
   exam,
 }: TrainingDetailClientProps) {
   const t = useTranslations("participant.trainings");
+  const tv = useTranslations("lessonVideo");
   const router = useRouter();
 
   const [completed, setCompleted] = useState<Set<string>>(
@@ -73,8 +67,11 @@ export function TrainingDetailClient({
     firstIncomplete === -1 ? 0 : firstIncomplete
   );
   const [saving, setSaving] = useState(false);
+  // Lessons whose video the server already counts as watched.
+  const [videoDone, setVideoDone] = useState<Record<string, boolean>>({});
 
   const active = lessons[activeIndex];
+  const videoLocked = Boolean(active?.hasVideo && !completed.has(active.id) && !videoDone[active.id]);
   const percent = useMemo(
     () =>
       lessons.length === 0
@@ -148,15 +145,13 @@ export function TrainingDetailClient({
                 style={{ "--i": 0 } as React.CSSProperties}
                 className="ios-reveal overflow-hidden rounded-[22px] bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-border/60"
               >
-                {active.videoUrl && (
-                  <div className="aspect-video w-full bg-black">
-                    <iframe
+                {active.hasVideo && (
+                  <div className="p-3 pb-0 sm:p-4 sm:pb-0">
+                    <LessonVideoPlayer
                       key={active.id}
-                      src={toEmbedUrl(active.videoUrl)}
-                      title={active.title}
-                      className="h-full w-full"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
+                      lessonId={active.id}
+                      locale={locale}
+                      onCompletedChange={(done) => setVideoDone((prev) => ({ ...prev, [active.id]: done }))}
                     />
                   </div>
                 )}
@@ -183,7 +178,7 @@ export function TrainingDetailClient({
                   <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-border pt-5">
                     <Button
                       onClick={markComplete}
-                      disabled={saving}
+                      disabled={saving || videoLocked}
                       className="rounded-xl"
                     >
                       {saving ? (
@@ -207,6 +202,7 @@ export function TrainingDetailClient({
                         </>
                       )}
                     </Button>
+                    {videoLocked && <span className="text-[12px] text-muted-foreground">{tv("required")}</span>}
                     {completed.has(active.id) && (
                       <span className="flex items-center gap-1.5 text-[13px] font-medium text-success">
                         <CheckCircle2 className="h-4 w-4" aria-hidden="true" />

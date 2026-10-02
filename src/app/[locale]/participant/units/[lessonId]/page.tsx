@@ -5,7 +5,7 @@ import { auth } from "@/auth";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { Link } from "@/i18n/navigation";
 import { getUnit, UnitError } from "@/lib/training/units-service";
-import { MarkVideoWatched, ProjectForm } from "./unit-actions";
+import { MarkVideoWatched, ProjectForm, UnitVideo } from "./unit-actions";
 import { MentorPanel } from "@/components/mentor/mentor-panel";
 import { prisma } from "@/lib/prisma";
 
@@ -47,14 +47,14 @@ export default async function UnitPage({ params }: Params) {
         </Link>
 
         <Section n={1} title={t("steps.video")} done={unit.videoDone}>
-          {unit.videoUrl ? (
-            <a href={unit.videoUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-primary hover:underline">
-              {t("watchVideo")} ↗
-            </a>
+          {unit.hasVideo ? (
+            <UnitVideo lessonId={unit.id} locale={locale} done={unit.videoDone} />
           ) : (
-            <p className="text-sm text-muted-foreground">{t("videoComingSoon")}</p>
+            <>
+              <p className="text-sm text-muted-foreground">{t("videoComingSoon")}</p>
+              {!unit.videoDone && <MarkVideoWatched lessonId={unit.id} />}
+            </>
           )}
-          {!unit.videoDone && <MarkVideoWatched lessonId={unit.id} />}
         </Section>
 
         <Section n={2} title={t("steps.project")} done={unit.projectDone}>

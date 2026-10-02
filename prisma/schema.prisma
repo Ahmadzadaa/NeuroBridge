@@ -131,6 +131,8 @@ model User {
   recoveryCodes       UserRecoveryCode[]
   examAttempts        ExamAttempt[]
   lessonProgress      LessonProgress[]
+  lessonVideoWatches  LessonVideoWatch[]
+  lessonVideoAnswers  LessonVideoAnswer[]
   teamMemberships     TeamMember[]
   juryScores          JuryScore[]
   simulationRuns      SimulationRun[]
@@ -424,6 +426,11 @@ model Lesson {
   titleAz          String   @map("title_az")
   content          String
   videoUrl         String?  @map("video_url")
+  /// Storage key of an uploaded video (served by /api/lessons/[id]/video/file);
+  /// takes precedence over videoUrl.
+  videoKey         String?  @map("video_key")
+  /// Set by the platform team; the watch rules trust it over what a browser reports.
+  videoDurationSec Int?     @map("video_duration_sec")
   estimatedMinutes Int      @map("estimated_minutes")
   order            Int
   createdAt        DateTime @default(now()) @map("created_at")
@@ -441,9 +448,68 @@ model Lesson {
   progress           LessonProgress[]
   unitExams          Exam[]
   projectSubmissions LessonProjectSubmission[]
+  videoQuestions     LessonVideoQuestion[]
+  videoWatches       LessonVideoWatch[]
 
   @@index([trainingId])
   @@map("lessons")
+}
+
+/// A question that pauses the lesson video at `atSecond` until it is answered.
+model LessonVideoQuestion {
+  id           String   @id @default(cuid())
+  lessonId     String   @map("lesson_id")
+  atSecond     Int      @map("at_second")
+  /// Trilingual JSON (see src/lib/i18n-content.ts).
+  prompt       String
+  /// JSON array of trilingual option texts.
+  options      String
+  correctIndex Int      @map("correct_index")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  lesson  Lesson              @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  answers LessonVideoAnswer[]
+
+  @@index([lessonId, atSecond])
+  @@map("lesson_video_questions")
+}
+
+/// How far a participant has really watched a lesson video. The server only
+/// lets `maxWatchedSec` grow as fast as the video can play (see video-watch.ts).
+model LessonVideoWatch {
+  id            String    @id @default(cuid())
+  lessonId      String    @map("lesson_id")
+  userId        String    @map("user_id")
+  /// Duration the browser reported, used when the lesson has none set.
+  durationSec   Int       @default(0) @map("duration_sec")
+  maxWatchedSec Int       @default(0) @map("max_watched_sec")
+  lastBeatAt    DateTime  @default(now()) @map("last_beat_at")
+  startedAt     DateTime  @default(now()) @map("started_at")
+  completedAt   DateTime? @map("completed_at")
+
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([lessonId, userId])
+  @@index([userId])
+  @@map("lesson_video_watches")
+}
+
+/// Every attempt at an in-video question; the first one feeds the attention score.
+model LessonVideoAnswer {
+  id         String   @id @default(cuid())
+  questionId String   @map("question_id")
+  userId     String   @map("user_id")
+  choice     Int
+  correct    Boolean
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  question LessonVideoQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  user     User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([questionId, userId])
+  @@index([userId])
+  @@map("lesson_video_answers")
 }
 
 model Exam {

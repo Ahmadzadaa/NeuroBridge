@@ -26,12 +26,14 @@ function sentryOrigin(): string {
  */
 const csp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
+  // YouTube's player API drives the lesson video rules (no seeking ahead, questions).
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://www.youtube.com https://s.ytimg.com`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "font-src 'self' data:",
   `connect-src 'self'${sentryOrigin() ? ` ${sentryOrigin()}` : ""}${isDev ? " ws: wss:" : ""}`,
-  "media-src 'self' blob:",
+  // Uploaded lesson videos stream from short-lived S3 links.
+  "media-src 'self' blob: https://*.amazonaws.com",
   "frame-src 'self' blob: https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com https://*.amazonaws.com https://www.paytr.com",
   "worker-src 'self' blob:",
   "object-src 'none'",
