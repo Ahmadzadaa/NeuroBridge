@@ -104,7 +104,8 @@
       "pricing": "Hizmetler ve Fiyatlar",
       "programs": "Programlar",
       "aiUsage": "AI kullanımı",
-      "leads": "Demo talepleri"
+      "leads": "Demo talepleri",
+      "supportBadge": "{count} açık talep"
     },
     "tenant": {
       "dashboard": "Panel",
@@ -118,7 +119,8 @@
       "assessments": "Başlangıç testleri",
       "certificates": "Sertifikalar",
       "analytics": "Analitik",
-      "support": "Destek"
+      "support": "Destek",
+      "supportBadge": "{count} okunmamış yanıt"
     },
     "participant": {
       "dashboard": "Panel",

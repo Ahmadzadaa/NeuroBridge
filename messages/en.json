@@ -104,7 +104,8 @@
       "pricing": "Services & Pricing",
       "programs": "Programmes",
       "aiUsage": "AI usage",
-      "leads": "Demo requests"
+      "leads": "Demo requests",
+      "supportBadge": "{count, plural, one {# open request} other {# open requests}}"
     },
     "tenant": {
       "dashboard": "Dashboard",
@@ -118,7 +119,8 @@
       "assessments": "Baseline tests",
       "certificates": "Certificates",
       "analytics": "Analytics",
-      "support": "Support"
+      "support": "Support",
+      "supportBadge": "{count, plural, one {# unread reply} other {# unread replies}}"
     },
     "participant": {
       "dashboard": "Dashboard",

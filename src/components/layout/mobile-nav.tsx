@@ -5,6 +5,7 @@ import { Link, usePathname } from "@/i18n/navigation";
 import { useTenantFeatures } from "@/components/providers/tenant-features-provider";
 import type { TenantFeature } from "@/lib/tenant/features";
 import { cn } from "@/lib/utils";
+import { useSupportBadge } from "./use-support-badge";
 import {
   LayoutDashboard,
   FileText,
@@ -20,12 +21,15 @@ import {
   ClipboardCheck,
   BookOpen,
   Inbox,
+  Headphones,
 } from "lucide-react";
 
 type PanelType = "super-admin" | "tenant" | "participant" | "jury" | "teacher";
 
 interface MobileNavItem {
   href: string;
+  /** Shows the support count (requests needing attention) on the icon. */
+  badge?: "support";
   labelKey: string;
   icon: React.ComponentType<{ className?: string }>;
   /** Hidden when the organisation does not have this module. */
@@ -38,6 +42,7 @@ const mobileNavConfig: Record<PanelType, MobileNavItem[]> = {
     { href: "/super-admin/tenants", labelKey: "tenants", icon: Users },
     { href: "/super-admin/billing", labelKey: "billing", icon: BarChart3 },
     { href: "/super-admin/leads", labelKey: "leads", icon: Inbox },
+    { href: "/super-admin/support", labelKey: "support", icon: Headphones, badge: "support" },
   ],
   tenant: [
     { href: "/tenant", labelKey: "dashboard", icon: LayoutDashboard },
@@ -96,19 +101,21 @@ export function MobileNav({ panel }: MobileNavProps) {
   const items = mobileNavConfig[panel].filter(
     (item) => item.feature === undefined || features[item.feature]
   );
+  const supportCount = useSupportBadge(items.some((item) => item.badge === "support"));
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around border-t border-border/60 bg-background/75 px-2 pb-[max(env(safe-area-inset-bottom),0.5rem)] pt-1.5 backdrop-blur-2xl backdrop-saturate-150 lg:hidden">
       {items.map((item) => {
         const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
         const Icon = item.icon;
+        const count = item.badge === "support" ? supportCount : 0;
 
         return (
           <Link
             key={item.href}
             href={item.href}
             aria-current={isActive ? "page" : undefined}
-            aria-label={t(item.labelKey)}
+            aria-label={count > 0 ? `${t(item.labelKey)} (${count})` : t(item.labelKey)}
             className={cn(
               "relative flex min-h-12 min-w-14 flex-col items-center justify-center gap-0.5 rounded-2xl px-3 py-1 text-[10px] font-semibold",
               "transition-colors duration-200 active:scale-95",
@@ -123,6 +130,14 @@ export function MobileNav({ panel }: MobileNavProps) {
               )}
               aria-hidden="true"
             />
+            {count > 0 && (
+              <span
+                className="absolute right-2 top-0.5 inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-bold tabular-nums text-white ring-2 ring-background"
+                aria-hidden="true"
+              >
+                {count > 99 ? "99+" : count}
+              </span>
+            )}
             <span
               className={cn(
                 "transition-opacity duration-150",

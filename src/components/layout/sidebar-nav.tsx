@@ -5,6 +5,7 @@ import { useTenantFeatures } from "@/components/providers/tenant-features-provid
 import type { TenantFeature } from "@/lib/tenant/features";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
+import { useSupportBadge } from "./use-support-badge";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   LayoutDashboard,
@@ -41,6 +42,8 @@ interface NavItem {
   icon: React.ComponentType<{ className?: string }>;
   /** Hidden when the organisation does not have this module. */
   feature?: TenantFeature;
+  /** Shows the support count (requests needing attention) beside the label. */
+  badge?: "support";
 }
 
 const navConfig: Record<PanelType, NavItem[]> = {
@@ -52,7 +55,7 @@ const navConfig: Record<PanelType, NavItem[]> = {
     { href: "/super-admin/billing", labelKey: "billing", icon: CreditCard },
     { href: "/super-admin/pricing", labelKey: "pricing", icon: Tag },
     { href: "/super-admin/content", labelKey: "content", icon: FileText },
-    { href: "/super-admin/support", labelKey: "support", icon: Headphones },
+    { href: "/super-admin/support", labelKey: "support", icon: Headphones, badge: "support" },
     { href: "/super-admin/ai-usage", labelKey: "aiUsage", icon: Bot },
     { href: "/super-admin/system", labelKey: "system", icon: Activity },
     { href: "/super-admin/audit", labelKey: "audit", icon: ClipboardList },
@@ -79,7 +82,7 @@ const navConfig: Record<PanelType, NavItem[]> = {
     { href: "/tenant/reports", labelKey: "reports", icon: BarChart3 },
     { href: "/tenant/settings", labelKey: "settings", icon: Settings },
     { href: "/tenant/billing", labelKey: "billing", icon: CreditCard },
-    { href: "/tenant/support", labelKey: "support", icon: Headphones },
+    { href: "/tenant/support", labelKey: "support", icon: Headphones, badge: "support" },
   ],
   participant: [
     { href: "/participant", labelKey: "dashboard", icon: LayoutDashboard },
@@ -140,6 +143,7 @@ export function SidebarNav({ panel, collapsed }: SidebarNavProps) {
   const items = navConfig[panel].filter(
     (item) => item.feature === undefined || features[item.feature]
   );
+  const supportCount = useSupportBadge(items.some((item) => item.badge === "support"));
 
   return (
     <nav className="flex flex-col gap-1 p-3">
@@ -148,13 +152,14 @@ export function SidebarNav({ panel, collapsed }: SidebarNavProps) {
           pathname === item.href ||
           (item.href !== `/${panel}` && pathname.startsWith(item.href));
         const Icon = item.icon;
+        const count = item.badge === "support" ? supportCount : 0;
 
         return (
           <Link
             key={item.href}
             href={item.href}
             aria-current={isActive ? "page" : undefined}
-            title={collapsed ? t(item.labelKey) : undefined}
+            title={collapsed ? (count > 0 ? `${t(item.labelKey)} (${count})` : t(item.labelKey)) : undefined}
             className={cn(
               "relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-[14px] font-medium",
               "transition-colors duration-200",
@@ -181,7 +186,18 @@ export function SidebarNav({ panel, collapsed }: SidebarNavProps) {
               )}
               aria-hidden="true"
             />
-            {!collapsed && <span className="relative truncate">{t(item.labelKey)}</span>}
+            {!collapsed && <span className="relative min-w-0 flex-1 truncate">{t(item.labelKey)}</span>}
+            {count > 0 &&
+              (collapsed ? (
+                <span className="absolute right-1.5 top-1.5 h-2.5 w-2.5 rounded-full bg-destructive ring-2 ring-sidebar" aria-hidden="true" />
+              ) : (
+                <span
+                  className="relative ml-auto inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-destructive px-1.5 text-[11px] font-semibold tabular-nums text-white"
+                  aria-label={t("supportBadge", { count })}
+                >
+                  {count > 99 ? "99+" : count}
+                </span>
+              ))}
           </Link>
         );
       })}

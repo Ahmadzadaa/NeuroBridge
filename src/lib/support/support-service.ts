@@ -193,3 +193,18 @@ export async function getTicketInspector(ticketId: string) {
   ]);
   return { ...ticket, lastLogin, recent };
 }
+
+/**
+ * The number on the menu: requests waiting for the platform team (open), or,
+ * for an organisation, answers it has not read yet.
+ */
+export async function supportBadgeCount(actor: SupportActor): Promise<number> {
+  if (isStaff(actor)) return prisma.supportTicket.count({ where: { status: "OPEN" } });
+  if (!actor.tenantId) return 0;
+  const answered = await prisma.supportTicket.findMany({
+    where: { tenantId: actor.tenantId, status: "ANSWERED" },
+    select: { lastMessageAt: true, tenantReadAt: true },
+    take: LIST_LIMIT,
+  });
+  return answered.filter((t) => isUnread(t.lastMessageAt, t.tenantReadAt)).length;
+}
