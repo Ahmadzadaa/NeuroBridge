@@ -81,6 +81,7 @@ export default async function SimulationPlayPage({
         simulation={{
           id: simulation.id,
           name: localized(simulation, "name", locale),
+          category: simulation.category,
           description: localizedText(simulation.description, locale),
           startCash: simulation.startCash,
           targetCash: simulation.targetCash,

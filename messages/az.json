@@ -1365,7 +1365,17 @@
       "metrics": {
         "cash": "Kapital",
         "satisfaction": "Müştəri məmnuniyyəti",
-        "reputation": "Reputasiya"
+        "reputation": "Reputasiya",
+        "leadership": {
+          "cash": "Komanda büdcəsi",
+          "satisfaction": "Komanda motivasiyası",
+          "reputation": "Liderlik etibarı"
+        },
+        "investor_readiness": {
+          "cash": "Kapital",
+          "satisfaction": "İnvestor marağı",
+          "reputation": "Reputasiya"
+        }
       },
       "decisionPrompt": "Qərarınızı verin",
       "outcomeLabel": "Nəticə",
@@ -1377,7 +1387,7 @@
       "teacherGraded": "Müəllim qiyməti: {grade}/{max}",
       "viewSummary": "Xülasəyə bax",
       "lastResultTitle": "Son nəticəniz",
-      "introRules": "{rounds} raund sizi gözləyir. Başlanğıc kapitalınız {cash}, hədəf {target}. Hər raundda bir qərar verin — hər seçimin kapitala, müştəri məmnuniyyətinə və reputasiyaya təsiri var. Sonda üç metrik yekun bala çevrilir.",
+      "introRules": "{rounds} raund sizi gözləyir. Başlanğıc — {cash}, hədəf — {target}. Hər raundda bir qərar verin: hər seçim üç göstəriciyə təsir edir — {cashLabel}, {satLabel} və {repLabel}. Sonda üç göstərici yekun bala çevrilir.",
       "begin": "Simulyasiyaya başla"
     },
     "grading": {
@@ -1759,7 +1769,11 @@
     "program": "Proqram",
     "new": "Yeni",
     "notStarted": "Başlamayıb",
-    "notShared": "Ballar paylaşılmayıb (razılıq yoxdur)"
+    "notShared": "Ballar paylaşılmayıb (razılıq yoxdur)",
+    "pagination": "Səhifələr",
+    "previous": "Əvvəlki",
+    "next": "Növbəti",
+    "pageOf": "Səhifə {page} / {pages} · {total} iştirakçı"
   },
   "units": {
     "title": "Təlim Bölmələri",

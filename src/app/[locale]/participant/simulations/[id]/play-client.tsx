@@ -48,6 +48,7 @@ interface SimulationPlayClientProps {
   simulation: {
     id: string;
     name: string;
+    category: string;
     description: string | null;
     startCash: number;
     targetCash: number;
@@ -135,6 +136,11 @@ export function SimulationPlayClient({
   const t = useTranslations("simulation.play");
   const tc = useTranslations("common");
   const router = useRouter();
+  // Scenarios may rename the three metrics (e.g. a leadership game tracks team morale).
+  const metric = (name: "cash" | "satisfaction" | "reputation") => {
+    const own = `metrics.${simulation.category}.${name}`;
+    return t.has(own) ? t(own as never) : t(`metrics.${name}`);
+  };
   const reducedMotion = useReducedMotion();
 
   const [busy, setBusy] = useState(false);
@@ -237,21 +243,21 @@ export function SimulationPlayClient({
             <div className="flex flex-col gap-2.5 sm:flex-row">
               <MetricChip
                 icon={Coins}
-                label={t("metrics.cash")}
+                label={metric("cash")}
                 value={formatSimMoney(displayedState.cash, locale)}
                 delta={outcome?.deltas.cash}
                 accent="bg-coin/15 text-coin-dark"
               />
               <MetricChip
                 icon={Heart}
-                label={t("metrics.satisfaction")}
+                label={metric("satisfaction")}
                 value={`${displayedState.satisfaction}%`}
                 delta={outcome?.deltas.satisfaction}
                 accent="bg-destructive/10 text-destructive"
               />
               <MetricChip
                 icon={Star}
-                label={t("metrics.reputation")}
+                label={metric("reputation")}
                 value={`${displayedState.reputation}%`}
                 delta={outcome?.deltas.reputation}
                 accent="bg-primary/10 text-primary"
@@ -418,19 +424,19 @@ export function SimulationPlayClient({
                 <div className="mx-auto mt-6 flex max-w-md flex-col gap-2.5 sm:flex-row">
                   <MetricChip
                     icon={Coins}
-                    label={t("metrics.cash")}
+                    label={metric("cash")}
                     value={formatSimMoney(lastCompleted.cash, locale)}
                     accent="bg-coin/15 text-coin-dark"
                   />
                   <MetricChip
                     icon={Heart}
-                    label={t("metrics.satisfaction")}
+                    label={metric("satisfaction")}
                     value={`${lastCompleted.satisfaction}%`}
                     accent="bg-destructive/10 text-destructive"
                   />
                   <MetricChip
                     icon={Star}
-                    label={t("metrics.reputation")}
+                    label={metric("reputation")}
                     value={`${lastCompleted.reputation}%`}
                     accent="bg-primary/10 text-primary"
                   />
@@ -492,6 +498,9 @@ export function SimulationPlayClient({
                       rounds: simulation.totalRounds,
                       cash: formatSimMoney(simulation.startCash, locale),
                       target: formatSimMoney(simulation.targetCash, locale),
+                      cashLabel: metric("cash").toLocaleLowerCase(locale),
+                      satLabel: metric("satisfaction").toLocaleLowerCase(locale),
+                      repLabel: metric("reputation").toLocaleLowerCase(locale),
                     })}
                   </p>
                 </div>

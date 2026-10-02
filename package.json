@@ -17,6 +17,7 @@
     "db:seed-demo": "tsx prisma/seed-demo.ts",
     "db:seed-hackathon": "tsx prisma/seed-hackathon.ts",
     "db:seed-simulation": "tsx prisma/seed-simulation.ts",
+    "db:seed-scenarios": "tsx prisma/seed-scenarios.ts",
     "db:seed-demo:reset": "tsx prisma/seed-demo.ts --reset",
     "db:fill-profiles": "tsx scripts/fill-participant-profiles.ts",
     "db:push": "prisma db push",

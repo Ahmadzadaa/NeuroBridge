@@ -1365,7 +1365,17 @@
       "metrics": {
         "cash": "Capital",
         "satisfaction": "Customer satisfaction",
-        "reputation": "Reputation"
+        "reputation": "Reputation",
+        "leadership": {
+          "cash": "Team budget",
+          "satisfaction": "Team morale",
+          "reputation": "Leadership credibility"
+        },
+        "investor_readiness": {
+          "cash": "Capital",
+          "satisfaction": "Investor interest",
+          "reputation": "Reputation"
+        }
       },
       "decisionPrompt": "Make your decision",
       "outcomeLabel": "Outcome",
@@ -1377,7 +1387,7 @@
       "teacherGraded": "Teacher grade: {grade}/{max}",
       "viewSummary": "View summary",
       "lastResultTitle": "Your latest result",
-      "introRules": "{rounds} rounds await you. Your starting capital is {cash}, the target is {target}. Make one decision per round — every choice affects capital, customer satisfaction and reputation. At the end, the three metrics become your final score.",
+      "introRules": "{rounds} rounds await you. You start with {cash}; the target is {target}. Make one decision per round: every choice affects three measures — {cashLabel}, {satLabel} and {repLabel}. At the end, the three measures become your final score.",
       "begin": "Start simulation"
     },
     "grading": {
@@ -1759,7 +1769,11 @@
     "program": "Program",
     "new": "New",
     "notStarted": "Not started",
-    "notShared": "Scores not shared (no consent)"
+    "notShared": "Scores not shared (no consent)",
+    "pagination": "Pages",
+    "previous": "Previous",
+    "next": "Next",
+    "pageOf": "Page {page} of {pages} · {total} participants"
   },
   "units": {
     "title": "Training Units",

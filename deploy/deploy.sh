@@ -59,5 +59,8 @@ if [ ! -f .seeded-simulation ]; then
   docker compose exec -T worker npx tsx prisma/seed-simulation.ts && touch .seeded-simulation     || echo "!! Simulation scenario seed failed"
 fi
 
+# Fills simulations that have no rounds yet; leaves existing ones untouched.
+docker compose exec -T worker npx tsx prisma/seed-scenarios.ts || echo "!! Scenario seed failed"
+
 echo "==> Deployed ${NEW_TAG:0:7}"
 docker image prune -f >/dev/null
