@@ -89,7 +89,8 @@
     "trustCompliance": "KVKK/GDPR uyğun",
     "trustEnterprise": "Enterprise SaaS",
     "allRightsReserved": "Bütün hüquqlar qorunur",
-    "forgotPassword": "Şifrəni unutmusunuz?"
+    "forgotPassword": "Şifrəni unutmusunuz?",
+    "backToSite": "Ana səhifə"
   },
   "nav": {
     "superAdmin": {

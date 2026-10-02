@@ -4,7 +4,7 @@ import { useState } from "react";
 import { signIn, getSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
-import { Eye, EyeOff, Loader2, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, Loader2, CheckCircle2 } from "lucide-react";
 import { Link, useRouter } from "@/i18n/navigation";
 import type { UserRole } from "@/lib/types";
 import { Button } from "@/components/ui/button";
@@ -116,6 +116,15 @@ export default function LoginPage() {
         <div className="absolute -right-32 top-1/3 h-[380px] w-[380px] rounded-full bg-fuchsia-500/10 blur-[110px]" />
         <div className="absolute -bottom-40 left-1/4 h-[400px] w-[400px] rounded-full bg-sky-400/10 blur-[110px]" />
       </div>
+
+      {/* Back to the public site (pricing, features) */}
+      <Link
+        href="/"
+        className="fixed left-4 top-4 z-50 inline-flex h-10 items-center gap-1.5 rounded-full bg-card/70 px-3.5 text-[14px] font-medium text-foreground/80 ring-1 ring-border/60 backdrop-blur-xl transition-colors hover:bg-card hover:text-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+      >
+        <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+        {t("backToSite")}
+      </Link>
 
       {/* Top bar — fixed, above everything */}
       <div className="fixed right-5 top-4 z-50 flex gap-2">

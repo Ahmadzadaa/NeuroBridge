@@ -89,7 +89,8 @@
     "trustCompliance": "KVKK/GDPR compliant",
     "trustEnterprise": "Enterprise SaaS",
     "allRightsReserved": "All rights reserved",
-    "forgotPassword": "Forgot password?"
+    "forgotPassword": "Forgot password?",
+    "backToSite": "Home"
   },
   "nav": {
     "superAdmin": {

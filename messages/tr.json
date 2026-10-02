@@ -89,7 +89,8 @@
     "trustCompliance": "KVKK/GDPR uyumlu",
     "trustEnterprise": "Enterprise SaaS",
     "allRightsReserved": "Tüm hakları saklıdır",
-    "forgotPassword": "Şifrenizi mi unuttunuz?"
+    "forgotPassword": "Şifrenizi mi unuttunuz?",
+    "backToSite": "Ana sayfa"
   },
   "nav": {
     "superAdmin": {
