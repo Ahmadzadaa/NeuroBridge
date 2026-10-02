@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { recordAudit } from "@/lib/audit/audit-service";
 import { AUDIT_ACTIONS } from "@/lib/audit/actions";
 import { getTenantSettings } from "@/lib/tenant/settings-service";
-import { getTemplate, fillBody } from "@/lib/certificates/templates";
+import { CERTIFICATE_TEMPLATES, getTemplate, fillBody } from "@/lib/certificates/templates";
 import { renderCertificatePdf } from "@/lib/certificates/pdf-renderer";
 import { storeCertificatePdf } from "@/lib/certificates/storage";
 import {
@@ -220,4 +220,47 @@ export async function issueCertificates(
   }
 
   return outcomes;
+}
+
+/**
+ * Gives a certificate that was recorded without a document (seeded rows,
+ * certificates awarded before PDFs existed) its PDF, rendered from its own
+ * snapshot fields with the template's default wording, and stores it so every
+ * later download returns the same file. Returns the storage key.
+ */
+export async function ensureCertificatePdf(certificateId: string): Promise<string> {
+  const cert = await prisma.certificate.findUniqueOrThrow({
+    where: { id: certificateId },
+    select: {
+      id: true, tenantId: true, userId: true, type: true, templateId: true, recipientName: true,
+      title: true, locale: true, pdfPath: true, tenant: { select: { name: true } },
+    },
+  });
+  if (cert.pdfPath) return cert.pdfPath;
+
+  const template =
+    (cert.templateId && getTemplate(cert.templateId)) ||
+    Object.values(CERTIFICATE_TEMPLATES).find((t) => t.type === cert.type);
+  if (!template) throw new Error(`No certificate template for type ${cert.type}`);
+
+  const bytes = await renderCertificatePdf(template, {
+    recipientName: cert.recipientName,
+    body: fillBody(template.defaultBody[cert.locale] ?? template.defaultBody.az ?? "", {
+      name: cert.recipientName,
+      program: cert.title,
+    }),
+    issuerName: cert.tenant.name,
+  });
+  const stored = await storeCertificatePdf({ tenantId: cert.tenantId, userId: cert.userId, certificateId: cert.id, bytes });
+
+  // Two first downloads at once must not each attach a different file.
+  const { count } = await prisma.certificate.updateMany({
+    where: { id: cert.id, pdfPath: null },
+    data: { pdfPath: stored.key, pdfHash: stored.hash, templateId: template.id },
+  });
+  if (count === 0) {
+    const winner = await prisma.certificate.findUniqueOrThrow({ where: { id: cert.id }, select: { pdfPath: true } });
+    return winner.pdfPath!;
+  }
+  return stored.key;
 }

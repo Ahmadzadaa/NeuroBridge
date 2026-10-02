@@ -6,6 +6,7 @@ import {
   getCertificatePdfUrl,
   readCertificatePdf,
 } from "@/lib/certificates/storage";
+import { ensureCertificatePdf } from "@/lib/certificates/issue-service";
 
 export const runtime = "nodejs";
 
@@ -28,7 +29,7 @@ export async function GET(
       },
     });
 
-    if (!certificate || !certificate.pdfPath) {
+    if (!certificate) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
 
@@ -48,12 +49,14 @@ export async function GET(
     }
 
     const fileName = `${certificate.serialNumber}.pdf`;
+    // Certificates recorded before PDFs existed get theirs on first download.
+    const pdfPath = certificate.pdfPath ?? (await ensureCertificatePdf(id));
 
     // Every check above still runs on every request: this route stays the only
     // way in, and the bucket itself is private. The signed URL is minted only
     // after the caller has been cleared, and is short-lived because it cannot
     // be withdrawn once handed out — see signedUrlTtl().
-    const signedUrl = await getCertificatePdfUrl(certificate.pdfPath, {
+    const signedUrl = await getCertificatePdfUrl(pdfPath, {
       fileName,
     });
     if (signedUrl) {
@@ -65,7 +68,7 @@ export async function GET(
 
     // Drivers that cannot presign (local disk in development) are served the
     // old way, through this process.
-    const bytes = await readCertificatePdf(certificate.pdfPath);
+    const bytes = await readCertificatePdf(pdfPath);
 
     return new NextResponse(new Uint8Array(bytes), {
       status: 200,

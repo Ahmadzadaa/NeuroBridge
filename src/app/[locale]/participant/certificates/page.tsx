@@ -17,7 +17,6 @@ export default async function CertificatesPage({
   setRequestLocale(locale);
   const session = await requireRole(locale, ["PARTICIPANT"]);
   const t = await getTranslations("participant");
-  const tc = await getTranslations("common");
   const certificates = await listUserCertificates(session.user.id);
 
   // tr-TR for az: same month names on server and client.
@@ -75,7 +74,7 @@ export default async function CertificatesPage({
                       <ShieldOff className="h-3.5 w-3.5" aria-hidden="true" />
                       {t("certificateRevoked")}
                     </span>
-                  ) : cert.hasPdf ? (
+                  ) : (
                     <a
                       href={`/api/certificates/${cert.id}/file`}
                       target="_blank"
@@ -85,8 +84,6 @@ export default async function CertificatesPage({
                       <Download className="h-3.5 w-3.5" aria-hidden="true" />
                       {t("downloadCertificate")}
                     </a>
-                  ) : (
-                    <span className="rounded-full bg-white/20 px-3 py-1.5 text-[12px] font-semibold">{tc("earned")}</span>
                   )}
                 </div>
               </li>
