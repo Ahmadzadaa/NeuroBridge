@@ -5,7 +5,8 @@
 #
 #   bash bootstrap.sh "<public URL, e.g. http://51.20.65.0>" ["<extra ssh public key>"]
 #
-# Installs Docker, adds swap, frees port 80 from an old nginx and creates
+# Installs Docker, adds swap, frees port 80 from an old nginx, schedules the
+# daily backup (backup.sh) and creates
 # /opt/bizsim with generated secrets. Idempotent: existing secrets are kept.
 set -euo pipefail
 
@@ -75,6 +76,13 @@ ANTHROPIC_API_KEY=
 EOF
   chmod 600 "$APP_DIR/app.env" "$APP_DIR/.env"
 fi
+
+echo "==> Daily backup at 02:30 UTC (backup.sh)"
+sudo tee /etc/cron.d/bizsim-backup >/dev/null <<EOF
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+30 2 * * * root bash $APP_DIR/backup.sh >> $APP_DIR/backups/backup.log 2>&1
+EOF
+sudo chmod 644 /etc/cron.d/bizsim-backup
 
 if [ -n "$DEPLOY_KEY" ]; then
   echo "==> Authorising extra SSH key"
