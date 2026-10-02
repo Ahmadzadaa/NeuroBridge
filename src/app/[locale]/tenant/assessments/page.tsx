@@ -7,8 +7,10 @@ import { LargeTitle, Reveal } from "@/components/ui/ios";
 import { CheckCircle2 } from "lucide-react";
 import { getTenantAssessmentOverview } from "@/lib/assessments/assessment-service";
 import { formatDate } from "@/lib/format-date";
+import { Link } from "@/i18n/navigation";
 
 type Params = { params: Promise<{ locale: string }> };
+type Props = Params & { searchParams: Promise<Record<string, string | string[] | undefined>> };
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { locale } = await params;
@@ -20,15 +22,17 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
  * The university's view of baseline results. Psychological scores appear only
  * for students who consented; the service enforces that, this page just renders.
  */
-export default async function TenantAssessmentsPage({ params }: Params) {
+export default async function TenantAssessmentsPage({ params, searchParams }: Props) {
   const { locale } = await params;
+  const sp = await searchParams;
+  const page = Math.max(1, Number(typeof sp.page === "string" ? sp.page : 1) || 1);
   setRequestLocale(locale);
   const session = await requireRole(locale, ["TENANT_ADMIN", "TENANT_VIEWER"]);
   const t = await getTranslations("tenantAssessments");
   const tenantId = session.user.tenantId!;
 
   const [overview, unread] = await Promise.all([
-    getTenantAssessmentOverview(tenantId, locale),
+    getTenantAssessmentOverview(tenantId, locale, page),
     prisma.tenantNotification.findMany({
       where: { tenantId, type: "ASSESSMENTS_COMPLETED", readAt: null },
       select: { id: true, payload: true },
@@ -121,6 +125,23 @@ export default async function TenantAssessmentsPage({ params }: Params) {
               </tbody>
             </table>
           </Reveal>
+        )}
+        {overview.pages > 1 && (
+          <nav aria-label={t("pagination")} className="flex items-center justify-center gap-3 text-[13px]">
+            {page > 1 && (
+              <Link href={`/tenant/assessments?page=${page - 1}`} className="rounded-full px-3 py-1.5 font-semibold text-primary hover:bg-muted">
+                ← {t("previous")}
+              </Link>
+            )}
+            <span className="tabular-nums text-muted-foreground">
+              {t("pageOf", { page, pages: overview.pages, total: overview.total })}
+            </span>
+            {page < overview.pages && (
+              <Link href={`/tenant/assessments?page=${page + 1}`} className="rounded-full px-3 py-1.5 font-semibold text-primary hover:bg-muted">
+                {t("next")} →
+              </Link>
+            )}
+          </nav>
         )}
       </div>
     </DashboardLayout>

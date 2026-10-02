@@ -165,17 +165,22 @@ export async function getStudentResults(userId: string, locale: string) {
  * included only for students whose latest PSYCH_RESULTS_SHARE consent is a
  * yes; for everyone else the university sees completion only.
  */
-export async function getTenantAssessmentOverview(tenantId: string, locale: string) {
-  const [assessments, participants] = await Promise.all([
+export const ASSESSMENT_OVERVIEW_PAGE = 100;
+
+export async function getTenantAssessmentOverview(tenantId: string, locale: string, page = 1) {
+  const participantWhere = { program: { tenantId }, status: "ACTIVE" };
+  const [assessments, total, participants] = await Promise.all([
     prisma.assessment.findMany({
       where: { active: true },
       orderBy: { sortOrder: "asc" },
       include: { dimensions: { orderBy: { sortOrder: "asc" }, select: { code: true, label: true } } },
     }),
+    prisma.participant.count({ where: participantWhere }),
     prisma.participant.findMany({
-      where: { program: { tenantId }, status: "ACTIVE" },
-      orderBy: { registrationDate: "desc" },
-      take: 500,
+      where: participantWhere,
+      orderBy: [{ registrationDate: "desc" }, { id: "asc" }],
+      skip: (Math.max(1, page) - 1) * ASSESSMENT_OVERVIEW_PAGE,
+      take: ASSESSMENT_OVERVIEW_PAGE,
       select: {
         programId: true,
         program: { select: { name: true } },
@@ -226,5 +231,7 @@ export async function getTenantAssessmentOverview(tenantId: string, locale: stri
       dimensionLabels: Object.fromEntries(a.dimensions.map((d) => [d.code, localized(d.label, locale)])),
     })),
     rows,
+    total,
+    pages: Math.max(1, Math.ceil(total / ASSESSMENT_OVERVIEW_PAGE)),
   };
 }

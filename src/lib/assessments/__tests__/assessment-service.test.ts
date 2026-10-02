@@ -10,7 +10,7 @@ vi.mock("@/lib/prisma", () => {
   return {
     prisma: {
       assessment: { findMany: vi.fn(), findFirst: vi.fn() },
-      participant: { findMany: vi.fn() },
+      participant: { findMany: vi.fn(), count: vi.fn().mockResolvedValue(2) },
       $transaction: vi.fn((fn: (client: typeof tx) => unknown) => fn(tx)),
       __tx: tx,
     },

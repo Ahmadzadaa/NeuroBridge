@@ -20,12 +20,18 @@ interface TemplateSummary {
   fields: string[];
 }
 
+type Recipient = { id: string; name: string; email: string };
+
 interface Props {
   locale: string;
   userName: string;
   tenantName: string;
   programs: { id: string; name: string }[];
-  participants: { id: string; name: string; email: string }[];
+  participants: Recipient[];
+  /** All participants of the organisation, even when only a first page was sent. */
+  participantTotal: number;
+  /** False for large rosters: searches then run on the server. */
+  rosterComplete: boolean;
   templates: TemplateSummary[];
 }
 
@@ -61,6 +67,8 @@ export function CertificatesPageClient({
   tenantName,
   programs,
   participants,
+  participantTotal,
+  rosterComplete,
   templates,
 }: Props) {
   const t = useTranslations("tenant.certificates");
@@ -81,6 +89,9 @@ export function CertificatesPageClient({
   const [templateId, setTemplateId] = useState(templates[0]?.id ?? "");
   const [participantId, setParticipantId] = useState("");
   const [query, setQuery] = useState("");
+  const [remote, setRemote] = useState<{ query: string; results: Recipient[] } | null>(null);
+  // Everyone seen so far, so selected recipients keep their names across searches.
+  const [known, setKnown] = useState(() => new Map(participants.map((p) => [p.id, p])));
   const [open, setOpen] = useState(false);
   const [highlight, setHighlight] = useState(0);
   const pickerRef = useRef<HTMLDivElement>(null);
@@ -127,10 +138,33 @@ export function CertificatesPageClient({
   const matches = useMemo(() => {
     const q = fold(query.trim());
     if (!q) return participants.slice(0, 50);
+    if (!rosterComplete) return remote?.query === query.trim() ? remote.results : [];
     return participants
       .filter((p) => fold(p.name).includes(q) || fold(p.email).includes(q))
       .slice(0, 50);
-  }, [query, participants]);
+  }, [query, participants, rosterComplete, remote]);
+
+  // Large rosters are searched on the server, a moment after typing stops.
+  useEffect(() => {
+    const q = query.trim();
+    if (rosterComplete || !q) return;
+    const controller = new AbortController();
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/certificates/recipients?q=${encodeURIComponent(q)}`, { signal: controller.signal });
+        if (!res.ok) return;
+        const data = (await res.json()) as { results: Recipient[] };
+        setRemote({ query: q, results: data.results });
+        setKnown((prev) => new Map([...prev, ...data.results.map((p) => [p.id, p] as const)]));
+      } catch {
+        // Aborted by the next keystroke, or offline: the list simply stays as it was.
+      }
+    }, 250);
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [query, rosterComplete]);
 
   useEffect(() => {
     if (!open) return;
@@ -177,9 +211,9 @@ export function CertificatesPageClient({
   const selectedNames = useMemo(
     () =>
       selected
-        .map((id) => participants.find((p) => p.id === id)?.name)
+        .map((id) => known.get(id)?.name)
         .filter((n): n is string => Boolean(n)),
-    [selected, participants],
+    [selected, known],
   );
 
   const toggle = useCallback((id: string) => {
@@ -518,7 +552,7 @@ export function CertificatesPageClient({
                 <p className="text-[11px] text-muted-foreground">
                   {query.trim()
                     ? `${matches.length} ${t("found")}`
-                    : `${participants.length} ${t("participant").toLocaleLowerCase(locale)}`}
+                    : `${participantTotal} ${t("participant").toLocaleLowerCase(locale)}`}
                 </p>
               </div>
             )}
@@ -576,7 +610,7 @@ export function CertificatesPageClient({
                 >
                   <span>{listOpen ? t("collapseList") : t("expandList")}</span>
                   <span className="flex items-center gap-2 text-xs text-muted-foreground">
-                    {participants.length}
+                    {participantTotal}
                     <span aria-hidden className={listOpen ? "rotate-180" : ""}>
                       ⌄
                     </span>
