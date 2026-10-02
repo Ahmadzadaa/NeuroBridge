@@ -41,6 +41,7 @@ export default async function TenantSupportPage({ params }: { params: Promise<{ 
             unread: isUnread(ticket.lastMessageAt, ticket.tenantReadAt),
             meta: personName(ticket.createdBy),
             messages: ticket._count.messages,
+            avatar: { id: ticket.createdBy.id, name: personName(ticket.createdBy) },
           }))}
         />
       </div>

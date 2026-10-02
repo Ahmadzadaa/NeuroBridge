@@ -26,7 +26,17 @@ export function NewTicketForm() {
       const res = await fetch("/api/support/tickets", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ subject: subject.trim(), body: body.trim() }),
+        body: JSON.stringify({
+          subject: subject.trim(),
+          body: body.trim(),
+          // Sent along so the platform team can reproduce a problem without asking.
+          context: {
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            language: navigator.language,
+            screen: `${window.screen.width}×${window.screen.height}`,
+            viewport: `${window.innerWidth}×${window.innerHeight}`,
+          },
+        }),
       });
       if (!res.ok) throw new Error(String(res.status));
       const { id } = (await res.json()) as { id: string };

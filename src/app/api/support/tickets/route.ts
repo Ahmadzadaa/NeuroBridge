@@ -12,7 +12,10 @@ export async function POST(request: Request) {
     async ({ session }) => {
       await enforceRateLimit("api", session.id);
       const body = parseBody(newTicketSchema, await request.json());
-      const ticket = await createTicket({ ...session, tenantId: session.tenantId! }, body);
+      const ticket = await createTicket({ ...session, tenantId: session.tenantId! }, body, {
+        userAgent: request.headers.get("user-agent")?.slice(0, 400) ?? undefined,
+        uiLocale: session.language,
+      });
       await recordAudit({
         action: AUDIT_ACTIONS.SUPPORT_TICKET_CREATED,
         userId: session.id,

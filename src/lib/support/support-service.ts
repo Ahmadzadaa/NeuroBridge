@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { clientContextSchema, type ClientContext } from "@/lib/support/client-context";
 
 /**
  * Support conversations between an organisation's admins and the platform
@@ -13,6 +14,7 @@ export type SupportStatus = (typeof SUPPORT_STATUSES)[number];
 export const newTicketSchema = z.object({
   subject: z.string().trim().min(3).max(150),
   body: z.string().trim().min(1).max(5000),
+  context: clientContextSchema,
 });
 export const messageSchema = z.object({ body: z.string().trim().min(1).max(5000) });
 /** ANSWERED is never set by hand: it follows a reply from the platform team. */
@@ -40,13 +42,19 @@ async function ticketFor(actor: SupportActor, ticketId: string) {
 /** Unread for a side when something was written after it last looked. */
 export const isUnread = (lastMessageAt: Date, readAt: Date | null) => !readAt || lastMessageAt > readAt;
 
-export async function createTicket(actor: SupportActor & { tenantId: string }, input: z.infer<typeof newTicketSchema>) {
+export async function createTicket(
+  actor: SupportActor & { tenantId: string },
+  input: z.infer<typeof newTicketSchema>,
+  request: { userAgent?: string; uiLocale?: string } = {}
+) {
   const now = new Date();
+  const context: ClientContext = { ...input.context, ...request };
   return prisma.supportTicket.create({
     data: {
       tenantId: actor.tenantId,
       createdById: actor.id,
       subject: input.subject,
+      context: JSON.stringify(context),
       lastMessageAt: now,
       tenantReadAt: now,
       messages: { create: { authorId: actor.id, body: input.body, createdAt: now } },
@@ -90,7 +98,7 @@ export async function getThread(actor: SupportActor, ticketId: string) {
       createdBy: { select: { firstName: true, lastName: true, email: true } },
       messages: {
         orderBy: { createdAt: "asc" },
-        select: { id: true, body: true, fromStaff: true, createdAt: true, author: { select: { firstName: true, lastName: true, email: true } } },
+        select: { id: true, body: true, fromStaff: true, createdAt: true, author: { select: { id: true, firstName: true, lastName: true, email: true } } },
       },
     },
   });
@@ -105,8 +113,8 @@ const listSelect = {
   lastMessageAt: true,
   tenantReadAt: true,
   staffReadAt: true,
-  tenant: { select: { name: true } },
-  createdBy: { select: { firstName: true, lastName: true, email: true } },
+  tenant: { select: { id: true, name: true } },
+  createdBy: { select: { id: true, firstName: true, lastName: true, email: true } },
   _count: { select: { messages: true } },
 } as const;
 
@@ -126,3 +134,62 @@ export async function listAllTickets(status: SupportStatus | null) {
 
 export const personName = (p: { firstName: string | null; lastName: string | null; email: string }) =>
   [p.firstName, p.lastName].filter(Boolean).join(" ") || p.email;
+
+/**
+ * Everything the platform team needs beside a conversation: who wrote it,
+ * their organisation and its plan, and what the account has been doing.
+ */
+export async function getTicketInspector(ticketId: string) {
+  const ticket = await prisma.supportTicket.findUnique({
+    where: { id: ticketId },
+    select: {
+      id: true,
+      context: true,
+      createdAt: true,
+      createdBy: {
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          email: true,
+          phone: true,
+          role: true,
+          language: true,
+          avatarPath: true,
+          twoFactorEnabled: true,
+          failedLoginAttempts: true,
+          lockedUntil: true,
+          createdAt: true,
+        },
+      },
+      tenant: {
+        select: {
+          id: true,
+          name: true,
+          status: true,
+          tenantType: true,
+          email: true,
+          phone: true,
+          website: true,
+          seatLimit: true,
+          seatsUsed: true,
+          teachersEnabled: true,
+          hackathonEnabled: true,
+          simulationsEnabled: true,
+          trainingsEnabled: true,
+          aiToolsEnabled: true,
+          createdAt: true,
+          subscription: { select: { status: true, seats: true, currentPeriodEnd: true, trialEndsAt: true } },
+          _count: { select: { users: true, supportTickets: true } },
+        },
+      },
+    },
+  });
+  if (!ticket) return null;
+  const userId = ticket.createdBy.id;
+  const [lastLogin, recent] = await Promise.all([
+    prisma.auditLog.findFirst({ where: { userId, action: "LOGIN_SUCCESS" }, orderBy: { createdAt: "desc" }, select: { createdAt: true, ip: true } }),
+    prisma.auditLog.findMany({ where: { userId }, orderBy: { createdAt: "desc" }, take: 6, select: { id: true, action: true, createdAt: true } }),
+  ]);
+  return { ...ticket, lastLogin, recent };
+}

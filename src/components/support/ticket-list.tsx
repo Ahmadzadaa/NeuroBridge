@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import { getTranslations } from "next-intl/server";
 import { ChevronRight, LifeBuoy } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import { UserAvatar } from "@/components/ui/user-avatar";
 import { formatDate } from "@/lib/format-date";
 import type { SupportStatus } from "@/lib/support/support-service";
 import { cn } from "@/lib/utils";
@@ -16,6 +17,8 @@ export type TicketRow = {
   /** Who and where: the organisation for the platform team, the author for the organisation. */
   meta: string;
   messages: number;
+  /** The face of the row: the organisation for the platform team, the author for the organisation. */
+  avatar: { id: string; name: string };
 };
 
 export const SUPPORT_CARD = "rounded-[22px] bg-card ring-1 ring-border/60 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)]";
@@ -37,12 +40,13 @@ export async function TicketList({ rows, hrefBase, locale, empty }: { rows: Tick
     <ul className={cn(SUPPORT_CARD, "overflow-hidden")}>
       {rows.map((row, i) => (
         <li key={row.id} style={{ "--i": i } as CSSProperties} className="border-t border-border/60 first:border-t-0">
-          <Link href={`${hrefBase}/${row.id}`} className="flex items-center gap-3 px-4 py-3.5 transition-colors hover:bg-muted/40 sm:px-5">
-            <span
-              className={cn("h-2 w-2 shrink-0 rounded-full", row.unread ? "bg-primary" : "bg-transparent")}
-              aria-label={row.unread ? t("unread") : undefined}
-              role={row.unread ? "img" : undefined}
-            />
+          <Link href={`${hrefBase}/${row.id}`} className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-muted/40 active:bg-muted sm:px-5">
+            <span className="relative shrink-0">
+              <UserAvatar userId={row.avatar.id} name={row.avatar.name} hasAvatar={false} className="h-11 w-11 text-[15px]" />
+              {row.unread && (
+                <span role="img" aria-label={t("unread")} className="absolute -right-0.5 -top-0.5 h-3.5 w-3.5 rounded-full bg-primary ring-[2.5px] ring-card" />
+              )}
+            </span>
             <span className="min-w-0 flex-1">
               <span className={cn("block truncate text-[15px]", row.unread ? "font-bold text-foreground" : "font-medium text-foreground/90")}>{row.subject}</span>
               <span className="mt-0.5 block truncate text-[12px] text-muted-foreground">

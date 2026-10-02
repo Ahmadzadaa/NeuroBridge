@@ -28,3 +28,5 @@ CREATE TABLE IF NOT EXISTS "support_messages" (
   CONSTRAINT "support_messages_author_id_fkey" FOREIGN KEY ("author_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 CREATE INDEX IF NOT EXISTS "support_messages_ticket_id_created_at_idx" ON "support_messages"("ticket_id", "created_at");
+
+ALTER TABLE "support_tickets" ADD COLUMN IF NOT EXISTS "context" TEXT;

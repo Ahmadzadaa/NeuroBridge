@@ -64,6 +64,7 @@ export default async function SupportPage({
             unread: isUnread(ticket.lastMessageAt, ticket.staffReadAt),
             meta: `${ticket.tenant.name} · ${personName(ticket.createdBy)}`,
             messages: ticket._count.messages,
+            avatar: { id: ticket.tenant.id, name: ticket.tenant.name },
           }))}
         />
       </div>

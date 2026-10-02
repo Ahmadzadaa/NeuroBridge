@@ -1583,6 +1583,8 @@ model SupportTicket {
   /// When each side last opened the thread; a newer message from the other side is unread.
   tenantReadAt  DateTime? @map("tenant_read_at")
   staffReadAt   DateTime? @map("staff_read_at")
+  /// JSON: the browser, screen and time zone the request was sent from, for troubleshooting.
+  context       String?
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
 
