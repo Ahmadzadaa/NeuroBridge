@@ -1089,7 +1089,39 @@
       "earned": "Qazanılan",
       "available": "Qazanıla bilən",
       "coinValue": "Coin Dəyəri",
-      "summary": "{total} nişandan {earned}-ni qazanmısınız."
+      "summary": "{total} nişandan {earned}-ni qazanmısınız.",
+      "subtitle": "Hər bölmədə səviyyələri keçin və bölmənin ustalıq nişanını qazanın.",
+      "overview": "Ümumi irəliləyiş",
+      "earnedCaption": "qazanılıb",
+      "mastery": "Ustalıq nişanları",
+      "coinsFromBadges": "Nişanlardan coin",
+      "nextGoal": "Növbəti hədəf",
+      "allEarned": "Hamısı qazanılıb",
+      "filterLabel": "Nişanları süz",
+      "filter": {
+        "all": "Hamısı",
+        "earned": "Qazanılan",
+        "open": "Qarşıda"
+      },
+      "trackHint": "Səviyyələr çətinliyə görə düzülüb; sonuncu nişan bölmənin ustalıq nişanıdır.",
+      "emptyFilter": "Bu filtrdə nişan yoxdur.",
+      "earnedOn": "{date}",
+      "next": "Növbəti",
+      "locked": "Hələ qazanılmayıb",
+      "masteryLevel": "Ustalıq",
+      "level": "Səviyyə {n}",
+      "special": "Xüsusi",
+      "categories": {
+        "idea_development": "İdeya inkişafı",
+        "startup_management": "Startap idarəetməsi",
+        "finance": "Maliyyə",
+        "sales_marketing": "Satış və marketinq",
+        "pitch_investor": "Pitch və investor",
+        "leadership": "Liderlik",
+        "founder_psychology": "Təsisçi psixologiyası",
+        "globalization": "Qloballaşma",
+        "special_achievement": "Xüsusi nailiyyətlər"
+      }
     },
     "leaderboard": {
       "title": "Liderlik Cədvəli",

@@ -1089,7 +1089,39 @@
       "earned": "Kazanılan",
       "available": "Kazanılabilir",
       "coinValue": "Coin Değeri",
-      "summary": "{total} rozetten {earned} tanesini kazandınız."
+      "summary": "{total} rozetten {earned} tanesini kazandınız.",
+      "subtitle": "Her alanda seviyeleri geçin ve alanın ustalık rozetini kazanın.",
+      "overview": "Genel ilerleme",
+      "earnedCaption": "kazanıldı",
+      "mastery": "Ustalık rozetleri",
+      "coinsFromBadges": "Rozetlerden coin",
+      "nextGoal": "Sıradaki hedef",
+      "allEarned": "Hepsi kazanıldı",
+      "filterLabel": "Rozetleri filtrele",
+      "filter": {
+        "all": "Tümü",
+        "earned": "Kazanılan",
+        "open": "Sırada"
+      },
+      "trackHint": "Seviyeler zorluğa göre sıralı; son rozet alanın ustalık rozetidir.",
+      "emptyFilter": "Bu filtrede rozet yok.",
+      "earnedOn": "{date}",
+      "next": "Sıradaki",
+      "locked": "Henüz kazanılmadı",
+      "masteryLevel": "Ustalık",
+      "level": "Seviye {n}",
+      "special": "Özel",
+      "categories": {
+        "idea_development": "Fikir geliştirme",
+        "startup_management": "Girişim yönetimi",
+        "finance": "Finans",
+        "sales_marketing": "Satış ve pazarlama",
+        "pitch_investor": "Pitch ve yatırımcı",
+        "leadership": "Liderlik",
+        "founder_psychology": "Kurucu psikolojisi",
+        "globalization": "Küreselleşme",
+        "special_achievement": "Özel başarılar"
+      }
     },
     "leaderboard": {
       "title": "Liderlik Tablosu",

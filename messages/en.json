@@ -1089,7 +1089,39 @@
       "earned": "Earned",
       "available": "Available",
       "coinValue": "Coin Value",
-      "summary": "You've earned {earned} of {total} badges."
+      "summary": "You've earned {earned} of {total} badges.",
+      "subtitle": "Climb the levels in each area and earn its mastery badge.",
+      "overview": "Overall progress",
+      "earnedCaption": "earned",
+      "mastery": "Mastery badges",
+      "coinsFromBadges": "Coins from badges",
+      "nextGoal": "Next goal",
+      "allEarned": "All earned",
+      "filterLabel": "Filter badges",
+      "filter": {
+        "all": "All",
+        "earned": "Earned",
+        "open": "To earn"
+      },
+      "trackHint": "Levels are ordered by difficulty; the last badge is the area's mastery badge.",
+      "emptyFilter": "No badges match this filter.",
+      "earnedOn": "{date}",
+      "next": "Up next",
+      "locked": "Not earned yet",
+      "masteryLevel": "Mastery",
+      "level": "Level {n}",
+      "special": "Special",
+      "categories": {
+        "idea_development": "Idea development",
+        "startup_management": "Startup management",
+        "finance": "Finance",
+        "sales_marketing": "Sales & marketing",
+        "pitch_investor": "Pitch & investors",
+        "leadership": "Leadership",
+        "founder_psychology": "Founder psychology",
+        "globalization": "Globalisation",
+        "special_achievement": "Special achievements"
+      }
     },
     "leaderboard": {
       "title": "Leaderboard",
