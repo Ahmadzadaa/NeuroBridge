@@ -2746,7 +2746,12 @@
     },
     "previewYou": "Siz",
     "previewTeam": "BizSim",
-    "resolvedBanner": "Bu müraciət həll olunub. Yeni mesaj yazsanız, yenidən açılacaq."
+    "resolvedBanner": "Bu müraciət həll olunub. Yeni mesaj yazsanız, yenidən açılacaq.",
+    "translate": "Tərcümə et",
+    "translating": "Tərcümə olunur…",
+    "showOriginal": "Orijinalı göstər",
+    "translatedNote": "Avtomatik tərcümə",
+    "translateError": "Tərcümə alınmadı. Bir az sonra yenidən cəhd edin."
   },
   "notifications": {
     "title": "Bildirişlər",

@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { ArrowUp, CheckCircle2, Loader2, RotateCcw } from "lucide-react";
+import { ArrowUp, CheckCircle2, Languages, Loader2, RotateCcw } from "lucide-react";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import type { SupportStatus } from "@/lib/support/support-service";
 import { cn } from "@/lib/utils";
@@ -41,6 +41,31 @@ export function SupportThread({
   const endRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const sentRef = useRef(false);
+  const locale = useLocale();
+  // Translations asked for in this visit: id -> text, and which are on screen.
+  const [translated, setTranslated] = useState<Record<string, string>>({});
+  const [showing, setShowing] = useState<Record<string, boolean>>({});
+  const [translating, setTranslating] = useState<string | null>(null);
+
+  async function toggleTranslation(id: string) {
+    if (translated[id]) return setShowing((s) => ({ ...s, [id]: !s[id] }));
+    setTranslating(id);
+    try {
+      const res = await fetch(`/api/support/messages/${id}/translate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ locale }),
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      const { text } = (await res.json()) as { text: string };
+      setTranslated((s) => ({ ...s, [id]: text }));
+      setShowing((s) => ({ ...s, [id]: true }));
+    } catch {
+      toast.error(t("translateError"));
+    } finally {
+      setTranslating(null);
+    }
+  }
 
   // Follow the conversation after sending, not on first load (that would yank the page).
   useEffect(() => {
@@ -133,9 +158,26 @@ export function SupportThread({
                         lastOfGroup && (mine ? "rounded-br-[6px]" : "rounded-bl-[6px]")
                       )}
                     >
-                      {m.body}
+                      {showing[m.id] ? translated[m.id] : m.body}
                     </div>
-                    {lastOfGroup && <span className="mt-1 px-2 text-[11px] tabular-nums text-muted-foreground">{m.time}</span>}
+                    {(lastOfGroup || !mine) && (
+                      <span className="mt-1 flex items-center gap-2 px-2 text-[11px] text-muted-foreground">
+                        {lastOfGroup && <span className="tabular-nums">{m.time}</span>}
+                        {/* Only the other side's words need translating; yours are already in your language. */}
+                        {!mine && (
+                          <button
+                            type="button"
+                            onClick={() => toggleTranslation(m.id)}
+                            disabled={translating === m.id}
+                            className="inline-flex items-center gap-1 rounded-full font-medium text-primary transition-opacity hover:opacity-80 disabled:opacity-60"
+                          >
+                            {translating === m.id ? <Loader2 className="h-3 w-3 animate-spin" aria-hidden="true" /> : <Languages className="h-3 w-3" aria-hidden="true" />}
+                            {translating === m.id ? t("translating") : showing[m.id] ? t("showOriginal") : t("translate")}
+                          </button>
+                        )}
+                        {showing[m.id] && <span className="italic">{t("translatedNote")}</span>}
+                      </span>
+                    )}
                   </div>
                 </div>
               </li>

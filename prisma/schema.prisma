@@ -1599,13 +1599,15 @@ model SupportTicket {
 }
 
 model SupportMessage {
-  id        String   @id @default(cuid())
-  ticketId  String   @map("ticket_id")
-  authorId  String   @map("author_id")
+  id           String   @id @default(cuid())
+  ticketId     String   @map("ticket_id")
+  authorId     String   @map("author_id")
   /// Written by the platform team rather than the organisation.
-  fromStaff Boolean  @default(false) @map("from_staff")
-  body      String
-  createdAt DateTime @default(now()) @map("created_at")
+  fromStaff    Boolean  @default(false) @map("from_staff")
+  body         String
+  /// JSON {locale: text}: translations made on request, kept so each is paid for once.
+  translations String?
+  createdAt    DateTime @default(now()) @map("created_at")
 
   ticket SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
   author User          @relation(fields: [authorId], references: [id], onDelete: Cascade)

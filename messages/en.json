@@ -2746,7 +2746,12 @@
     },
     "previewYou": "You",
     "previewTeam": "BizSim",
-    "resolvedBanner": "This request is resolved. Writing a new message reopens it."
+    "resolvedBanner": "This request is resolved. Writing a new message reopens it.",
+    "translate": "Translate",
+    "translating": "Translating…",
+    "showOriginal": "Show original",
+    "translatedNote": "Machine translation",
+    "translateError": "Translation failed. Please try again in a moment."
   },
   "notifications": {
     "title": "Notifications",
