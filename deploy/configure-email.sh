@@ -5,6 +5,8 @@
 #   SES_REGION             e.g. eu-north-1 — where that identity is verified
 #   SES_ACCESS_KEY_ID      optional; omit when the instance has an IAM role with ses:SendEmail
 #   SES_SECRET_ACCESS_KEY  optional, as above
+#   SUPPORT_NOTIFICATION_EMAIL  optional; where new support requests are announced
+#                          (falls back to LEADS_NOTIFICATION_EMAIL, then EMAIL_FROM)
 # Without EMAIL_FROM nothing changes and emails stay in the log (EMAIL_PROVIDER=console).
 set -euo pipefail
 
@@ -29,5 +31,8 @@ set_env AWS_REGION "${SES_REGION:-eu-north-1}"
 if [ -n "${SES_ACCESS_KEY_ID:-}" ] && [ -n "${SES_SECRET_ACCESS_KEY:-}" ]; then
   set_env AWS_ACCESS_KEY_ID "$SES_ACCESS_KEY_ID"
   set_env AWS_SECRET_ACCESS_KEY "$SES_SECRET_ACCESS_KEY"
+fi
+if [ -n "${SUPPORT_NOTIFICATION_EMAIL:-}" ]; then
+  set_env SUPPORT_NOTIFICATION_EMAIL "$SUPPORT_NOTIFICATION_EMAIL"
 fi
 echo "==> Email: Amazon SES ($EMAIL_FROM, ${SES_REGION:-eu-north-1})"

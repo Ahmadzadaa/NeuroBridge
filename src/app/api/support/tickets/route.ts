@@ -1,4 +1,7 @@
+import { after } from "next/server";
 import { withAuthorizedHandler } from "@/lib/auth/authorize";
+import { getAppOrigin } from "@/lib/app-url";
+import { notifyNewTicket } from "@/lib/support/support-notify";
 import { parseBody } from "@/lib/validation/schemas";
 import { enforceRateLimit } from "@/lib/security/rate-limit";
 import { createTicket, newTicketSchema } from "@/lib/support/support-service";
@@ -23,6 +26,9 @@ export async function POST(request: Request) {
         ip: getClientIp(request),
         details: { ticketId: ticket.id },
       });
+      // Mail goes out after the response: the admin should not wait on it, and a mail problem must not fail the request.
+      const origin = await getAppOrigin();
+      after(() => notifyNewTicket(ticket.id, origin));
       return ticket;
     },
     { requireTenant: true }

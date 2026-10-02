@@ -652,3 +652,88 @@ export function invitationEmail(params: {
     ),
   };
 }
+
+const SUPPORT_TICKET_COPY = {
+  az: {
+    subject: (org: string, topic: string) => `Yeni dəstək müraciəti — ${org}: ${topic}`,
+    title: "Yeni dəstək müraciəti",
+    intro: "Təşkilatdan yeni dəstək müraciəti gəldi. Cavab panel üzərindən verilir.",
+    organisation: "Təşkilat",
+    author: "Yazan",
+    topic: "Mövzu",
+    message: "Mesaj",
+    submitted: "Göndərilmə vaxtı",
+    button: "Müraciəti aç",
+  },
+  en: {
+    subject: (org: string, topic: string) => `New support request — ${org}: ${topic}`,
+    title: "New support request",
+    intro: "An organisation sent a new support request. Replies are given in the panel.",
+    organisation: "Organisation",
+    author: "From",
+    topic: "Subject",
+    message: "Message",
+    submitted: "Sent",
+    button: "Open the request",
+  },
+  tr: {
+    subject: (org: string, topic: string) => `Yeni destek talebi — ${org}: ${topic}`,
+    title: "Yeni destek talebi",
+    intro: "Bir kurumdan yeni destek talebi geldi. Yanıt panel üzerinden verilir.",
+    organisation: "Kurum",
+    author: "Gönderen",
+    topic: "Konu",
+    message: "Mesaj",
+    submitted: "Gönderim zamanı",
+    button: "Talebi aç",
+  },
+} as const;
+
+/**
+ * Tells the platform team a support request came in. Subject and message are
+ * free text from an organisation's admin, so everything is escaped.
+ */
+export function supportTicketEmail(params: {
+  organisation: string;
+  authorName: string;
+  authorEmail: string;
+  topic: string;
+  message: string;
+  ticketUrl: string;
+  submittedAt: Date;
+  locale?: string | null;
+}): { subject: string; html: string } {
+  const locale = resolveLocale(params.locale);
+  const c = SUPPORT_TICKET_COPY[locale];
+  // A preview is enough in the inbox; the full thread is one click away.
+  const message = params.message.length > 1200 ? `${params.message.slice(0, 1200)}…` : params.message;
+  const rows: [string, string][] = [
+    [c.organisation, params.organisation],
+    [c.author, `${params.authorName} <${params.authorEmail}>`],
+    [c.topic, params.topic],
+    [c.submitted, formatDateTime(params.submittedAt, locale)],
+  ];
+  const table = rows
+    .map(
+      ([label, value]) =>
+        `<tr>
+           <td style="padding:6px 12px 6px 0;font-size:13px;color:#64748b;vertical-align:top;white-space:nowrap;">${escapeHtml(label)}</td>
+           <td style="padding:6px 0;font-size:14px;color:#0f172a;">${escapeHtml(value)}</td>
+         </tr>`,
+    )
+    .join("");
+
+  return {
+    // Subjects are a single header line: no newlines from the topic.
+    subject: c.subject(params.organisation, params.topic).replace(/[\r\n]+/g, " ").slice(0, 200),
+    html: layout(
+      c.title,
+      paragraph(c.intro) +
+        `<table style="width:100%;border-collapse:collapse;margin-top:8px;">${table}</table>` +
+        `<p style="margin:16px 0 6px;font-size:13px;color:#64748b;">${escapeHtml(c.message)}</p>` +
+        `<div style="white-space:pre-wrap;font-size:14px;line-height:1.6;color:#0f172a;background:#f4f5f7;border-radius:12px;padding:14px 16px;">${escapeHtml(message)}</div>` +
+        button(params.ticketUrl, c.button),
+      locale,
+    ),
+  };
+}

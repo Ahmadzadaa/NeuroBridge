@@ -138,7 +138,7 @@ jobs:
             bash ~/bizsim-deploy/bootstrap.sh "${{ vars.PUBLIC_APP_URL }}"
             cp ~/bizsim-deploy/docker-compose.yml ~/bizsim-deploy/Caddyfile ~/bizsim-deploy/deploy.sh ~/bizsim-deploy/backup.sh /opt/bizsim/
             # Amazon SES once vars.EMAIL_FROM is set; until then emails are only logged.
-            EMAIL_FROM="${{ vars.EMAIL_FROM }}" SES_REGION="${{ vars.SES_REGION }}" SES_ACCESS_KEY_ID="${{ secrets.SES_ACCESS_KEY_ID }}" SES_SECRET_ACCESS_KEY="${{ secrets.SES_SECRET_ACCESS_KEY }}" bash ~/bizsim-deploy/configure-email.sh
+            EMAIL_FROM="${{ vars.EMAIL_FROM }}" SES_REGION="${{ vars.SES_REGION }}" SES_ACCESS_KEY_ID="${{ secrets.SES_ACCESS_KEY_ID }}" SES_SECRET_ACCESS_KEY="${{ secrets.SES_SECRET_ACCESS_KEY }}" SUPPORT_NOTIFICATION_EMAIL="${{ vars.SUPPORT_NOTIFICATION_EMAIL }}" bash ~/bizsim-deploy/configure-email.sh
             cd /opt/bizsim
             # The job token is valid for this run only; the server keeps no registry password.
             echo "${{ secrets.GITHUB_TOKEN }}" | sudo docker login ghcr.io -u "${{ github.actor }}" --password-stdin
