@@ -1,7 +1,13 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { prisma } from "@/lib/prisma";
 import { registerParticipant } from "@/lib/seats/registration-service";
 import { SeatLimitReachedError } from "@/lib/seats/errors";
+
+// This test is about seat locking. Real bcrypt (cost 12, single-threaded)
+// would spend minutes hashing 500 passwords on a CI runner.
+vi.mock("bcryptjs", () => ({
+  default: { hash: async () => "test-hash", compare: async () => false },
+}));
 
 const hasTestDb = Boolean(process.env.TEST_DATABASE_URL);
 
