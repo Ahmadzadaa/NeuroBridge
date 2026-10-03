@@ -857,7 +857,7 @@
       "sentFailed": "başarısız",
       "rendering": "Hazırlanıyor…",
       "hint": "Metne {token} yazarsanız seçili programın adıyla değiştirilir.",
-      "empty": "Önizleme için ad ve metni doldurun.",
+      "empty": "Önizleme için bir katılımcı seçin veya ad yazın.",
       "exportFailed": "Dışa aktarma başarısız. Biraz sonra tekrar deneyin.",
       "previewFailed": "Önizleme oluşturulamadı. Biraz sonra tekrar deneyin.",
       "pageFormat": "A4 yatay",
@@ -874,7 +874,15 @@
           "name": "Eğitim Sertifikası",
           "style": "Krem rengi, mum mühürlü"
         }
-      }
+      },
+      "recipients": "Alıcılar",
+      "content": "İçerik",
+      "signatures": "İmzalar",
+      "noProgram": "Program seçin",
+      "sampleName": "Ad Soyad",
+      "prevRecipient": "Önceki katılımcı",
+      "nextRecipient": "Sonraki katılımcı",
+      "emptyBulk": "Önizleme için listeden en az bir katılımcı seçin."
     },
     "analytics": {
       "title": "Analitik",

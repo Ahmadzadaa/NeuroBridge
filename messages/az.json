@@ -857,7 +857,7 @@
       "sentFailed": "alınmadı",
       "rendering": "Hazırlanır…",
       "hint": "Mətnə {token} yazsanız, seçilmiş proqramın adı ilə əvəzlənir.",
-      "empty": "Önizləmə üçün ad və mətn doldurun.",
+      "empty": "Önizləmə üçün iştirakçı seçin və ya ad yazın.",
       "exportFailed": "İxrac alınmadı. Bir az sonra yenidən cəhd edin.",
       "previewFailed": "Önizləmə yaradılmadı. Bir az sonra yenidən cəhd edin.",
       "pageFormat": "A4 landşaft",
@@ -874,7 +874,15 @@
           "name": "Təlim Sertifikatı",
           "style": "Krem rəngli, mum möhürlü"
         }
-      }
+      },
+      "recipients": "Alıcılar",
+      "content": "Məzmun",
+      "signatures": "İmzalar",
+      "noProgram": "Proqram seçin",
+      "sampleName": "Ad Soyad",
+      "prevRecipient": "Əvvəlki iştirakçı",
+      "nextRecipient": "Növbəti iştirakçı",
+      "emptyBulk": "Önizləmə üçün siyahıdan ən azı bir iştirakçı seçin."
     },
     "analytics": {
       "title": "Analitika",

@@ -857,7 +857,7 @@
       "sentFailed": "failed",
       "rendering": "Rendering…",
       "hint": "Type {token} in the text and it is replaced with the selected program.",
-      "empty": "Fill in a name and body text to preview.",
+      "empty": "Pick a participant or type a name to see the preview.",
       "exportFailed": "Export failed. Please try again in a moment.",
       "previewFailed": "The preview could not be built. Please try again in a moment.",
       "pageFormat": "A4 landscape",
@@ -874,7 +874,15 @@
           "name": "Certificate of Completion",
           "style": "Cream, with a wax seal"
         }
-      }
+      },
+      "recipients": "Recipients",
+      "content": "Content",
+      "signatures": "Signatures",
+      "noProgram": "Choose a programme",
+      "sampleName": "Full Name",
+      "prevRecipient": "Previous participant",
+      "nextRecipient": "Next participant",
+      "emptyBulk": "Pick at least one participant from the list to see the preview."
     },
     "analytics": {
       "title": "Analytics",

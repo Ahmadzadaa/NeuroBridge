@@ -58,6 +58,7 @@ export function CertificateThumbnail({
   recipient,
   title,
   revoked,
+  compact,
   className,
 }: {
   type: string;
@@ -67,6 +68,8 @@ export function CertificateThumbnail({
   recipient: string;
   title: string;
   revoked?: boolean;
+  /** For small slots: just the word, the name and the seal. */
+  compact?: boolean;
   className?: string;
 }) {
   const look = LOOKS[type] ?? LOOKS.ACHIEVEMENT;
@@ -78,15 +81,25 @@ export function CertificateThumbnail({
       <div className={cn("absolute inset-[4%] rounded-[6px] border-[1.5px]", look.frame)} />
       <div className={cn("absolute inset-[6%] rounded-[4px] border", look.inner)} />
       <div className="relative flex h-full flex-col items-center justify-center px-[6%] text-center">
-        <p className={cn("text-[clamp(8px,1.6vw,11px)] font-semibold tracking-[0.32em]", look.word)}>{word}</p>
-        <p className={cn("mt-0.5 text-[clamp(7px,1.3vw,9px)] uppercase tracking-[0.18em]", look.line)}>{typeLabel}</p>
-        <p className={cn("mt-[6%] line-clamp-1 font-serif text-[clamp(14px,2.6vw,20px)] italic leading-tight", look.name)}>{recipient}</p>
-        <span className={cn("mt-[3%] h-px w-2/5", look.frame, "border-t")} />
-        <p className={cn("mt-[3%] line-clamp-2 text-[clamp(8px,1.4vw,10px)] leading-snug", look.line)}>{title}</p>
+        {compact ? (
+          <>
+            <p className={cn("-mt-[14%] text-[6px] font-semibold tracking-[0.28em]", look.word)}>{word}</p>
+            <p className={cn("mt-[4%] line-clamp-1 font-serif text-[10px] italic leading-tight", look.name)}>{recipient}</p>
+          </>
+        ) : (
+          <>
+            <p className={cn("text-[clamp(8px,1.6vw,11px)] font-semibold tracking-[0.32em]", look.word)}>{word}</p>
+            <p className={cn("mt-0.5 text-[clamp(7px,1.3vw,9px)] uppercase tracking-[0.18em]", look.line)}>{typeLabel}</p>
+            <p className={cn("mt-[6%] line-clamp-1 font-serif text-[clamp(14px,2.6vw,20px)] italic leading-tight", look.name)}>{recipient}</p>
+            <span className={cn("mt-[3%] h-px w-2/5", look.frame, "border-t")} />
+            <p className={cn("mt-[3%] line-clamp-2 text-[clamp(8px,1.4vw,10px)] leading-snug", look.line)}>{title}</p>
+          </>
+        )}
       </div>
       <span
         className={cn(
-          "absolute flex h-[18%] w-auto aspect-square items-center justify-center rounded-full shadow-[0_4px_10px_-4px_rgba(0,0,0,0.45)]",
+          "absolute flex w-auto aspect-square items-center justify-center rounded-full shadow-[0_4px_10px_-4px_rgba(0,0,0,0.45)]",
+          compact ? "h-[22%]" : "h-[18%]",
           type === "COMPLETION" ? "bottom-[9%] right-[9%]" : "bottom-[8%] left-1/2 -translate-x-1/2",
           look.seal
         )}

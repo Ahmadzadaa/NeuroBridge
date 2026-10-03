@@ -34,9 +34,9 @@ import {
   Inbox,
 } from "lucide-react";
 
-type PanelType = "super-admin" | "tenant" | "participant" | "jury" | "teacher";
+export type PanelType = "super-admin" | "tenant" | "participant" | "jury" | "teacher";
 
-interface NavItem {
+export interface NavItem {
   href: string;
   labelKey: string;
   icon: React.ComponentType<{ className?: string }>;
@@ -46,7 +46,7 @@ interface NavItem {
   badge?: "support";
 }
 
-const navConfig: Record<PanelType, NavItem[]> = {
+export const navConfig: Record<PanelType, NavItem[]> = {
   "super-admin": [
     { href: "/super-admin", labelKey: "dashboard", icon: LayoutDashboard },
     { href: "/super-admin/tenants", labelKey: "tenants", icon: Building2 },

@@ -181,11 +181,15 @@ export function DashboardLayout({
       >
         {/* Topbar */}
         <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border/60 bg-background/70 px-4 backdrop-blur-2xl backdrop-saturate-150 lg:px-6">
-          <h1 className="truncate text-[17px] font-semibold tracking-[-0.4px] text-foreground">
+          {/* Phones show the brand here: the page's own large title names it, and the bar is full. */}
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-primary text-sm font-bold text-primary-foreground shadow-brand sm:hidden" aria-hidden="true">
+            {t("appName").charAt(0)}
+          </span>
+          <h1 className="hidden truncate text-[17px] font-semibold tracking-[-0.4px] text-foreground sm:block">
             {title}
           </h1>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-0.5 sm:gap-2">
             {typeof coinBalance === "number" && (
               <CoinDisplay balance={coinBalance} />
             )}
