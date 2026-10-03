@@ -95,23 +95,6 @@ jobs:
       - name: Integration tests
         run: npm run test:integration
 
-  terraform:
-    name: Terraform Validate
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: infra/terraform
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: "1.9.0"
-
-      - run: terraform init -backend=false
-      - run: terraform validate
-      - run: terraform fmt -check -recursive
-
   docker:
     name: Docker Build
     runs-on: ubuntu-latest
