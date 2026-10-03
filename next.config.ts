@@ -40,7 +40,9 @@ const csp = [
   "base-uri 'self'",
   "form-action 'self' https://www.paytr.com",
   "frame-ancestors 'none'",
-  ...(isDev ? [] : ["upgrade-insecure-requests"]),
+  // Only once the site has HTTPS: on a bare-IP http:// install it would send
+  // every script and stylesheet request to a port nothing listens on.
+  ...(!isDev && process.env.NEXT_PUBLIC_APP_URL?.startsWith("https://") ? ["upgrade-insecure-requests"] : []),
 ].join("; ");
 
 const nextConfig = {
