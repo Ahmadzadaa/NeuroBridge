@@ -22,7 +22,7 @@ export interface CertificateRecord {
  */
 export async function listUserCertificates(
   userId: string
-): Promise<CertificateRecord[]> {
+): Promise<Array<CertificateRecord & { recipientName: string; issuer: string }>> {
   const rows = await prisma.certificate.findMany({
     where: { userId },
     select: {
@@ -33,11 +33,13 @@ export async function listUserCertificates(
       issuedAt: true,
       revokedAt: true,
       pdfPath: true,
+      recipientName: true,
+      tenant: { select: { name: true } },
     },
     orderBy: { issuedAt: "desc" },
   });
 
-  return rows.map(({ pdfPath, ...rest }) => ({ ...rest, hasPdf: Boolean(pdfPath) }));
+  return rows.map(({ pdfPath, tenant, ...rest }) => ({ ...rest, issuer: tenant.name, hasPdf: Boolean(pdfPath) }));
 }
 
 /** Certificates issued by a tenant, for the admin overview. */

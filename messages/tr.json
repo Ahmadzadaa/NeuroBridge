@@ -1299,7 +1299,12 @@
       "finalistText": "Projenizi jüriye sunacaksınız. Tarih yakında açıklanacak.",
       "finalistJuryDay": "Projenizi {date} tarihinde jüriye sunacaksınız."
     },
-    "certificatesSubtitle": "Kazandığınız sertifikalar — PDF'i indirip paylaşabilirsiniz."
+    "certificatesSubtitle": "Kazandığınız sertifikalar — PDF'i indirip paylaşabilirsiniz.",
+    "certificateWord": "SERTİFİKA",
+    "viewCertificate": "Görüntüle",
+    "viewCertificateNamed": "{title} sertifikasını görüntüle",
+    "certificateSerial": "Seri No",
+    "certificateCount": "{count} sertifika"
   },
   "landing": {
     "hero": "Girişimcilik Yolculuğunuz Başlasın",

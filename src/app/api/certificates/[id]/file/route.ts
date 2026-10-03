@@ -11,7 +11,7 @@ import { ensureCertificatePdf } from "@/lib/certificates/issue-service";
 export const runtime = "nodejs";
 
 export async function GET(
-  _request: Request,
+  request: Request,
   context: { params: Promise<{ id: string }> }
 ) {
   const { id } = await context.params;
@@ -74,7 +74,8 @@ export async function GET(
       status: 200,
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": `inline; filename="${fileName}"`,
+        // ?download=1 saves the file; otherwise the browser shows it.
+        "Content-Disposition": `${new URL(request.url).searchParams.get("download") ? "attachment" : "inline"}; filename="${fileName}"`,
         "Cache-Control": "private, no-store",
       },
     });

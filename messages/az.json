@@ -1271,7 +1271,7 @@
       "achievement": "Uğur Sertifikatı",
       "completion": "Proqram Tamamlama Sertifikatı"
     },
-    "downloadCertificate": "Endir",
+    "downloadCertificate": "Yüklə",
     "certificateRevoked": "Ləğv edilib",
     "home": {
       "greeting": "Salam, {name}",
@@ -1299,7 +1299,12 @@
       "finalistText": "Layihənizi jüri qarşısında təqdim edəcəksiniz. Tarix tezliklə açıqlanacaq.",
       "finalistJuryDay": "Layihənizi {date} tarixində jüri qarşısında təqdim edəcəksiniz."
     },
-    "certificatesSubtitle": "Qazandığınız sertifikatlar — PDF-i yükləyib paylaşa bilərsiniz."
+    "certificatesSubtitle": "Qazandığınız sertifikatlar — PDF-i yükləyib paylaşa bilərsiniz.",
+    "certificateWord": "SERTİFİKAT",
+    "viewCertificate": "Bax",
+    "viewCertificateNamed": "{title} sertifikatına bax",
+    "certificateSerial": "Seriya №",
+    "certificateCount": "{count} sertifikat"
   },
   "landing": {
     "hero": "Sahibkarlıq Səyahətiniz Başlasın",
