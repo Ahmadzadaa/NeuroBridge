@@ -3,6 +3,8 @@ import {
   hasPermission,
   requirePermission,
   AuthorizationError,
+  isAdminRole,
+  isTenantStaff,
 } from "@/lib/auth/permissions";
 import type { UserRole } from "@/lib/types";
 
@@ -113,5 +115,21 @@ describe("permission coverage", () => {
     for (const permission of PLATFORM_PERMISSIONS) {
       expect(() => requirePermission("SUPER_ADMIN", permission)).not.toThrow();
     }
+  });
+});
+
+describe("role groups", () => {
+  it("admins are the platform and organisation admins", () => {
+    expect(isAdminRole("SUPER_ADMIN")).toBe(true);
+    expect(isAdminRole("TENANT_ADMIN")).toBe(true);
+    expect(isAdminRole("TENANT_VIEWER")).toBe(false);
+    expect(isAdminRole("PARTICIPANT")).toBe(false);
+  });
+
+  it("organisation staff excludes the platform admin and participants", () => {
+    expect(isTenantStaff("TENANT_ADMIN")).toBe(true);
+    expect(isTenantStaff("TENANT_VIEWER")).toBe(true);
+    expect(isTenantStaff("SUPER_ADMIN")).toBe(false);
+    expect(isTenantStaff("PARTICIPANT")).toBe(false);
   });
 });
