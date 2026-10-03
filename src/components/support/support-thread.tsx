@@ -8,6 +8,7 @@ import { ArrowUp, Ban, CheckCircle2, Languages, Loader2, Paperclip, Pencil, Rota
 import { UserAvatar } from "@/components/ui/user-avatar";
 import type { SupportStatus } from "@/lib/support/support-service";
 import { ACCEPT_ATTRIBUTE } from "@/lib/support/attachment-types";
+import { withinEditWindow } from "@/lib/support/message-rules";
 import { DraftChips, filesFromClipboard, MessageAttachments, useAttachmentDraft, type SentAttachment } from "./attachments";
 import { cn } from "@/lib/utils";
 
@@ -21,6 +22,8 @@ export type ThreadMessage = {
   day: string;
   time: string;
   attachments: SentAttachment[];
+  /** ISO time it was sent, for the edit window. */
+  sentAt: string;
   edited: boolean;
   deleted: boolean;
 };
@@ -63,6 +66,18 @@ export function SupportThread({
   const locale = useLocale();
   const [editing, setEditing] = useState<{ id: string; text: string } | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
+  // Re-checked every 30 s so Edit/Delete disappear when the 15 minutes run out.
+  // Starts at 0 so the server render and the first browser render agree (no buttons); the clock starts after.
+  const [now, setNow] = useState(0);
+  useEffect(() => {
+    const tick = () => setNow(Date.now());
+    const first = setTimeout(tick, 0);
+    const timer = setInterval(tick, 30_000);
+    return () => {
+      clearTimeout(first);
+      clearInterval(timer);
+    };
+  }, []);
 
   async function saveEdit() {
     if (!editing || busyId) return;
@@ -79,8 +94,9 @@ export function SupportThread({
       setShowing((s) => ({ ...s, [editing.id]: false }));
       setEditing(null);
       router.refresh();
-    } catch {
-      toast.error(t("editError"));
+    } catch (error) {
+      toast.error(error instanceof Error && error.message === "409" ? t("editWindowClosed") : t("editError"));
+      setEditing(null);
     } finally {
       setBusyId(null);
     }
@@ -94,8 +110,8 @@ export function SupportThread({
       if (!res.ok) throw new Error(String(res.status));
       toast.success(t("deleted"));
       router.refresh();
-    } catch {
-      toast.error(t("editError"));
+    } catch (error) {
+      toast.error(error instanceof Error && error.message === "409" ? t("editWindowClosed") : t("editError"));
     } finally {
       setBusyId(null);
     }
@@ -282,7 +298,7 @@ export function SupportThread({
                         {lastOfGroup && <span className="tabular-nums">{m.time}</span>}
                         {m.edited && !m.deleted && <span className="italic">{t("edited")}</span>}
                         {/* Your own words, while they are still there, can be changed or taken back. */}
-                        {canWrite && m.authorId === viewerId && !m.deleted && editing?.id !== m.id && (
+                        {canWrite && m.authorId === viewerId && !m.deleted && editing?.id !== m.id && now > 0 && withinEditWindow(m.sentAt, now) && (
                           <span className="flex items-center gap-2 opacity-70 transition-opacity hover:opacity-100 focus-within:opacity-100">
                             <button
                               type="button"

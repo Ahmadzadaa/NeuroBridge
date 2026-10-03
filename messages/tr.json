@@ -2775,7 +2775,8 @@
     "editError": "Olmadı. Lütfen tekrar deneyin.",
     "editLabel": "Mesajı düzenle",
     "cancel": "İptal",
-    "save": "Kaydet"
+    "save": "Kaydet",
+    "editWindowClosed": "Mesaj yalnızca gönderildikten sonraki 15 dakika içinde düzenlenebilir veya silinebilir."
   },
   "notifications": {
     "title": "Bildirimler",

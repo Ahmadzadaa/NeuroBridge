@@ -2775,7 +2775,8 @@
     "editError": "That did not work. Please try again.",
     "editLabel": "Edit the message",
     "cancel": "Cancel",
-    "save": "Save"
+    "save": "Save",
+    "editWindowClosed": "A message can only be edited or deleted within 15 minutes of sending."
   },
   "notifications": {
     "title": "Notifications",

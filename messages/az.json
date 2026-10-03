@@ -2775,7 +2775,8 @@
     "editError": "Alınmadı. Yenidən cəhd edin.",
     "editLabel": "Mesajı redaktə et",
     "cancel": "Ləğv et",
-    "save": "Yadda saxla"
+    "save": "Yadda saxla",
+    "editWindowClosed": "Mesajı yalnız göndərildikdən sonrakı 15 dəqiqə ərzində dəyişmək və ya silmək olar."
   },
   "notifications": {
     "title": "Bildirişlər",

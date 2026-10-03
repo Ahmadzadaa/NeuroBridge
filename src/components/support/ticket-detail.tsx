@@ -83,6 +83,7 @@ export async function TicketDetail({
               day: formatDate(m.createdAt, locale, "long"),
               time: time.format(m.createdAt),
               attachments: m.attachments,
+              sentAt: m.createdAt.toISOString(),
               edited: m.editedAt !== null,
               deleted: m.deletedAt !== null,
             }))}

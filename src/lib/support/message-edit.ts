@@ -3,6 +3,16 @@ import { prisma } from "@/lib/prisma";
 import { getStorage } from "@/lib/storage";
 import { SupportAttachmentError } from "@/lib/support/attachments";
 import { SupportTicketNotFoundError, type SupportActor } from "@/lib/support/support-service";
+import { withinEditWindow } from "@/lib/support/message-rules";
+
+export class EditWindowClosedError extends Error {
+  readonly statusCode = 409;
+  readonly code = "EDIT_WINDOW_CLOSED";
+  constructor() {
+    super("Messages can only be changed shortly after sending");
+    this.name = "EditWindowClosedError";
+  }
+}
 
 /**
  * Changing or removing a message one wrote. Only the author may; an edit is
@@ -20,6 +30,7 @@ async function ownMessage(actor: SupportActor, messageId: string) {
       ticketId: true,
       authorId: true,
       deletedAt: true,
+      createdAt: true,
       ticket: { select: { tenantId: true } },
       attachments: { select: { id: true, key: true } },
     },
@@ -27,6 +38,8 @@ async function ownMessage(actor: SupportActor, messageId: string) {
   const visible = message && (actor.role === "SUPER_ADMIN" || message.ticket.tenantId === actor.tenantId);
   // Someone else's message looks the same as a missing one: no hint that it exists.
   if (!message || !visible || message.authorId !== actor.id || message.deletedAt) throw new SupportTicketNotFoundError();
+  // Once the other side may have read and answered it, the record stays as it was.
+  if (!withinEditWindow(message.createdAt)) throw new EditWindowClosedError();
   return message;
 }
 

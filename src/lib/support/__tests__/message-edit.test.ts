@@ -17,6 +17,7 @@ const message = (over: Record<string, unknown> = {}) => ({
   ticketId: "k1",
   authorId: "u1",
   deletedAt: null,
+  createdAt: new Date(),
   ticket: { tenantId: "t1" },
   attachments: [{ id: "a1", key: "support/t1/k1/x" }],
   ...over,
@@ -43,6 +44,16 @@ describe("editing and deleting support messages", () => {
     await expect(editMessage(author, "m1", "back")).rejects.toMatchObject({ statusCode: 404 });
     db.supportMessage.findUnique.mockResolvedValue(message({ attachments: [] }));
     await expect(editMessage(author, "m1", "  ")).rejects.toMatchObject({ code: "EMPTY_MESSAGE" });
+  });
+
+  it("closes 15 minutes after sending", async () => {
+    db.supportMessage.findUnique.mockResolvedValue(message({ createdAt: new Date(Date.now() - 16 * 60 * 1000) }));
+    await expect(editMessage(author, "m1", "late")).rejects.toMatchObject({ statusCode: 409, code: "EDIT_WINDOW_CLOSED" });
+    await expect(deleteMessage(author, "m1")).rejects.toMatchObject({ code: "EDIT_WINDOW_CLOSED" });
+    expect(db.supportMessage.update).not.toHaveBeenCalled();
+
+    db.supportMessage.findUnique.mockResolvedValue(message({ createdAt: new Date(Date.now() - 14 * 60 * 1000) }));
+    await expect(editMessage(author, "m1", "just in time")).resolves.toEqual({ ticketId: "k1" });
   });
 
   it("deleting removes the text and the files, leaving a placeholder", async () => {
