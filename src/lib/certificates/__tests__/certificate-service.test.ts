@@ -18,6 +18,8 @@ const row = (over: Record<string, unknown> = {}) => ({
   issuedAt: new Date("2026-08-01"),
   revokedAt: null,
   pdfPath: "tenant-1/c1.pdf",
+  recipientName: "Ahmet Yılmaz",
+  tenant: { name: "Demo Teknopark" },
   ...over,
 });
 
@@ -31,6 +33,7 @@ describe("certificate-service", () => {
 
     expect(cert.hasPdf).toBe(true);
     expect(cert.serialNumber).toBe("BIZ-2026-DEM-000001");
+    expect(cert).toMatchObject({ recipientName: "Ahmet Yılmaz", issuer: "Demo Teknopark" });
     // The storage location must never reach the client.
     expect(cert).not.toHaveProperty("pdfPath");
   });
