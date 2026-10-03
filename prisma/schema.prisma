@@ -1599,15 +1599,19 @@ model SupportTicket {
 }
 
 model SupportMessage {
-  id           String   @id @default(cuid())
-  ticketId     String   @map("ticket_id")
-  authorId     String   @map("author_id")
+  id           String    @id @default(cuid())
+  ticketId     String    @map("ticket_id")
+  authorId     String    @map("author_id")
   /// Written by the platform team rather than the organisation.
-  fromStaff    Boolean  @default(false) @map("from_staff")
+  fromStaff    Boolean   @default(false) @map("from_staff")
   body         String
   /// JSON {locale: text}: translations made on request, kept so each is paid for once.
   translations String?
-  createdAt    DateTime @default(now()) @map("created_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  /// Set when the author changed the text; shown as "edited" so the other side knows.
+  editedAt     DateTime? @map("edited_at")
+  /// Set when the author removed the message: text and files are gone, a placeholder keeps the thread readable.
+  deletedAt    DateTime? @map("deleted_at")
 
   attachments SupportAttachment[]
   ticket      SupportTicket       @relation(fields: [ticketId], references: [id], onDelete: Cascade)

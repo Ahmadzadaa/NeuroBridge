@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { ArrowUp, CheckCircle2, Languages, Loader2, Paperclip, RotateCcw } from "lucide-react";
+import { ArrowUp, Ban, CheckCircle2, Languages, Loader2, Paperclip, Pencil, RotateCcw, Trash2 } from "lucide-react";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import type { SupportStatus } from "@/lib/support/support-service";
 import { ACCEPT_ATTRIBUTE } from "@/lib/support/attachment-types";
@@ -21,6 +21,8 @@ export type ThreadMessage = {
   day: string;
   time: string;
   attachments: SentAttachment[];
+  edited: boolean;
+  deleted: boolean;
 };
 
 /**
@@ -33,6 +35,7 @@ export function SupportThread({
   ticketId,
   apiBase,
   viewer,
+  viewerId,
   canWrite,
   status,
   messages,
@@ -40,6 +43,8 @@ export function SupportThread({
   ticketId: string;
   apiBase: string;
   viewer: "staff" | "tenant";
+  /** Who is reading: only their own messages can be edited or removed. */
+  viewerId: string;
   canWrite: boolean;
   status: SupportStatus;
   messages: ThreadMessage[];
@@ -56,6 +61,45 @@ export function SupportThread({
   const draft = useAttachmentDraft();
   const [dragging, setDragging] = useState(false);
   const locale = useLocale();
+  const [editing, setEditing] = useState<{ id: string; text: string } | null>(null);
+  const [busyId, setBusyId] = useState<string | null>(null);
+
+  async function saveEdit() {
+    if (!editing || busyId) return;
+    setBusyId(editing.id);
+    try {
+      const res = await fetch(`/api/support/messages/${editing.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ body: editing.text.trim() }),
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      // A translation of the old wording would now be wrong.
+      setTranslated((s) => ({ ...s, [editing.id]: "" }));
+      setShowing((s) => ({ ...s, [editing.id]: false }));
+      setEditing(null);
+      router.refresh();
+    } catch {
+      toast.error(t("editError"));
+    } finally {
+      setBusyId(null);
+    }
+  }
+
+  async function removeMessage(id: string) {
+    if (!window.confirm(t("deleteConfirm"))) return;
+    setBusyId(id);
+    try {
+      const res = await fetch(`/api/support/messages/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error(String(res.status));
+      toast.success(t("deleted"));
+      router.refresh();
+    } catch {
+      toast.error(t("editError"));
+    } finally {
+      setBusyId(null);
+    }
+  }
   // Translations asked for in this visit: id -> text, and which are on screen.
   const [translated, setTranslated] = useState<Record<string, string>>({});
   const [showing, setShowing] = useState<Record<string, boolean>>({});
@@ -168,29 +212,103 @@ export function SupportThread({
                         {m.fromStaff ? t("teamName", { name: m.author }) : m.author}
                       </span>
                     )}
-                    {m.body && (
-                      <div
-                        className={cn(
-                          "whitespace-pre-wrap break-words rounded-[20px] px-4 py-2.5 text-[15px] leading-relaxed",
-                          mine
-                            ? "bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow-[0_6px_16px_-10px_rgba(91,91,214,0.9)]"
-                            : "bg-card text-foreground shadow-[0_1px_2px_rgba(15,23,42,0.06)] ring-1 ring-border/60",
-                          lastOfGroup && (mine ? "rounded-br-[6px]" : "rounded-bl-[6px]"),
-                        )}
-                      >
-                        {showing[m.id] ? translated[m.id] : m.body}
+                    {m.deleted ? (
+                      <div className="inline-flex items-center gap-1.5 rounded-[20px] px-4 py-2 text-[14px] italic text-muted-foreground border border-dashed border-border">
+                        <Ban className="h-3.5 w-3.5" aria-hidden="true" />
+                        {t("deletedMessage")}
                       </div>
+                    ) : editing?.id === m.id ? (
+                      <div className="w-[min(520px,80vw)] rounded-[20px] bg-card p-2 ring-2 ring-primary/40">
+                        <label htmlFor={`edit-${m.id}`} className="sr-only">
+                          {t("editLabel")}
+                        </label>
+                        <textarea
+                          id={`edit-${m.id}`}
+                          autoFocus
+                          value={editing.text}
+                          maxLength={5000}
+                          rows={Math.min(8, Math.max(2, editing.text.split("\n").length))}
+                          onChange={(e) => setEditing({ id: m.id, text: e.target.value })}
+                          onKeyDown={(e) => {
+                            if (e.key === "Escape") setEditing(null);
+                            if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
+                              e.preventDefault();
+                              void saveEdit();
+                            }
+                          }}
+                          className="w-full resize-none bg-transparent px-2 py-1.5 text-[15px] leading-relaxed outline-none"
+                        />
+                        <div className="flex justify-end gap-2 px-1 pb-0.5">
+                          <button
+                            type="button"
+                            onClick={() => setEditing(null)}
+                            className="rounded-full px-3 py-1 text-[13px] font-semibold text-muted-foreground transition-colors hover:bg-muted"
+                          >
+                            {t("cancel")}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => void saveEdit()}
+                            disabled={busyId === m.id || (!editing.text.trim() && m.attachments.length === 0)}
+                            className="inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1 text-[13px] font-semibold text-primary-foreground transition-opacity disabled:opacity-40"
+                          >
+                            {busyId === m.id && <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />}
+                            {t("save")}
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      m.body && (
+                        <div
+                          className={cn(
+                            "whitespace-pre-wrap break-words rounded-[20px] px-4 py-2.5 text-[15px] leading-relaxed",
+                            mine
+                              ? "bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow-[0_6px_16px_-10px_rgba(91,91,214,0.9)]"
+                              : "bg-card text-foreground shadow-[0_1px_2px_rgba(15,23,42,0.06)] ring-1 ring-border/60",
+                            lastOfGroup && (mine ? "rounded-br-[6px]" : "rounded-bl-[6px]"),
+                          )}
+                        >
+                          {showing[m.id] ? translated[m.id] : m.body}
+                        </div>
+                      )
                     )}
-                    {m.attachments.length > 0 && (
+                    {!m.deleted && m.attachments.length > 0 && (
                       <div className={cn(m.body && "mt-1.5")}>
                         <MessageAttachments items={m.attachments} mine={mine} />
                       </div>
                     )}
-                    {(lastOfGroup || !mine) && (
-                      <span className="mt-1 flex items-center gap-2 px-2 text-[11px] text-muted-foreground">
+                    {(lastOfGroup || !mine || m.authorId === viewerId) && (
+                      <span className="group/meta mt-1 flex items-center gap-2 px-2 text-[11px] text-muted-foreground">
                         {lastOfGroup && <span className="tabular-nums">{m.time}</span>}
+                        {m.edited && !m.deleted && <span className="italic">{t("edited")}</span>}
+                        {/* Your own words, while they are still there, can be changed or taken back. */}
+                        {canWrite && m.authorId === viewerId && !m.deleted && editing?.id !== m.id && (
+                          <span className="flex items-center gap-2 opacity-70 transition-opacity hover:opacity-100 focus-within:opacity-100">
+                            <button
+                              type="button"
+                              onClick={() => setEditing({ id: m.id, text: m.body })}
+                              className="inline-flex items-center gap-1 font-medium text-primary hover:underline"
+                            >
+                              <Pencil className="h-3 w-3" aria-hidden="true" />
+                              {t("edit")}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => void removeMessage(m.id)}
+                              disabled={busyId === m.id}
+                              className="inline-flex items-center gap-1 font-medium text-destructive hover:underline disabled:opacity-50"
+                            >
+                              {busyId === m.id ? (
+                                <Loader2 className="h-3 w-3 animate-spin" aria-hidden="true" />
+                              ) : (
+                                <Trash2 className="h-3 w-3" aria-hidden="true" />
+                              )}
+                              {t("delete")}
+                            </button>
+                          </span>
+                        )}
                         {/* Only the other side's words need translating; yours are already in your language. */}
-                        {!mine && m.body && (
+                        {!mine && m.body && !m.deleted && (
                           <button
                             type="button"
                             onClick={() => toggleTranslation(m.id)}

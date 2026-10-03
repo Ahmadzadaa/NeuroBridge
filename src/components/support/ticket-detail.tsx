@@ -71,6 +71,7 @@ export async function TicketDetail({
             ticketId={ticket.id}
             apiBase={staff ? "/api/admin/support/tickets" : "/api/support/tickets"}
             viewer={viewer}
+            viewerId={actor.id}
             canWrite={canWrite}
             status={ticket.status as SupportStatus}
             messages={ticket.messages.map((m) => ({
@@ -82,6 +83,8 @@ export async function TicketDetail({
               day: formatDate(m.createdAt, locale, "long"),
               time: time.format(m.createdAt),
               attachments: m.attachments,
+              edited: m.editedAt !== null,
+              deleted: m.deletedAt !== null,
             }))}
           />
         </div>

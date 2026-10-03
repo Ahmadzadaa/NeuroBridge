@@ -2765,7 +2765,17 @@
       "FILE_TYPE_NOT_ALLOWED": "Fayllardan biri qəbul olunmur: məzmunu adına uyğun gəlmir.",
       "FILE_TOO_LARGE": "Fayllardan biri 10 MB-dan böyükdür.",
       "TOO_MANY_FILES": "Bir mesaja ən çox 5 fayl əlavə etmək olar."
-    }
+    },
+    "edit": "Redaktə et",
+    "delete": "Sil",
+    "edited": "redaktə edilib",
+    "deletedMessage": "Bu mesaj silinib",
+    "deleteConfirm": "Mesaj silinsin? Mətn və əlavə fayllar geri qaytarılmır.",
+    "deleted": "Mesaj silindi",
+    "editError": "Alınmadı. Yenidən cəhd edin.",
+    "editLabel": "Mesajı redaktə et",
+    "cancel": "Ləğv et",
+    "save": "Yadda saxla"
   },
   "notifications": {
     "title": "Bildirişlər",

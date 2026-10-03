@@ -2765,7 +2765,17 @@
       "FILE_TYPE_NOT_ALLOWED": "Dosyalardan biri kabul edilmiyor: içeriği adıyla uyuşmuyor.",
       "FILE_TOO_LARGE": "Dosyalardan biri 10 MB'tan büyük.",
       "TOO_MANY_FILES": "Bir mesaja en fazla 5 dosya eklenebilir."
-    }
+    },
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "edited": "düzenlendi",
+    "deletedMessage": "Bu mesaj silindi",
+    "deleteConfirm": "Mesaj silinsin mi? Metin ve ekli dosyalar geri alınamaz.",
+    "deleted": "Mesaj silindi",
+    "editError": "Olmadı. Lütfen tekrar deneyin.",
+    "editLabel": "Mesajı düzenle",
+    "cancel": "İptal",
+    "save": "Kaydet"
   },
   "notifications": {
     "title": "Bildirimler",

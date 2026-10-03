@@ -2765,7 +2765,17 @@
       "FILE_TYPE_NOT_ALLOWED": "One of the files is not accepted: its content does not match its name.",
       "FILE_TOO_LARGE": "One of the files is larger than 10 MB.",
       "TOO_MANY_FILES": "A message can carry at most 5 files."
-    }
+    },
+    "edit": "Edit",
+    "delete": "Delete",
+    "edited": "edited",
+    "deletedMessage": "This message was deleted",
+    "deleteConfirm": "Delete this message? The text and its files cannot be recovered.",
+    "deleted": "Message deleted",
+    "editError": "That did not work. Please try again.",
+    "editLabel": "Edit the message",
+    "cancel": "Cancel",
+    "save": "Save"
   },
   "notifications": {
     "title": "Notifications",

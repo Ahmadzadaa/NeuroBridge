@@ -17,7 +17,7 @@ export type TicketRow = {
   meta: string;
   messages: number;
   /** The newest message, previewed under the subject like a mail inbox. */
-  preview: { body: string; fromStaff: boolean; _count?: { attachments: number } } | null;
+  preview: { body: string; fromStaff: boolean; deletedAt?: Date | null; _count?: { attachments: number } } | null;
   /** Shown for the platform team, where the organisation is the face of the row; omitted for the organisation itself. */
   avatar?: { id: string; name: string };
 };
@@ -92,7 +92,7 @@ export async function TicketList({
                 {row.preview && (
                   <span className={cn("mt-0.5 line-clamp-2 text-[14px] leading-snug", row.unread ? "text-foreground/80" : "text-muted-foreground")}>
                     {who && <span className="font-medium text-foreground/70">{who}: </span>}
-                    {row.preview.body || t("previewAttachments", { count: row.preview._count?.attachments ?? 0 })}
+                    {row.preview.deletedAt ? <span className="italic">{t("deletedMessage")}</span> : row.preview.body || t("previewAttachments", { count: row.preview._count?.attachments ?? 0 })}
                   </span>
                 )}
                 <span className="mt-1.5 flex items-center gap-2 text-[12px] text-muted-foreground">

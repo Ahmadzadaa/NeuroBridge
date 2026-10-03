@@ -122,6 +122,8 @@ export async function getThread(actor: SupportActor, ticketId: string) {
           body: true,
           fromStaff: true,
           createdAt: true,
+          editedAt: true,
+          deletedAt: true,
           author: { select: { id: true, firstName: true, lastName: true, email: true } },
           attachments: { orderBy: { createdAt: "asc" }, select: { id: true, name: true, contentType: true, size: true } },
         },
@@ -143,7 +145,7 @@ const listSelect = {
   createdBy: { select: { id: true, firstName: true, lastName: true, email: true } },
   _count: { select: { messages: true } },
   // The newest message, for the preview line under the subject.
-  messages: { orderBy: { createdAt: "desc" }, take: 1, select: { body: true, fromStaff: true, _count: { select: { attachments: true } } } },
+  messages: { orderBy: { createdAt: "desc" }, take: 1, select: { body: true, fromStaff: true, deletedAt: true, _count: { select: { attachments: true } } } },
 } as const;
 
 export async function listTenantTickets(tenantId: string) {

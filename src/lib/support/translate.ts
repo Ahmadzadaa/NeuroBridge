@@ -45,10 +45,10 @@ export function translationPrompt(target: Locale): string {
 export async function translateMessage(actor: SupportActor, messageId: string, target: Locale): Promise<{ text: string; cached: boolean }> {
   const message = await prisma.supportMessage.findUnique({
     where: { id: messageId },
-    select: { body: true, translations: true, ticket: { select: { tenantId: true } } },
+    select: { body: true, translations: true, deletedAt: true, ticket: { select: { tenantId: true } } },
   });
   // The same rule as the conversation itself: staff see all, an organisation only its own.
-  if (!message || (actor.role !== "SUPER_ADMIN" && message.ticket.tenantId !== actor.tenantId)) throw new SupportTicketNotFoundError();
+  if (!message || message.deletedAt || (actor.role !== "SUPER_ADMIN" && message.ticket.tenantId !== actor.tenantId)) throw new SupportTicketNotFoundError();
 
   const known = readTranslations(message.translations);
   if (known[target]) return { text: known[target]!, cached: true };
