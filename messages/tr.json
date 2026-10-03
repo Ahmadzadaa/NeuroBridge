@@ -2663,7 +2663,7 @@
     "reopenedToast": "Talep yeniden açıldı",
     "unread": "Okunmamış",
     "messageCount": "{count} mesaj",
-    "shortcut": "Göndermek için Ctrl + Enter",
+    "shortcut": "Enter gönderir, Shift + Enter yeni satır",
     "inspector": {
       "label": "Talep sahibi hakkında",
       "email": "E-posta",

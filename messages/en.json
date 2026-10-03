@@ -2663,7 +2663,7 @@
     "reopenedToast": "Request reopened",
     "unread": "Unread",
     "messageCount": "{count, plural, one {# message} other {# messages}}",
-    "shortcut": "Ctrl + Enter to send",
+    "shortcut": "Enter sends, Shift + Enter adds a new line",
     "inspector": {
       "label": "About the requester",
       "email": "Email",

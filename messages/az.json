@@ -2663,7 +2663,7 @@
     "reopenedToast": "Müraciət yenidən açıldı",
     "unread": "Oxunmamış",
     "messageCount": "{count} mesaj",
-    "shortcut": "Göndərmək üçün Ctrl + Enter",
+    "shortcut": "Enter göndərir, Shift + Enter yeni sətir",
     "inspector": {
       "label": "Müraciət edən haqqında",
       "email": "E-poçt",

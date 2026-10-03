@@ -224,7 +224,12 @@ export function SupportThread({
               onChange={(e) => setBody(e.target.value)}
               placeholder={resolved ? t("replyReopens") : t("replyPlaceholder")}
               onKeyDown={(e) => {
-                if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) send(e);
+                // Enter sends, as in any messages app; Shift+Enter starts a new line.
+                // Not while an input method is composing a character.
+                if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
+                  e.preventDefault();
+                  void send();
+                }
               }}
               className="max-h-[220px] min-h-[40px] flex-1 resize-none bg-transparent py-2.5 text-[15px] leading-relaxed outline-none placeholder:text-muted-foreground/70"
             />
