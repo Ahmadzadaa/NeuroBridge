@@ -24,7 +24,7 @@
     "db:rls": "psql %DATABASE_URL% -f prisma/migrations/rls/001_enable_rls.sql",
     "db:backup": "bash scripts/backup-db.sh",
     "test": "vitest run",
-    "test:integration": "vitest run src/**/*.integration.test.ts",
+    "test:integration": "vitest run .integration.test.ts",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:perf": "vitest run src/lib/__tests__/pagination.test.ts src/lib/cache/__tests__/cache-service.test.ts",
