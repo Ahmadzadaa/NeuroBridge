@@ -85,7 +85,7 @@ export async function notifyReply(ticketId: string, fromStaff: boolean, origin: 
         messages: {
           orderBy: { createdAt: "desc" },
           take: 1,
-          select: { body: true, author: { select: { firstName: true, lastName: true, email: true } } },
+          select: { body: true, author: { select: { firstName: true, lastName: true, email: true } }, attachments: { select: { name: true } } },
         },
       },
     });
@@ -108,7 +108,8 @@ export async function notifyReply(ticketId: string, fromStaff: boolean, origin: 
         organisation: ticket.tenant.name,
         authorName: personName(last.author),
         topic: ticket.subject,
-        message: last.body,
+        // A message of only files still says what was sent.
+        message: [last.body, ...last.attachments.map((f) => `📎 ${f.name}`)].filter(Boolean).join("\n"),
         ticketUrl: localeUrl(origin, fromStaff ? `/tenant/support/${ticketId}` : `/super-admin/support/${ticketId}`, locale),
         locale,
       }),

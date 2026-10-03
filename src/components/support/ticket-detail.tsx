@@ -81,6 +81,7 @@ export async function TicketDetail({
               authorId: m.author.id,
               day: formatDate(m.createdAt, locale, "long"),
               time: time.format(m.createdAt),
+              attachments: m.attachments,
             }))}
           />
         </div>

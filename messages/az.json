@@ -2751,7 +2751,21 @@
     "translating": "Tərcümə olunur…",
     "showOriginal": "Orijinalı göstər",
     "translatedNote": "Avtomatik tərcümə",
-    "translateError": "Tərcümə alınmadı. Bir az sonra yenidən cəhd edin."
+    "translateError": "Tərcümə alınmadı. Bir az sonra yenidən cəhd edin.",
+    "previewAttachments": "📎 {count} fayl",
+    "attachments": {
+      "add": "Şəkil və ya fayl əlavə et",
+      "hint": "Ən çox {max} fayl, hər biri 10 MB-a qədər: şəkil, PDF, Word, Excel, PowerPoint, TXT, CSV. Ekran şəklini birbaşa yapışdıra da bilərsiniz (Ctrl + V).",
+      "selected": "Seçilmiş fayllar",
+      "remove": "{name} faylını çıxar",
+      "download": "Yüklə",
+      "tooMany": "Bir mesaja ən çox {max} fayl əlavə etmək olar.",
+      "notAllowed": "{name}: bu növ fayl qəbul olunmur.",
+      "tooLarge": "{name} çox böyükdür (ən çox {max}).",
+      "FILE_TYPE_NOT_ALLOWED": "Fayllardan biri qəbul olunmur: məzmunu adına uyğun gəlmir.",
+      "FILE_TOO_LARGE": "Fayllardan biri 10 MB-dan böyükdür.",
+      "TOO_MANY_FILES": "Bir mesaja ən çox 5 fayl əlavə etmək olar."
+    }
   },
   "notifications": {
     "title": "Bildirişlər",

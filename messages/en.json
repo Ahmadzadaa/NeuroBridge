@@ -2751,7 +2751,21 @@
     "translating": "Translating…",
     "showOriginal": "Show original",
     "translatedNote": "Machine translation",
-    "translateError": "Translation failed. Please try again in a moment."
+    "translateError": "Translation failed. Please try again in a moment.",
+    "previewAttachments": "📎 {count, plural, one {# file} other {# files}}",
+    "attachments": {
+      "add": "Add a picture or file",
+      "hint": "Up to {max} files, 10 MB each: pictures, PDF, Word, Excel, PowerPoint, TXT, CSV. You can also paste a screenshot (Ctrl + V).",
+      "selected": "Chosen files",
+      "remove": "Remove {name}",
+      "download": "Download",
+      "tooMany": "A message can carry at most {max} files.",
+      "notAllowed": "{name}: this kind of file is not accepted.",
+      "tooLarge": "{name} is too large (up to {max}).",
+      "FILE_TYPE_NOT_ALLOWED": "One of the files is not accepted: its content does not match its name.",
+      "FILE_TOO_LARGE": "One of the files is larger than 10 MB.",
+      "TOO_MANY_FILES": "A message can carry at most 5 files."
+    }
   },
   "notifications": {
     "title": "Notifications",

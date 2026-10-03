@@ -2751,7 +2751,21 @@
     "translating": "Çevriliyor…",
     "showOriginal": "Orijinali göster",
     "translatedNote": "Otomatik çeviri",
-    "translateError": "Çeviri yapılamadı. Biraz sonra tekrar deneyin."
+    "translateError": "Çeviri yapılamadı. Biraz sonra tekrar deneyin.",
+    "previewAttachments": "📎 {count} dosya",
+    "attachments": {
+      "add": "Resim veya dosya ekle",
+      "hint": "En fazla {max} dosya, her biri 10 MB'a kadar: resim, PDF, Word, Excel, PowerPoint, TXT, CSV. Ekran görüntüsünü doğrudan yapıştırabilirsiniz (Ctrl + V).",
+      "selected": "Seçilen dosyalar",
+      "remove": "{name} dosyasını kaldır",
+      "download": "İndir",
+      "tooMany": "Bir mesaja en fazla {max} dosya eklenebilir.",
+      "notAllowed": "{name}: bu tür dosya kabul edilmiyor.",
+      "tooLarge": "{name} çok büyük (en fazla {max}).",
+      "FILE_TYPE_NOT_ALLOWED": "Dosyalardan biri kabul edilmiyor: içeriği adıyla uyuşmuyor.",
+      "FILE_TOO_LARGE": "Dosyalardan biri 10 MB'tan büyük.",
+      "TOO_MANY_FILES": "Bir mesaja en fazla 5 dosya eklenebilir."
+    }
   },
   "notifications": {
     "title": "Bildirimler",

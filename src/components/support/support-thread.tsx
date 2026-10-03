@@ -4,13 +4,24 @@ import { useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { ArrowUp, CheckCircle2, Languages, Loader2, RotateCcw } from "lucide-react";
+import { ArrowUp, CheckCircle2, Languages, Loader2, Paperclip, RotateCcw } from "lucide-react";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import type { SupportStatus } from "@/lib/support/support-service";
+import { ACCEPT_ATTRIBUTE } from "@/lib/support/attachment-types";
+import { DraftChips, filesFromClipboard, MessageAttachments, useAttachmentDraft, type SentAttachment } from "./attachments";
 import { cn } from "@/lib/utils";
 
 /** Day and time are formatted on the server, so both renders agree on the time zone. */
-export type ThreadMessage = { id: string; body: string; fromStaff: boolean; author: string; authorId: string; day: string; time: string };
+export type ThreadMessage = {
+  id: string;
+  body: string;
+  fromStaff: boolean;
+  author: string;
+  authorId: string;
+  day: string;
+  time: string;
+  attachments: SentAttachment[];
+};
 
 /**
  * One support conversation, laid out like a messages app: the viewer's side
@@ -41,6 +52,9 @@ export function SupportThread({
   const endRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const sentRef = useRef(false);
+  const fileRef = useRef<HTMLInputElement>(null);
+  const draft = useAttachmentDraft();
+  const [dragging, setDragging] = useState(false);
   const locale = useLocale();
   // Translations asked for in this visit: id -> text, and which are on screen.
   const [translated, setTranslated] = useState<Record<string, string>>({});
@@ -83,20 +97,25 @@ export function SupportThread({
 
   async function send(e?: React.FormEvent) {
     e?.preventDefault();
-    if (!body.trim() || sending) return;
+    if ((!body.trim() && draft.files.length === 0) || sending) return;
     setSending(true);
     try {
-      const res = await fetch(`${apiBase}/${ticketId}/messages`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ body: body.trim() }),
-      });
-      if (!res.ok) throw new Error(String(res.status));
+      const form = new FormData();
+      form.set("body", body.trim());
+      for (const file of draft.files) form.append("files", file);
+      const res = await fetch(`${apiBase}/${ticketId}/messages`, { method: "POST", body: form });
+      if (!res.ok) {
+        const data = (await res.json().catch(() => null)) as { code?: string } | null;
+        throw new Error(data?.code ?? String(res.status));
+      }
       setBody("");
+      draft.clear();
       sentRef.current = true;
       router.refresh();
-    } catch {
-      toast.error(t("sendError"));
+    } catch (error) {
+      const code = error instanceof Error ? error.message : "";
+      // The server's verdict on a file is more precise than a generic failure.
+      toast.error(["FILE_TYPE_NOT_ALLOWED", "FILE_TOO_LARGE", "TOO_MANY_FILES"].includes(code) ? t(`attachments.${code}`) : t("sendError"));
     } finally {
       setSending(false);
     }
@@ -149,29 +168,40 @@ export function SupportThread({
                         {m.fromStaff ? t("teamName", { name: m.author }) : m.author}
                       </span>
                     )}
-                    <div
-                      className={cn(
-                        "whitespace-pre-wrap break-words rounded-[20px] px-4 py-2.5 text-[15px] leading-relaxed",
-                        mine
-                          ? "bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow-[0_6px_16px_-10px_rgba(91,91,214,0.9)]"
-                          : "bg-card text-foreground shadow-[0_1px_2px_rgba(15,23,42,0.06)] ring-1 ring-border/60",
-                        lastOfGroup && (mine ? "rounded-br-[6px]" : "rounded-bl-[6px]")
-                      )}
-                    >
-                      {showing[m.id] ? translated[m.id] : m.body}
-                    </div>
+                    {m.body && (
+                      <div
+                        className={cn(
+                          "whitespace-pre-wrap break-words rounded-[20px] px-4 py-2.5 text-[15px] leading-relaxed",
+                          mine
+                            ? "bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow-[0_6px_16px_-10px_rgba(91,91,214,0.9)]"
+                            : "bg-card text-foreground shadow-[0_1px_2px_rgba(15,23,42,0.06)] ring-1 ring-border/60",
+                          lastOfGroup && (mine ? "rounded-br-[6px]" : "rounded-bl-[6px]"),
+                        )}
+                      >
+                        {showing[m.id] ? translated[m.id] : m.body}
+                      </div>
+                    )}
+                    {m.attachments.length > 0 && (
+                      <div className={cn(m.body && "mt-1.5")}>
+                        <MessageAttachments items={m.attachments} mine={mine} />
+                      </div>
+                    )}
                     {(lastOfGroup || !mine) && (
                       <span className="mt-1 flex items-center gap-2 px-2 text-[11px] text-muted-foreground">
                         {lastOfGroup && <span className="tabular-nums">{m.time}</span>}
                         {/* Only the other side's words need translating; yours are already in your language. */}
-                        {!mine && (
+                        {!mine && m.body && (
                           <button
                             type="button"
                             onClick={() => toggleTranslation(m.id)}
                             disabled={translating === m.id}
                             className="inline-flex items-center gap-1 rounded-full font-medium text-primary transition-opacity hover:opacity-80 disabled:opacity-60"
                           >
-                            {translating === m.id ? <Loader2 className="h-3 w-3 animate-spin" aria-hidden="true" /> : <Languages className="h-3 w-3" aria-hidden="true" />}
+                            {translating === m.id ? (
+                              <Loader2 className="h-3 w-3 animate-spin" aria-hidden="true" />
+                            ) : (
+                              <Languages className="h-3 w-3" aria-hidden="true" />
+                            )}
                             {translating === m.id ? t("translating") : showing[m.id] ? t("showOriginal") : t("translate")}
                           </button>
                         )}
@@ -210,37 +240,86 @@ export function SupportThread({
         <div className="sticky bottom-3 z-10 lg:bottom-5">
           <form
             onSubmit={send}
-            className="flex items-end gap-2 rounded-[24px] bg-card/90 py-1.5 pl-4 pr-1.5 shadow-[0_12px_32px_-16px_rgba(15,23,42,0.45)] ring-1 ring-border/70 backdrop-blur-xl transition-shadow focus-within:ring-2 focus-within:ring-primary/40"
+            onDragOver={(e) => {
+              if (!e.dataTransfer.types.includes("Files")) return;
+              e.preventDefault();
+              setDragging(true);
+            }}
+            onDragLeave={() => setDragging(false)}
+            onDrop={(e) => {
+              if (!e.dataTransfer.files.length) return;
+              e.preventDefault();
+              setDragging(false);
+              draft.add(e.dataTransfer.files);
+            }}
+            className={cn(
+              "rounded-[24px] bg-card/90 p-1.5 shadow-[0_12px_32px_-16px_rgba(15,23,42,0.45)] ring-1 ring-border/70 backdrop-blur-xl transition-shadow focus-within:ring-2 focus-within:ring-primary/40",
+              dragging && "ring-2 ring-primary/60",
+            )}
           >
-            <label htmlFor="support-reply" className="sr-only">
-              {t("replyLabel")}
-            </label>
-            <textarea
-              ref={inputRef}
-              id="support-reply"
-              value={body}
-              rows={1}
-              maxLength={5000}
-              onChange={(e) => setBody(e.target.value)}
-              placeholder={resolved ? t("replyReopens") : t("replyPlaceholder")}
-              onKeyDown={(e) => {
-                // Enter sends, as in any messages app; Shift+Enter starts a new line.
-                // Not while an input method is composing a character.
-                if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
+            <DraftChips files={draft.files} onRemove={draft.remove} />
+            <div className="flex items-end gap-1.5">
+              <input
+                ref={fileRef}
+                type="file"
+                multiple
+                accept={ACCEPT_ATTRIBUTE}
+                className="sr-only"
+                tabIndex={-1}
+                onChange={(e) => {
+                  draft.add(e.target.files);
+                  e.target.value = "";
+                }}
+              />
+              <button
+                type="button"
+                onClick={() => fileRef.current?.click()}
+                aria-label={t("attachments.add")}
+                title={t("attachments.add")}
+                className="mb-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              >
+                <Paperclip className="h-[18px] w-[18px]" aria-hidden="true" />
+              </button>
+              <label htmlFor="support-reply" className="sr-only">
+                {t("replyLabel")}
+              </label>
+              <textarea
+                ref={inputRef}
+                id="support-reply"
+                value={body}
+                rows={1}
+                maxLength={5000}
+                onChange={(e) => setBody(e.target.value)}
+                onPaste={(e) => {
+                  // A pasted screenshot becomes an attachment instead of being lost.
+                  if (e.clipboardData.files.length === 0) return;
                   e.preventDefault();
-                  void send();
-                }
-              }}
-              className="max-h-[220px] min-h-[40px] flex-1 resize-none bg-transparent py-2.5 text-[15px] leading-relaxed outline-none placeholder:text-muted-foreground/70"
-            />
-            <button
-              type="submit"
-              disabled={sending || !body.trim()}
-              aria-label={t("send")}
-              className="mb-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow-sm transition-[opacity,transform] active:scale-95 disabled:opacity-30"
-            >
-              {sending ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <ArrowUp className="h-[18px] w-[18px]" strokeWidth={2.5} aria-hidden="true" />}
-            </button>
+                  draft.add(filesFromClipboard(e));
+                }}
+                placeholder={resolved ? t("replyReopens") : t("replyPlaceholder")}
+                onKeyDown={(e) => {
+                  // Enter sends, as in any messages app; Shift+Enter starts a new line.
+                  // Not while an input method is composing a character.
+                  if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
+                    e.preventDefault();
+                    void send();
+                  }
+                }}
+                className="max-h-[220px] min-h-[40px] flex-1 resize-none bg-transparent px-1 py-2.5 text-[15px] leading-relaxed outline-none placeholder:text-muted-foreground/70"
+              />
+              <button
+                type="submit"
+                disabled={sending || (!body.trim() && draft.files.length === 0)}
+                aria-label={t("send")}
+                className="mb-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow-sm transition-[opacity,transform] active:scale-95 disabled:opacity-30"
+              >
+                {sending ? (
+                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                ) : (
+                  <ArrowUp className="h-[18px] w-[18px]" strokeWidth={2.5} aria-hidden="true" />
+                )}
+              </button>
+            </div>
           </form>
           <div className="mt-1.5 flex flex-wrap items-center justify-between gap-2 px-3">
             <span className="hidden text-[12px] text-muted-foreground sm:inline">{t("shortcut")}</span>

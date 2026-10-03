@@ -1609,8 +1609,9 @@ model SupportMessage {
   translations String?
   createdAt    DateTime @default(now()) @map("created_at")
 
-  ticket SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
-  author User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  attachments SupportAttachment[]
+  ticket      SupportTicket       @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  author      User                @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@index([ticketId, createdAt])
   @@map("support_messages")
@@ -1635,4 +1636,21 @@ model Notification {
 
   @@index([userId, readAt, createdAt])
   @@map("notifications")
+}
+
+/// A picture or file sent with a support message. The bytes live in storage
+/// under `key`; they are served only to the two sides of the conversation.
+model SupportAttachment {
+  id          String   @id @default(cuid())
+  messageId   String   @map("message_id")
+  key         String
+  name        String
+  contentType String   @map("content_type")
+  size        Int
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  message SupportMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@index([messageId])
+  @@map("support_attachments")
 }

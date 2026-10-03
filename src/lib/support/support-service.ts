@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { clientContextSchema, type ClientContext } from "@/lib/support/client-context";
+import { storeFiles, SupportAttachmentError, type CheckedFile } from "@/lib/support/attachments";
 
 /**
  * Support conversations between an organisation's admins and the platform
@@ -16,7 +17,8 @@ export const newTicketSchema = z.object({
   body: z.string().trim().min(1).max(5000),
   context: clientContextSchema,
 });
-export const messageSchema = z.object({ body: z.string().trim().min(1).max(5000) });
+/** Text may be empty when the message is only pictures or files; the service checks that one of the two is there. */
+export const messageSchema = z.object({ body: z.string().trim().max(5000).default("") });
 /** ANSWERED is never set by hand: it follows a reply from the platform team. */
 export const statusSchema = z.object({ status: z.enum(["OPEN", "RESOLVED"]) });
 
@@ -45,11 +47,12 @@ export const isUnread = (lastMessageAt: Date, readAt: Date | null) => !readAt ||
 export async function createTicket(
   actor: SupportActor & { tenantId: string },
   input: z.infer<typeof newTicketSchema>,
-  request: { userAgent?: string; uiLocale?: string } = {}
+  request: { userAgent?: string; uiLocale?: string } = {},
+  files: CheckedFile[] = []
 ) {
   const now = new Date();
   const context: ClientContext = { ...input.context, ...request };
-  return prisma.supportTicket.create({
+  const ticket = await prisma.supportTicket.create({
     data: {
       tenantId: actor.tenantId,
       createdById: actor.id,
@@ -59,16 +62,32 @@ export async function createTicket(
       tenantReadAt: now,
       messages: { create: { authorId: actor.id, body: input.body, createdAt: now } },
     },
-    select: { id: true },
+    select: { id: true, messages: { select: { id: true } } },
   });
+  if (files.length > 0) {
+    try {
+      const stored = await storeFiles(actor.tenantId, ticket.id, files);
+      await prisma.supportAttachment.createMany({ data: stored.map((f) => ({ ...f, messageId: ticket.messages[0].id })) });
+    } catch (error) {
+      // A request without the files it was sent with would be misleading: take it back and let the admin retry.
+      await prisma.supportTicket.delete({ where: { id: ticket.id } }).catch(() => undefined);
+      throw error;
+    }
+  }
+  return { id: ticket.id };
 }
 
-export async function addMessage(actor: SupportActor, ticketId: string, body: string) {
-  await ticketFor(actor, ticketId);
+export async function addMessage(actor: SupportActor, ticketId: string, body: string, files: CheckedFile[] = []) {
+  const ticket = await ticketFor(actor, ticketId);
+  if (!body.trim() && files.length === 0) throw new SupportAttachmentError("EMPTY_MESSAGE");
   const staff = isStaff(actor);
   const now = new Date();
+  // Files go to storage first: a message must never point at bytes that are not there.
+  const stored = files.length > 0 ? await storeFiles(ticket.tenantId, ticketId, files) : [];
   await prisma.$transaction([
-    prisma.supportMessage.create({ data: { ticketId, authorId: actor.id, fromStaff: staff, body, createdAt: now } }),
+    prisma.supportMessage.create({
+      data: { ticketId, authorId: actor.id, fromStaff: staff, body, createdAt: now, ...(stored.length ? { attachments: { create: stored } } : {}) },
+    }),
     prisma.supportTicket.update({
       where: { id: ticketId },
       // The writer has obviously read the thread; the other side has not.
@@ -98,7 +117,14 @@ export async function getThread(actor: SupportActor, ticketId: string) {
       createdBy: { select: { firstName: true, lastName: true, email: true } },
       messages: {
         orderBy: { createdAt: "asc" },
-        select: { id: true, body: true, fromStaff: true, createdAt: true, author: { select: { id: true, firstName: true, lastName: true, email: true } } },
+        select: {
+          id: true,
+          body: true,
+          fromStaff: true,
+          createdAt: true,
+          author: { select: { id: true, firstName: true, lastName: true, email: true } },
+          attachments: { orderBy: { createdAt: "asc" }, select: { id: true, name: true, contentType: true, size: true } },
+        },
       },
     },
   });
@@ -117,7 +143,7 @@ const listSelect = {
   createdBy: { select: { id: true, firstName: true, lastName: true, email: true } },
   _count: { select: { messages: true } },
   // The newest message, for the preview line under the subject.
-  messages: { orderBy: { createdAt: "desc" }, take: 1, select: { body: true, fromStaff: true } },
+  messages: { orderBy: { createdAt: "desc" }, take: 1, select: { body: true, fromStaff: true, _count: { select: { attachments: true } } } },
 } as const;
 
 export async function listTenantTickets(tenantId: string) {
