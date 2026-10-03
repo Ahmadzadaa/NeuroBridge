@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 const TYPE_TONE: Record<string, string> = {
   ACHIEVEMENT: "bg-amber-500/12 text-amber-700 dark:text-amber-400",
   PARTICIPATION: "bg-indigo-500/12 text-indigo-700 dark:text-indigo-300",
-  COMPLETION: "bg-rose-500/10 text-rose-700 dark:text-rose-300",
+  COMPLETION: "bg-emerald-500/12 text-emerald-700 dark:text-emerald-400",
 };
 
 export default async function CertificatesPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -66,14 +66,7 @@ export default async function CertificatesPage({ params }: { params: Promise<{ l
                 >
                   {/* The paper itself: opens the PDF. */}
                   {revoked ? (
-                    <CertificateThumbnail
-                      type={cert.type}
-                      word={t("certificateWord")}
-                      typeLabel={typeLabel(cert.type)}
-                      recipient={cert.recipientName}
-                      title={cert.title}
-                      revoked
-                    />
+                    <CertificateThumbnail templateId={cert.templateId} type={cert.type} recipient={cert.recipientName} issuer={cert.issuer} body={cert.body} revoked className="rounded-[14px]" />
                   ) : (
                     <a
                       href={fileUrl}
@@ -82,13 +75,7 @@ export default async function CertificatesPage({ params }: { params: Promise<{ l
                       aria-label={t("viewCertificateNamed", { title: cert.title })}
                       className="block rounded-[14px] shadow-[0_2px_8px_-2px_rgba(15,23,42,0.25)] ring-1 ring-black/5 transition-transform duration-200 group-hover:-translate-y-0.5"
                     >
-                      <CertificateThumbnail
-                        type={cert.type}
-                        word={t("certificateWord")}
-                        typeLabel={typeLabel(cert.type)}
-                        recipient={cert.recipientName}
-                        title={cert.title}
-                      />
+                      <CertificateThumbnail templateId={cert.templateId} type={cert.type} recipient={cert.recipientName} issuer={cert.issuer} body={cert.body} className="rounded-[14px]" />
                     </a>
                   )}
 

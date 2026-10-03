@@ -34,6 +34,8 @@ describe("certificate-service", () => {
     expect(cert.hasPdf).toBe(true);
     expect(cert.serialNumber).toBe("BIZ-2026-DEM-000001");
     expect(cert).toMatchObject({ recipientName: "Ahmet Yılmaz", issuer: "Demo Teknopark" });
+    // Rows issued before the wording was kept show the template default, as their PDF does.
+    expect(cert.body).toContain("Sahibkarlıq Akselerasiya Proqramı 2026");
     // The storage location must never reach the client.
     expect(cert).not.toHaveProperty("pdfPath");
   });

@@ -391,3 +391,13 @@ input::-ms-clear {
     transform: scaleX(0);
   }
 }
+
+/* Certificate typefaces, for the on-screen likeness of issued certificates.
+   The same files the PDF renderer embeds, so a name looks the same on paper
+   and on screen. Downloaded only on pages that show a certificate. */
+@font-face { font-family: "Cert PinyonScript"; src: url("/certificates/fonts/PinyonScript-Regular.ttf") format("truetype"); font-display: swap; }
+@font-face { font-family: "Cert GreatVibes"; src: url("/certificates/fonts/GreatVibes-Regular.ttf") format("truetype"); font-display: swap; }
+@font-face { font-family: "Cert PlayfairDisplay"; src: url("/certificates/fonts/PlayfairDisplay-Regular.ttf") format("truetype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Cert PlayfairDisplay"; src: url("/certificates/fonts/PlayfairDisplay-Bold.ttf") format("truetype"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Cert Lora"; src: url("/certificates/fonts/Lora-Regular.ttf") format("truetype"); font-display: swap; }
+@font-face { font-family: "Cert Merriweather"; src: url("/certificates/fonts/Merriweather-Regular.ttf") format("truetype"); font-display: swap; }

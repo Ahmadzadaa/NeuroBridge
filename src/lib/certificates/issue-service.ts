@@ -154,12 +154,13 @@ export async function issueCertificates(
           });
         }));
 
+      const body = fillBody(input.body, {
+        name: recipient.name,
+        program: input.title,
+      });
       const bytes = await renderCertificatePdf(template, {
         recipientName: recipient.name,
-        body: fillBody(input.body, {
-          name: recipient.name,
-          program: input.title,
-        }),
+        body,
         issuerName: input.issuerName,
         signature1Name: input.signature1Name,
         signature1Role: input.signature1Role,
@@ -179,6 +180,8 @@ export async function issueCertificates(
         data: {
           pdfPath: stored.key,
           pdfHash: stored.hash,
+          body,
+          issuerName: input.issuerName ?? null,
           // Backfilled rows never held a document, so the snapshot fields are
           // set now, at the moment the certificate really becomes one.
           ...(existing
@@ -246,12 +249,13 @@ export async function ensureCertificatePdf(certificateId: string): Promise<strin
     Object.values(CERTIFICATE_TEMPLATES).find((t) => t.type === cert.type);
   if (!template) throw new Error(`No certificate template for type ${cert.type}`);
 
+  const body = fillBody(template.defaultBody[cert.locale] ?? template.defaultBody.az ?? "", {
+    name: cert.recipientName,
+    program: cert.title,
+  });
   const bytes = await renderCertificatePdf(template, {
     recipientName: cert.recipientName,
-    body: fillBody(template.defaultBody[cert.locale] ?? template.defaultBody.az ?? "", {
-      name: cert.recipientName,
-      program: cert.title,
-    }),
+    body,
     issuerName: cert.tenant.name,
   });
   const stored = await storeCertificatePdf({ tenantId: cert.tenantId, userId: cert.userId, certificateId: cert.id, bytes });
@@ -259,7 +263,7 @@ export async function ensureCertificatePdf(certificateId: string): Promise<strin
   // Two first downloads at once must not each attach a different file.
   const { count } = await prisma.certificate.updateMany({
     where: { id: cert.id, pdfPath: null },
-    data: { pdfPath: stored.key, pdfHash: stored.hash, templateId: template.id },
+    data: { pdfPath: stored.key, pdfHash: stored.hash, templateId: template.id, body, issuerName: cert.tenant.name },
   });
   if (count === 0) {
     const winner = await prisma.certificate.findUniqueOrThrow({ where: { id: cert.id }, select: { pdfPath: true } });

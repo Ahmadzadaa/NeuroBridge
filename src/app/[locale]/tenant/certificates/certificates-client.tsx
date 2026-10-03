@@ -91,7 +91,6 @@ function FieldLabel({ htmlFor, children }: { htmlFor?: string; children: React.R
 
 export function CertificatesPageClient({ locale, userName, tenantName, programs, participants, participantTotal, rosterComplete, templates }: Props) {
   const t = useTranslations("tenant.certificates");
-  const tp = useTranslations("participant");
   const apiError = useApiErrorMessage();
 
   // The template names and style captions live in the message files, not in
@@ -375,15 +374,7 @@ export function CertificatesPageClient({ locale, userName, tenantName, programs,
                       )}
                     >
                       <span className="w-[92px] shrink-0 overflow-hidden rounded-[9px] shadow-[0_2px_6px_-2px_rgba(15,23,42,0.35)] ring-1 ring-black/5">
-                        <CertificateThumbnail
-                          type={tpl.type}
-                          word={tp("certificateWord")}
-                          typeLabel={templateLabel(tpl.id, "name", tpl.name)}
-                          recipient={sampleName}
-                          title={programName}
-                          compact
-                          className="rounded-none"
-                        />
+                        <CertificateThumbnail templateId={tpl.id} type={tpl.type} recipient={sampleName} issuer={issuerName} />
                       </span>
                       <span className="min-w-0 flex-1">
                         <span className="block truncate text-[15px] font-semibold">{templateLabel(tpl.id, "name", tpl.name)}</span>
@@ -767,14 +758,8 @@ export function CertificatesPageClient({ locale, userName, tenantName, programs,
                 />
               ) : (
                 <div className="flex aspect-[1.414/1] w-full flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-border bg-card/40 px-6 text-center">
-                  <div className="w-40 opacity-80">
-                    <CertificateThumbnail
-                      type={template?.type ?? "ACHIEVEMENT"}
-                      word={tp("certificateWord")}
-                      typeLabel={template ? templateLabel(template.id, "name", template.name) : ""}
-                      recipient={t("sampleName")}
-                      title={programName}
-                    />
+                  <div className="w-64 max-w-full opacity-90">
+                    <CertificateThumbnail templateId={template?.id} type={template?.type ?? "ACHIEVEMENT"} recipient={t("sampleName")} issuer={issuerName} body={body.replaceAll("{program}", programName).replaceAll("{name}", t("sampleName"))} className="rounded-lg shadow-sm" />
                   </div>
                   <p className="max-w-xs text-[14px] text-muted-foreground">
                     {busy ? t("rendering") : mode === "bulk" ? t("emptyBulk") : t("empty")}

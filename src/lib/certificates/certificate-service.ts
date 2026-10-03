@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { CERTIFICATE_TEMPLATES, fillBody } from "@/lib/certificates/templates";
 
 export { CERTIFICATE_TYPES, type CertificateType } from "@/lib/certificates/issue-service";
 
@@ -22,7 +23,7 @@ export interface CertificateRecord {
  */
 export async function listUserCertificates(
   userId: string
-): Promise<Array<CertificateRecord & { recipientName: string; issuer: string }>> {
+): Promise<Array<CertificateRecord & { recipientName: string; issuer: string; templateId: string | null; body: string }>> {
   const rows = await prisma.certificate.findMany({
     where: { userId },
     select: {
@@ -34,12 +35,21 @@ export async function listUserCertificates(
       revokedAt: true,
       pdfPath: true,
       recipientName: true,
+      templateId: true,
+      locale: true,
+      body: true,
+      issuerName: true,
       tenant: { select: { name: true } },
     },
     orderBy: { issuedAt: "desc" },
   });
 
-  return rows.map(({ pdfPath, tenant, ...rest }) => ({ ...rest, issuer: tenant.name, hasPdf: Boolean(pdfPath) }));
+  return rows.map(({ pdfPath, tenant, locale, body, issuerName, ...rest }) => {
+    // Older rows did not keep their wording; the PDF used the template's default, so that is what to show.
+    const template = CERTIFICATE_TEMPLATES[rest.templateId ?? ""] ?? Object.values(CERTIFICATE_TEMPLATES).find((t) => t.type === rest.type);
+    const fallback = template ? fillBody(template.defaultBody[locale] ?? template.defaultBody.az ?? "", { name: rest.recipientName, program: rest.title }) : "";
+    return { ...rest, issuer: issuerName ?? tenant.name, body: body ?? fallback, hasPdf: Boolean(pdfPath) };
+  });
 }
 
 /** Certificates issued by a tenant, for the admin overview. */

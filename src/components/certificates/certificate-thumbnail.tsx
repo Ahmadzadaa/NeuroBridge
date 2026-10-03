@@ -1,111 +1,135 @@
-import { Award } from "lucide-react";
+"use client";
+
+import { useLayoutEffect, useRef } from "react";
+import { CERTIFICATE_TEMPLATES, type CertificateTemplate, type TemplateBlock } from "@/lib/certificates/templates";
 import { cn } from "@/lib/utils";
 
 /**
- * A small paper-like likeness of a certificate, in the colours of its
- * template: gold guilloche for achievement, navy and gold for participation,
- * cream with a wax seal for completion. It is a picture of the document, not
- * the document itself; the PDF is one click away.
+ * An on-screen likeness of a certificate: the template's real background
+ * (rendered once from its PDF into /certificates/thumbs) with the name, and
+ * the organisation where the design has room for it, placed by the same
+ * millimetre coordinates and typefaces the PDF renderer uses. It scales with
+ * its box, so it matches the issued document at any size.
  */
-type Look = {
-  paper: string;
-  frame: string;
-  inner: string;
-  word: string;
-  name: string;
-  line: string;
-  seal: string;
-  pattern?: string;
+
+const TEMPLATE_BY_TYPE: Record<string, string> = {
+  ACHIEVEMENT: "achievement",
+  PARTICIPATION: "participation",
+  COMPLETION: "completion",
 };
 
-const LOOKS: Record<string, Look> = {
-  ACHIEVEMENT: {
-    paper: "bg-[#fbf7ec]",
-    frame: "border-[#c9a24a]",
-    inner: "border-[#c9a24a]/40",
-    word: "text-[#a8832f]",
-    name: "text-[#2f2618]",
-    line: "text-[#6b5a3e]",
-    seal: "bg-gradient-to-br from-[#e6c46a] to-[#b8892a] text-white",
-    pattern:
-      "bg-[radial-gradient(circle_at_0%_0%,rgba(201,162,74,0.16)_0,transparent_38%),radial-gradient(circle_at_100%_100%,rgba(201,162,74,0.16)_0,transparent_38%)]",
-  },
-  PARTICIPATION: {
-    paper: "bg-[#14213d]",
-    frame: "border-[#d4af37]",
-    inner: "border-[#d4af37]/30",
-    word: "text-[#d4af37]",
-    name: "text-white",
-    line: "text-white/65",
-    seal: "bg-gradient-to-br from-[#f0d27a] to-[#b8892a] text-[#14213d]",
-    pattern: "bg-[radial-gradient(circle_at_50%_0%,rgba(212,175,55,0.14)_0,transparent_55%)]",
-  },
-  COMPLETION: {
-    paper: "bg-[#f6efe1]",
-    frame: "border-[#8a6a4a]/60",
-    inner: "border-[#8a6a4a]/25",
-    word: "text-[#8a6a4a]",
-    name: "text-[#3d2c1e]",
-    line: "text-[#7a6450]",
-    seal: "bg-gradient-to-br from-[#b3263a] to-[#7d1424] text-[#f6efe1]",
-  },
+const FONT_FAMILY: Record<TemplateBlock["font"], string> = {
+  PinyonScript: '"Cert PinyonScript", cursive',
+  GreatVibes: '"Cert GreatVibes", cursive',
+  PlayfairDisplay: '"Cert PlayfairDisplay", Georgia, serif',
+  Lora: '"Cert Lora", Georgia, serif',
+  Merriweather: '"Cert Merriweather", Georgia, serif',
 };
+
+export function templateFor(templateId: string | null | undefined, type: string): CertificateTemplate {
+  return CERTIFICATE_TEMPLATES[templateId ?? ""] ?? CERTIFICATE_TEMPLATES[TEMPLATE_BY_TYPE[type] ?? "achievement"];
+}
+
+/** One line of the certificate, positioned like the PDF and shrunk the same way when it is too long. */
+function Line({ block, value, page }: { block: TemplateBlock; value: string; page: CertificateTemplate["page"] }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const unit = 100 / page.w; // 1 mm in cqw (the box is the page's width)
+
+  // Like the renderer: start at the design size and step down to minSize until it fits maxW.
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const box = el.parentElement?.getBoundingClientRect().width ?? 0;
+    if (!box) return;
+    const pxPerMm = box / page.w;
+    let size = block.size;
+    el.style.fontSize = `${size * unit}cqw`;
+    while (el.scrollWidth > block.maxW * pxPerMm && size > (block.minSize ?? block.size)) {
+      size = Math.max(block.minSize ?? block.size, size - 0.5);
+      el.style.fontSize = `${size * unit}cqw`;
+    }
+  }, [value, block, page.w, unit]);
+
+  return (
+    <span
+      ref={ref}
+      className="absolute whitespace-nowrap leading-none"
+      style={{
+        top: `${(block.y / page.h) * 100}%`,
+        left: `${(block.cx / page.w) * 100}%`,
+        transform: "translateX(-50%)",
+        fontFamily: FONT_FAMILY[block.font],
+        fontWeight: block.weight ?? 400,
+        fontSize: `${block.size * unit}cqw`,
+        color: block.color,
+        letterSpacing: block.letterSpacing ? `${block.letterSpacing * unit}cqw` : undefined,
+      }}
+    >
+      {block.transform === "uppercase" ? value.toLocaleUpperCase("tr-TR") : value}
+    </span>
+  );
+}
+
+/** The wording: wrapped within the block's width and centred, as the renderer does. */
+function Paragraph({ block, value, page }: { block: TemplateBlock; value: string; page: CertificateTemplate["page"] }) {
+  const unit = 100 / page.w;
+  return (
+    <p
+      className="absolute m-0 text-center"
+      style={{
+        top: `${(block.y / page.h) * 100}%`,
+        left: `${(block.cx / page.w) * 100}%`,
+        width: `${block.maxW * unit}cqw`,
+        transform: "translateX(-50%)",
+        fontFamily: FONT_FAMILY[block.font],
+        fontSize: `${block.size * unit}cqw`,
+        lineHeight: block.lineHeight ?? 1.5,
+        color: block.color,
+      }}
+    >
+      {value}
+    </p>
+  );
+}
 
 export function CertificateThumbnail({
+  templateId,
   type,
-  word,
-  typeLabel,
   recipient,
-  title,
+  issuer,
+  body,
   revoked,
-  compact,
   className,
 }: {
+  templateId?: string | null;
   type: string;
-  /** "CERTIFICATE", in the reader's language. */
-  word: string;
-  typeLabel: string;
   recipient: string;
-  title: string;
+  /** The organisation, for designs that print it (the completion emblem). */
+  issuer?: string;
+  /** The wording printed on it, with the name and programme already filled in. */
+  body?: string;
   revoked?: boolean;
-  /** For small slots: just the word, the name and the seal. */
-  compact?: boolean;
   className?: string;
 }) {
-  const look = LOOKS[type] ?? LOOKS.ACHIEVEMENT;
+  const template = templateFor(templateId, type);
+  const values: Record<string, string | undefined> = { recipientName: recipient, issuerName: issuer, body };
+  const blocks = template.blocks.filter((b) => values[b.key]);
+
   return (
     <div
-      className={cn("relative aspect-[1.414/1] w-full overflow-hidden rounded-[14px] p-[6%]", look.paper, look.pattern, revoked && "grayscale opacity-60", className)}
+      className={cn("relative w-full overflow-hidden bg-white [container-type:inline-size]", revoked && "grayscale opacity-60", className)}
+      style={{ aspectRatio: `${template.page.w} / ${template.page.h}` }}
       aria-hidden="true"
     >
-      <div className={cn("absolute inset-[4%] rounded-[6px] border-[1.5px]", look.frame)} />
-      <div className={cn("absolute inset-[6%] rounded-[4px] border", look.inner)} />
-      <div className="relative flex h-full flex-col items-center justify-center px-[6%] text-center">
-        {compact ? (
-          <>
-            <p className={cn("-mt-[14%] text-[6px] font-semibold tracking-[0.28em]", look.word)}>{word}</p>
-            <p className={cn("mt-[4%] line-clamp-1 font-serif text-[10px] italic leading-tight", look.name)}>{recipient}</p>
-          </>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={`/certificates/thumbs/${template.id}.jpg`} alt="" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover" />
+      {blocks.map((block) =>
+        block.kind === "paragraph" ? (
+          <Paragraph key={block.key} block={block} value={values[block.key]!} page={template.page} />
         ) : (
-          <>
-            <p className={cn("text-[clamp(8px,1.6vw,11px)] font-semibold tracking-[0.32em]", look.word)}>{word}</p>
-            <p className={cn("mt-0.5 text-[clamp(7px,1.3vw,9px)] uppercase tracking-[0.18em]", look.line)}>{typeLabel}</p>
-            <p className={cn("mt-[6%] line-clamp-1 font-serif text-[clamp(14px,2.6vw,20px)] italic leading-tight", look.name)}>{recipient}</p>
-            <span className={cn("mt-[3%] h-px w-2/5", look.frame, "border-t")} />
-            <p className={cn("mt-[3%] line-clamp-2 text-[clamp(8px,1.4vw,10px)] leading-snug", look.line)}>{title}</p>
-          </>
-        )}
-      </div>
-      <span
-        className={cn(
-          "absolute flex w-auto aspect-square items-center justify-center rounded-full shadow-[0_4px_10px_-4px_rgba(0,0,0,0.45)]",
-          compact ? "h-[22%]" : "h-[18%]",
-          type === "COMPLETION" ? "bottom-[9%] right-[9%]" : "bottom-[8%] left-1/2 -translate-x-1/2",
-          look.seal
-        )}
-      >
-        <Award className="h-[55%] w-[55%]" strokeWidth={2} />
-      </span>
+          <Line key={block.key} block={block} value={values[block.key]!} page={template.page} />
+        )
+      )}
     </div>
   );
 }
