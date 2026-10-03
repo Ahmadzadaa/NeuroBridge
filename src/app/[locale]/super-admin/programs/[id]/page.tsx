@@ -2,6 +2,7 @@ import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { requireRole } from "@/lib/auth-utils";
 import { prisma } from "@/lib/prisma";
+import { getTenantEntitlements } from "@/lib/tenant/entitlements";
 import { trainingCatalogue } from "@/lib/programs/program-admin";
 import { ProgramBuilder } from "@/components/programs/program-builder";
 
@@ -23,6 +24,7 @@ export default async function EditProgramPage({ params }: { params: Promise<{ lo
     trainingCatalogue(prisma, locale),
   ]);
   if (!program) notFound();
+  const entitlements = await getTenantEntitlements(program.tenantId);
 
   const iso = (d: Date | null) => (d ? d.toISOString() : null);
 
@@ -30,6 +32,7 @@ export default async function EditProgramPage({ params }: { params: Promise<{ lo
     <ProgramBuilder
       userName={session.user.name ?? "Admin"}
       trainingOptions={trainingOptions}
+      entitlements={entitlements ?? undefined}
       initial={{
         id: program.id,
         tenantName: program.tenant.name,

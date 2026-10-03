@@ -1,6 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import { requireRole } from "@/lib/auth-utils";
 import { prisma } from "@/lib/prisma";
+import { awaitsActivation } from "@/lib/onboarding/activation-link";
 import { TenantsPageClient } from "./tenants-client";
 
 export default async function TenantsPage({
@@ -24,6 +25,13 @@ export default async function TenantsPage({
       planType: true,
       createdAt: true,
       _count: { select: { users: true, programs: true } },
+      // The first admin, to tell whether they ever set a password.
+      users: {
+        where: { role: "TENANT_ADMIN" },
+        orderBy: { createdAt: "asc" },
+        take: 1,
+        select: { activationTokens: { select: { usedAt: true } } },
+      },
     },
   });
 
@@ -42,6 +50,7 @@ export default async function TenantsPage({
         createdAt: tenant.createdAt.toISOString(),
         userCount: tenant._count.users,
         programCount: tenant._count.programs,
+        activationPending: tenant.users[0] ? awaitsActivation(tenant.users[0].activationTokens) : false,
       }))}
     />
   );

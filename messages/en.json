@@ -194,6 +194,20 @@
         "simulations": "Simulations",
         "trainings": "Trainings",
         "aiTools": "AI tools"
+      },
+      "activation": {
+        "pending": "Account not activated",
+        "button": "Activation link",
+        "title": "Activation link",
+        "description": "The admin of «{name}» has not set a password yet. A new link was created; older links no longer work.",
+        "emailed": "The link was emailed to {email}.",
+        "notEmailed": "The email could not be sent ({email}). Copy the link and pass it to the admin yourself.",
+        "linkLabel": "Activation link",
+        "copy": "Copy",
+        "copied": "Link copied",
+        "hint": "The link is valid for 48 hours and works once. It opens the account: send it only to the organisation's admin.",
+        "alreadyActive": "The admin has already activated the account. If they forgot the password, they can use «Forgot your password?» on the sign-in page.",
+        "failed": "That did not work. Please try again."
       }
     },
     "billing": {
@@ -311,7 +325,19 @@
       "tenantRequired": "Choose an organisation",
       "statusPending": "Being set up",
       "statusReady": "Live",
-      "participants": "{count} participants"
+      "participants": "{count} participants",
+      "pendingShort": "paid programme waiting",
+      "seats": "{used} / {limit} seats in use",
+      "modulesBought": "Modules bought",
+      "moduleOn": "bought",
+      "moduleOff": "not bought",
+      "modulesHint": "A programme can only use modules the organisation has bought. To add one, first switch it on for the organisation on the Tenants page or from the support panel.",
+      "pendingExists": "This organisation has a paid programme waiting to be set up: «{name}» ({count} people). Complete it instead of creating a new one.",
+      "completePending": "Complete it",
+      "overSeats": "The organisation's seat limit is {limit}. The programme may accept more, but no accounts will be opened beyond the limit.",
+      "notBought": "This organisation has not bought «{module}».",
+      "chooseTenantFirst": "Choose the organisation above first: the options open according to what it has bought.",
+      "moduleNotEnabled": "The programme uses a module the organisation has not bought. Switch the module on for it first."
     },
     "home": {
       "greeting": "Hi, {name}",

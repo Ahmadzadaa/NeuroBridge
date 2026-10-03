@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { motion } from "framer-motion";
-import { useRouter } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,8 +14,12 @@ import { OptionCard } from "@/components/tenant/option-card";
 import { FormSection } from "@/components/tenant/form-section";
 import { iconFor } from "@/lib/program-icons";
 import { PROJECT_TYPES, SIMULATION_TYPES, AI_TOOLS } from "@/lib/constants";
+import type { TenantEntitlements } from "@/lib/tenant/entitlements";
+import type { TenantFeature } from "@/lib/tenant/features";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import { Building2, CalendarClock, CalendarDays, CalendarRange, Check, Copy, Link2, Loader2, Sparkles } from "lucide-react";
+import { AlertTriangle, ArrowRight, Building2, CalendarClock, CalendarDays, CalendarRange, Check, Copy, Link2, Loader2, Lock, Sparkles, Users } from "lucide-react";
 
 export interface ProgramBuilderInitial {
   id: string;
@@ -41,8 +45,10 @@ export interface ProgramBuilderInitial {
 
 interface ProgramBuilderProps {
   userName: string;
-  /** Create mode: the organisations a programme can be made for. */
-  tenants?: { id: string; name: string }[];
+  /** Create mode: the organisations a programme can be made for, with what each has paid for. */
+  tenants?: TenantEntitlements[];
+  /** Edit mode: what the programme's organisation has paid for. */
+  entitlements?: TenantEntitlements;
   /** Edit mode: the programme being completed or changed. */
   initial?: ProgramBuilderInitial;
   /** Trainings as stored in the catalogue: key + display name. */
@@ -57,7 +63,9 @@ const MAX_SIMULATIONS = 4;
  * programmes and never build them. Creates a programme for a chosen tenant,
  * or completes one a paid order left in PENDING_SETUP.
  */
-export function ProgramBuilder({ userName, tenants, initial, trainingOptions }: ProgramBuilderProps) {
+const MODULE_ORDER: TenantFeature[] = ["simulations", "trainings", "aiTools", "hackathon", "teachers"];
+
+export function ProgramBuilder({ userName, tenants, entitlements, initial, trainingOptions }: ProgramBuilderProps) {
   const t = useTranslations("tenant.programs");
   const tp = useTranslations("tenant.projectTypes");
   const ts = useTranslations("tenant.simulationTypes");
@@ -65,6 +73,7 @@ export function ProgramBuilder({ userName, tenants, initial, trainingOptions }: 
   const tc = useTranslations("common");
   const tb = useTranslations("tenant.programBuilder");
   const tsa = useTranslations("superAdmin.programs");
+  const tm = useTranslations("superAdmin.tenants.modules");
   const router = useRouter();
   const locale = useLocale();
   const editing = Boolean(initial);
@@ -76,6 +85,23 @@ export function ProgramBuilder({ userName, tenants, initial, trainingOptions }: 
   const [projectType, setProjectType] = useState(initial && !initial.pendingSetup ? initial.type : "");
   const [applicationLink, setApplicationLink] = useState("");
   const [loading, setLoading] = useState(false);
+  const [participantLimit, setParticipantLimit] = useState(initial?.participantLimit ? String(initial.participantLimit) : "");
+
+  // What the chosen organisation paid for. Without it (an old edit link), nothing is locked.
+  const current = editing ? entitlements : tenants?.find((x) => x.id === tenantId);
+  const locked = (module: TenantFeature) => (editing ? Boolean(current && !current.features[module]) : !current || !current.features[module]);
+  const overSeats = current && Number(participantLimit) > current.seatLimit;
+
+  function chooseTenant(id: string) {
+    setTenantId(id);
+    const next = tenants?.find((x) => x.id === id);
+    if (!next) return;
+    // Drop what the new organisation cannot use, rather than fail on save.
+    if (!next.features.simulations) setSimulations([]);
+    if (!next.features.trainings) setTrainings([]);
+    if (!next.features.aiTools) setAiTools([]);
+    if (!next.features.hackathon && projectType === "hackathon") setProjectType("");
+  }
 
   function toggleItem(list: string[], item: string, setter: (v: string[]) => void, max?: number) {
     if (list.includes(item)) {
@@ -126,13 +152,16 @@ export function ProgramBuilder({ userName, tenants, initial, trainingOptions }: 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (!res.ok) throw new Error("Failed to save program");
+      if (!res.ok) {
+        const data = (await res.json().catch(() => null)) as { code?: string } | null;
+        throw new Error(data?.code ?? "SAVE_FAILED");
+      }
       const result = await res.json();
       setApplicationLink(`${window.location.origin}/${locale}/apply/${result.applicationToken}`);
       toast.success(editing ? tsa("saved") : t("created"));
       if (editing) router.refresh();
-    } catch {
-      toast.error(t("createFailed"));
+    } catch (error) {
+      toast.error(error instanceof Error && error.message === "MODULE_NOT_ENABLED" ? tsa("moduleNotEnabled") : t("createFailed"));
     } finally {
       setLoading(false);
     }
@@ -158,29 +187,77 @@ export function ProgramBuilder({ userName, tenants, initial, trainingOptions }: 
 
         <FormSection index={1} title={tsa("tenantTitle")} description={tsa("tenantDescription")}>
           <Card>
-            <CardContent className="flex items-center gap-3 p-5">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[11px] bg-gradient-to-br from-violet-500 to-indigo-600 text-white">
-                <Building2 className="h-5 w-5" aria-hidden="true" />
-              </span>
-              {editing ? (
-                <p className="text-[15px] font-semibold text-foreground">{initial!.tenantName}</p>
-              ) : (
-                <select
-                  aria-label={tsa("tenantTitle")}
-                  required
-                  value={tenantId}
-                  onChange={(e) => setTenantId(e.target.value)}
-                  className="h-11 min-w-0 flex-1 rounded-xl border border-transparent bg-muted/60 px-3.5 text-[15px] text-foreground outline-none focus-visible:border-primary/40 focus-visible:bg-card focus-visible:ring-4 focus-visible:ring-primary/15"
-                >
-                  <option value="" disabled>
-                    {tsa("chooseTenant")}
-                  </option>
-                  {tenants?.map((tenant) => (
-                    <option key={tenant.id} value={tenant.id}>
-                      {tenant.name}
-                    </option>
-                  ))}
-                </select>
+            <CardContent className="space-y-4 p-5">
+              <div className="flex items-center gap-3">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[11px] bg-gradient-to-br from-violet-500 to-indigo-600 text-white">
+                  <Building2 className="h-5 w-5" aria-hidden="true" />
+                </span>
+                {editing ? (
+                  <p className="text-[15px] font-semibold text-foreground">{initial!.tenantName}</p>
+                ) : (
+                  <Select value={tenantId} onValueChange={(v) => chooseTenant(v ?? "")}>
+                    <SelectTrigger className="h-11 min-w-0 flex-1 rounded-xl" aria-label={tsa("tenantTitle")}>
+                      <SelectValue>{current?.name ?? tsa("chooseTenant")}</SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {tenants?.map((tenant) => (
+                        <SelectItem key={tenant.id} value={tenant.id}>
+                          {tenant.name}
+                          {tenant.pendingPrograms.length > 0 ? ` · ${tsa("pendingShort")}` : ""}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              </div>
+
+              {current && (
+                <div className="space-y-3 rounded-2xl bg-muted/40 p-4 ring-1 ring-border/50">
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[13px]">
+                    <span className="inline-flex items-center gap-1.5 font-medium">
+                      <Users className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                      {tsa("seats", { used: current.seatsUsed, limit: current.seatLimit })}
+                    </span>
+                  </div>
+                  <div>
+                    <p className="mb-1.5 text-[12px] font-semibold uppercase tracking-[0.5px] text-muted-foreground">{tsa("modulesBought")}</p>
+                    <ul className="flex flex-wrap gap-1.5">
+                      {MODULE_ORDER.map((module) => {
+                        const on = current.features[module];
+                        return (
+                          <li
+                            key={module}
+                            className={cn(
+                              "inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[12px] font-semibold",
+                              on ? "bg-emerald-500/12 text-emerald-700 dark:text-emerald-400" : "bg-muted text-muted-foreground line-through decoration-muted-foreground/40"
+                            )}
+                          >
+                            {on ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : <Lock className="h-3 w-3" aria-hidden="true" />}
+                            {tm(module)}
+                            <span className="sr-only">{on ? tsa("moduleOn") : tsa("moduleOff")}</span>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                    <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">{tsa("modulesHint")}</p>
+                  </div>
+                  {!editing &&
+                    current.pendingPrograms.map((program) => (
+                      <div key={program.id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-amber-500/10 px-3.5 py-3 ring-1 ring-amber-500/30">
+                        <p className="flex min-w-0 items-start gap-2 text-[13px] leading-relaxed text-foreground">
+                          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" aria-hidden="true" />
+                          <span>{tsa("pendingExists", { name: program.name, count: program.participantLimit })}</span>
+                        </p>
+                        <Link
+                          href={`/super-admin/programs/${program.id}`}
+                          className="inline-flex shrink-0 items-center gap-1 rounded-full bg-primary px-3.5 py-1.5 text-[13px] font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+                        >
+                          {tsa("completePending")}
+                          <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                        </Link>
+                      </div>
+                    ))}
+                </div>
               )}
             </CardContent>
           </Card>
@@ -211,10 +288,18 @@ export function ProgramBuilder({ userName, tenants, initial, trainingOptions }: 
                   type="number"
                   min={1}
                   required
-                  defaultValue={initial?.participantLimit}
-                  placeholder="100"
+                  value={participantLimit}
+                  onChange={(e) => setParticipantLimit(e.target.value)}
+                  placeholder={current ? String(current.seatLimit) : "100"}
+                  aria-describedby={overSeats ? "participant-limit-warning" : undefined}
                   className="sm:max-w-[220px]"
                 />
+                {overSeats && (
+                  <p id="participant-limit-warning" className="flex items-start gap-1.5 text-[12px] leading-relaxed text-amber-700 dark:text-amber-400">
+                    <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                    {tsa("overSeats", { limit: current!.seatLimit })}
+                  </p>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -228,6 +313,7 @@ export function ProgramBuilder({ userName, tenants, initial, trainingOptions }: 
                 icon={iconFor(type)}
                 label={tp(type)}
                 selected={projectType === type}
+                disabled={type === "hackathon" && locked("hackathon")}
                 onToggle={() => setProjectType(projectType === type ? "" : type)}
               />
             ))}
@@ -302,6 +388,7 @@ export function ProgramBuilder({ userName, tenants, initial, trainingOptions }: 
           counter={`${simulations.length}/${MAX_SIMULATIONS}`}
           counterActive={simulations.length >= MAX_SIMULATIONS}
         >
+          <LockedNote show={locked("simulations")} text={current ? tsa("notBought", { module: tm("simulations") }) : tsa("chooseTenantFirst")} />
           <div className="grid gap-3 sm:grid-cols-2">
             {SIMULATION_TYPES.map((sim) => (
               <OptionCard
@@ -309,7 +396,7 @@ export function ProgramBuilder({ userName, tenants, initial, trainingOptions }: 
                 icon={iconFor(sim)}
                 label={ts(sim)}
                 selected={simulations.includes(sim)}
-                disabled={simulations.length >= MAX_SIMULATIONS}
+                disabled={locked("simulations") || simulations.length >= MAX_SIMULATIONS}
                 onToggle={() => toggleItem(simulations, sim, setSimulations, MAX_SIMULATIONS)}
               />
             ))}
@@ -322,6 +409,7 @@ export function ProgramBuilder({ userName, tenants, initial, trainingOptions }: 
           description={tb("modules.trainingsDescription")}
           counter={trainings.length > 0 ? String(trainings.length) : undefined}
         >
+          <LockedNote show={locked("trainings")} text={current ? tsa("notBought", { module: tm("trainings") }) : tsa("chooseTenantFirst")} />
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {trainingOptions.map((training) => (
               <OptionCard
@@ -329,6 +417,7 @@ export function ProgramBuilder({ userName, tenants, initial, trainingOptions }: 
                 icon={iconFor(training.key.replace(/_(training|sim)$/, ""), "training")}
                 label={training.label}
                 selected={trainings.includes(training.key)}
+                disabled={locked("trainings")}
                 onToggle={() => toggleItem(trainings, training.key, setTrainings)}
               />
             ))}
@@ -336,6 +425,7 @@ export function ProgramBuilder({ userName, tenants, initial, trainingOptions }: 
         </FormSection>
 
         <FormSection index={8} title={t("aiTools")} description={tb("modules.aiDescription")}>
+          <LockedNote show={locked("aiTools")} text={current ? tsa("notBought", { module: tm("aiTools") }) : tsa("chooseTenantFirst")} />
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {AI_TOOLS.map((tool) => (
               <OptionCard
@@ -343,6 +433,7 @@ export function ProgramBuilder({ userName, tenants, initial, trainingOptions }: 
                 icon={iconFor(tool)}
                 label={ta(tool)}
                 selected={aiTools.includes(tool)}
+                disabled={locked("aiTools")}
                 onToggle={() => toggleItem(aiTools, tool, setAiTools)}
               />
             ))}
@@ -408,6 +499,17 @@ export function ProgramBuilder({ userName, tenants, initial, trainingOptions }: 
         </div>
       </form>
     </DashboardLayout>
+  );
+}
+
+/** Why a module's options cannot be picked: not bought, or no organisation chosen yet. */
+function LockedNote({ show, text }: { show: boolean; text: string }) {
+  if (!show) return null;
+  return (
+    <p className="mb-3 flex items-start gap-2 rounded-xl bg-muted/60 px-3.5 py-2.5 text-[13px] leading-relaxed text-muted-foreground ring-1 ring-border/50">
+      <Lock className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+      {text}
+    </p>
   );
 }
 

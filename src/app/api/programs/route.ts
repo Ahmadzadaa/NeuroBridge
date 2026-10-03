@@ -13,6 +13,7 @@ import {
   programSchedule,
   ProgramAdminError,
 } from "@/lib/programs/program-admin";
+import { assertProgramModules } from "@/lib/tenant/entitlements";
 import {
   invalidateProgramsCacheForTenant,
   listPrograms,
@@ -40,6 +41,7 @@ export async function POST(request: Request) {
         const tenant = await tx.tenant.findUnique({ where: { id: tenantId }, select: { id: true } });
         if (!tenant) throw new ProgramAdminError("TENANT_NOT_FOUND", 404, "Tenant not found");
         await assertTrainingKeys(tx, body.trainings);
+        await assertProgramModules(tx, tenantId, body);
 
         const program = await tx.program.create({
           data: {

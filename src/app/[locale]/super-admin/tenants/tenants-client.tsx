@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
+import { ActivationLinkButton } from "./activation-link-button";
 import { LargeTitle } from "@/components/ui/ios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -63,6 +64,8 @@ export interface TenantRow {
   createdAt: string;
   userCount: number;
   programCount: number;
+  /** The admin was sent a set-password link and has not used it. */
+  activationPending: boolean;
 }
 
 interface TenantsPageClientProps {
@@ -236,7 +239,16 @@ export function TenantsPageClient({
                       </span>
                     </div>
                   </TableCell>
-                  <TableCell>{statusChip(tenant.status)}</TableCell>
+                  <TableCell>
+                    <div className="flex flex-col items-start gap-1">
+                      {statusChip(tenant.status)}
+                      {tenant.activationPending && (
+                        <span className="rounded-full bg-amber-500/12 px-2 py-0.5 text-[11px] font-semibold text-amber-700 dark:text-amber-400">
+                          {t("activation.pending")}
+                        </span>
+                      )}
+                    </div>
+                  </TableCell>
                   <TableCell className="tabular-nums">
                     {tenant.seatsUsed} / {tenant.seatLimit}
                   </TableCell>
@@ -258,7 +270,8 @@ export function TenantsPageClient({
                     {new Date(tenant.createdAt).toLocaleDateString(locale)}
                   </TableCell>
                   <TableCell>
-                    <div className="flex justify-end">
+                    <div className="flex justify-end gap-2">
+                      {tenant.activationPending && <ActivationLinkButton tenantId={tenant.id} tenantName={tenant.name} />}
                       <Button
                         variant="outline"
                         size="sm"

@@ -10,6 +10,7 @@ import {
   programSchedule,
   ProgramAdminError,
 } from "@/lib/programs/program-admin";
+import { assertProgramModules } from "@/lib/tenant/entitlements";
 
 /**
  * The platform team edits a programme, and completes one a paid order created
@@ -30,6 +31,7 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
       });
       if (!existing) throw new ProgramAdminError("PROGRAM_NOT_FOUND", 404, "Program not found");
       await assertTrainingKeys(tx, body.trainings);
+      await assertProgramModules(tx, existing.tenantId, body);
 
       const columns = programColumns(body);
       // Regenerate the calendar only when its range moved; edited jury dates survive other changes.

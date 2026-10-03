@@ -194,6 +194,20 @@
         "simulations": "Simulyasiyalar",
         "trainings": "Təlimlər",
         "aiTools": "AI alətləri"
+      },
+      "activation": {
+        "pending": "Hesab aktivləşməyib",
+        "button": "Aktivləşdirmə linki",
+        "title": "Aktivləşdirmə linki",
+        "description": "«{name}» admini hələ şifrəsini təyin etməyib. Yeni link yaradıldı, köhnə linklər artıq işləmir.",
+        "emailed": "Link {email} ünvanına göndərildi.",
+        "notEmailed": "E-poçt göndərilə bilmədi ({email}). Linki kopyalayıb adminə özünüz çatdırın.",
+        "linkLabel": "Aktivləşdirmə linki",
+        "copy": "Kopyala",
+        "copied": "Link kopyalandı",
+        "hint": "Link 48 saat etibarlıdır və bir dəfə istifadə olunur. Bu link hesaba giriş açarıdır: yalnız təşkilatın adminin özünə göndərin.",
+        "alreadyActive": "Admin artıq hesabını aktivləşdirib. Şifrəni unudubsa, girişdəki «Şifrəni unutmusunuz?» linkindən istifadə etsin.",
+        "failed": "Alınmadı. Yenidən cəhd edin."
       }
     },
     "billing": {
@@ -311,7 +325,19 @@
       "tenantRequired": "Universitet seçin",
       "statusPending": "Hazırlanır",
       "statusReady": "Aktiv",
-      "participants": "{count} iştirakçı"
+      "participants": "{count} iştirakçı",
+      "pendingShort": "ödənilmiş proqram gözləyir",
+      "seats": "{used} / {limit} oturacaq istifadədə",
+      "modulesBought": "Alınan modullar",
+      "moduleOn": "alınıb",
+      "moduleOff": "alınmayıb",
+      "modulesHint": "Proqrama yalnız alınan modullar əlavə oluna bilər. Əlavə modul lazımdırsa, əvvəlcə Kirayəçilər səhifəsindən və ya dəstək panelindən təşkilat üçün açın.",
+      "pendingExists": "Bu təşkilatın ödənilmiş, qurulmanı gözləyən proqramı var: «{name}» ({count} nəfər). Yeni proqram yaratmaq əvəzinə onu tamamlayın.",
+      "completePending": "Onu tamamla",
+      "overSeats": "Təşkilatın oturacaq limiti {limit}-dir. Proqram daha çox iştirakçı qəbul edə bilər, amma limitdən artıq hesab açılmayacaq.",
+      "notBought": "Bu təşkilat «{module}» modulunu almayıb.",
+      "chooseTenantFirst": "Əvvəlcə yuxarıda təşkilatı seçin: seçim onun aldığı modullara görə açılır.",
+      "moduleNotEnabled": "Proqramda təşkilatın almadığı modul var. Əvvəlcə modulu təşkilat üçün açın."
     },
     "home": {
       "greeting": "Salam, {name}",

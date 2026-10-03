@@ -194,6 +194,20 @@
         "simulations": "Simülasyonlar",
         "trainings": "Eğitimler",
         "aiTools": "AI araçları"
+      },
+      "activation": {
+        "pending": "Hesap etkinleştirilmedi",
+        "button": "Etkinleştirme bağlantısı",
+        "title": "Etkinleştirme bağlantısı",
+        "description": "«{name}» yöneticisi henüz şifresini belirlemedi. Yeni bir bağlantı oluşturuldu; eski bağlantılar artık çalışmaz.",
+        "emailed": "Bağlantı {email} adresine gönderildi.",
+        "notEmailed": "E-posta gönderilemedi ({email}). Bağlantıyı kopyalayıp yöneticiye kendiniz iletin.",
+        "linkLabel": "Etkinleştirme bağlantısı",
+        "copy": "Kopyala",
+        "copied": "Bağlantı kopyalandı",
+        "hint": "Bağlantı 48 saat geçerlidir ve bir kez kullanılır. Hesabın anahtarıdır: yalnızca kurumun yöneticisine gönderin.",
+        "alreadyActive": "Yönetici hesabını zaten etkinleştirdi. Şifresini unuttuysa giriş sayfasındaki «Şifremi unuttum» bağlantısını kullanabilir.",
+        "failed": "Olmadı. Lütfen tekrar deneyin."
       }
     },
     "billing": {
@@ -311,7 +325,19 @@
       "tenantRequired": "Kurum seçin",
       "statusPending": "Hazırlanıyor",
       "statusReady": "Aktif",
-      "participants": "{count} katılımcı"
+      "participants": "{count} katılımcı",
+      "pendingShort": "ödenmiş program bekliyor",
+      "seats": "{used} / {limit} koltuk kullanımda",
+      "modulesBought": "Satın alınan modüller",
+      "moduleOn": "alındı",
+      "moduleOff": "alınmadı",
+      "modulesHint": "Programa yalnızca kurumun satın aldığı modüller eklenebilir. Ek modül gerekiyorsa önce Kiracılar sayfasından veya destek panelinden kurum için açın.",
+      "pendingExists": "Bu kurumun ödenmiş, kurulumu bekleyen bir programı var: «{name}» ({count} kişi). Yeni program oluşturmak yerine onu tamamlayın.",
+      "completePending": "Onu tamamla",
+      "overSeats": "Kurumun koltuk limiti {limit}. Program daha fazla katılımcı kabul edebilir ama limitin üzerinde hesap açılmaz.",
+      "notBought": "Bu kurum «{module}» modülünü satın almadı.",
+      "chooseTenantFirst": "Önce yukarıdan kurumu seçin: seçenekler kurumun satın aldıklarına göre açılır.",
+      "moduleNotEnabled": "Programda kurumun satın almadığı bir modül var. Önce modülü kurum için açın."
     },
     "home": {
       "greeting": "Merhaba, {name}",
