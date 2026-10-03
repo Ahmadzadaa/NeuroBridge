@@ -109,8 +109,8 @@ async function main() {
   const isProduction = process.env.NODE_ENV === "production";
   const adminPassword = process.env.SEED_ADMIN_PASSWORD ?? (isProduction ? "" : "Admin123!");
   const adminExists = await prisma.user.findFirst({ where: { role: "SUPER_ADMIN" }, select: { id: true } });
-  if (isProduction && !adminExists && adminPassword.length < 12) {
-    throw new Error("Set SEED_ADMIN_PASSWORD (at least 12 characters) to seed a production database");
+  if (isProduction && !adminExists && adminPassword.length < 16) {
+    throw new Error("Set SEED_ADMIN_PASSWORD (at least 16 characters) to seed a production database");
   }
   const passwordHash = await bcrypt.hash(adminPassword || "unused-existing-admin", 12);
 
@@ -164,9 +164,9 @@ async function main() {
     });
   }
 
-  console.log("Seeding super admin...");
-  await upsertDemoUser({
-    email: "admin@bizsim.com",
+  // Production keeps the one existing super admin, whatever its email is now.
+  if (!(isProduction && adminExists)) await upsertDemoUser({
+    email: process.env.SEED_ADMIN_EMAIL?.trim().toLowerCase() || "admin@bizsim.com",
     tenantId: null,
     firstName: "Super",
     lastName: "Admin",

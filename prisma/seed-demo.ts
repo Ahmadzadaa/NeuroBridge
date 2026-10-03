@@ -1,6 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { participantProfile } from "./participant-profiles";
+import { assertNotProduction } from "./dev-only";
+
+assertNotProduction("seed-demo");
 
 const prisma = new PrismaClient();
 

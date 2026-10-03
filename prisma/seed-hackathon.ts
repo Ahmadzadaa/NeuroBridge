@@ -10,6 +10,9 @@ import bcrypt from "bcryptjs";
 import { mkdir, writeFile } from "fs/promises";
 import { randomUUID } from "crypto";
 import path from "path";
+import { assertNotProduction } from "./dev-only";
+
+assertNotProduction("seed-hackathon");
 
 const prisma = new PrismaClient();
 

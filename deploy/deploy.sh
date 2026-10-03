@@ -51,8 +51,9 @@ if [ "$status" != "healthy" ]; then
 fi
 
 echo "==> Reference data (idempotent; never resets accounts or edited prices)"
-# SEED_ADMIN_PASSWORD only matters on the first run, when no super admin exists yet.
-docker compose exec -T -e SEED_ADMIN_PASSWORD="${SEED_ADMIN_PASSWORD:-}" worker npx tsx prisma/seed.ts   || echo "!! Seed failed (first install needs the SEED_ADMIN_PASSWORD secret)"
+# SEED_ADMIN_PASSWORD/EMAIL only matter on the first run, when no super admin exists yet.
+# To change the password later: docker compose exec worker npx tsx scripts/set-admin-password.ts
+docker compose exec -T -e SEED_ADMIN_PASSWORD="${SEED_ADMIN_PASSWORD:-}" -e SEED_ADMIN_EMAIL="${SEED_ADMIN_EMAIL:-}" worker npx tsx prisma/seed.ts   || echo "!! Seed failed (first install needs the SEED_ADMIN_PASSWORD secret)"
 docker compose exec -T worker npx tsx scripts/import-universities.ts || echo "!! University import failed"
 # The scenario seed rebuilds its rounds, so it runs once per server.
 if [ ! -f .seeded-simulation ]; then

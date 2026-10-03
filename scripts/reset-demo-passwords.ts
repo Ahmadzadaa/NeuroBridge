@@ -1,5 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { assertNotProduction } from "../prisma/dev-only";
+
+assertNotProduction("reset-demo-passwords");
 
 const prisma = new PrismaClient();
 
