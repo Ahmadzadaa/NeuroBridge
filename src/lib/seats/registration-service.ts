@@ -221,7 +221,10 @@ export async function registerParticipant(
       seatsUsed: seatState.seatsUsed,
       seatLimit: seatState.seatLimit,
     };
-  });
+    // Registrations queue on the program row lock. When a cohort opens and
+    // hundreds sign up at once, Prisma's 2s default wait for a connection
+    // would turn the queue into errors instead of a short delay.
+  }, { maxWait: 15_000, timeout: 15_000 });
 
   const { invalidateTenantProgramCaches } = await import("@/lib/cache/cache-service");
   await invalidateTenantProgramCaches(program.tenantId);
