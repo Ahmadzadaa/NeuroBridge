@@ -1,0 +1,279 @@
+import bcrypt from "bcryptjs";
+import type { Prisma } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
+import { recordAudit } from "@/lib/audit/audit-service";
+import { AUDIT_ACTIONS } from "@/lib/audit/actions";
+import {
+  DuplicateRegistrationError,
+  EmailAlreadyRegisteredError,
+  ProgramCapacityReachedError,
+  RegistrationClosedError,
+} from "@/lib/seats/errors";
+import { consumeSeat, lockTenantForUpdate } from "@/lib/seats/seat-service";
+import { isPostgresDatabase } from "@/lib/db/tenant-context";
+import { normalizeAcademicProfile } from "@/lib/users/academic-profile";
+import { invalidateCache } from "@/lib/cache/cache-service";
+import { ConsentRequiredError, recordConsents, type ConsentAnswers } from "@/lib/consent/consents";
+import { resolveAcademicSelection } from "@/lib/reference/academic-lists";
+
+export interface RegisterParticipantInput {
+  token: string;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  phone?: string;
+  /** Optional here — open programmes accept non-students too. */
+  university?: string | null;
+  faculty?: string | null;
+  specialty?: string | null;
+  studyYear?: number | null;
+  /** Picked from the reference lists; their names override the text fields. */
+  universityId?: string | null;
+  departmentId?: string | null;
+  consents: ConsentAnswers;
+  /** Page language: decides which legal notices were shown, and the UI language. */
+  locale?: "tr" | "en" | "az";
+  ip?: string | null;
+}
+
+export interface RegisterParticipantResult {
+  userId: string;
+  participantId: string;
+  programId: string;
+  seatsUsed: number;
+  seatLimit: number;
+}
+
+async function lockProgramForUpdate(
+  tx: Prisma.TransactionClient,
+  programId: string
+): Promise<{ id: string }> {
+  if (isPostgresDatabase()) {
+    const rows = await tx.$queryRaw<Array<{ id: string }>>`
+      SELECT id
+      FROM programs
+      WHERE id = ${programId}
+      FOR UPDATE
+    `;
+
+    const row = rows[0];
+    if (!row) {
+      throw new Error("Program not found");
+    }
+
+    return row;
+  }
+
+  // SQLite (local dev) has no row-level locking; the surrounding
+  // transaction already serializes writes, so a plain read is enough.
+  const row = await tx.program.findUnique({
+    where: { id: programId },
+    select: { id: true },
+  });
+
+  if (!row) {
+    throw new Error("Program not found");
+  }
+
+  return row;
+}
+
+function assertRegistrationWindow(
+  applicationStart: Date,
+  applicationEnd: Date
+): void {
+  const now = new Date();
+  if (now < applicationStart || now > applicationEnd) {
+    throw new RegistrationClosedError();
+  }
+}
+
+export async function registerParticipant(
+  input: RegisterParticipantInput
+): Promise<RegisterParticipantResult> {
+  const email = input.email.toLowerCase().trim();
+
+  const program = await prisma.program.findUnique({
+    where: { applicationToken: input.token },
+    select: {
+      id: true,
+      tenantId: true,
+      applicationStart: true,
+      applicationEnd: true,
+      participantLimit: true,
+      setupStatus: true,
+    },
+  });
+
+  if (!program) {
+    throw new Error("Invalid application token");
+  }
+
+  // A paid programme the platform team has not finished building is not open yet.
+  if (program.setupStatus !== "READY") throw new RegistrationClosedError();
+  assertRegistrationWindow(program.applicationStart, program.applicationEnd);
+  if (!input.consents.privacyNotice) throw new ConsentRequiredError();
+  const locale = input.locale ?? "tr";
+
+  const passwordHash = await bcrypt.hash(input.password, 12);
+
+  const result = await prisma.$transaction(async (tx) => {
+    await lockProgramForUpdate(tx, program.id);
+    assertRegistrationWindow(program.applicationStart, program.applicationEnd);
+
+    const participantCount = await tx.participant.count({
+      where: { programId: program.id },
+    });
+
+    if (participantCount >= program.participantLimit) {
+      throw new ProgramCapacityReachedError();
+    }
+
+    const existingEnrollment = await tx.participant.findFirst({
+      where: {
+        programId: program.id,
+        user: { email },
+      },
+    });
+
+    if (existingEnrollment) {
+      throw new DuplicateRegistrationError();
+    }
+
+    const existingUser = await tx.user.findFirst({
+      where: { tenantId: program.tenantId, email },
+    });
+
+    if (existingUser) {
+      const enrolled = await tx.participant.findUnique({
+        where: {
+          programId_userId: {
+            programId: program.id,
+            userId: existingUser.id,
+          },
+        },
+      });
+      if (enrolled) {
+        throw new DuplicateRegistrationError();
+      }
+      throw new EmailAlreadyRegisteredError();
+    }
+
+    const seatState = await consumeSeat(tx, program.tenantId);
+
+    const academic = normalizeAcademicProfile(input);
+    const picked = await resolveAcademicSelection(tx, program.tenantId, input);
+
+    const user = await tx.user.create({
+      data: {
+        tenantId: program.tenantId,
+        email,
+        passwordHash,
+        firstName: input.firstName,
+        lastName: input.lastName,
+        phone: input.phone ?? null,
+        role: "PARTICIPANT",
+        language: locale,
+        ...academic,
+        university: picked.universityName ?? academic.university,
+        specialty: picked.departmentName ?? academic.specialty,
+        universityId: input.universityId ?? null,
+        departmentId: input.departmentId ?? null,
+      },
+    });
+
+    await recordConsents(user.id, input.consents, { locale, ip: input.ip, db: tx });
+
+    const participant = await tx.participant.create({
+      data: {
+        programId: program.id,
+        userId: user.id,
+        status: "ACTIVE",
+      },
+    });
+
+    await recordAudit({
+      tx,
+      action: AUDIT_ACTIONS.PARTICIPANT_REGISTERED,
+      tenantId: program.tenantId,
+      userId: user.id,
+      details: {
+        programId: program.id,
+        participantId: participant.id,
+        seatsUsed: seatState.seatsUsed,
+        seatLimit: seatState.seatLimit,
+      },
+    });
+
+    await recordAudit({
+      tx,
+      action: AUDIT_ACTIONS.USER_CREATED,
+      tenantId: program.tenantId,
+      userId: user.id,
+      details: { email, role: "PARTICIPANT" },
+    });
+
+    return {
+      userId: user.id,
+      participantId: participant.id,
+      programId: program.id,
+      seatsUsed: seatState.seatsUsed,
+      seatLimit: seatState.seatLimit,
+    };
+    // Registrations queue on the program row lock. When a cohort opens and
+    // hundreds sign up at once, Prisma's 2s default wait for a connection
+    // would turn the queue into errors instead of a short delay.
+  }, { maxWait: 15_000, timeout: 15_000 });
+
+  const { invalidateTenantProgramCaches } = await import("@/lib/cache/cache-service");
+  await invalidateTenantProgramCaches(program.tenantId);
+  await invalidateCache(`apply:token:${input.token}`);
+
+  return result;
+}
+
+export async function getProgramByApplicationToken(token: string) {
+  return prisma.program.findUnique({
+    where: { applicationToken: token },
+    select: {
+      id: true,
+      tenantId: true,
+      name: true,
+      description: true,
+      type: true,
+      applicationStart: true,
+      applicationEnd: true,
+      participantLimit: true,
+      setupStatus: true,
+      tenant: {
+        select: {
+          name: true,
+          status: true,
+          seatLimit: true,
+          seatsUsed: true,
+        },
+      },
+      _count: { select: { participants: true } },
+    },
+  });
+}
+
+export type ApplyProgram = NonNullable<Awaited<ReturnType<typeof getProgramByApplicationToken>>>;
+
+/** Whether the public registration form may be submitted right now. */
+export function registrationAvailability(program: ApplyProgram, now = new Date()) {
+  const registrationOpen =
+    program.setupStatus === "READY" && now >= program.applicationStart && now <= program.applicationEnd;
+  const seatsAvailable =
+    program.tenant.status === "ACTIVE" && program.tenant.seatsUsed < program.tenant.seatLimit;
+  const programCapacityAvailable = program._count.participants < program.participantLimit;
+  return {
+    registrationOpen,
+    seatsAvailable,
+    programCapacityAvailable,
+    canRegister: registrationOpen && seatsAvailable && programCapacityAvailable,
+  };
+}
+
+export { lockTenantForUpdate };
