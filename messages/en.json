@@ -1,0 +1,2873 @@
+{
+  "common": {
+    "appName": "BizSim",
+    "appDescription": "Entrepreneurship Simulation Platform",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "export": "Export",
+    "search": "Search",
+    "filter": "Filter",
+    "loading": "Loading...",
+    "noData": "No data found",
+    "actions": "Actions",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "pending": "Pending",
+    "earned": "Earned",
+    "notEarned": "Not Earned",
+    "passed": "Passed",
+    "failed": "Failed",
+    "needsImprovement": "Needs Improvement",
+    "copyLink": "Copy Link",
+    "shareEmail": "Share via Email",
+    "shareSocial": "Share on Social Media",
+    "generateLink": "Generate Link",
+    "upgradeSeats": "Upgrade Seats",
+    "buyMoreSeats": "Buy More Seats",
+    "logout": "Log Out",
+    "profile": "Profile",
+    "settings": "Settings",
+    "dashboard": "Dashboard",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "preview": "Preview",
+    "add": "Add",
+    "remove": "Remove",
+    "total": "Total",
+    "coins": "Coins",
+    "badges": "Badges",
+    "certificates": "Certificates",
+    "seats": "Seats",
+    "navigation": "Navigation",
+    "more": "More",
+    "all": "All",
+    "roles": {
+      "superAdmin": "Super Admin",
+      "tenant": "Organization",
+      "participant": "Participant",
+      "jury": "Jury",
+      "teacher": "Teacher"
+    },
+    "error": "Something went wrong",
+    "previous": "Previous",
+    "notifications": "Notifications",
+    "close": "Close",
+    "toggleSidebar": "Toggle sidebar",
+    "changeLanguage": "Change language",
+    "toggleTheme": "Toggle theme",
+    "rowsPerPage": "Rows per page",
+    "nextPage": "Next page",
+    "previousPage": "Previous page",
+    "pageNumber": "Page {number}",
+    "collapseSidebar": "Collapse sidebar",
+    "expandSidebar": "Expand sidebar",
+    "account": "Account and security",
+    "comingSoon": "Coming soon"
+  },
+  "auth": {
+    "login": "Log In",
+    "email": "Email",
+    "password": "Password",
+    "loginTitle": "Sign In to Your Account",
+    "loginSubtitle": "Welcome to the entrepreneurship simulation platform",
+    "invalidCredentials": "Invalid email or password",
+    "accountLocked": "Your account is temporarily locked. Please try again later.",
+    "twoFactorRequired": "Authenticator code required. Enter the 6-digit code from your app.",
+    "totpCode": "Authenticator code",
+    "recoveryCode": "Recovery code (optional)",
+    "featureSimulations": "Simulation-based learning",
+    "featureTracking": "Real-time progress tracking",
+    "featureAI": "AI-powered mentorship",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "trustEncryption": "256-bit encryption",
+    "trustCompliance": "KVKK/GDPR compliant",
+    "trustEnterprise": "Enterprise SaaS",
+    "allRightsReserved": "All rights reserved",
+    "forgotPassword": "Forgot password?",
+    "backToSite": "Home"
+  },
+  "nav": {
+    "superAdmin": {
+      "dashboard": "Dashboard",
+      "tenants": "Tenants",
+      "billing": "Orders",
+      "content": "Content Management",
+      "support": "Support",
+      "system": "System Health",
+      "audit": "Audit Log",
+      "pricing": "Services & Pricing",
+      "programs": "Programmes",
+      "aiUsage": "AI usage",
+      "leads": "Demo requests",
+      "supportBadge": "{count, plural, one {# open request} other {# open requests}}"
+    },
+    "tenant": {
+      "dashboard": "Dashboard",
+      "programs": "Programs",
+      "participants": "Participants",
+      "reports": "Reports",
+      "settings": "Settings",
+      "billing": "Billing",
+      "simulations": "Simulations",
+      "teachers": "Teachers",
+      "assessments": "Baseline tests",
+      "certificates": "Certificates",
+      "analytics": "Analytics",
+      "support": "Support",
+      "supportBadge": "{count, plural, one {# unread reply} other {# unread replies}}"
+    },
+    "participant": {
+      "dashboard": "Dashboard",
+      "simulations": "Simulations",
+      "trainings": "Trainings",
+      "aiTools": "AI Mentor",
+      "badges": "Badges",
+      "certificates": "Certificates",
+      "leaderboard": "Leaderboard",
+      "profile": "Profile",
+      "hackathon": "Hackathon",
+      "program": "My program",
+      "assessments": "Baseline tests",
+      "units": "Training units"
+    },
+    "jury": {
+      "dashboard": "Dashboard",
+      "rankings": "Live ranking",
+      "profile": "My profile"
+    },
+    "teacher": {
+      "dashboard": "Dashboard",
+      "scenarios": "Scenarios",
+      "grading": "Grading"
+    }
+  },
+  "superAdmin": {
+    "title": "Super Admin Panel",
+    "stats": {
+      "totalTenants": "Total Tenants",
+      "activeUsers": "Active Users",
+      "totalRevenue": "Total Revenue",
+      "growth": "Growth"
+    },
+    "tenants": {
+      "title": "Tenant Management",
+      "createTenant": "New Tenant",
+      "name": "Organization Name",
+      "status": "Status",
+      "seats": "Seats",
+      "plan": "Plan",
+      "createdAt": "Created At",
+      "subtitle": "Open an organization account, set the seat count and hand over the admin login by email — the organization runs everything else itself.",
+      "usage": "Usage",
+      "programCount": "{count} programs",
+      "createDescription": "Creates the organization + admin account and emails the admin a one-time activation link.",
+      "namePlaceholder": "e.g. Baku Technopark",
+      "adminFirstName": "Admin first name",
+      "adminLastName": "Admin last name",
+      "adminEmail": "Admin email",
+      "seatLimit": "Seat count",
+      "provision": "Create & hand over",
+      "created": "Organization account created",
+      "credentialsEmailed": "Activation link sent to {email}",
+      "credentialsNotEmailed": "The email could not be sent. The admin cannot sign in until they receive an activation link — check the email settings.",
+      "done": "Done",
+      "activate": "Activate",
+      "deactivate": "Suspend",
+      "activated": "Organization activated",
+      "deactivated": "Organization suspended — its users can no longer sign in",
+      "tenantType": "Organization type",
+      "tenantTypeHint": "The type preselects modules — adjust each one below.",
+      "tenantTypes": {
+        "UNIVERSITY": "University",
+        "TECHNOPARK": "Technopark",
+        "FULL": "All modules"
+      },
+      "modules": {
+        "teachers": "Teacher panel",
+        "hackathon": "Hackathon",
+        "simulations": "Simulations",
+        "trainings": "Trainings",
+        "aiTools": "AI tools"
+      },
+      "activation": {
+        "pending": "Account not activated",
+        "button": "Activation link",
+        "title": "Activation link",
+        "description": "The admin of «{name}» has not set a password yet. A new link was created; older links no longer work.",
+        "emailed": "The link was emailed to {email}.",
+        "notEmailed": "The email could not be sent ({email}). Copy the link and pass it to the admin yourself.",
+        "linkLabel": "Activation link",
+        "copy": "Copy",
+        "copied": "Link copied",
+        "hint": "The link is valid for 48 hours and works once. It opens the account: send it only to the organisation's admin.",
+        "alreadyActive": "The admin has already activated the account. If they forgot the password, they can use «Forgot your password?» on the sign-in page.",
+        "failed": "That did not work. Please try again."
+      }
+    },
+    "billing": {
+      "title": "License & Billing",
+      "pricePerSeat": "Price Per Seat",
+      "paymentStatus": "Payment Status"
+    },
+    "orders": {
+      "title": "Orders",
+      "subtitle": "Self-serve purchases from the pricing page. Paid orders are provisioned automatically.",
+      "all": "All",
+      "status": {
+        "PENDING": "Pending",
+        "PAID": "Paid",
+        "FAILED": "Failed"
+      },
+      "statusLabel": "Status",
+      "institution": "Institution",
+      "services": "Services",
+      "total": "Total",
+      "createdAt": "Created",
+      "adminActivated": "Admin activated",
+      "adminNotActivated": "Admin not activated yet",
+      "resendActivation": "Resend link",
+      "resent": "A new activation link was sent to {email}",
+      "resendNotEmailed": "The link was created but the email could not be sent",
+      "alreadyActivated": "The admin has already set a password"
+    },
+    "services": {
+      "title": "Services & Pricing",
+      "subtitle": "Price per participant, by participant-count tier. Changes apply to new orders only.",
+      "add": "Add service",
+      "addTitle": "New service",
+      "editTitle": "Edit service",
+      "edit": "Edit",
+      "delete": "Delete",
+      "save": "Save",
+      "saved": "Service saved",
+      "deleted": "Service deleted",
+      "code": "Code",
+      "codeLocked": "The code cannot be changed after creation.",
+      "name": "Name",
+      "active": "Active",
+      "inactive": "Inactive",
+      "activate": "Activate",
+      "deactivate": "Deactivate",
+      "tiers": "Price tiers",
+      "tiersHint": "Prices are per participant. Leave Max empty for no upper limit; ranges must not overlap. The $ price is optional: if you fill it in, fill it for every range. The site shows ₺ in Turkish and $ in Azerbaijani and English (₺ when there is no $ price).",
+      "min": "Min participants",
+      "max": "Max participants",
+      "price": "Price / participant (TL)",
+      "addTier": "Add tier",
+      "removeTier": "Remove tier",
+      "confirmDelete": "Delete {name}? This cannot be undone.",
+      "inUse": "This service has orders or tenants. Deactivate it instead of deleting.",
+      "codeTaken": "A service with this code already exists.",
+      "tierOverlap": "Price tiers overlap. Each participant count may belong to only one tier.",
+      "tierRange": "A tier ends before it starts. Max must be at least Min.",
+      "codePlaceholder": "e.g. HACKATHON",
+      "priceTry": "Price, ₺ (TRY)",
+      "priceUsd": "Price, $ (USD)",
+      "usdIncomplete": "Fill in the $ price for every range, or for none of them.",
+      "tryRequired": "Every service needs ₺ (TRY) prices."
+    },
+    "audit": {
+      "filterByAction": "Filter by action",
+      "allActions": "All actions",
+      "searchDetails": "Search in details",
+      "timestamp": "Timestamp",
+      "action": "Action",
+      "user": "User",
+      "tenant": "Organization",
+      "ip": "IP address",
+      "details": "Details",
+      "empty": "No audit entries found.",
+      "totalEntries": "{count} entries"
+    },
+    "growthChart": "Revenue and organization growth",
+    "trends": {
+      "newTenants": "+4 this month",
+      "userGrowth": "+12% growth",
+      "revenueVsLastMonth": "+18% vs last month",
+      "monthlyGrowth": "Monthly growth rate"
+    },
+    "system": {
+      "registrations24h": "Registrations (24h)",
+      "paymentFailures24h": "Payment failures (24h)",
+      "aiUsage24h": "AI usage (24h)",
+      "seatUtilization": "Seat utilization",
+      "health": "System health",
+      "statusLabel": "Status",
+      "databaseLabel": "Database",
+      "uptimeLabel": "Uptime",
+      "metricsUpdated": "Metrics updated",
+      "unknown": "unknown",
+      "registrationRate7d": "Registration rate (7 days)",
+      "aiUsage7d": "AI usage (7 days)",
+      "seatByTenant": "Seat utilization by organization"
+    },
+    "programs": {
+      "title": "Programmes",
+      "subtitle": "Programmes organisations have bought. Complete and publish the ones created by payments here.",
+      "pendingHeading": "To set up",
+      "pendingFooter": "Paid — fill in the name, dates and content, then publish.",
+      "allHeading": "All programmes",
+      "empty": "No programmes yet.",
+      "new": "New programme",
+      "editTitle": "Edit programme",
+      "saved": "Programme saved",
+      "publish": "Publish",
+      "pendingNotice": "This programme was created automatically from a payment. Fill in its name, dates and content, then publish — registration stays closed until then.",
+      "tenantTitle": "Organisation",
+      "tenantDescription": "Who the programme is for.",
+      "chooseTenant": "Choose an organisation",
+      "tenantRequired": "Choose an organisation",
+      "statusPending": "Being set up",
+      "statusReady": "Live",
+      "participants": "{count} participants",
+      "pendingShort": "paid programme waiting",
+      "seats": "{used} / {limit} seats in use",
+      "modulesBought": "Modules bought",
+      "moduleOn": "bought",
+      "moduleOff": "not bought",
+      "modulesHint": "A programme can only use modules the organisation has bought. To add one, first switch it on for the organisation on the Tenants page or from the support panel.",
+      "pendingExists": "This organisation has a paid programme waiting to be set up: «{name}» ({count} people). Complete it instead of creating a new one.",
+      "completePending": "Complete it",
+      "overSeats": "The organisation's seat limit is {limit}. The programme may accept more, but no accounts will be opened beyond the limit.",
+      "notBought": "This organisation has not bought «{module}».",
+      "chooseTenantFirst": "Choose the organisation above first: the options open according to what it has bought.",
+      "moduleNotEnabled": "The programme uses a module the organisation has not bought. Switch the module on for it first."
+    },
+    "home": {
+      "greeting": "Hi, {name}",
+      "subtitle": "Where the platform stands today.",
+      "pendingNote": "{count, plural, one {# paid programme is} other {# paid programmes are}} waiting for you to set up.",
+      "reviewPending": "Review pending",
+      "newProgram": "New programme",
+      "tenants": "Organisations",
+      "newThisMonth": "+{count} this month",
+      "students": "Students",
+      "revenue": "Total revenue",
+      "thisMonth": "Revenue this month",
+      "revenueChart": "Revenue, last 6 months",
+      "pendingPrograms": "Awaiting setup",
+      "noPending": "Nothing waiting.",
+      "recentOrders": "Recent orders",
+      "noOrders": "No orders yet.",
+      "seeAll": "See all",
+      "shortcuts": "Shortcuts",
+      "kind": {
+        "NEW_TENANT": "New organisation",
+        "ADD_PROGRAM": "Extra programme"
+      },
+      "status": {
+        "PAID": "Paid",
+        "PENDING": "Pending",
+        "FAILED": "Failed"
+      },
+      "newLeads": "{count, plural, one {# new demo request} other {# new demo requests}}",
+      "chartCurrencyNote": "The chart shows ₺ payments; $ payments are shown separately in the tiles above."
+    },
+    "placeholders": {
+      "content": "Central management of simulation modules, training content, AI Mentor instructions and badges will live here.",
+      "support": "You'll see and answer organisations' support requests here."
+    },
+    "pages": {
+      "auditSubtitle": "Who did what on the platform, and when — sign-ins, roles and payments.",
+      "systemSubtitle": "Registration flow, service health and queues, live."
+    },
+    "leads": {
+      "title": "Demo requests",
+      "subtitle": "Every request from the website's \"Request a demo\" form. Move the status along as you follow up.",
+      "noEmailNote": "Email alerts for new requests are not set up (LEADS_NOTIFICATION_EMAIL). Requests are not lost: they all appear on this page.",
+      "filterLabel": "Filter by status",
+      "all": "All",
+      "status": {
+        "NEW": "New",
+        "CONTACTED": "Contacted",
+        "QUALIFIED": "Qualified",
+        "CLOSED": "Closed"
+      },
+      "statusLabel": "Request status",
+      "statusSaved": "Status updated",
+      "email": "Email",
+      "phone": "Phone",
+      "seats": "Expected participants",
+      "seatsValue": "{count} participants",
+      "language": "Form language",
+      "source": "Source",
+      "empty": "No demo requests yet.",
+      "emptyFiltered": "No requests with this status.",
+      "pagination": "Pages",
+      "previous": "Previous",
+      "next": "Next",
+      "pageOf": "{page} / {pages}"
+    },
+    "content": {
+      "title": "Content",
+      "subtitle": "Training lessons: video, length and in-video questions.",
+      "empty": "No trainings yet.",
+      "hasVideo": "Has a video",
+      "noVideo": "No video",
+      "editTitle": "Lesson video",
+      "back": "Back to content",
+      "videoHeading": "Video",
+      "videoUrl": "YouTube link",
+      "videoUrlHint": "Link to an unlisted YouTube video. You can also upload your own file above.",
+      "duration": "Length (min:sec)",
+      "durationHint": "The server checks completion against this length; if empty, the length the browser reports is used.",
+      "detect": "Read from video",
+      "detectFailed": "Couldn't read the length; type it in.",
+      "preview": "Video preview",
+      "questionsHeading": "In-video questions",
+      "questionsHint": "The video stops at the given second and won't continue until the question is answered correctly; a wrong answer replays that part.",
+      "language": "Language",
+      "noQuestions": "No questions yet.",
+      "time": "Time (min:sec)",
+      "removeQuestion": "Delete question",
+      "prompt": "Question",
+      "optional": "optional (AZ is shown if empty)",
+      "optionsLegend": "Options",
+      "option": "Option {n}",
+      "correct": "Option {n} is correct",
+      "correctHint": "Mark the correct option with the circle on the left.",
+      "addOption": "Add option",
+      "removeOption": "Remove option",
+      "addQuestion": "Add question",
+      "save": "Save",
+      "saved": "Saved",
+      "saveError": "Couldn't save",
+      "invalidTime": "Enter the length as min:sec, e.g. 12:30.",
+      "questionTime": "Question {n}: enter the time as min:sec.",
+      "azRequired": "Question {n}: the question and every option need Azerbaijani text.",
+      "questionsNeedVideo": "Add a YouTube link before adding questions.",
+      "fileActive": "The uploaded file plays; the YouTube link is only used if the file is removed.",
+      "fileHeading": "Own video file",
+      "fileHint": "MP4, WebM or MOV, up to {max} MB. The video can only be watched on the platform; it has no public link.",
+      "upload": "Upload video",
+      "replace": "Replace",
+      "removeFile": "Remove video file",
+      "confirmRemove": "Remove the video file? This cannot be undone.",
+      "uploading": "Uploading… {percent}%",
+      "uploaded": "Video uploaded",
+      "removed": "Video file removed",
+      "uploadError": "The video could not be uploaded. Please try again.",
+      "unsupportedType": "This format is not supported. Choose MP4, WebM or MOV.",
+      "tooLarge": "The file is too large (up to {max} MB)."
+    }
+  },
+  "tenant": {
+    "title": "Organization Panel",
+    "seats": {
+      "total": "Total Seats",
+      "used": "Used",
+      "remaining": "Remaining",
+      "limitReached": "You have reached your seat limit. Would you like to upgrade?"
+    },
+    "programs": {
+      "title": "Programs",
+      "create": "New Program",
+      "name": "Program Name",
+      "description": "Program Description",
+      "type": "Project Type",
+      "applicationStart": "Application Start",
+      "applicationEnd": "Application End",
+      "simulationStart": "Simulation Start",
+      "simulationEnd": "Simulation End",
+      "participantLimit": "Participant Limit",
+      "simulations": "Simulation Modules",
+      "trainings": "Training Modules",
+      "aiTools": "AI Support Tools",
+      "applicationLink": "Application Link",
+      "participants": "Participants",
+      "start": "Start",
+      "end": "End",
+      "programStart": "Program start",
+      "programEnd": "Program end",
+      "scheduleHint": "The 6-week plan is generated from these dates. Jury presentations are always placed on weekdays and can be moved later.",
+      "certificateName": "Certificate name",
+      "finalistCount": "Number of finalists",
+      "juryEnabled": "Jury evaluation for finalists",
+      "created": "Program created",
+      "createFailed": "The program could not be created. Please try again in a moment.",
+      "buy": "Buy a new programme",
+      "buySubtitle": "Choose services and participant numbers; after payment the programme is added to your account and our team sets it up.",
+      "statusPending": "Being set up",
+      "pendingHint": "Payment received; our team is setting up the programme. The registration link will appear here once it is ready.",
+      "paymentSuccess": "Payment received. Your new programme is being set up.",
+      "subtitle": "Your programmes, their registration window and how full they are.",
+      "applicationWindow": "Registration",
+      "jury": "Jury"
+    },
+    "projectTypes": {
+      "entrepreneurship_training": "Entrepreneurship Training",
+      "business_idea_development": "Business Idea Development Program",
+      "startup_challenge": "Startup Challenge",
+      "hackathon": "Hackathon",
+      "competition": "Competition",
+      "innovation_program": "Innovation Program",
+      "other": "Other"
+    },
+    "simulationTypes": {
+      "idea_development": "Idea Development Simulation",
+      "startup_management": "Startup Management Simulation",
+      "leadership": "Leadership Simulation",
+      "investor_readiness": "Investor Readiness Simulation"
+    },
+    "trainingTypes": {
+      "finance": "Finance Training",
+      "sales_marketing": "Sales & Marketing Training",
+      "team_management": "Team Management Training",
+      "pitch_preparation": "Pitch Preparation Training",
+      "leadership": "Leadership Training",
+      "innovation_tools": "Innovation Tools Training",
+      "business_model": "Business Model Training",
+      "customer_validation": "Customer Validation Training",
+      "ai_tools": "AI Tools Training"
+    },
+    "aiTools": {
+      "ai_mentor": "AI Mentor"
+    },
+    "participants": {
+      "title": "Participants",
+      "fullName": "Full Name",
+      "email": "Email",
+      "phone": "Phone",
+      "registrationDate": "Registration Date",
+      "lastLogin": "Last Login",
+      "exportExcel": "Export to Excel",
+      "allPrograms": "All programs",
+      "university": "University",
+      "studyYear": "Year",
+      "profile": "Profile",
+      "noProfile": "No details",
+      "subtitle": "Students registered for your programmes.",
+      "count": "{count, plural, one {# student} other {# students}}"
+    },
+    "reports": {
+      "title": "Reports",
+      "subtitle": "Reports on your students, trainings, results and AI Mentor usage. View them here or download as Excel or PDF.",
+      "exportExcel": "Excel",
+      "exportPdf": "PDF",
+      "pickReport": "Choose a report",
+      "selectProgram": "Programme",
+      "allPrograms": "All programmes",
+      "noData": "No data yet",
+      "moreRows": "Showing the first {shown} of {total} rows. Download Excel for all of them.",
+      "needTwoYears": "A comparison needs programmes in at least two academic years.",
+      "yearA": "First academic year",
+      "yearB": "Second academic year",
+      "versus": "vs",
+      "generatedOn": "Generated on {date}",
+      "summarySheet": "Summary",
+      "yes": "Yes",
+      "no": "No",
+      "gradeN": "Year {n}",
+      "completedOf": "{done} of {total} completed",
+      "types": {
+        "general": {
+          "title": "General report",
+          "description": "The university at a glance: students, activity, training and test completion, ideas, teams, MVPs and hackathon participation."
+        },
+        "participation": {
+          "title": "Student participation",
+          "description": "Who registered, their enrolment status, recent activity, and the breakdown by department and year of study."
+        },
+        "training": {
+          "title": "Training performance",
+          "description": "Progress, completion and test results for each training and each training unit."
+        },
+        "competency": {
+          "title": "Competency development",
+          "description": "Baseline competency results by dimension. Psychological results include only students who agreed to share them."
+        },
+        "simulation": {
+          "title": "Simulation and test results",
+          "description": "Ideas submitted, the scoreboard, completed trainings and simulations, and certificates."
+        },
+        "hackathon": {
+          "title": "Hackathon report",
+          "description": "Hackathon teams, MVP submissions and jury scores, plus the finalists' jury evaluation."
+        },
+        "development": {
+          "title": "Student development",
+          "description": "Each student's starting point (registration and baseline tests) compared with where they are now."
+        },
+        "yoy": {
+          "title": "Year-over-year comparison",
+          "description": "Two academic years side by side, for example 2025–26 against 2026–27."
+        },
+        "aiMentor": {
+          "title": "AI Mentor usage",
+          "description": "How participants use the AI Mentor this month: messages, active users, tokens and estimated cost, limits reached and rejected requests. No message content is shown."
+        }
+      },
+      "kpi": {
+        "programs": "Programmes",
+        "students": "Students",
+        "active30": "Active in the last 30 days",
+        "trainingCompletion": "Training completion",
+        "testCompletion": "Test completion",
+        "ideas": "Ideas",
+        "teams": "Teams",
+        "mvps": "MVPs",
+        "hackathonStudents": "Hackathon participants",
+        "enrolledActive": "Active enrolments",
+        "completed": "Completed",
+        "pending": "Awaiting approval",
+        "opportunities": "Open to opportunities",
+        "trainings": "Trainings",
+        "testsTaken": "Tests taken",
+        "averageScore": "Average test score",
+        "passRate": "Pass rate",
+        "baselineCompleted": "Completed all baseline tests",
+        "baselineRate": "Baseline completion",
+        "psychShared": "Shared psychological results",
+        "simulationsCompleted": "Simulations completed",
+        "trainingsCompleted": "Trainings completed",
+        "testsPassed": "Tests passed",
+        "certificates": "Certificates",
+        "hackathons": "Hackathons",
+        "finalists": "Finalists",
+        "juryEvaluated": "Finalists scored by the jury",
+        "baselineAverage": "Average baseline score",
+        "unitAverage": "Average unit test score",
+        "allUnits": "Passed every unit",
+        "studentGrowth": "Change in students",
+        "aiMessages": "Messages",
+        "aiActiveUsers": "Active users",
+        "aiTokens": "Tokens",
+        "aiCost": "Estimated cost",
+        "aiLimitUsers": "Users who reached a limit",
+        "aiRejected": "Off-topic or rejected"
+      },
+      "col": {
+        "program": "Programme",
+        "year": "Academic year",
+        "students": "Students",
+        "active30": "Active (30 days)",
+        "trainingCompletion": "Training completion",
+        "averageScore": "Average score",
+        "ideas": "Ideas",
+        "certificates": "Certificates",
+        "department": "Department",
+        "share": "Share",
+        "grade": "Year of study",
+        "student": "Student",
+        "email": "Email",
+        "university": "University",
+        "status": "Status",
+        "registeredAt": "Registered",
+        "opportunities": "Open to opportunities",
+        "training": "Training",
+        "enrolled": "Enrolled",
+        "started": "Started",
+        "completed": "Completed",
+        "progress": "Average progress",
+        "testsTaken": "Tests taken",
+        "passRate": "Pass rate",
+        "unit": "Unit",
+        "projects": "Projects submitted",
+        "projectRate": "Project rate",
+        "points": "Points",
+        "dimension": "Dimension",
+        "scored": "Students",
+        "low": "Low",
+        "mid": "Medium",
+        "high": "High",
+        "rank": "Rank",
+        "testsPassed": "Tests passed",
+        "simulationsCompleted": "Simulations",
+        "coins": "Coins",
+        "simulation": "Simulation",
+        "players": "Players",
+        "runs": "Runs",
+        "completedRuns": "Completed runs",
+        "completionRate": "Completion rate",
+        "team": "Team",
+        "members": "Members",
+        "mvp": "MVP submitted",
+        "juryScore": "Jury score",
+        "platformRank": "Platform rank",
+        "jurors": "Jurors scored",
+        "juryRank": "Jury rank",
+        "baselineDone": "Baseline tests done",
+        "baselineScore": "Baseline score",
+        "unitsPassed": "Units passed",
+        "unitAverage": "Unit test average",
+        "trainingProgress": "Training progress",
+        "finalist": "Finalist",
+        "metric": "Metric",
+        "change": "Change",
+        "mvps": "MVPs",
+        "programs": "Programmes",
+        "date": "Date",
+        "messages": "Messages",
+        "activeUsers": "Active users",
+        "tokens": "Tokens",
+        "costUsd": "Cost (USD)",
+        "tenant": "Organisation",
+        "limitUsers": "Reached a limit",
+        "eventType": "Event",
+        "count": "Count"
+      },
+      "tables": {
+        "byProgram": "By programme",
+        "byDepartment": "By department",
+        "byGrade": "By year of study",
+        "students": "Students",
+        "byTraining": "By training",
+        "byUnit": "By training unit",
+        "scoreboard": "Scoreboard",
+        "bySimulation": "By simulation",
+        "teams": "Hackathon teams",
+        "finalists": "Finalists and jury evaluation",
+        "development": "Start and current state per student",
+        "compare": "{a} vs {b}",
+        "allYears": "All academic years",
+        "aiByTenant": "By organisation",
+        "aiByDay": "Last 30 days",
+        "aiBySimulation": "By simulation",
+        "aiSecurity": "Safety events"
+      },
+      "bars": {
+        "completionByProgram": "Training completion by programme",
+        "progressByTraining": "Average progress by training",
+        "unitBands": "Students by training-unit progress",
+        "yoyRates": "Rates compared"
+      },
+      "band": {
+        "notStarted": "No unit passed yet",
+        "started": "Under half",
+        "halfway": "Half or more",
+        "allUnits": "All units"
+      },
+      "status": {
+        "PENDING": "Pending",
+        "ACTIVE": "Active",
+        "INACTIVE": "Inactive",
+        "COMPLETED": "Completed"
+      },
+      "notes": {
+        "active30": "Active means the student signed in at least once in the last 30 days.",
+        "psychConsent": "{title}: {shared} of {completed} students who completed it agreed to share their results; only theirs are included.",
+        "bands": "Scores are 0–100. Low is under 40, medium 40–69, high 70 and above.",
+        "scoreboard": "Ranked by training-unit points, then by total unit test score. Students with the same result share a rank.",
+        "noHackathon": "This organisation has not run a hackathon yet.",
+        "development": "Start is the baseline test result at registration. Current is training-unit progress and test results today.",
+        "yoy": "Academic years run from September to August. A programme belongs to the year its start date falls in. Changes in percentages are in percentage points.",
+        "aiMentor": "This month in UTC. Costs are estimates from token counts. Users are counted by an anonymous key; names and message content are never stored in these records."
+      },
+      "aiEvent": {
+        "OFF_TOPIC": "Off-topic question",
+        "INJECTION_SUSPECTED": "Suspected instruction injection",
+        "CANARY_TRIGGERED": "Blocked reply (prompt leak attempt)",
+        "OUTPUT_REDACTED": "Reply with removed links or data",
+        "LIMIT_EXCEEDED": "Limit reached",
+        "TEMPORARY_BLOCK": "Temporary block",
+        "TENANT_BUDGET_EXHAUSTED": "Monthly allowance used up",
+        "PROVIDER_ERROR": "AI service error"
+      },
+      "allTenants": "All organisations"
+    },
+    "settings": {
+      "title": "Settings",
+      "organization": "Organization Information",
+      "orgName": "Organization Name",
+      "logo": "Organization Logo",
+      "website": "Website",
+      "contact": "Authorized Contact",
+      "phone": "Phone",
+      "email": "Email",
+      "address": "Address",
+      "users": "User Management",
+      "addUser": "Add User",
+      "permission": "Permission",
+      "admin": "Admin",
+      "viewer": "Viewer",
+      "certificates": "Certificate Settings",
+      "signature": "Authorized Signature",
+      "template": "Certificate Template",
+      "participationCert": "Participation Certificate",
+      "achievementCert": "Achievement Certificate",
+      "completionCert": "Program Completion Certificate",
+      "notifications": "Notification Settings",
+      "sendInvitation": "Send Invitation Email",
+      "programStartReminder": "Program Start Reminder",
+      "programEndReminder": "Program End Reminder",
+      "certificateNotification": "Certificate Notification",
+      "weeklyProgress": "Weekly Progress Notification",
+      "security": "Security Settings",
+      "changePassword": "Change Password",
+      "twoFactor": "Two-Factor Authentication",
+      "sessionTimeout": "Session Timeout",
+      "saved": "Settings saved",
+      "saveFailed": "Settings could not be saved. Please try again in a moment."
+    },
+    "qrInvite": {
+      "invite": "QR Invite",
+      "hackathon": "Hackathon",
+      "title": "Invite via QR",
+      "description": "anyone who scans this QR code lands on the application page.",
+      "qrAlt": "QR code for the application link",
+      "linkCopied": "Link copied",
+      "copyLink": "Copy link",
+      "downloadPng": "Download PNG"
+    },
+    "billing": {
+      "paymentHistory": "Payment history",
+      "noPayments": "No payments yet.",
+      "seatsUnit": "seats",
+      "perSeat": "per seat",
+      "totalLabel": "Total",
+      "purchase": "Purchase",
+      "purchasing": "Working…",
+      "checkoutFailed": "Checkout could not be opened. Please try again in a moment.",
+      "statuses": {
+        "PENDING": "Pending",
+        "COMPLETED": "Paid",
+        "FAILED": "Failed",
+        "REFUNDED": "Refunded"
+      },
+      "types": {
+        "INITIAL": "Initial purchase",
+        "UPGRADE": "Upgrade"
+      },
+      "title": "Billing",
+      "subtitle": "Your seats, new purchases and the history of every order.",
+      "buyHeading": "New programme",
+      "buyProgram": "Buy a programme",
+      "buyProgramHint": "Pick services, see the price and pay",
+      "buyFooter": "After payment our team sets the programme up and registration opens.",
+      "seatsHeading": "Extra seats"
+    },
+    "certificates": {
+      "title": "Certificates",
+      "subtitle": "Pick a template, edit the text, preview it, then issue.",
+      "template": "Template",
+      "participant": "Participant",
+      "program": "Program",
+      "recipientName": "Name on the certificate",
+      "body": "Certificate text",
+      "issuerName": "Organization name in the emblem",
+      "sig1": "Signature 1",
+      "sig2": "Signature 2",
+      "nameField": "Name",
+      "roleField": "Role",
+      "preview": "Preview",
+      "refresh": "Refresh preview",
+      "download": "Download PDF",
+      "search": "Type a first or last name…",
+      "noMatch": "No matching participant",
+      "clear": "Clear",
+      "found": "results",
+      "single": "Single certificate",
+      "bulk": "Bulk issue",
+      "selected": "selected",
+      "selectAll": "Select all shown",
+      "clearAll": "Clear selection",
+      "bulkHint": "Everyone selected gets their own certificate with the same text. Type {token} in the body and it becomes each person's name.",
+      "exportMerged": "Download one PDF",
+      "exportZip": "ZIP (separate files)",
+      "exportingLabel": "Preparing…",
+      "expandList": "Open participant list",
+      "collapseList": "Close list",
+      "sendToAccounts": "Send to accounts",
+      "sendToAccount": "Send to account",
+      "needAccount": "Pick the name from the list to send — a manually typed name has no account behind it.",
+      "sendHint": "The certificate appears in the participant's own panel, where they can download it.",
+      "sending": "Sending…",
+      "sentOk": "certificates delivered",
+      "sentAlready": "already issued",
+      "sentFailed": "failed",
+      "rendering": "Rendering…",
+      "hint": "Type {token} in the text and it is replaced with the selected program.",
+      "empty": "Pick a participant or type a name to see the preview.",
+      "exportFailed": "Export failed. Please try again in a moment.",
+      "previewFailed": "The preview could not be built. Please try again in a moment.",
+      "pageFormat": "A4 landscape",
+      "templates": {
+        "achievement": {
+          "name": "Certificate of Achievement",
+          "style": "Gold guilloche pattern"
+        },
+        "participation": {
+          "name": "Certificate of Participation",
+          "style": "Navy and gold"
+        },
+        "completion": {
+          "name": "Certificate of Completion",
+          "style": "Cream, with a wax seal"
+        }
+      },
+      "recipients": "Recipients",
+      "content": "Content",
+      "signatures": "Signatures",
+      "noProgram": "Choose a programme",
+      "sampleName": "Full Name",
+      "prevRecipient": "Previous participant",
+      "nextRecipient": "Next participant",
+      "emptyBulk": "Pick at least one participant from the list to see the preview."
+    },
+    "analytics": {
+      "title": "Analytics",
+      "downloadCsv": "Download CSV",
+      "csvNeedsProgram": "Select a programme to export CSV",
+      "csvFailed": "Export failed",
+      "csvQueued": "Export queued; it will download when ready",
+      "csvDownloaded": "CSV downloaded",
+      "loadFailed": "Could not load analytics",
+      "loadFailedHint": "Adjust the filters and try again.",
+      "cachedNote": "Cached result (may be up to an hour old)",
+      "liveNote": "Freshly computed",
+      "durationNote": "“Average days” is the span between first and last lesson completion — not time spent.",
+      "filters": {
+        "from": "From",
+        "to": "To",
+        "program": "Programme",
+        "course": "Course",
+        "allPrograms": "All programmes",
+        "allCourses": "All courses"
+      },
+      "kpi": {
+        "totalStudents": "Total students",
+        "active7": "Active (7 days)",
+        "active30": "Active (30 days)",
+        "enrolments": "Enrolments",
+        "completion": "Completion",
+        "certificates": "Certificates issued"
+      },
+      "charts": {
+        "activity": "Weekly activity",
+        "completion": "Weekly completion",
+        "activeStudents": "Active students",
+        "lessonsCompleted": "Lessons completed",
+        "coursesCompleted": "Courses completed"
+      },
+      "courses": {
+        "title": "Course breakdown",
+        "name": "Course",
+        "enrolled": "Enrolled",
+        "completed": "Completed",
+        "completionRate": "Completion",
+        "averageScore": "Average score",
+        "activeDays": "Average days",
+        "days": "{count} days"
+      },
+      "empty": {
+        "activity": "No activity in this period",
+        "activityHint": "Widen the date range or pick another programme.",
+        "courses": "No course data",
+        "coursesHint": "Courses appear here once your programmes include trainings.",
+        "completions": "No courses completed yet",
+        "completionsHint": "Appears here once students finish every lesson in a course."
+      },
+      "subtitle": "Student activity, simulation results and progress — filter by date."
+    },
+    "programBuilder": {
+      "maxReached": "You can select at most {count}",
+      "typeRequired": "Choose a programme type",
+      "basics": {
+        "title": "Basics",
+        "description": "The name, the description and how many people it takes.",
+        "namePlaceholder": "For example: Spring Entrepreneurship Programme 2026",
+        "descriptionPlaceholder": "What will participants learn in this programme?"
+      },
+      "type": {
+        "title": "Programme type",
+        "description": "What format does this programme run in? Pick one."
+      },
+      "timeline": {
+        "title": "Dates",
+        "description": "When registration is open, and how long the programme itself runs.",
+        "application": "Registration window",
+        "applicationHint": "Participants can apply between these dates.",
+        "programme": "Programme window",
+        "programmeHint": "Optional — you can set this later."
+      },
+      "modules": {
+        "simulationsDescription": "Business scenarios participants play through. Four at most.",
+        "trainingsDescription": "Video training modules included in the programme.",
+        "aiDescription": "AI tools participants can use."
+      },
+      "summary": {
+        "selected": "{count} modules selected",
+        "empty": "No modules selected yet"
+      },
+      "done": {
+        "title": "Programme created",
+        "description": "Share the link below — participants register through it."
+      },
+      "calendar": {
+        "title": "Programme calendar and finale",
+        "description": "The six-week student calendar is built from these dates. The jury day never falls on a weekend.",
+        "window": "Programme period"
+      }
+    },
+    "settingsDetail": {
+      "organization": {
+        "description": "These details appear on certificates and in emails sent to participants."
+      },
+      "certificates": {
+        "description": "Choose which kinds of certificate can be issued to participants.",
+        "participation": {
+          "title": "Participation certificate",
+          "description": "Can be issued to anyone who joined the programme."
+        },
+        "achievement": {
+          "title": "Achievement certificate",
+          "description": "For those who pass an exam or score highly."
+        },
+        "completion": {
+          "title": "Programme completion certificate",
+          "description": "For those who finish every stage of the programme."
+        }
+      },
+      "notifications": {
+        "description": "When the system sends email automatically.",
+        "pendingNotice": "Choices here are saved, but email delivery is not wired up yet — no notifications are sent at the moment.",
+        "pendingBadge": "Planned",
+        "invitation": {
+          "title": "Invitation email",
+          "description": "Send an invite when a participant is added to a programme."
+        },
+        "start": {
+          "title": "Programme start reminder",
+          "description": "Remind participants before the programme begins."
+        },
+        "end": {
+          "title": "Programme end reminder",
+          "description": "Warn when the programme deadline is approaching."
+        },
+        "certificate": {
+          "title": "Certificate notification",
+          "description": "Tell the holder when a certificate is issued."
+        },
+        "weekly": {
+          "title": "Weekly progress",
+          "description": "A weekly progress summary for participants."
+        }
+      }
+    },
+    "home": {
+      "greeting": "Hi, {name}",
+      "subtitle": "Your programmes, students and seats at a glance.",
+      "pendingNote": "{count, plural, one {# programme is} other {# programmes are}} being set up by our team — registration opens when ready.",
+      "seats": "Seats",
+      "buyProgram": "Buy a programme",
+      "viewParticipants": "Students",
+      "activeStudents": "Active students",
+      "simCompletion": "Simulation completion",
+      "seeAll": "See all",
+      "noPrograms": "No programmes yet.",
+      "students": "{count}/{limit} students",
+      "pendingSetup": "Being set up",
+      "seatsUsed": "In use",
+      "seatsLeft": "Available",
+      "seatsFooter": "Each registered student takes one seat.",
+      "shortcuts": "Shortcuts"
+    },
+    "jury": {
+      "title": "Jury round",
+      "subtitle": "Choose the finalists, invite jurors and follow the evaluation results.",
+      "back": "Programmes",
+      "settings": "Settings",
+      "settingsFooter": "The jury round is optional. When it is off, the programme ends with the platform evaluation.",
+      "enable": "Jury evaluation",
+      "enableHint": "Finalists present to a jury",
+      "finalistCount": "Number of finalists",
+      "juryDate": "Jury day",
+      "juryDateHint": "Weekdays only, within the programme dates",
+      "saved": "Saved",
+      "finalists": "Finalists",
+      "finalistsHint": "The top {count} students of the platform evaluation are proposed — adjust the list and confirm it.",
+      "confirmedOn": "Confirmed on {date} — the jury can see the finalists.",
+      "confirmFinalists": "Confirm finalists ({count})",
+      "finalistsConfirmed": "Finalists confirmed",
+      "noParticipants": "This programme has no active students yet.",
+      "points": "pts",
+      "jurors": "Jurors",
+      "noJurors": "No jurors added yet.",
+      "profileIncomplete": "Profile incomplete",
+      "resend": "Resend invitation",
+      "resent": "A new invitation link was sent",
+      "remove": "Remove from jury",
+      "removed": "Juror removed",
+      "addJuror": "Add a juror",
+      "addHint": "They'll get a one-time link by email to set their password.",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "invited": "Invitation sent to {email}",
+      "inviteNotSent": "Juror added, but the email could not be sent",
+      "added": "Juror added to this programme",
+      "criteria": "Evaluation criteria",
+      "criteriaHint": "These are provisional — you can change their names, scale and weight.",
+      "criteriaLocked": "Scoring has started: only names can change.",
+      "addCriterion": "Add criterion",
+      "removeCriterion": "Remove criterion",
+      "name": {
+        "nameAz": "Name (AZ)",
+        "nameEn": "Name (EN)",
+        "nameTr": "Name (TR)"
+      },
+      "maxScore": "Max score",
+      "weight": "Weight",
+      "results": "Results",
+      "resultsHint": "Each criterion is the jurors' average; the total is weighted, out of 100.",
+      "noResults": "Results appear here once finalists are confirmed.",
+      "finalist": "Finalist",
+      "total": "Total",
+      "submitted": "Submitted",
+      "platformRank": "Platform rank: {rank}"
+    }
+  },
+  "participant": {
+    "title": "Participant Panel",
+    "welcome": "Welcome",
+    "progress": "Your Progress",
+    "upcomingTasks": "Upcoming Tasks",
+    "coinBalance": "Coin Balance",
+    "earnedBadges": "Earned Badges",
+    "myCertificates": "My Certificates",
+    "noCertificates": "No certificates earned yet. Complete simulations and trainings to earn certificates.",
+    "simulations": {
+      "title": "Simulation Modules",
+      "start": "Start",
+      "continue": "Continue",
+      "completed": "Completed"
+    },
+    "trainings": {
+      "title": "Training Modules",
+      "assigned": "Assigned Trainings",
+      "completed": "Completed",
+      "takeExam": "Take Exam",
+      "subtitle": "Watch video lessons, prove your knowledge with exams, and earn coins.",
+      "lessonCount": "{count} lessons",
+      "minuteCount": "{count} min",
+      "progress": "Progress",
+      "start": "Start",
+      "continue": "Continue",
+      "inProgress": "In progress",
+      "examPassed": "Exam passed",
+      "bestScore": "Best score",
+      "backToTrainings": "Back to trainings",
+      "lessonLabel": "Lesson {number}",
+      "lessonsHeading": "Lessons",
+      "markComplete": "Mark as complete",
+      "completedLesson": "Completed",
+      "nextLesson": "Next lesson",
+      "lessonDone": "All done",
+      "saveError": "Could not save — please try again",
+      "examHeading": "Final Exam",
+      "examMeta": "{count} questions · {threshold}% to pass",
+      "retakeExam": "Retake exam",
+      "examHint": "We recommend completing all lessons first"
+    },
+    "aiTools": {
+      "title": "AI Mentor",
+      "chatPlaceholder": "Type your question...",
+      "send": "Send",
+      "subtitle": "Your personal mentor for questions on the entrepreneurship journey.",
+      "empty": "Ask about your idea, your plan or where you are stuck — the AI Mentor will help step by step.",
+      "unavailable": "The AI Mentor is not available right now. Please try again shortly.",
+      "thinking": "Thinking…"
+    },
+    "badges": {
+      "title": "My Badges",
+      "earned": "Earned",
+      "available": "Available",
+      "coinValue": "Coin Value",
+      "summary": "You've earned {earned} of {total} badges.",
+      "subtitle": "Climb the levels in each area and earn its mastery badge.",
+      "overview": "Overall progress",
+      "earnedCaption": "earned",
+      "mastery": "Mastery badges",
+      "coinsFromBadges": "Coins from badges",
+      "nextGoal": "Next goal",
+      "allEarned": "All earned",
+      "filterLabel": "Filter badges",
+      "filter": {
+        "all": "All",
+        "earned": "Earned",
+        "open": "To earn"
+      },
+      "trackHint": "Levels are ordered by difficulty; the last badge is the area's mastery badge.",
+      "emptyFilter": "No badges match this filter.",
+      "earnedOn": "{date}",
+      "next": "Up next",
+      "locked": "Not earned yet",
+      "masteryLevel": "Mastery",
+      "level": "Level {n}",
+      "special": "Special",
+      "categories": {
+        "idea_development": "Idea development",
+        "startup_management": "Startup management",
+        "finance": "Finance",
+        "sales_marketing": "Sales & marketing",
+        "pitch_investor": "Pitch & investors",
+        "leadership": "Leadership",
+        "founder_psychology": "Founder psychology",
+        "globalization": "Globalisation",
+        "special_achievement": "Special achievements"
+      }
+    },
+    "leaderboard": {
+      "title": "Leaderboard",
+      "rank": "Rank",
+      "name": "Name",
+      "coins": "Coins",
+      "badgeCount": "Badge Count",
+      "myStanding": "Your points: {coins} · You are #{rank} of {total} students at your university."
+    },
+    "profile": {
+      "title": "Profile & Settings",
+      "personalInfo": "Personal Information",
+      "language": "Language",
+      "notifications": "Notification Preferences"
+    },
+    "exam": {
+      "backToTraining": "Back to training",
+      "introText": "{count} questions await you. Passing score: {threshold}%. Good luck!",
+      "previousBest": "Previous best: {score}%",
+      "begin": "Start exam",
+      "retake": "Retake",
+      "questionLabel": "Question {number}",
+      "back": "Back",
+      "next": "Next",
+      "submit": "Submit",
+      "submitError": "Submission failed — please try again",
+      "passedTitle": "Congratulations, you passed!",
+      "failedTitle": "Not this time",
+      "resultSummary": "{correct} of {total} correct",
+      "thresholdNote": "Passing score: {threshold}%",
+      "coinsEarned": "coins earned",
+      "tryAgain": "Try again",
+      "reviewHeading": "Answer review",
+      "yourAnswer": "Your answer",
+      "correctAnswer": "Correct answer"
+    },
+    "profilePage": {
+      "title": "Profile",
+      "memberSince": "Member since {date}",
+      "stats": {
+        "badges": "Badges",
+        "certificates": "Certificates",
+        "examsPassed": "Exams passed"
+      },
+      "personalInfo": "Personal information",
+      "personalInfoHint": "Update your name, phone and interface language here.",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phone": "Phone",
+      "language": "Language",
+      "email": "Email",
+      "emailLocked": "Email address cannot be changed — contact support.",
+      "profileSaved": "Profile updated",
+      "security": "Security",
+      "securityHint": "Refresh your password regularly. At least 8 characters with upper/lowercase and a number.",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "confirmPassword": "New password (repeat)",
+      "passwordPolicy": "At least 8 characters with uppercase, lowercase and a number",
+      "passwordMismatch": "Passwords do not match",
+      "wrongCurrentPassword": "Current password is incorrect",
+      "passwordChanged": "Password changed successfully",
+      "changePassword": "Change password",
+      "myTeacher": "My teacher: {name}",
+      "academicInfo": "Academic details",
+      "academicHint": "Your university and field of study.",
+      "university": "University",
+      "faculty": "Faculty",
+      "specialty": "Field of study",
+      "studyYear": "Year",
+      "studyYearUnit": "Year {year}",
+      "notSet": "Not set",
+      "photo": "Profile picture",
+      "photoHint": "JPEG, PNG or WebP · 2 MB maximum",
+      "uploadPhoto": "Upload picture",
+      "removePhoto": "Remove picture",
+      "photoUpdated": "Profile picture updated",
+      "photoRemoved": "Profile picture removed",
+      "photoTooLarge": "Image must be 2 MB or smaller",
+      "photoInvalid": "Only JPEG, PNG or WebP is accepted",
+      "strength": {
+        "weak": "Weak",
+        "fair": "Fair",
+        "good": "Good",
+        "strong": "Strong"
+      },
+      "changePhoto": "Change photo"
+    },
+    "certificateTypes": {
+      "participation": "Certificate of Participation",
+      "achievement": "Certificate of Achievement",
+      "completion": "Certificate of Completion"
+    },
+    "downloadCertificate": "Download",
+    "certificateRevoked": "Revoked",
+    "home": {
+      "greeting": "Hi, {name}",
+      "programLabel": "programme",
+      "continue": "Continue learning",
+      "openProgram": "View programme",
+      "noProgramText": "You haven't joined a programme yet.",
+      "startsIn": "Programme starts in {count} days",
+      "finished": "Programme completed — congratulations!",
+      "weekStatus": "Week {week} of {total} · {days} days left",
+      "undated": "Dates will be announced soon",
+      "lessons": "Lessons completed",
+      "simulations": "Simulations completed",
+      "badges": "Badges",
+      "certificates": "Certificates",
+      "upcoming": "Coming up",
+      "seeAll": "See all",
+      "weekN": "Week {n}",
+      "now": "Now",
+      "nothingUpcoming": "Nothing else is scheduled.",
+      "wallet": "Achievements",
+      "coins": "Coin balance",
+      "shortcuts": "Shortcuts",
+      "finalistTitle": "You're a finalist! 🎉",
+      "finalistText": "You'll present your project to the jury. The date will be announced soon.",
+      "finalistJuryDay": "You'll present your project to the jury on {date}."
+    },
+    "certificatesSubtitle": "Certificates you've earned — download the PDF to share it.",
+    "viewCertificate": "View",
+    "viewCertificateNamed": "View the {title} certificate",
+    "certificateSerial": "Serial no.",
+    "certificateCount": "{count, plural, one {# certificate} other {# certificates}}"
+  },
+  "landing": {
+    "hero": "Start Your Entrepreneurship Journey",
+    "subtitle": "Simulation-based learning and assessment platform",
+    "getStarted": "Get Started",
+    "learnMore": "Learn More"
+  },
+  "hackathon": {
+    "title": "Hackathon",
+    "noProgram": "No active hackathon right now",
+    "noProgramHint": "It will appear here once a new hackathon is announced.",
+    "teamCount": "{count} teams",
+    "deadline": "Deadline",
+    "backToPrograms": "Back to programs",
+    "team": {
+      "createHeading": "Create a team",
+      "name": "Team name",
+      "namePlaceholder": "e.g. CodeCrafters",
+      "slogan": "Slogan (optional)",
+      "sloganPlaceholder": "Your team's motto",
+      "create": "Create team",
+      "created": "Team created!",
+      "joinHeading": "Join a team",
+      "join": "Join",
+      "joined": "You joined the team!",
+      "noTeams": "No teams yet — be the first to create one!",
+      "full": "Team is full",
+      "fullLabel": "Full",
+      "nameTaken": "This name is already taken",
+      "myTeam": "My team"
+    },
+    "submission": {
+      "heading": "Project submission",
+      "hint": "Upload your project document as a PDF. A new version replaces the previous one.",
+      "projectTitle": "Project title",
+      "titlePlaceholder": "e.g. AI Mentor Platform",
+      "summary": "Short summary (optional)",
+      "summaryPlaceholder": "What problem does your project solve?",
+      "dropHint": "Click to choose a PDF",
+      "pdfOnly": "PDF only · up to 10 MB",
+      "upload": "Submit project",
+      "uploadNewVersion": "Upload new version",
+      "uploaded": "Project submitted successfully!",
+      "history": "Submission history"
+    },
+    "rankings": {
+      "heading": "Live Rankings",
+      "rank": "Rank",
+      "team": "Team",
+      "project": "Project",
+      "juries": "Juries",
+      "score": "Score",
+      "yourTeam": "Your team",
+      "noSubmission": "No submission",
+      "weight": "Weight",
+      "juryVotes": "{count} jury votes"
+    },
+    "criteria": {
+      "heading": "Scoring criteria",
+      "hint": "Set a maximum score and weight for each criterion.",
+      "points": "pts",
+      "add": "Add criterion",
+      "saved": "Criteria saved",
+      "resetWarning": "Changing criteria will reset existing jury scores.",
+      "namePlaceholder": "e.g. Innovation",
+      "maxScore": "Max score",
+      "weight": "Weight"
+    },
+    "juries": {
+      "heading": "Jury members",
+      "empty": "No jury members yet. Assign the JURY role from the Participants section.",
+      "addLabel": "Assign a jury by email",
+      "emailPlaceholder": "jury@example.com",
+      "addHint": "An existing participant becomes a juror; otherwise a new juror account is created and emailed a link to set a password.",
+      "added": "Jury member assigned",
+      "removed": "Jury member removed",
+      "remove": "Remove from jury",
+      "inviteSent": "Juror account created and invitation emailed.",
+      "inviteNotSent": "Juror account created, but the email could not be sent.",
+      "inviteHint": "The juror sets their own password from the emailed link. If it doesn't arrive, they can use \"Forgot password?\" on the sign-in page."
+    },
+    "jury": {
+      "dashboardTitle": "Jury Panel",
+      "dashboardSubtitle": "Review submitted projects and score them against the criteria.",
+      "noSubmissions": "No projects have been submitted for review yet.",
+      "pendingHeading": "Awaiting review",
+      "completedHeading": "Completed",
+      "scored": "Scored",
+      "scoredProgress": "{scored}/{total} criteria",
+      "backToDashboard": "Back to dashboard",
+      "openPdf": "Open PDF",
+      "scoringHeading": "Scoring",
+      "scoringHint": "Your score is a weighted total out of 100. You can update it at any time.",
+      "commentPlaceholder": "Comment (optional)",
+      "saveScores": "Save scores",
+      "scoresSaved": "Your scores were saved",
+      "alreadyScored": "You have scored this project",
+      "weightLabel": "Weight",
+      "greeting": "Hi, {name}",
+      "submissionNav": "Move between projects",
+      "previous": "Previous project",
+      "next": "Next project",
+      "position": "{n} / {total}",
+      "version": "version",
+      "yourScore": "your score",
+      "document": "Project document",
+      "download": "Download",
+      "summary": "Summary",
+      "noCriteria": "No criteria have been added for this hackathon yet.",
+      "commentFor": "Comment: {criterion}",
+      "addComment": "Add a comment",
+      "saving": "Saving…",
+      "saveAndNext": "Save and next",
+      "saveAndFinish": "Save and finish"
+    },
+    "reveal": {
+      "heading": "Results announcement",
+      "visibleHint": "Rankings are currently visible to all participants.",
+      "hiddenHint": "Rankings are hidden from participants — only juries and admins can see them.",
+      "scheduledFor": "Reveal time: {date}",
+      "dateLabel": "Reveal date",
+      "schedule": "Schedule",
+      "announceNow": "Announce now",
+      "clear": "Reset",
+      "announced": "Results announced! {count} emails sent",
+      "scheduled": "Reveal time scheduled",
+      "cleared": "Gate removed — rankings are live again",
+      "countdownTitle": "Results are coming soon",
+      "countdownHint": "Jury evaluation is in progress. The countdown to the big moment has started!",
+      "days": "days",
+      "hours": "hours",
+      "minutes": "min",
+      "seconds": "sec"
+    },
+    "feedback": {
+      "heading": "Jury feedback",
+      "outOf": "out of {max} points"
+    }
+  },
+  "simulation": {
+    "list": {
+      "title": "Simulation Modules",
+      "subtitle": "Decide round by round and grow your business — your result becomes a score automatically and is graded by your teacher.",
+      "comingSoon": "Coming soon",
+      "roundProgress": "Round {current}/{total}",
+      "completed": "Completed",
+      "start": "Start",
+      "continue": "Continue",
+      "playAgain": "Play again",
+      "bestScore": "Best score"
+    },
+    "play": {
+      "backToList": "Back to simulations",
+      "roundLabel": "Round {current}/{total}",
+      "roundTitle": "Round {number}",
+      "metrics": {
+        "cash": "Capital",
+        "satisfaction": "Customer satisfaction",
+        "reputation": "Reputation",
+        "leadership": {
+          "cash": "Team budget",
+          "satisfaction": "Team morale",
+          "reputation": "Leadership credibility"
+        },
+        "investor_readiness": {
+          "cash": "Capital",
+          "satisfaction": "Investor interest",
+          "reputation": "Reputation"
+        }
+      },
+      "decisionPrompt": "Make your decision",
+      "outcomeLabel": "Outcome",
+      "nextRound": "Next round",
+      "playAgain": "Play again",
+      "completedTitle": "Simulation complete!",
+      "scoreLabel": "Final score (out of 100)",
+      "teacherPending": "Awaiting teacher review",
+      "teacherGraded": "Teacher grade: {grade}/{max}",
+      "viewSummary": "View summary",
+      "lastResultTitle": "Your latest result",
+      "introRules": "{rounds} rounds await you. You start with {cash}; the target is {target}. Make one decision per round: every choice affects three measures — {cashLabel}, {satLabel} and {repLabel}. At the end, the three measures become your final score.",
+      "begin": "Start simulation"
+    },
+    "grading": {
+      "title": "Simulation Grading",
+      "subtitle": "Review the simulations your students completed, inspect their decision history and assign grades.",
+      "empty": "No completed simulations yet.",
+      "pendingHeading": "Awaiting grade",
+      "gradedHeading": "Graded",
+      "decisions": "Decision history",
+      "gradeHeading": "Grading",
+      "grade": "Grade",
+      "maxGrade": "Maximum grade",
+      "comment": "Feedback (optional)",
+      "commentPlaceholder": "Short feedback for the student...",
+      "saveGrade": "Save grade",
+      "updateGrade": "Update",
+      "gradeSaved": "Grade saved",
+      "invalidGrade": "Grade must be between 0 and the maximum",
+      "viewerNote": "Admin permission is required to grade."
+    }
+  },
+  "teacher": {
+    "manage": {
+      "title": "Teachers",
+      "subtitle": "Create and hand over teacher accounts — teachers invite their own students, build scenarios and grade results.",
+      "addTeacher": "New teacher",
+      "addDescription": "A teacher account is created and a one-time link to set a password is emailed to them.",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "create": "Create & hand over",
+      "created": "Teacher account created",
+      "removed": "Teacher account removed",
+      "remove": "Remove teacher",
+      "empty": "No teachers yet — add the first one.",
+      "studentCount": "{count} students",
+      "scenarioCount": "{count} scenarios",
+      "inviteSent": "Invitation sent to {email}",
+      "inviteNotSent": "The account was created, but the email could not be sent",
+      "inviteHint": "The teacher sets their own password from the emailed link. It is valid for 48 hours; if it doesn't arrive, they can use \"Forgot password?\" on the sign-in page."
+    },
+    "dashboard": {
+      "title": "Teacher Panel",
+      "stats": {
+        "students": "My students",
+        "scenarios": "My scenarios",
+        "pendingGrades": "Awaiting grade"
+      },
+      "invite": {
+        "heading": "Student invite",
+        "hint": "Share this QR code or link with your students — everyone who registers lands in your group automatically.",
+        "qrAlt": "QR code for the student invite link",
+        "copy": "Copy link",
+        "copied": "Link copied"
+      },
+      "students": {
+        "heading": "My students",
+        "empty": "No students yet — share the QR code to invite them.",
+        "name": "Student",
+        "simScore": "Sim score",
+        "grade": "Grade",
+        "studyYearUnit": "Year {year}"
+      },
+      "greeting": "Hi, {name}",
+      "heroSubtitle": "Invite your students, write scenarios and grade their results.",
+      "pendingNote": "{count, plural, one {# simulation result is} other {# simulation results are}} waiting for your grade."
+    },
+    "join": {
+      "title": "Join the group",
+      "subtitle": "{teacher} invites you to their group on {organization}. Register and start the simulations.",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "password": "Password",
+      "passwordPolicy": "At least 8 characters with uppercase, lowercase and a number",
+      "register": "Register",
+      "doneTitle": "Welcome! 🎉",
+      "doneText": "Registration complete — you're now in {teacher}'s group. Sign in and start the simulations.",
+      "goToLogin": "Sign in",
+      "university": "University",
+      "faculty": "Faculty",
+      "specialty": "Field of study",
+      "studyYear": "Year",
+      "studyYearUnit": "Year {year}",
+      "academicTitle": "Academic details",
+      "academicHint": "This helps your teacher run the class."
+    },
+    "scenarios": {
+      "title": "My Scenarios",
+      "subtitle": "Build your own business scenarios — your students will play them as simulations.",
+      "create": "New scenario",
+      "empty": "No scenarios yet — create your first one.",
+      "deleted": "Scenario deleted",
+      "roundCount": "{count} rounds",
+      "runCount": "{count} runs"
+    },
+    "editor": {
+      "createTitle": "New Scenario",
+      "editTitle": "Edit Scenario",
+      "back": "Back to scenarios",
+      "runsWarning": "This scenario has existing runs — saving will reset all of them.",
+      "metaHeading": "General",
+      "name": "Scenario name",
+      "namePlaceholder": "e.g. Run a Café",
+      "description": "Description",
+      "descriptionPlaceholder": "Students see this on the intro screen...",
+      "startCash": "Starting capital ($)",
+      "targetCash": "Target capital ($)",
+      "untitledRound": "Untitled round",
+      "roundTitle": "Round title",
+      "roundTitlePlaceholder": "e.g. First customers",
+      "roundContext": "Situation description",
+      "roundContextPlaceholder": "Describe the situation: what's happening, what decision is needed...",
+      "choiceLabel": "Choice {letter}",
+      "choiceTitlePlaceholder": "Decision label",
+      "choiceDetailPlaceholder": "Short hint — what's the trade-off? (optional)",
+      "cashDelta": "Cash Δ",
+      "satDelta": "Satisf. Δ",
+      "repDelta": "Reputation Δ",
+      "variance": "Random ±",
+      "choiceFeedbackPlaceholder": "Outcome text shown to the student after this choice...",
+      "addChoice": "Add choice",
+      "addRound": "Add round",
+      "save": "Save scenario",
+      "saved": "Scenario saved",
+      "problems": {
+        "atRound": "Round {round}",
+        "atChoice": "Round {round}, choice {choice}",
+        "name": "The scenario name must be 3–150 characters.",
+        "description": "The description can be at most 500 characters.",
+        "cash": "Starting capital must be a whole number from 0 to 1,000,000 and target capital from 1 to 10,000,000.",
+        "rounds": "A scenario needs 2–15 rounds.",
+        "title": "add a round title (up to 150 characters).",
+        "context": "add the round description (up to 2,000 characters).",
+        "choices": "each round needs 2–4 choices.",
+        "label": "add the choice label (up to 200 characters).",
+        "detail": "the choice detail can be at most 300 characters.",
+        "feedback": "add the outcome text (up to 1,000 characters).",
+        "numbers": "numbers must be whole: cash −1,000,000…1,000,000, satisfaction and reputation −100…100, variance 0…100,000.",
+        "chars": "text cannot contain the < or > characters."
+      }
+    }
+  },
+  "pricing": {
+    "title": "Pricing",
+    "subtitle": "Pick the services you need and how many participants each one has. You pay only for what you choose.",
+    "servicesHeading": "Services",
+    "summaryHeading": "Summary",
+    "contactHeading": "Institution details",
+    "participants": "Participants",
+    "tierRange": "{min}–{max} participants",
+    "tierOpen": "{min}+ participants",
+    "perParticipant": "{price} per participant",
+    "total": "Total",
+    "selectPrompt": "Select at least one service to see the price.",
+    "calculating": "Calculating…",
+    "pay": "Pay {total}",
+    "payDisabled": "Pay",
+    "redirecting": "Redirecting to payment…",
+    "noServices": "No services are available right now.",
+    "paymentSuccess": "Payment received. We are setting up your account — the activation link will arrive by email shortly.",
+    "paymentFailed": "The payment was not completed. You can try again.",
+    "fields": {
+      "institutionName": "Institution name",
+      "contactName": "Contact person",
+      "contactEmail": "Email"
+    },
+    "services": {
+      "HACKATHON": "Hackathon",
+      "TEACHERS": "Teacher-Student Panel",
+      "SIMULATIONS": "Business Simulations",
+      "TRAININGS": "Trainings",
+      "AI_TOOLS": "AI Mentor"
+    },
+    "errors": {
+      "generic": "Something went wrong. Please try again.",
+      "rateLimited": "Too many attempts. Please wait a minute and try again.",
+      "EMPTY_QUOTE": "Select at least one service.",
+      "INVALID_PARTICIPANT_COUNT": "Enter a whole number of participants between 1 and 100,000.",
+      "DUPLICATE_SERVICE": "A service was selected twice.",
+      "UNKNOWN_SERVICE": "One of the selected services is no longer available.",
+      "NO_MATCHING_TIER": "This participant count is not available for one of the services. Please contact us.",
+      "CURRENCY_MISMATCH": "The selected services cannot be paid together. Please contact us.",
+      "EMAIL_TAKEN": "An account with this email already exists. Use another email or sign in.",
+      "PAYMENT_PROVIDER": "The payment service is temporarily unavailable. Please try again in a few minutes."
+    },
+    "selectedCount": "{count} selected",
+    "fromPrice": "from {price}",
+    "perParticipantShort": "/ participant",
+    "decrease": "Fewer participants",
+    "increase": "More participants",
+    "quickPick": "Quick pick",
+    "activeTier": "Your tier",
+    "summaryEmptyTitle": "Build your package",
+    "secure": "Secure payment with PayTR · 3D Secure",
+    "activationNote": "Your account is created right after payment and the activation link is emailed to you.",
+    "continue": "Continue",
+    "lineDetail": "{count} × {price}",
+    "descriptions": {
+      "HACKATHON": "Team projects, jury scoring and live results",
+      "TEACHERS": "Teachers follow, grade and guide their students",
+      "SIMULATIONS": "Data-driven business scenarios with grading",
+      "TRAININGS": "Video lessons, tests and certificates",
+      "AI_TOOLS": "A personal AI mentor for students on ideas and plans"
+    },
+    "tenantNote": "After payment the programme is added to your account; our team sets it up and activates it.",
+    "currencyLabel": "Currency"
+  },
+  "activation": {
+    "title": "Activate your account",
+    "subtitle": "Set a password to finish setting up your admin account.",
+    "password": "New password",
+    "confirm": "Repeat password",
+    "passwordHint": "At least 8 characters, with an uppercase letter, a lowercase letter and a number.",
+    "submit": "Set password",
+    "saving": "Saving…",
+    "goToLogin": "Go to sign in",
+    "state": {
+      "INVALID": "This activation link is not valid.",
+      "EXPIRED": "This activation link has expired. Please contact support for a new one.",
+      "USED": "This activation link has already been used. You can sign in with your password."
+    },
+    "errors": {
+      "weak": "The password does not meet the requirements.",
+      "mismatch": "The passwords do not match.",
+      "rateLimited": "Too many attempts. Please wait a minute.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "apply": {
+    "title": "Program registration",
+    "intro": "Enter your details to join the program. They are used only for program activities.",
+    "notFound": "Program not found",
+    "closed": "Registration for this program is closed.",
+    "seatsFull": "The organization has no seats left.",
+    "programFull": "The program has reached its participant limit.",
+    "personalHeading": "Personal details",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email address",
+    "phone": "Phone number",
+    "password": "Password",
+    "passwordHint": "At least 8 characters. You will sign in with this password.",
+    "academicHeading": "Education",
+    "university": "University",
+    "universityOther": "University name",
+    "department": "Department",
+    "departmentOther": "Department name",
+    "studyYear": "Year of study",
+    "yearOption": "Year {year}",
+    "choose": "Select",
+    "notListed": "Not in the list",
+    "otherField": "Other",
+    "consentHeading": "Consents",
+    "draftTranslation": "draft translation",
+    "opportunitiesQuestion": "In the future, would you like us to share suitable opportunities to take part in organizations' innovation and problem-solving projects?",
+    "opportunitiesYes": "Yes, you may share them",
+    "opportunitiesNo": "No, thank you",
+    "psychShare": "I separately and explicitly consent to my psychological wellbeing test results being shared with my university. (Optional — without it, your university only sees whether you completed the test.)",
+    "submit": "Register and continue",
+    "submitting": "Saving…",
+    "errors": {
+      "alreadyRegistered": "This email is already registered. Try signing in.",
+      "rateLimited": "Too many attempts. Please wait a minute.",
+      "consentRequired": "You need to accept the privacy notice to continue.",
+      "invalid": "Some details are invalid. Please check the fields.",
+      "generic": "Something went wrong. Please try again."
+    },
+    "notFoundHint": "This invitation link is wrong or no longer valid.",
+    "loadFailed": "Could not load the program. Check your connection and try again.",
+    "registrationClosed": "Registration is closed for this program.",
+    "seatLimitReached": "The organization has run out of seats.",
+    "capacityReached": "The program is full.",
+    "successToast": "Registration complete. You can sign in now.",
+    "seatLimitToast": "Registration is not possible: the organization has run out of seats.",
+    "failedToast": "Registration failed. Please try again in a moment.",
+    "stepOf": "Step {current} of {total}",
+    "continue": "Continue",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "readNotice": "Read",
+    "secureNote": "Your data is protected under the privacy notice."
+  },
+  "programSchedule": {
+    "caption": "6-week program calendar",
+    "week": "Week",
+    "weekN": "Week {n}",
+    "dates": "Dates",
+    "content": "Content",
+    "juryDay": "Jury presentations: {date}",
+    "activities": {
+      "BASELINE_TESTS": "Baseline Competency Tests",
+      "CREATIVE_THINKING": "Creative Thinking and a Creative Mindset",
+      "MULTIPLE_PERSPECTIVES": "Thinking from Multiple Perspectives",
+      "PROBLEM_DISCOVERY": "Problem Discovery and Definition",
+      "UNDERSTANDING_USERS": "Understanding Users and Their Needs",
+      "INSIGHT_OPPORTUNITY": "Insight and Opportunity Discovery",
+      "IDEA_GENERATION": "Creative Idea Generation Techniques",
+      "IDEA_EVALUATION": "Evaluating and Prioritizing Ideas",
+      "VALUE_PROPOSITION": "Building a Value Proposition",
+      "FINAL_PROJECT": "Preparing the Final Project",
+      "FINAL_SUBMISSION": "Final Project Submission",
+      "PLATFORM_EVALUATION": "Platform Evaluation",
+      "FINALIST_SELECTION": "Selecting the Finalists",
+      "JURY_PRESENTATION": "Jury Presentations and Evaluation"
+    }
+  },
+  "participantProgram": {
+    "title": "Program Information",
+    "noProgram": "You are not enrolled in a program yet.",
+    "noSchedule": "The program calendar will appear here once the organization sets the dates.",
+    "intro": "{program}, organized by {org}, is designed for university students who want to grow in entrepreneurship and innovation, gain new skills and put what they learn into practice through real scenarios.",
+    "during": "Throughout the program you will take part in training on {content}, make decisions in different simulations, work on solving problems and experience the different stages of the entrepreneurial world.",
+    "factsHeading": "Program Details",
+    "participantsValue": "{count} people",
+    "facts": {
+      "org": "Organized by",
+      "program": "Program name",
+      "content": "Program content",
+      "start": "Start date",
+      "end": "Completion date",
+      "participants": "Participants",
+      "certificate": "Certificate you will earn"
+    },
+    "scheduleHeading": "6-Week Program Calendar",
+    "certificateNote": "When you complete the program successfully, you will earn the {certificate} certificate. You will also be able to track your development through the work and assessments you complete along the way.",
+    "ctaHeading": "Your Turn Now!",
+    "cta1": "This is not just a training program. It is a journey where you will discover yourself, test your ideas and experience the world of entrepreneurship.",
+    "cta2": "Sometimes you will make the right call, sometimes you will be wrong, and sometimes you will find a solution you never thought of. The goal is not to get everything right the first time; it is to think, try, learn and grow.",
+    "cta3": "If you are ready, let us start by discovering your potential. Your first step is waiting.",
+    "start": "Go to the baseline tests",
+    "openUnits": "Training units"
+  },
+  "assessments": {
+    "title": "Baseline Competency Tests",
+    "noProgram": "You need to be enrolled in a program to take the tests.",
+    "intro": "These tests help us understand your character, creativity and current state. A personal development plan is prepared from your results.",
+    "demoNotice": "These tests currently contain sample (demo) questions. The real tests will be added soon.",
+    "demoResultsNotice": "These results are based on sample (demo) tests and are not a real assessment.",
+    "step": "Step {n} of {total}",
+    "completed": "Completed",
+    "start": "Start test",
+    "viewResults": "See my results and development plan",
+    "viewPartialResults": "See my results so far",
+    "progress": "{answered} of {total} questions answered",
+    "questionN": "Question {n}",
+    "answerAll": "Please answer every question.",
+    "alreadyDone": "You have already completed this test.",
+    "submitError": "Your answers could not be saved. Please try again.",
+    "submit": "Submit answers",
+    "submitting": "Submitting…",
+    "likert": {
+      "1": "Strongly disagree",
+      "2": "Disagree",
+      "3": "Neutral",
+      "4": "Agree",
+      "5": "Strongly agree"
+    },
+    "resultsTitle": "Test Results and Personal Development Plan",
+    "noResults": "You have not completed a test yet.",
+    "backToTests": "Back to the tests",
+    "band": {
+      "low": "Development area",
+      "mid": "Moderate",
+      "high": "Strong"
+    },
+    "planHeading": "Your Personal Development Plan",
+    "strengths": "Your strengths",
+    "developmentAreas": "Your development areas",
+    "continueToTraining": "Continue to the training",
+    "back": "Back",
+    "next": "Next"
+  },
+  "tenantAssessments": {
+    "title": "Baseline Tests",
+    "subtitle": "Students' progress on the baseline tests. Psychological test scores are shown only when the student gave separate consent.",
+    "newCompletions": "{count} students just completed their analysis.",
+    "empty": "No students are enrolled yet.",
+    "student": "Student",
+    "program": "Program",
+    "new": "New",
+    "notStarted": "Not started",
+    "notShared": "Scores not shared (no consent)",
+    "pagination": "Pages",
+    "previous": "Previous",
+    "next": "Next",
+    "pageOf": "Page {page} of {pages} · {total} participants"
+  },
+  "units": {
+    "title": "Training Units",
+    "notInProgram": "Your program does not include this simulation's training units.",
+    "intro": "In each unit, watch the training video first, then do the practice project and take the 10-question test. You earn the unit's points when you pass the test.",
+    "pointsSummary": "Your total points: {earned} / {total}",
+    "unitN": "Unit {n}",
+    "points": "{earned}/{total} points",
+    "backToUnits": "All units",
+    "steps": {
+      "video": "Training video",
+      "project": "Practice / Project",
+      "test": "Test",
+      "testScore": "Test: {score}/100"
+    },
+    "watchVideo": "Watch the video",
+    "videoComingSoon": "This unit's video will be added soon. You can go on to the project for now.",
+    "markWatched": "Mark as watched",
+    "tasksHeading": "Questions to think about",
+    "yourAnswer": "Your solution",
+    "chars": "{count}/{max} characters",
+    "submitProject": "Submit project",
+    "updateProject": "Update project",
+    "projectSaved": "Your project was saved.",
+    "testIntro": "Pass the 10-question test to earn {points} points.",
+    "testPassed": "You passed with {score}/100 and earned {points} points.",
+    "testRetry": "Your last score was {score}/100. You can take the test again.",
+    "startTest": "Start the test",
+    "retakeTest": "Retake the test",
+    "error": "Something went wrong. Please try again.",
+    "pointsOf": "of {total} pts"
+  },
+  "security": {
+    "title": "Two-factor authentication",
+    "subtitleRequired": "Admin accounts must turn on two-factor authentication before using the platform.",
+    "subtitleManage": "Manage your account security settings.",
+    "generateQr": "Generate QR code",
+    "qrAlt": "QR code for two-factor authentication",
+    "qrHint": "Scan the code with Google Authenticator or a similar app, then type the six digits it shows below.",
+    "verificationCode": "Verification code",
+    "enable": "Enable",
+    "working": "Working…",
+    "recoveryTitle": "Store these recovery codes somewhere safe:",
+    "recoveryHint": "If you lose your phone, these codes are the only way back into your account. Each one works once.",
+    "continue": "Continue",
+    "setupFailed": "Setup could not be started. Please try again in a moment.",
+    "invalidCode": "That code is wrong. Check the current code in your app.",
+    "enabledToast": "Two-factor authentication enabled",
+    "tooManyAttempts": "Too many attempts. Wait about a minute and try again.",
+    "enabledStatus": "Two-factor authentication is on. Sign-in asks for the code from your authenticator app."
+  },
+  "errors": {
+    "generic": "That did not go through. Please try again in a moment.",
+    "SEAT_LIMIT_REACHED": "The organization has run out of seats. Extend the plan to add more participants.",
+    "TENANT_NOT_ACTIVE": "This organization account is not active.",
+    "PROGRAM_CAPACITY_REACHED": "The program is full.",
+    "REGISTRATION_CLOSED": "Registration is closed for this program.",
+    "DUPLICATE_REGISTRATION": "This person is already registered for the program.",
+    "EMAIL_ALREADY_REGISTERED": "That email is already registered in this organization.",
+    "CERTIFICATE_DISABLED": "This certificate type is switched off in the organization settings.",
+    "CERTIFICATE_ALREADY_ISSUED": "This certificate has already been issued to that person.",
+    "CERTIFICATE_PARTICIPANT_NOT_FOUND": "That person is not a participant in this organization.",
+    "PROGRAM_NOT_FOUND": "Program not found.",
+    "TRAINING_NOT_ASSIGNED": "This training is not part of any of your programs.",
+    "MODULE_NOT_ENABLED": "This module is not enabled for your organization.",
+    "WRONG_CURRENT_PASSWORD": "That is not your current password.",
+    "INVALID_APPLICATION_TOKEN": "This invitation link is invalid or has expired.",
+    "PAYMENT_UNAVAILABLE": "The payment system is unavailable right now. Please try again in a moment.",
+    "PAYMENT_VERIFICATION_FAILED": "The payment could not be verified.",
+    "CRITERIA_LOCKED": "Scoring has started — only criterion names can change.",
+    "INVALID_CRITERIA": "Between 1 and 12 criteria are required.",
+    "USER_HAS_OTHER_ROLE": "An account with another role already uses this email.",
+    "ALREADY_JUROR": "This person is already on this programme's jury.",
+    "JUROR_NOT_FOUND": "Juror not found.",
+    "JURY_DISABLED": "Turn on the jury round first.",
+    "NOT_A_PARTICIPANT": "One of the selected people is not an active student of this programme.",
+    "FINALIST_SCORED": "A finalist who has been scored can't be removed.",
+    "TOO_MANY_FINALISTS": "Too many finalists.",
+    "FINALIST_NOT_FOUND": "Finalist not found.",
+    "INVALID_SCORE": "The score is outside the criterion's scale.",
+    "INCOMPLETE_EVALUATION": "Score every criterion before submitting.",
+    "WEEKEND_JURY_DATE": "The jury day can't be on a weekend.",
+    "OUT_OF_RANGE": "The date must be within the programme period.",
+    "VALIDATION_FAILED": "Some fields are not filled in correctly. Check the form and try again.",
+    "RATE_LIMITED": "Too many requests. Please wait a moment and try again."
+  },
+  "marketing": {
+    "nav": {
+      "features": "Features",
+      "pricing": "Pricing",
+      "contact": "Contact",
+      "signIn": "Sign in",
+      "requestDemo": "Request a demo",
+      "toggleMenu": "Open or close the menu"
+    },
+    "footer": {
+      "tagline": "The platform that turns entrepreneurship education into a measurable programme for technoparks, universities and accelerators.",
+      "product": "Product",
+      "company": "Company",
+      "legal": "Legal",
+      "privacy": "Privacy policy",
+      "terms": "Terms of service",
+      "copyright": "© {year} BizSim. All rights reserved."
+    },
+    "seo": {
+      "home": {
+        "title": "BizSim — Entrepreneurship education platform",
+        "description": "Run entrepreneurship programmes end to end: video training, exams, business simulations, hackathons and certificates for technoparks and universities."
+      },
+      "features": {
+        "title": "Features — BizSim platform",
+        "description": "Six modules from video training to hackathon judging: lesson tracking, server-side exams, business simulations, certificates and tenant analytics."
+      },
+      "pricing": {
+        "title": "Pricing — BizSim",
+        "description": "Transparent per-seat monthly pricing. Three plans, no hidden fees. Compare the plans and pick the one that fits your organisation."
+      },
+      "contact": {
+        "title": "Request a demo — BizSim",
+        "description": "See the platform on your own scenario in a 15-minute live demo. We reply within one business day."
+      },
+      "privacy": {
+        "title": "Privacy policy — BizSim",
+        "description": "How personal data is collected, processed, stored and protected on the BizSim platform."
+      },
+      "terms": {
+        "title": "Terms of service — BizSim",
+        "description": "Terms for using the BizSim platform: accounts, licensing, payments, liability and termination."
+      }
+    },
+    "home": {
+      "hero": {
+        "eyebrow": "For technoparks and universities",
+        "headline": "Turn your entrepreneurship programme into a measurable result",
+        "problem": "Programmes run on spreadsheets, email and paper judging forms — and nobody can measure what was actually learned.",
+        "solution": "BizSim brings training, exams, business simulations, hackathons and certificates into one platform. Every participant's progress is recorded automatically, and every jury score stays transparent per criterion.",
+        "primaryCta": "Request a demo",
+        "secondaryCta": "Features",
+        "reassurance": "No installation · Under your own brand · AZ / TR / EN",
+        "screenshot": "Tenant admin dashboard: active programmes, participant counts and the weekly progress chart"
+      },
+      "proof": {
+        "title": "Who it is built for",
+        "logos": {
+          "a": "Example Technopark",
+          "b": "Example University",
+          "c": "Example Accelerator",
+          "d": "Example Innovation Centre"
+        },
+        "quote": "“Collecting the results of one hackathon used to take two weeks. Now jury scores appear per criterion immediately, and participants get their feedback the same day.”",
+        "attribution": "Programme director · sample text, to be replaced with a real customer quote"
+      },
+      "features": {
+        "eyebrow": "What is inside",
+        "title": "Every stage of the programme in one place",
+        "description": "From registration to certificate, without stitching separate tools together.",
+        "items": {
+          "a": {
+            "title": "Video training and exams",
+            "body": "Lessons play as a playlist and each completion is recorded separately. Exams are graded on the server — correct answers never reach the browser.",
+            "screenshot": "Participant training screen: video player, lesson playlist and progress bar"
+          },
+          "b": {
+            "title": "Business simulation",
+            "body": "Participants decide round by round while cash, customer satisfaction and reputation move in real time. Scenarios are pure data, so a new one needs no code.",
+            "screenshot": "Simulation play screen: round context, decision options and the metric gauges"
+          },
+          "c": {
+            "title": "Hackathon and judging",
+            "body": "Teams form, submit a project PDF, and jurors score and comment against each criterion. Results stay sealed until you reveal them, then each team sees anonymous feedback.",
+            "screenshot": "Jury scoring screen: PDF preview and per-criterion score sliders"
+          },
+          "d": {
+            "title": "Certificates and analytics",
+            "body": "Certificates are issued as PDFs with a serial number and a verification code. The analytics dashboard shows completion per course, average scores and weekly activity.",
+            "screenshot": "Analytics dashboard: KPI cards, the weekly activity chart and the course table"
+          }
+        }
+      },
+      "steps": {
+        "title": "How it works",
+        "description": "Once your account is open you run the programme yourself — we never touch your content.",
+        "items": {
+          "one": {
+            "title": "Receive your account",
+            "body": "We open an account with your seat limit and email the admin credentials. Two-factor authentication is set up on first sign-in."
+          },
+          "two": {
+            "title": "Set up your programme",
+            "body": "Pick the training, simulation and hackathon modules you need, define the judging criteria, and invite participants by QR code or invite link."
+          },
+          "three": {
+            "title": "Measure the results",
+            "body": "Who finished what, what the average score is, which team scored what on which criterion — it all lands in the dashboard and exports to CSV."
+          }
+        }
+      },
+      "pricingPreview": {
+        "title": "Build your programme from services",
+        "description": "Pick the modules you need — pricing is per participant and drops as numbers grow. No hidden fees.",
+        "cta": "Calculate your price",
+        "from": "per participant from"
+      },
+      "cta": {
+        "title": "See the platform on your own scenario",
+        "body": "Let us show you how your programme would be set up, in a 15-minute demo. We reply within one business day.",
+        "bullets": {
+          "a": "No commitment",
+          "b": "With your own data",
+          "c": "AZ / TR / EN"
+        },
+        "button": "Request a demo"
+      }
+    },
+    "features": {
+      "eyebrow": "Modules",
+      "title": "Six modules, one platform",
+      "description": "Each module can be switched on or off, so you do not pay for what your organisation does not use.",
+      "items": {
+        "trainings": {
+          "eyebrow": "Training",
+          "title": "Video training with lesson tracking",
+          "body": "A training is a playlist of lessons, and every completion is recorded on its own. Progress is therefore computed from real events rather than estimated. Content is stored in three languages and shown in the participant's own.",
+          "bullets": {
+            "a": "Per-lesson progress",
+            "b": "YouTube video integration",
+            "c": "Content in three languages"
+          },
+          "screenshot": "Training detail: video player, lesson playlist on the right, progress bar below"
+        },
+        "exams": {
+          "eyebrow": "Exams",
+          "title": "Exams graded on the server",
+          "body": "Questions are served one at a time and answers are checked on the server — the correct answers never reach the browser, so a result cannot be tampered with from the client. The result screen shows the given answer, the correct one and an explanation for every question.",
+          "bullets": {
+            "a": "Results cannot be tampered with",
+            "b": "The best attempt is kept",
+            "c": "An explanation for every question"
+          },
+          "screenshot": "Exam result screen: score, pass state and the per-question explanation list"
+        },
+        "simulations": {
+          "eyebrow": "Simulation",
+          "title": "Data-driven business simulation",
+          "body": "Participants decide round by round, and each choice moves cash, customer satisfaction and reputation. A small amount of market noise is applied, so the same strategy does not produce an identical run twice. A teacher can also grade the run by hand.",
+          "bullets": {
+            "a": "A new scenario needs no code",
+            "b": "Teacher grading",
+            "c": "Scored across three metrics"
+          },
+          "screenshot": "Scenario editor: rounds, choices and the metric effects of each choice"
+        },
+        "hackathon": {
+          "eyebrow": "Hackathon",
+          "title": "Hackathons with transparent judging",
+          "body": "Participants form teams and upload a project PDF; jurors score and comment against each criterion. Rankings use a weighted average, so who scored what on which criterion stays auditable afterwards. Results stay sealed until you reveal them.",
+          "bullets": {
+            "a": "Weighted ranking per criterion",
+            "b": "Scheduled results reveal",
+            "c": "Anonymous jury feedback for teams"
+          },
+          "screenshot": "Live ranking table: teams, weighted score and the per-criterion breakdown"
+        },
+        "certificates": {
+          "eyebrow": "Certificates",
+          "title": "Verifiable certificates",
+          "body": "Participation, achievement and completion certificates are issued as PDFs. Each carries a per-organisation sequential serial and a random verification code, and is frozen with the name and title held at issue time — renaming someone later does not alter the document.",
+          "bullets": {
+            "a": "Sequential serial numbers",
+            "b": "Bulk issuing and ZIP export",
+            "c": "Your own signature and template"
+          },
+          "screenshot": "Certificate template preview: serial number, signature fields and verification code"
+        },
+        "analytics": {
+          "eyebrow": "Analytics",
+          "title": "See the state of the programme in numbers",
+          "body": "The analytics dashboard shows total and active participants, enrolments, average completion and certificates issued. The course table carries enrolled, completed, average score and average duration, and the weekly chart tracks the last twelve weeks.",
+          "bullets": {
+            "a": "Completion and average score per course",
+            "b": "Twelve weeks of activity",
+            "c": "One-click CSV export"
+          },
+          "screenshot": "Analytics dashboard: KPI cards, the weekly activity line and the sortable course table"
+        }
+      },
+      "cta": {
+        "title": "Which modules do you need?",
+        "body": "In the demo we will build your organisation's scenario together and switch on only the modules you need.",
+        "primary": "Request a demo",
+        "secondary": "Pricing"
+      }
+    },
+    "pricing": {
+      "title": "Choose the plan that fits your organisation",
+      "subtitle": "You pay per seat per month. No setup fee, and you can change plan at any time.",
+      "perSeatMonth": "per seat / month",
+      "minSeats": "Minimum {count} seats",
+      "trialDays": "{count}-day free trial",
+      "cta": "Request a demo",
+      "popular": "Most popular",
+      "noPlans": "No active plans yet",
+      "noPlansHint": "Plans appear here once they are added to the billing module.",
+      "plans": {
+        "default": {
+          "tagline": "A plan tailored to your organisation",
+          "bullets": {
+            "a": "Video training and exams",
+            "b": "Business simulation",
+            "c": "Certificate issuing",
+            "d": "Email support"
+          }
+        },
+        "starter": {
+          "tagline": "For small programmes and pilots",
+          "bullets": {
+            "a": "Video training and exams",
+            "b": "3 simulation scenarios",
+            "c": "Certificate issuing",
+            "d": "Email support"
+          }
+        },
+        "professional": {
+          "tagline": "For technoparks and universities running full programmes",
+          "bullets": {
+            "a": "Everything in Starter",
+            "b": "Hackathon and judging module",
+            "c": "AI Mentor",
+            "d": "Full analytics and CSV export"
+          }
+        },
+        "enterprise": {
+          "tagline": "For large organisations running many programmes",
+          "bullets": {
+            "a": "Everything in Professional",
+            "b": "Unlimited simulation scenarios",
+            "c": "Custom scenario authoring",
+            "d": "A dedicated account manager"
+          }
+        }
+      },
+      "comparison": {
+        "title": "Plan comparison",
+        "feature": "Feature",
+        "included": "Included",
+        "notIncluded": "Not included",
+        "rows": {
+          "trainings": "Video training and lessons",
+          "exams": "Exams and grading",
+          "simulations": "Business simulation",
+          "hackathon": "Hackathon and judging",
+          "certificates": "Certificates",
+          "analytics": "Analytics dashboard",
+          "aiTools": "AI Mentor",
+          "support": "Support",
+          "gamification": "Gamification (badges, coins, leaderboard)"
+        },
+        "values": {
+          "starter": {
+            "trainings": "yes",
+            "exams": "yes",
+            "simulations": "3 scenarios",
+            "hackathon": "no",
+            "certificates": "yes",
+            "analytics": "Basic",
+            "aiTools": "no",
+            "gamification": "yes",
+            "support": "Email"
+          },
+          "professional": {
+            "trainings": "yes",
+            "exams": "yes",
+            "simulations": "All scenarios",
+            "hackathon": "yes",
+            "certificates": "yes",
+            "analytics": "Full",
+            "aiTools": "yes",
+            "gamification": "yes",
+            "support": "Email and phone"
+          },
+          "enterprise": {
+            "trainings": "yes",
+            "exams": "yes",
+            "simulations": "Unlimited + custom",
+            "hackathon": "yes",
+            "certificates": "yes",
+            "analytics": "Full + CSV export",
+            "aiTools": "yes",
+            "gamification": "yes",
+            "support": "Dedicated manager"
+          }
+        }
+      },
+      "faq": {
+        "title": "Frequently asked questions",
+        "items": {
+          "a": {
+            "question": "What is a seat and how is it counted?",
+            "answer": "One seat is one participant with an account. A seat is taken at registration and released when the participant is removed. Admin, teacher and jury accounts do not consume seats."
+          },
+          "b": {
+            "question": "How does billing work?",
+            "answer": "Subscriptions are monthly and billed on the seat count. You can pay by card online, or by invoiced bank transfer for institutions."
+          },
+          "c": {
+            "question": "Can I change plan mid-term?",
+            "answer": "Yes. You can raise your plan or seat count at any time and the difference is prorated for the current period. Reductions take effect from the next period."
+          },
+          "d": {
+            "question": "Where is our data stored?",
+            "answer": "Each organisation's data is isolated and enforced at the database level. Certificates and project files are held in encrypted object storage. Details are in the privacy policy."
+          },
+          "e": {
+            "question": "Do you provide a contract and invoices?",
+            "answer": "Yes. We sign a written contract with institutions and issue an invoice for each period. We also provide the documents procurement and tender processes require."
+          }
+        }
+      },
+      "bottomCta": {
+        "title": "Let us work out which plan fits",
+        "body": "Tell us your participant count and programme format, and we will send the right plan and an estimated budget within one business day.",
+        "button": "Request a demo"
+      }
+    },
+    "contact": {
+      "title": "Request a demo",
+      "description": "Fill in the form and we will arrange a 15-minute live demo built on your own scenario.",
+      "assurances": {
+        "response": {
+          "title": "A reply within one business day",
+          "body": "Your request reaches our sales team immediately and we get in touch within one business day."
+        },
+        "privacy": {
+          "title": "Your data, only for this",
+          "body": "What you send is used only to arrange the demo and prepare a quote, and is never shared with third parties."
+        },
+        "noSpam": {
+          "title": "No marketing list",
+          "body": "We will not add you to a newsletter. We write only about this request."
+        }
+      },
+      "form": {
+        "name": "Full name",
+        "company": "Company or institution",
+        "email": "Email",
+        "phone": "Phone",
+        "seatCount": "Estimated number of students",
+        "seatCountHint": "For example: 50-100",
+        "message": "Message",
+        "submit": "Request a demo",
+        "successTitle": "We have your request",
+        "failed": "Could not send. Please try again shortly.",
+        "rateLimited": "Too many requests. Please try again in an hour.",
+        "successBody": "Your request has gone to our sales team. We will be in touch within one business day.",
+        "consent": "By submitting this form you agree that your details may be processed to arrange a demo and prepare a quote. See the privacy policy for details."
+      }
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "updated": "Last updated: 6 September 2026",
+      "draftNotice": "DRAFT — this text has not been through legal review and is not binding.",
+      "sections": {
+        "controller": {
+          "heading": "Data controller",
+          "body": "The organisation using the platform is the controller for its participants' data and BizSim is the processor. For data sent to us directly through the marketing site, BizSim is the controller."
+        },
+        "dataCollected": {
+          "heading": "Data we collect",
+          "body": "Account details (name, email, phone, role), academic profile (university, faculty, specialty, year), usage events (lesson completions, exam attempts, sign-in records) and uploaded files (project PDFs, avatars).\n\nThrough the demo form: name, company, email, phone, estimated participant count and message."
+        },
+        "purposes": {
+          "heading": "Purposes",
+          "body": "Delivering the service, tracking participant progress, issuing and verifying certificates, investigating security incidents, billing and support."
+        },
+        "legalBasis": {
+          "heading": "Legal basis",
+          "body": "Performance of a contract (delivering the service), legitimate interest (security and abuse prevention), legal obligation (accounting) and consent (the marketing form)."
+        },
+        "sharing": {
+          "heading": "Sharing with third parties",
+          "body": "We do not sell data. It is shared only with the processors the service needs: cloud infrastructure, email delivery and the payment provider. A data processing agreement is in place with each."
+        },
+        "transfers": {
+          "heading": "International transfers",
+          "body": "Processing takes place primarily on servers in the European region. Where a transfer outside that region occurs, legal mechanisms such as standard contractual clauses apply."
+        },
+        "retention": {
+          "heading": "Retention",
+          "body": "Account data is kept for the life of the subscription and for as long as the law requires afterwards. Issued certificates are kept longer so they remain verifiable. Demo form submissions are deleted once the sales process ends."
+        },
+        "security": {
+          "heading": "Security measures",
+          "body": "Encrypted connections, hashed passwords, mandatory two-factor authentication for admin roles, role-based authorisation, organisation isolation enforced at the database level, and an audit log."
+        },
+        "rights": {
+          "heading": "Your rights",
+          "body": "You have the right to access, rectify, erase, restrict, port and object to the processing of your data. See the contact section below to make a request.\n\nNote: for data held by an organisation you participate in, address the request to that organisation first."
+        },
+        "cookies": {
+          "heading": "Cookies",
+          "body": "Only cookies the service needs are used: session, language preference and interface theme. No advertising or tracking cookies are set."
+        },
+        "changes": {
+          "heading": "Changes to this policy",
+          "body": "When this document is updated the date above changes. Significant changes are announced to organisation admins by email."
+        },
+        "contact": {
+          "heading": "Contact",
+          "body": "For privacy questions and data requests, use the form on the contact page and mention “Privacy” in your message."
+        }
+      }
+    },
+    "terms": {
+      "title": "Terms of service",
+      "updated": "Last updated: 6 September 2026",
+      "draftNotice": "DRAFT — this text has not been through legal review and is not binding.",
+      "sections": {
+        "acceptance": {
+          "heading": "Acceptance",
+          "body": "By using the platform you accept these terms. Where a separate agreement has been signed on behalf of an organisation, that agreement prevails in case of conflict."
+        },
+        "service": {
+          "heading": "The service",
+          "body": "BizSim is a multi-tenant software service covering training, exams, simulations, hackathons, certificates and analytics. Which modules are active depends on the subscription plan."
+        },
+        "accounts": {
+          "heading": "Accounts and security",
+          "body": "Users are responsible for the security of their account. Two-factor authentication is mandatory for admin roles. Sharing credentials is prohibited."
+        },
+        "seats": {
+          "heading": "Seat licensing",
+          "body": "A subscription is capped by its seat count. When the cap is reached no further participant can register. The seat count can be raised at any time."
+        },
+        "acceptableUse": {
+          "heading": "Acceptable use",
+          "body": "The platform may not be used for unlawful purposes, to infringe the rights of others, to attempt unauthorised access, or for automated bulk requests."
+        },
+        "content": {
+          "heading": "Content and ownership",
+          "body": "Content an organisation uploads (programmes, scenarios, projects) belongs to that organisation. The platform itself, its code and its design belong to BizSim."
+        },
+        "availability": {
+          "heading": "Availability",
+          "body": "We aim for uninterrupted service, but planned maintenance and provider-side outages can occur. Planned work is announced in advance."
+        },
+        "fees": {
+          "heading": "Fees",
+          "body": "Fees are billed monthly on the seat count. Service may be suspended if payment is late. Price changes are announced at least one billing period in advance."
+        },
+        "termination": {
+          "heading": "Termination",
+          "body": "A subscription can be cancelled at the end of the current period. Serious breach of these terms may lead to immediate suspension. A reasonable window for data export is given after cancellation."
+        },
+        "liability": {
+          "heading": "Limitation of liability",
+          "body": "To the extent permitted by law, we are not liable for indirect damages. Total liability is limited to the subscription fees paid in the preceding twelve months."
+        },
+        "governingLaw": {
+          "heading": "Governing law",
+          "body": "These terms are governed by the law of the country in which the provider is registered. Disputes are heard by the competent courts of that jurisdiction."
+        },
+        "contact": {
+          "heading": "Contact",
+          "body": "For questions about these terms, use the form on the contact page."
+        }
+      }
+    }
+  },
+  "passwordReset": {
+    "title": "Reset password",
+    "subtitle": "Enter your account email and we'll send you a link to choose a new password.",
+    "email": "Email",
+    "submit": "Send link",
+    "sending": "Sending…",
+    "sentTitle": "Check your email",
+    "sentText": "If an account exists for {email}, we've sent a reset link. It is valid for 1 hour.",
+    "backToLogin": "Back to sign in",
+    "rateLimited": "Too many attempts. Try again in a few minutes.",
+    "invalidEmail": "Enter a valid email address.",
+    "generic": "Something went wrong. Please try again.",
+    "newTitle": "New password",
+    "newSubtitle": "Choose a new password for your account.",
+    "requestNew": "Request a new link",
+    "state": {
+      "INVALID": "This link is not valid.",
+      "EXPIRED": "This link has expired. Request a new one.",
+      "USED": "This link has already been used. Request a new one if you need to."
+    }
+  },
+  "account": {
+    "title": "Account and security",
+    "subtitle": "Manage your sign-in details and how your account is protected.",
+    "profile": "Account",
+    "email": "Email",
+    "organisation": "Organisation",
+    "password": {
+      "title": "Change password",
+      "subtitle": "Confirm your current password and choose a new one.",
+      "current": "Current password",
+      "new": "New password",
+      "confirm": "Repeat new password",
+      "hint": "At least 8 characters, with upper and lower case letters and a number.",
+      "submit": "Update password",
+      "saving": "Saving…",
+      "changed": "Your password was updated",
+      "weak": "Use at least 8 characters, with upper and lower case letters and a number.",
+      "mismatch": "The new passwords don't match.",
+      "wrongCurrent": "The current password is incorrect.",
+      "rateLimited": "Too many attempts. Try again shortly.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "juryHome": {
+    "title": "Jury panel",
+    "greeting": "Hi, {name}",
+    "progress": "You've completed {done} of {total} evaluations.",
+    "nothingYet": "Once finalists are confirmed, the people you evaluate will appear here.",
+    "evaluated": "done",
+    "completeProfile": "Complete your profile",
+    "profileTitle": "Complete your profile",
+    "profileHint": "Add a photo, your role and experience",
+    "profileFooter": "The organisation and students see who is judging from your profile.",
+    "juryDay": "Jury day: {date}",
+    "status": {
+      "SUBMITTED": "Submitted",
+      "DRAFT": "Draft",
+      "TODO": "To do"
+    },
+    "hackathon": "Hackathon",
+    "empty": "Nothing to evaluate right now.",
+    "hackathonProgress": "You have scored {done} of {total} projects",
+    "criteriaProgress": "{scored}/{total} criteria",
+    "hackathonStatus": {
+      "DONE": "Scored",
+      "PARTIAL": "Incomplete",
+      "TODO": "To do"
+    }
+  },
+  "juryProfile": {
+    "title": "Juror profile",
+    "subtitle": "This is how the organisation and finalists will know you.",
+    "photoAlt": "Profile photo",
+    "changePhoto": "Change photo",
+    "removePhoto": "Remove photo",
+    "photoUpdated": "Photo updated",
+    "complete": "Profile complete",
+    "incomplete": "Add a photo, your role and experience",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "headline": "Role",
+    "headlineHint": "E.g. \"Founder, X Ventures\" or \"Investment manager\"",
+    "bio": "Experience",
+    "bioHint": "Field, years, projects you've worked on",
+    "saving": "Saving…",
+    "saved": "Profile updated"
+  },
+  "juryScore": {
+    "title": "Evaluation",
+    "back": "Jury panel",
+    "studyYear": "Year {year}",
+    "platformRank": "platform rank",
+    "points": "points",
+    "projects": "Project work",
+    "noProjects": "This finalist hasn't submitted any project work yet.",
+    "projectsHint": "These are the project answers the student wrote in the training units. Score after the jury presentation.",
+    "sheet": "Score sheet",
+    "scored": "{done} of {total} criteria scored",
+    "submitted": "Submitted",
+    "comment": "Comment (optional)",
+    "commentPlaceholder": "Strengths, areas to develop…",
+    "saveDraft": "Save draft",
+    "submit": "Submit",
+    "update": "Update",
+    "saving": "Saving…",
+    "draftSaved": "Draft saved",
+    "submittedToast": "Evaluation submitted"
+  },
+  "mentor": {
+    "title": "AI Mentor",
+    "open": "Open the AI Mentor",
+    "close": "Close",
+    "aiNotice": "You are chatting with AI. It can be wrong; don't share personal information.",
+    "empty": "Ask about your current stage. The mentor will help you think it through rather than give you the answer.",
+    "placeholder": "Ask the mentor…",
+    "send": "Send",
+    "typing": "The mentor is writing",
+    "attachImage": "Attach an image ({count} left today)",
+    "removeImage": "Remove image",
+    "imageAttached": "Image attached",
+    "mic": "Voice (coming soon)",
+    "remaining": "{count} of {total} messages left today",
+    "limitReached": "You have used today's mentor messages. You can continue tomorrow.",
+    "offTopic": "This question is outside the simulation topic. Let’s return to the current stage: {stage}. What decision are you weighing right now?",
+    "offTopicNoStage": "This question is outside the simulation topic. Let’s return to your simulation: what are you working on right now?",
+    "blocked": "I can't show that answer. Let's get back to your simulation: what decision are you working on?",
+    "budgetEmail": {
+      "subject": "BizSim: this month's AI Mentor allowance has been used",
+      "body": "Your organisation has used its AI Mentor allowance for this month. Participants will see a message until the allowance renews next month. Contact BizSim if you need a larger allowance."
+    },
+    "hub": {
+      "title": "AI Mentor",
+      "subtitle": "Your mentor for the simulations: it asks the right questions and helps you decide, without giving away the answers.",
+      "notice": "You are chatting with an AI, not a person. It only helps with entrepreneurship and your current simulation. Don't share personal information such as your phone number or address.",
+      "openWithMentor": "Open with the mentor",
+      "empty": "No simulations in your programmes yet.",
+      "disabled": "The AI Mentor is switched off at the moment."
+    },
+    "errors": {
+      "generic": "The mentor could not answer right now. Please try again in a moment.",
+      "AI_NOT_AVAILABLE": "The AI Mentor is not available at the moment.",
+      "AI_FORBIDDEN": "The AI Mentor is available to participants only.",
+      "AI_SIMULATION_FORBIDDEN": "The mentor is not available for this simulation.",
+      "MODULE_NOT_ENABLED": "AI tools are not enabled for your organisation.",
+      "AI_TEMPORARILY_BLOCKED": "Too many requests in a short time. The mentor is paused for you for a few minutes.",
+      "AI_TOO_FAST": "Please wait a few seconds before sending another message.",
+      "RATE_LIMITED": "Too many requests. Please wait a moment and try again.",
+      "AI_LIMIT_DAILY_MESSAGES": "You have used all of today's mentor messages. You can continue tomorrow.",
+      "AI_LIMIT_DAILY_IMAGES": "You have used all of today's image uploads.",
+      "AI_IMAGES_DISABLED": "Image uploads are switched off for the rest of the day.",
+      "AI_TENANT_BUDGET": "Your organisation's AI Mentor allowance for this month has been used. Your administrator has been told.",
+      "AI_MESSAGE_EMPTY": "Write a message first.",
+      "AI_MESSAGE_TOO_LONG": "The message is too long. Please shorten it.",
+      "AI_IMAGES_NOT_ALLOWED": "Images cannot be sent at this stage.",
+      "AI_IMAGE_INVALID": "Only JPG, PNG or WebP images can be sent.",
+      "AI_IMAGE_TOO_LARGE": "The image is too large.",
+      "AI_BAD_REQUEST": "The message could not be sent.",
+      "AI_PROVIDER_ERROR": "The mentor stopped unexpectedly. Please try again."
+    }
+  },
+  "juryRankings": {
+    "title": "Live ranking",
+    "subtitle": "Finalists ordered by the jury's submitted scores. The page refreshes every 30 seconds.",
+    "empty": "No finalists to rank yet. They appear here once the organisation confirms them.",
+    "jurorsScored": "{done} of {total} jurors scored",
+    "noScores": "No scores yet",
+    "rank": "Rank {rank}",
+    "notRanked": "Not ranked yet",
+    "note": "Only submitted evaluations count; drafts do not affect the ranking. Scores are weighted by criterion, out of 100.",
+    "hackathon": "Hackathon",
+    "noSubmission": "No project submitted yet",
+    "teamJurors": "{count, plural, one {# juror has scored} other {# jurors have scored}}"
+  },
+  "lessonVideo": {
+    "skipBlocked": "You can't skip ahead — watch the video in order",
+    "answerError": "Your answer wasn't sent, please try again",
+    "loadError": "The video didn't load. Refresh the page.",
+    "openLink": "Open the video",
+    "questionN": "Question {n} of {total}",
+    "wrong": "Not quite. Watch this part again — the question will come back.",
+    "right": "Correct!",
+    "submit": "Answer",
+    "watched": "Watched: {pct}%",
+    "questionsProgress": "Questions: {done}/{total}",
+    "completed": "Video fully watched",
+    "rules": "No skipping ahead, up to 2x speed",
+    "required": "To complete the lesson, watch the video to the end and answer its questions."
+  },
+  "support": {
+    "title": "Support",
+    "staffSubtitle": "Requests from organisations. Open ones are waiting for your reply.",
+    "tenantSubtitle": "Ask the platform team a question or report a problem.",
+    "filterLabel": "Filter by status",
+    "all": "All",
+    "status": {
+      "OPEN": "Open",
+      "ANSWERED": "Answered",
+      "RESOLVED": "Resolved"
+    },
+    "staffEmptyOpen": "No requests are waiting for a reply.",
+    "emptyFiltered": "No requests with this status.",
+    "tenantEmpty": "No requests yet. If you have a question or a problem, open a new request.",
+    "newTicket": "New request",
+    "newTicketSubtitle": "When the platform team replies, you will see it here.",
+    "subject": "Subject",
+    "subjectPlaceholder": "e.g. Students cannot download their certificate",
+    "message": "Message",
+    "messagePlaceholder": "Describe your question or the problem in detail…",
+    "messageHint": "Telling us on which page and at which step it happens helps us help you faster.",
+    "submit": "Send",
+    "created": "Request sent",
+    "sendError": "Could not send. Please try again.",
+    "back": "All requests",
+    "openedBy": "Opened by {name} · {date}",
+    "conversation": "Conversation",
+    "teamName": "{name} · BizSim team",
+    "replyLabel": "Reply",
+    "replyPlaceholder": "Write your reply…",
+    "replyReopens": "Writing here reopens the request…",
+    "send": "Send",
+    "markResolved": "Mark as resolved",
+    "reopen": "Reopen",
+    "resolvedToast": "Request marked as resolved",
+    "reopenedToast": "Request reopened",
+    "unread": "Unread",
+    "messageCount": "{count, plural, one {# message} other {# messages}}",
+    "shortcut": "Enter sends, Shift + Enter adds a new line",
+    "inspector": {
+      "label": "About the requester",
+      "email": "Email",
+      "call": "Call",
+      "noPhone": "No phone",
+      "account": "Account",
+      "emailLabel": "Email",
+      "copyEmail": "Copy email",
+      "phone": "Phone",
+      "language": "Language",
+      "joined": "Joined",
+      "lastLogin": "Last sign-in",
+      "never": "Never signed in",
+      "twoFactor": "Two-step sign-in",
+      "on": "On",
+      "off": "Off",
+      "signIn": "Sign-in",
+      "signInOk": "No problems",
+      "locked": "Account locked until {until}",
+      "failedAttempts": "{count, plural, one {# failed sign-in attempt} other {# failed sign-in attempts}}",
+      "unlock": "Unlock",
+      "unlocked": "Account unlocked",
+      "organisation": "Organisation",
+      "subscription": "Subscription",
+      "noSubscription": "No subscription",
+      "until": "until {date}",
+      "subscriptionStatus": {
+        "TRIALING": "Trial",
+        "ACTIVE": "Active",
+        "PAST_DUE": "Payment overdue",
+        "CANCELED": "Cancelled",
+        "EXPIRED": "Expired"
+      },
+      "users": "Users",
+      "requests": "Requests",
+      "orgEmail": "Organisation email",
+      "seats": "Seat limit",
+      "seatsUsed": "{used} / {limit} in use",
+      "fewerSeats": "One seat fewer",
+      "moreSeats": "One seat more",
+      "save": "Save",
+      "saved": "Change saved",
+      "saveError": "That did not work. Please try again.",
+      "modules": "Modules",
+      "modulesHint": "Changes take effect at once, for everyone in the organisation.",
+      "suspend": "Suspend organisation",
+      "activate": "Activate organisation",
+      "suspendHint": "Nobody in a suspended organisation can sign in.",
+      "confirmSuspend": "Suspend this organisation? None of its users will be able to sign in.",
+      "suspended": "Organisation suspended",
+      "activated": "Organisation activated",
+      "technical": "Technical details",
+      "noContext": "This request was sent before technical details were collected.",
+      "browser": "Browser",
+      "os": "Operating system",
+      "device": "Device",
+      "mobile": "Mobile",
+      "desktop": "Computer",
+      "screen": "Screen · window",
+      "timezone": "Time zone",
+      "browserLanguage": "Browser language",
+      "ticketId": "Request ID",
+      "copyId": "Copy ID",
+      "copied": "Copied",
+      "userAgent": "Full browser string (user agent)",
+      "activity": "Recent activity",
+      "auditLog": "Audit log",
+      "noActivity": "No recorded activity.",
+      "roles": {
+        "SUPER_ADMIN": "Super admin",
+        "TENANT_ADMIN": "Organisation admin",
+        "TENANT_VIEWER": "Organisation viewer",
+        "PARTICIPANT": "Participant",
+        "JURY": "Jury",
+        "TEACHER": "Teacher"
+      },
+      "tabPerson": "Person",
+      "tabOrganisation": "Organisation",
+      "tabTechnical": "Technical"
+    },
+    "previewYou": "You",
+    "previewTeam": "BizSim",
+    "resolvedBanner": "This request is resolved. Writing a new message reopens it.",
+    "translate": "Translate",
+    "translating": "Translating…",
+    "showOriginal": "Show original",
+    "translatedNote": "Machine translation",
+    "translateError": "Translation failed. Please try again in a moment.",
+    "previewAttachments": "📎 {count, plural, one {# file} other {# files}}",
+    "attachments": {
+      "add": "Add a picture or file",
+      "hint": "Up to {max} files, 10 MB each: pictures, PDF, Word, Excel, PowerPoint, TXT, CSV. You can also paste a screenshot (Ctrl + V).",
+      "selected": "Chosen files",
+      "remove": "Remove {name}",
+      "download": "Download",
+      "tooMany": "A message can carry at most {max} files.",
+      "notAllowed": "{name}: this kind of file is not accepted.",
+      "tooLarge": "{name} is too large (up to {max}).",
+      "FILE_TYPE_NOT_ALLOWED": "One of the files is not accepted: its content does not match its name.",
+      "FILE_TOO_LARGE": "One of the files is larger than 10 MB.",
+      "TOO_MANY_FILES": "A message can carry at most 5 files."
+    },
+    "edit": "Edit",
+    "delete": "Delete",
+    "edited": "edited",
+    "deletedMessage": "This message was deleted",
+    "deleteConfirm": "Delete this message? The text and its files cannot be recovered.",
+    "deleted": "Message deleted",
+    "editError": "That did not work. Please try again.",
+    "editLabel": "Edit the message",
+    "cancel": "Cancel",
+    "save": "Save",
+    "editWindowClosed": "A message can only be edited or deleted within 15 minutes of sending."
+  },
+  "notifications": {
+    "title": "Notifications",
+    "bell": "Notifications",
+    "bellUnread": "Notifications, {count} unread",
+    "markAll": "Mark all as read",
+    "emptyTitle": "No notifications",
+    "emptyBody": "When something new happens, you will see it here.",
+    "unread": "Unread",
+    "fallback": "New notification",
+    "types": {
+      "SUPPORT_TICKET_NEW": {
+        "title": "New support request",
+        "body": "{organisation}: {subject}"
+      },
+      "SUPPORT_MESSAGE_NEW": {
+        "title": "New message in a request",
+        "body": "{organisation}: {subject}"
+      },
+      "SUPPORT_REPLY": {
+        "title": "Your request has a reply",
+        "body": "{subject}"
+      },
+      "LEAD_NEW": {
+        "title": "New demo request",
+        "body": "{company} · {name}"
+      },
+      "ASSESSMENTS_COMPLETED": {
+        "title": "Baseline tests completed",
+        "body": "{student} finished all baseline tests."
+      },
+      "AI_BUDGET_EXHAUSTED": {
+        "title": "AI Mentor limit reached",
+        "body": "The AI Mentor budget for {month} is used up."
+      },
+      "CERTIFICATE_ISSUED": {
+        "title": "New certificate",
+        "body": "Your “{title}” certificate is ready."
+      },
+      "SIMULATION_GRADED": {
+        "title": "Your simulation was graded",
+        "body": "Teacher grade: {grade} / {max}"
+      },
+      "HACKATHON_RESULTS": {
+        "title": "Hackathon results are out",
+        "body": "{program}"
+      }
+    },
+    "time": {
+      "now": "just now",
+      "minutes": "{count} min ago",
+      "hours": "{count, plural, one {# hour} other {# hours}} ago",
+      "days": "{count, plural, one {# day} other {# days}} ago"
+    }
+  }
+}
