@@ -1,0 +1,147 @@
+name: Deploy (EC2)
+
+# Every push to main: check -> build images -> deploy to the EC2 server.
+# A failing check stops here and the site keeps running the last good version;
+# a version that starts but is unhealthy is rolled back by deploy/deploy.sh.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# One deploy at a time, and never cancel one halfway through.
+concurrency:
+  group: deploy-ec2
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run check:i18n
+      - run: npm run check:text
+      - run: npm run typecheck
+      - run: npx vitest run
+
+  # The database tests (tenant isolation, seat locking, AI Mentor limits) need
+  # PostgreSQL; without this job they skip themselves and a regression in them
+  # would ship. Same setup as the CI workflow.
+  integration:
+    name: Integration tests (PostgreSQL)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: bizsim
+          POSTGRES_PASSWORD: bizsim
+          POSTGRES_DB: bizsim_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      TEST_DATABASE_URL: postgresql://bizsim:bizsim@localhost:5432/bizsim_test
+      DATABASE_URL: postgresql://bizsim:bizsim@localhost:5432/bizsim_test
+      AUTH_SECRET: ci-test-secret-not-used-in-production-32
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - run: npm ci
+      - run: npm run db:schema:postgres
+      - run: npx prisma db push --schema=prisma/schema.postgres.prisma --skip-generate
+      - run: npx prisma generate --schema=prisma/schema.postgres.prisma
+      - run: npm run test:integration
+
+  build:
+    name: Build images
+    needs: [check, integration]
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.name.outputs.image }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: name
+        # GHCR image names must be lowercase.
+        run: echo "image=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Web image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.name.outputs.image }}:${{ github.sha }}
+          build-args: |
+            NEXT_PUBLIC_APP_URL=${{ vars.PUBLIC_APP_URL }}
+          cache-from: type=gha,scope=web
+          cache-to: type=gha,mode=max,scope=web
+      - name: Worker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile.worker
+          push: true
+          tags: ${{ steps.name.outputs.image }}-worker:${{ github.sha }}
+          cache-from: type=gha,scope=worker
+          cache-to: type=gha,mode=max,scope=worker
+
+  deploy:
+    name: Deploy
+    needs: build
+    # Skipped until the server is configured (repo variable PUBLIC_APP_URL + EC2 secrets).
+    if: vars.PUBLIC_APP_URL != ''
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Copy deploy files
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "deploy/docker-compose.yml,deploy/Caddyfile,deploy/deploy.sh,deploy/backup.sh,deploy/bootstrap.sh,deploy/configure-email.sh"
+          target: bizsim-deploy
+          strip_components: 1
+      - name: Deploy on the server
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          command_timeout: 15m
+          script: |
+            set -e
+            # Idempotent: installs Docker and creates /opt/bizsim + secrets on a fresh server.
+            bash ~/bizsim-deploy/bootstrap.sh "${{ vars.PUBLIC_APP_URL }}"
+            cp ~/bizsim-deploy/docker-compose.yml ~/bizsim-deploy/Caddyfile ~/bizsim-deploy/deploy.sh ~/bizsim-deploy/backup.sh /opt/bizsim/
+            # Amazon SES once vars.EMAIL_FROM is set; until then emails are only logged.
+            EMAIL_FROM="${{ vars.EMAIL_FROM }}" SES_REGION="${{ vars.SES_REGION }}" SES_ACCESS_KEY_ID="${{ secrets.SES_ACCESS_KEY_ID }}" SES_SECRET_ACCESS_KEY="${{ secrets.SES_SECRET_ACCESS_KEY }}" SUPPORT_NOTIFICATION_EMAIL="${{ vars.SUPPORT_NOTIFICATION_EMAIL }}" bash ~/bizsim-deploy/configure-email.sh
+            cd /opt/bizsim
+            # The job token is valid for this run only; the server keeps no registry password.
+            echo "${{ secrets.GITHUB_TOKEN }}" | sudo docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+            sed -i "s#^IMAGE=.*#IMAGE=${{ needs.build.outputs.image }}#" .env
+            sudo SEED_ADMIN_PASSWORD="${{ secrets.SEED_ADMIN_PASSWORD }}" SEED_ADMIN_EMAIL="${{ vars.SEED_ADMIN_EMAIL }}" bash deploy.sh "${{ github.sha }}"
+            sudo docker logout ghcr.io

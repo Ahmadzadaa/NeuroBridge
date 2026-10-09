@@ -1,0 +1,6 @@
+# SITE_ADDRESS=":80" serves plain HTTP on the server IP. Set it to a domain
+# (e.g. bizsim.az) once DNS points here: Caddy then gets and renews HTTPS itself.
+{$SITE_ADDRESS} {
+	encode zstd gzip
+	reverse_proxy app:3000
+}
